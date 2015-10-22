@@ -243,9 +243,11 @@ button.ui-button::-moz-focus-inner {
 	top: 1px;
 }
 .ui-datepicker .ui-datepicker-prev {
+	background-image:url(../Image/Left.png);
 	left: 2px;
 }
 .ui-datepicker .ui-datepicker-next {
+	background-image:url(../Image/Right.png);
 	right: 2px;
 }
 .ui-datepicker .ui-datepicker-prev-hover {
