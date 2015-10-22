@@ -38,6 +38,21 @@ $row_TransaksiJual = mysql_fetch_assoc($TransaksiJual);
 $totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
 ?>
 
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="../../JQuery/datatable/dataTables.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/jquery-1.10.2.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/datatable/dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#contentTable').DataTable();
+} );
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -115,10 +130,11 @@ $totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
 			</table>
 		</div>
         <div class="pageContent">
-            <div class="divTableHeader">      	
-                    <table class="tableHeader">
-                        <tr>
-                            <th class="noinvoice">No. Invoice</th>
+            
+			<div class="divTable">
+                        <table id="contentTable">
+                        <thead>
+                        	<th class="noinvoice">No. Invoice</th>
                             <th class="tanggal">Tgl Jual</th>
                             <th class="customer">Customer</th>
                             <th class="JSC">J/S/C</th>
@@ -126,11 +142,8 @@ $totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
                             <th class="amount">Amount</th>
                             <th class="status">Status</th>
                             <th class="tombol">Opsi</th>
-                        </tr>
-                    </table>
-             </div>
-			<div class="divTable">
-                        <table class="contentTable">
+                        </thead>
+                        <tbody>
                                 <?php do { ?>
                                 <tr>
                                   <td class="noinvoice"><?php echo $row_TransaksiJual['No']; ?></td>
@@ -143,16 +156,7 @@ $totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
                                   <td class="tombol"><a href="VIewTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
                                   </tr>
                                 <?php } while ($row_TransaksiJual = mysql_fetch_assoc($TransaksiJual)); ?>
-                                <tr>
-                                    <td class="noinvoice">&nbsp;</td>
-                                    <td class="tanggal">&nbsp;</td>
-                                    <td class="customer">&nbsp;</td>
-                                    <td class="JSC">&nbsp;</td>
-                                    <td class="project">&nbsp;</td>
-                                    <td class="amount">&nbsp;</td>
-                                    <td class="status">&nbsp;</td>
-                                    <td class="tombol">&nbsp;</td>
-                                </tr>
+                                </tbody>
                         </table>
                     </div>
                 </div>

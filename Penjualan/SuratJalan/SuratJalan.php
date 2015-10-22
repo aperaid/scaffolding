@@ -37,6 +37,22 @@ $SuratJalan = mysql_query($query_SuratJalan, $Connection) or die(mysql_error());
 $row_SuratJalan = mysql_fetch_assoc($SuratJalan);
 $totalRows_SuratJalan = mysql_num_rows($SuratJalan);
 ?>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="../../JQuery/datatable/dataTables.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/jquery-1.10.2.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/datatable/dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#contentTable').DataTable();
+} );
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -114,10 +130,10 @@ $totalRows_SuratJalan = mysql_num_rows($SuratJalan);
 			</table>
 		</div>
 		<div class="pageContent">
-			<div class="divTableHeader">
-				<table class="tableHeader">
-					<tr>
-						<th class="noinvoice">No. Invoice</th>
+			<div class="divTable">
+				<table id="contentTable">
+                	<thead>
+                    	<th class="noinvoice">No. Invoice</th>
 						<th class="tanggal">Tgl Jual</th>
 						<th class="noinvoice">No. Customer</th>
 						<th class="customer">Customer</th>
@@ -126,11 +142,8 @@ $totalRows_SuratJalan = mysql_num_rows($SuratJalan);
 						<th class="status">Status</th>
                         <th class="status">SJ/PB</th>
 						<th class="tombol">Opsi</th>
-					</tr>
-				</table>
-			</div>
-			<div class="divTable">
-				<table class="contentTable">
+                    </thead>
+                	<tbody>
 					<?php do { ?>
                     <tr>
                       <td class="noinvoice"><?php echo $row_SuratJalan['No']; ?></td>
@@ -155,6 +168,7 @@ $totalRows_SuratJalan = mysql_num_rows($SuratJalan);
                       <td class="status">&nbsp;</td>
                       <td class="tombol">&nbsp;</td>
 					</tr>
+                    </tbody>
 				</table>
 			</div>
 		</div>

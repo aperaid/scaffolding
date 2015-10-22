@@ -37,8 +37,8 @@
   float:left;
   height:500px;
   width:980px;
-  background-color:red;
-  overflow-y:hidden;
+  background-color:rgba(219, 219, 64, 0.4);
+  overflow-y:auto;
   display:block;
  }
  
@@ -196,15 +196,11 @@
  }
  
  .divTable {
-  height:469px;
-  overflow-x:hidden;
+  width:100%;
  }
  
- .contentTable{
-  table-layout:fixed;
-  background: #fff;
-  border-bottom: 1px solid #e5e5e5;
-  font-size:12px;
+ .mainTable{
+  width:100%;
  }
  
  .noinvoice{

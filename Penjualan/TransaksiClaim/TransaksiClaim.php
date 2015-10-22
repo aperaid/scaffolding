@@ -36,6 +36,22 @@ $TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_e
 $row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
 $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
 ?>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="../../JQuery/datatable/dataTables.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/jquery-1.10.2.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/datatable/dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#contentTable').DataTable();
+} );
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,10 +129,11 @@ $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
 			</table>
 		</div>
 		<div class="pageContent">
-			<div class="divTableHeader">
-				<table class="tableHeader">
-					<tr>
-						<th class="noinvoice">No. Invoice</th>
+			
+			<div class="divTable">
+				<table id="contentTable">
+                <thead>
+                		<th class="noinvoice">No. Invoice</th>
 						<th class="tanggal">Tgl Start</th>
 						<th class="tanggal">Tgl End</th>
 						<th class="customer">Customer</th>
@@ -125,34 +142,21 @@ $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
 						<th class="amount">Amount</th>
 						<th class="status">Status</th>
 						<th class="tombol">Opsi</th>
-					</tr>
-				</table>
-			</div>
-			<div class="divTable">
-				<table class="contentTable">
+                  </thead>
+                  <tbody>
 					<?php do { ?>
 					<tr>
-						<td class="noinvoice"><?php echo $row_TransaksiClaim['No']; ?></td>
-						<td class="tanggal"><?php echo $row_TransaksiClaim['TglStart']; ?></td>
-						<td class="tanggal"><?php echo $row_TransaksiClaim['TglEnd']; ?></td>
-						<td class="customer"><?php echo $row_TransaksiClaim['Customer']; ?></td>
-						<td class="JSC"><?php echo $row_TransaksiClaim['JSC']; ?></td>
-						<td class="project"><?php echo $row_TransaksiClaim['Project']; ?></td>
-						<td class="amount"><?php echo $row_TransaksiClaim['Amount']; ?></td>
-						<td class="status"><?php echo $row_TransaksiClaim['Status']; ?></td>
-						<td class="tombol"><a href="ViewTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="button3">Delete</button></a></td></td>
+						<td><?php echo $row_TransaksiClaim['No']; ?></td>
+						<td><?php echo $row_TransaksiClaim['TglStart']; ?></td>
+						<td><?php echo $row_TransaksiClaim['TglEnd']; ?></td>
+						<td><?php echo $row_TransaksiClaim['Customer']; ?></td>
+						<td><?php echo $row_TransaksiClaim['JSC']; ?></td>
+						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
+						<td><?php echo $row_TransaksiClaim['Amount']; ?></td>
+						<td><?php echo $row_TransaksiClaim['Status']; ?></td>
+						<td><a href="ViewTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="button3">Delete</button></a></td></td>
 					</tr><?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
-					<tr>
-						<td class="noinvoice">&nbsp;</td>
-						<td class="tanggal">&nbsp;</td>
-						<td class="tanggal">&nbsp;</td>
-						<td class="customer">&nbsp;</td>
-						<td class="JSC">&nbsp;</td>
-						<td class="project">&nbsp;</td>
-						<td class="amount">&nbsp;</td>
-						<td class="status">&nbsp;</td>
-						<td class="tombol">&nbsp;</td>
-					</tr>
+                    </body>
 				</table>
 			</div>
 		</div>

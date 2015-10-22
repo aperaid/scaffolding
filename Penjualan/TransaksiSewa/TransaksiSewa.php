@@ -38,6 +38,22 @@
 	$totalRows_TransaksiSewa = mysql_num_rows($TransaksiSewa);
 	?>
 
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="../../JQuery/datatable/dataTables.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/jquery-1.10.2.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/datatable/dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#contentTable').DataTable();
+} );
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -114,49 +130,47 @@
 			</table>
 		</div>
             <div class="pageContent">
-            	<div class="divTableHeader">      	
-                        <table class="tableHeader">
-                            <tr>
-                                <th class="noinvoice">No. Invoice</th>
-                                <th class="tanggal">Tgl Start</th>
-                                <th class="tanggal">Tgl End</th>
-                                <th class="customer">Customer</th>
-                                <th class="JSC">J/S/C</th>
-                                <th class="project">Project</th>
-                                <th class="amount">Amount</th>
-                                <th class="status">Status</th>
-                                <th class="tombol">Opsi</th>
-                            </tr>
-                        </table>
-                 </div>
                     <div class="divTable">
-                        <table class="contentTable">
-                                <?php do { ?>
-                                <tr>
-                                    <td class="noinvoice"><?php echo $row_TransaksiSewa['No']; ?></td>
-                                    <td class="tanggal"><?php echo $row_TransaksiSewa['TglStart']; ?></td>
-                                    <td class="tanggal"><?php echo $row_TransaksiSewa['TglEnd']; ?></td>
-                                    <td class="customer"><?php echo $row_TransaksiSewa['Customer']; ?></td>
-                                    <td class="JSC"><?php echo $row_TransaksiSewa['JSC']; ?></td>
-                                    <td class="project"><?php echo $row_TransaksiSewa['Project']; ?></td>
-                                    <td class="amount"><?php echo $row_TransaksiSewa['Amount']; ?></td>
-                                    <td class="status"><?php echo $row_TransaksiSewa['Status']; ?></td>
-                                    <td class="tombol"><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
-                                </tr>
-                                <?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
-                                <tr>
-                                    <td class="noinvoice">&nbsp;</td>
-                                    <td class="tanggal">&nbsp;</td>
-                                    <td class="tanggal">&nbsp;</td>
-                                    <td class="customer">&nbsp;</td>
-                                    <td class="JSC">&nbsp;</td>
-                                    <td class="project">&nbsp;</td>
-                                    <td class="amount">&nbsp;</td>
-                                    <td class="status">&nbsp;</td>
-                                    <td class="tombol">&nbsp;</td>
-                                </tr>
-                        </table>
-                    </div>            	
+                    <table id="contentTable" class="mainTable">
+                    	<thead>
+                        	<th>No</th>
+                            <th>TglStart</th>
+                            <th>TglEnd</th>
+                            <th>Customer</th>
+                            <th>JSC</th>
+                            <th>Project</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Opsi</th>
+                        </thead>
+                        <tbody>
+                        	<?php do { ?>
+                            <tr>
+                                <td><?php echo $row_TransaksiSewa['No']; ?></td>
+                                <td><?php echo $row_TransaksiSewa['TglStart']; ?></td>
+                                <td><?php echo $row_TransaksiSewa['TglEnd']; ?></td>
+                                <td><?php echo $row_TransaksiSewa['Customer']; ?></td>
+                                <td><?php echo $row_TransaksiSewa['JSC']; ?></td>
+                                <td><?php echo $row_TransaksiSewa['Project']; ?></td>
+                                <td><?php echo $row_TransaksiSewa['Amount']; ?></td>
+                                <td><?php echo $row_TransaksiSewa['Status']; ?></td>
+                                <td><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
+                            </tr>
+                            <?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
+                            <tr>
+                                <td class="noinvoice">&nbsp;</td>
+                                <td class="tanggal">&nbsp;</td>
+                                <td class="tanggal">&nbsp;</td>
+                                <td class="customer">&nbsp;</td>
+                                <td class="JSC">&nbsp;</td>
+                                <td class="project">&nbsp;</td>
+                                <td class="amount">&nbsp;</td>
+                                <td class="status">&nbsp;</td>
+                                <td class="tombol">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>            	
             </div>
             <div class="pageRightMenu">
             	<table class="menuTable"> 

@@ -38,6 +38,20 @@ $row_POCustomer = mysql_fetch_assoc($POCustomer);
 $totalRows_POCustomer = mysql_num_rows($POCustomer);
 ?>
 
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="../../JQuery/datatable/dataTables.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/jquery-1.10.2.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="../../JQuery/datatable/dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#contentTable').DataTable();
+} );
+</script>
 
 <!DOCTYPE html>
 <html>
@@ -116,32 +130,30 @@ $totalRows_POCustomer = mysql_num_rows($POCustomer);
 			</table>
 		</div>
 		<div class="pageContent">
-			<div class="divTableHeader">
-				<table class="tableHeader">
-					<tr>
-						<th class="noinvoice">No. Invoice</th>
-						<th class="tanggal">Tgl Jual</th>
-						<th class="customer">Customer</th>
-						<th class="JSC">J/S/C</th>
-						<th class="project">Project</th>
-						<th class="amount">Amount</th>
-						<th class="status">Status</th>
-						<th class="tombol">Opsi</th>
-					</tr>
-				</table>
-			</div>
+			
 			<div class="divTable">
-				<table class="contentTable">
+				<table id="contentTable">
+                	<thead>
+                    	<th >No. Invoice</th>
+						<th >Tgl Jual</th>
+						<th >Customer</th>
+						<th >J/S/C</th>
+						<th >Project</th>
+						<th >Amount</th>
+						<th >Status</th>
+						<th >Opsi</th>
+                    </thead>
+                    <tbody>
 					<?php do { ?>
                     <tr>
-                      <td class="noinvoice"><?php echo $row_POCustomer['Reference']; ?></td>
-                      <td class="tanggal"><?php echo $row_POCustomer['Tgl']; ?></td>
-                      <td class="customer"><?php echo $row_POCustomer['Customer']; ?></td>
-                      <td class="JSC"><?php echo $row_POCustomer['JS']; ?></td>
-                      <td class="project"><?php echo $row_POCustomer['Project']; ?></td>
-                      <td class="amount"><?php echo $row_POCustomer['Amount']; ?></td>
-                      <td class="status"><?php echo $row_POCustomer['Status']; ?></td>
-                      <td class="tombol"><a href="ViewPOCustomer.php?Id=<?php echo $row_POCustomer['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeletePOCustomer.php?Id=<?php echo $row_POCustomer['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
+                      <td ><?php echo $row_POCustomer['Reference']; ?></td>
+                      <td ><?php echo $row_POCustomer['Tgl']; ?></td>
+                      <td ><?php echo $row_POCustomer['Customer']; ?></td>
+                      <td ><?php echo $row_POCustomer['JS']; ?></td>
+                      <td ><?php echo $row_POCustomer['Project']; ?></td>
+                      <td ><?php echo $row_POCustomer['Amount']; ?></td>
+                      <td ><?php echo $row_POCustomer['Status']; ?></td>
+                      <td ><a href="ViewPOCustomer.php?Id=<?php echo $row_POCustomer['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeletePOCustomer.php?Id=<?php echo $row_POCustomer['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
                       </tr>
                     <?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
 					<tr>
@@ -154,6 +166,7 @@ $totalRows_POCustomer = mysql_num_rows($POCustomer);
                         <td class="status">&nbsp;</td>
 						<td class="tombol">&nbsp;</td>
 					</tr>
+                    </tbody>
 				</table>
 			</div>
 		</div>
