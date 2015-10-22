@@ -37,69 +37,88 @@
 	$row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa);
 	$totalRows_TransaksiSewa = mysql_num_rows($TransaksiSewa);
 	?>
-
-
+<!------------------------------------------------------->
+<link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
+<script type="text/javascript" src="../../JQuery/Layout/jquery.js"></script>
+<script type="text/javascript" src="../../JQuery/Layout/jquery.ui.all.js"></script>
+<script type="text/javascript" src="../../JQuery/Layout/jquery.layout.js"></script>
+<script type='text/javascript'>
+	var jq126 = jQuery.noConflict();
+</script>
+<script type="text/javascript">
+	var myLayout;// a var is required because this page utilizes: myLayout.allowOverflow() method
+	
+	jq126(document).ready(function () {
+	myLayout = jq126('body').layout({
+		// enable showOverflow on west-pane so popups will overlap north pane
+		west__showOverflowOnHover: true
+	
+	//,	west__fxSettings_open: { easing: "easeOutBounce", duration: 750 }
+	});
+	
+	});
+	
+</script>
+<!------------------------------------------------------->
 <!-- DataTables CSS -->
 <link rel="stylesheet" type="text/css" href="../../JQuery/DataTable/css/jquery.dataTables.css">
-  
 <!-- jQuery -->
 <script type="text/javascript" charset="utf8" src="../../JQuery/DataTable/js/jquery.js"></script>
-  
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="../../JQuery/datatable/js/jquery.dataTables.js"></script>
-
 <script>
-$(document).ready( function () {
-    $('#contentTable').DataTable();
-} );
+	$(document).ready( function () {
+	    $('#contentTable').DataTable();
+	} );
+	
 </script>
-
+<!------------------------------------------------------->
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>PT. BDN | Transaksi Claim</title>
-	<link href="../../Button.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-	<div class="layout">
-		<div class="pageHeader">
+	<head>
+		<meta charset="utf-8">
+		<title>PT. BDN | Transaksi Claim</title>
+		<link href="../../Button.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<div class="ui-layout-north" onmouseover="myLayout.allowOverflow('north')" onmouseout="myLayout.resetOverflow(this)">
 			<div class="title">
-				TRANSAKSI SEWA</div>
+				TRANSAKSI SEWA
+			</div>
 		</div>
-		<div class="pageLeftMenu">
+		<div class="ui-layout-west">
 			<table class="menuTable">
 				<tr>
 					<td><button class="button" type="button">Warehouse</button></td>
 				</tr>
 				<tr>
 					<td>
-                    	<a href="../Customer/Customer.php"><button class="button" type=
-                        "button">Customer</button></a>
-                    </td>
+						<a href="../Customer/Customer.php"><button class="button" type=
+							"button">Customer</button></a>
+					</td>
 				</tr>
 				<tr>
 					<td>
-                    	<a href="../Project/Project.php"><button class="button" type=
-                    	"button">Project</button></a>
-                    </td>
+						<a href="../Project/Project.php"><button class="button" type=
+							"button">Project</button></a>
+					</td>
 				</tr>
 				<tr>
 					<td>
 						<a href="../POCustomer/POCustomer.php"><button class="button" type=
-						"button">PO Customer</button></a>
+							"button">PO Customer</button></a>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<a href="../TransaksiJual/TransaksiJual.php"><button class="button" type=
-						"button">Transaksi Jual</button></a>
+							"button">Transaksi Jual</button></a>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<a href="../TransaksiSewa/TransaksiSewa.php"><button class="button" type=
-						"button">Transaksi Sewa</button></a>
+							"button">Transaksi Sewa</button></a>
 					</td>
 				</tr>
 				<tr>
@@ -108,7 +127,7 @@ $(document).ready( function () {
 				<tr>
 					<td>
 						<a href="../TransaksiClaim/TransaksiClaim.php"><button class="button"
-						type="button">Transaksi Claim</button></a>
+							type="button">Transaksi Claim</button></a>
 					</td>
 				</tr>
 				<tr>
@@ -120,59 +139,58 @@ $(document).ready( function () {
 				<tr>
 					<td>
 						<a href="../SuratJalan/SuratJalan.php"><button class="button" type=
-						"button">Surat Jalan</button></a>
+							"button">Surat Jalan</button></a>
 					</td>
 				</tr>
 				<tr>
 					<td><button class="button" type="button">Cetak Pengembalian
-					Barang</button></td>
+						Barang</button>
+					</td>
 				</tr>
 			</table>
 		</div>
-            <div class="pageContent">
-                    <div class="divTable">
-                    <table id="contentTable" class="mainTable">
-                    	<thead>
-                        	<th>No</th>
-                            <th>TglStart</th>
-                            <th>TglEnd</th>
-                            <th>Customer</th>
-                            <th>JSC</th>
-                            <th>Project</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Opsi</th>
-                        </thead>
-                        <tbody>
-                        	<?php do { ?>
-                            <tr>
-                                <td><?php echo $row_TransaksiSewa['No']; ?></td>
-                                <td><?php echo $row_TransaksiSewa['TglStart']; ?></td>
-                                <td><?php echo $row_TransaksiSewa['TglEnd']; ?></td>
-                                <td><?php echo $row_TransaksiSewa['Customer']; ?></td>
-                                <td><?php echo $row_TransaksiSewa['JSC']; ?></td>
-                                <td><?php echo $row_TransaksiSewa['Project']; ?></td>
-                                <td><?php echo $row_TransaksiSewa['Amount']; ?></td>
-                                <td><?php echo $row_TransaksiSewa['Status']; ?></td>
-                                <td><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
-                            </tr>
-                            <?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
-                            
-                        </tbody>
-                    </table>
-                </div>            	
-            </div>
-            <div class="pageRightMenu">
-            	<table class="menuTable"> 
-                	<tr><td><a href="InsertTransaksiSewa.php"><button type="button" class="button2">Insert</button></a></td></tr>
-				</table>
-            </div>
-            <div class="pageFooter">
-            	<div class="footer">PT. Berlian Djaya Nusantara</div>
-                <div class="copyright">Powered by Apera ERP</div>
-            </div>
-    	</div>
-    </body>
+		<div class="ui-layout-south">
+			<div class="footer">PT. Berlian Djaya Nusantara</div>
+			<div class="copyright">Powered by Apera ERP</div>
+		</div>
+		<div class="ui-layout-east">
+			<table class="menuTable">
+				<tr>
+					<td><a href="InsertTransaksiSewa.php"><button type="button" class="button2">Insert</button></a></td>
+				</tr>
+			</table>
+		</div>
+		<div class="ui-layout-center">
+			<table id="contentTable" class="display">
+				<thead>
+					<th>No</th>
+					<th>TglStart</th>
+					<th>TglEnd</th>
+					<th>Customer</th>
+					<th>JSC</th>
+					<th>Project</th>
+					<th>Amount</th>
+					<th>Status</th>
+					<th>Opsi</th>
+				</thead>
+				<tbody>
+					<?php do { ?>
+					<tr>
+						<td><?php echo $row_TransaksiSewa['No']; ?></td>
+						<td><?php echo $row_TransaksiSewa['TglStart']; ?></td>
+						<td><?php echo $row_TransaksiSewa['TglEnd']; ?></td>
+						<td><?php echo $row_TransaksiSewa['Customer']; ?></td>
+						<td><?php echo $row_TransaksiSewa['JSC']; ?></td>
+						<td><?php echo $row_TransaksiSewa['Project']; ?></td>
+						<td><?php echo $row_TransaksiSewa['Amount']; ?></td>
+						<td><?php echo $row_TransaksiSewa['Status']; ?></td>
+						<td><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
+					</tr>
+					<?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
+				</tbody>
+			</table>
+		</div>
+	</body>
 </html>
 <?php
 	mysql_free_result($TransaksiSewa);
