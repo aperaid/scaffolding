@@ -82,6 +82,15 @@ function capital() {
 }
 </script>
 
+<link href="../../Date/jquery-ui.css" rel="stylesheet" type="text/css">
+<script src="../../Date/jquery-1.10.2.js"></script>
+<script src="../../Date/jquery-ui.js"></script>
+<script>
+$(function() {
+  $( "#TglStart,#TglEnd" ).datepicker();
+});
+</script>
+
 </head>
 
 <body>
