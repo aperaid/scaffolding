@@ -157,17 +157,7 @@ $(document).ready( function () {
                                 <td><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
                             </tr>
                             <?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
-                            <tr>
-                                <td class="noinvoice">&nbsp;</td>
-                                <td class="tanggal">&nbsp;</td>
-                                <td class="tanggal">&nbsp;</td>
-                                <td class="customer">&nbsp;</td>
-                                <td class="JSC">&nbsp;</td>
-                                <td class="project">&nbsp;</td>
-                                <td class="amount">&nbsp;</td>
-                                <td class="status">&nbsp;</td>
-                                <td class="tombol">&nbsp;</td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>            	
