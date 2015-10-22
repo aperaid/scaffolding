@@ -184,16 +184,6 @@
  
  /*--Table CSS*--/ 
  /*Table header*/
- .divTableHeader{
-  
- }
- 
- .tableHeader{
-  margin:0;
-  background: #8b8b8b;
-  color: #fff;
-  height:30px;
- }
  
  .divTable {
   width:100%;

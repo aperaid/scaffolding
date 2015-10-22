@@ -39,13 +39,13 @@ $totalRows_POCustomer = mysql_num_rows($POCustomer);
 ?>
 
 <!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="../../JQuery/datatable/dataTables.css">
+<link rel="stylesheet" type="text/css" href="../../JQuery/DataTable/css/jquery.dataTables.css">
   
 <!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="../../JQuery/jquery-1.10.2.js"></script>
+<script type="text/javascript" charset="utf8" src="../../JQuery/DataTable/js/jquery.js"></script>
   
 <!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="../../JQuery/datatable/dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="../../JQuery/datatable/js/jquery.dataTables.js"></script>
 
 <script>
 $(document).ready( function () {
