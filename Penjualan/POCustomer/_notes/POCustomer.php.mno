@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_TransaksiJual" value="name:Id;datatype:int,name:No;datatype:string,name:Tgl;datatype:string,name:Customer;datatype:string,name:JSC;datatype:string,name:Project;datatype:string,name:Amount;datatype:int,name:Status;datatype:string" />
+	<infoitem key="UD_POCustomer" value="name:Id;datatype:int,name:No;datatype:string,name:Tgl;datatype:string,name:Customer;datatype:string,name:JSC;datatype:string,name:Project;datatype:string,name:Amount;datatype:int,name:Status;datatype:string" />
+</info>

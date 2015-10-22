@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_View" value="name:Id;datatype:int,name:Reference;datatype:string,name:Tgl;datatype:string,name:Customer;datatype:string,name:JS;datatype:string,name:Project;datatype:string,name:Amount;datatype:int,name:Status;datatype:string" />
+</info>

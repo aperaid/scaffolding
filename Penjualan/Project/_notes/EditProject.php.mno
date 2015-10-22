@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_View" value="name:Id;datatype:int,name:PCode;datatype:string,name:Project;datatype:string,name:Alamat;datatype:blob,name:Contact;datatype:string,name:Phone;datatype:string,name:CCode;datatype:string" />
+	<infoitem key="UD_Edit" value="name:Id;datatype:int,name:PCode;datatype:string,name:Project;datatype:string,name:CCode;datatype:string" />
+</info>
