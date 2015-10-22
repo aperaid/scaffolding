@@ -41,6 +41,30 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 ?>
+
+<!------------------------------------------------------->
+<link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
+<script type="text/javascript" src="../../JQuery/Layout/jquery.js"></script>
+<script type="text/javascript" src="../../JQuery/Layout/jquery.ui.all.js"></script>
+<script type="text/javascript" src="../../JQuery/Layout/jquery.layout.js"></script>
+<script type='text/javascript'>
+	var jq126 = jQuery.noConflict();
+</script>
+<script type="text/javascript">
+	var myLayout;// a var is required because this page utilizes: myLayout.allowOverflow() method
+	
+	jq126(document).ready(function () {
+	myLayout = jq126('body').layout({
+		// enable showOverflow on west-pane so popups will overlap north pane
+		west__showOverflowOnHover: true
+	
+	//,	west__fxSettings_open: { easing: "easeOutBounce", duration: 750 }
+	});
+	
+	});
+	
+</script>
+<!------------------------------------------------------->
 <!doctype html>
 <html>
 <head>
@@ -57,52 +81,41 @@ body {
 </head>
 
 <body>
-<div style="float:left;width:15%">
-  <table width="200" border="0">
-    <tbody>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
+
+
+<div class="ui-layout-west">
+			<table class="menuTable">
 				<tr>
 					<td><button class="button" type="button">Warehouse</button></td>
 				</tr>
 				<tr>
 					<td>
-                    	<a href="../Customer/Customer.php"><button class="button" type=
-                        "button">Customer</button></a>
-                    </td>
+						<a href="../Customer/Customer.php"><button class="button" type=
+							"button">Customer</button></a>
+					</td>
 				</tr>
 				<tr>
 					<td>
-                    	<a href="../Project/Project.php"><button class="button" type=
-                    	"button">Project</button></a>
-                    </td>
+						<a href="../Project/Project.php"><button class="button" type=
+							"button">Project</button></a>
+					</td>
 				</tr>
 				<tr>
 					<td>
 						<a href="../POCustomer/POCustomer.php"><button class="button" type=
-						"button">PO Customer</button></a>
+							"button">PO Customer</button></a>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<a href="../TransaksiJual/TransaksiJual.php"><button class="button" type=
-						"button">Transaksi Jual</button></a>
+							"button">Transaksi Jual</button></a>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<a href="../TransaksiSewa/TransaksiSewa.php"><button class="button" type=
-						"button">Transaksi Sewa</button></a>
+							"button">Transaksi Sewa</button></a>
 					</td>
 				</tr>
 				<tr>
@@ -111,7 +124,7 @@ body {
 				<tr>
 					<td>
 						<a href="../TransaksiClaim/TransaksiClaim.php"><button class="button"
-						type="button">Transaksi Claim</button></a>
+							type="button">Transaksi Claim</button></a>
 					</td>
 				</tr>
 				<tr>
@@ -123,32 +136,24 @@ body {
 				<tr>
 					<td>
 						<a href="../SuratJalan/SuratJalan.php"><button class="button" type=
-						"button">Surat Jalan</button></a>
+							"button">Surat Jalan</button></a>
 					</td>
 				</tr>
 				<tr>
 					<td><button class="button" type="button">Cetak Pengembalian
-					Barang</button></td>
+						Barang</button>
+					</td>
 				</tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-    </tbody>
-  </table>
-</div>
+			</table>
+		</div>
 
-<div style="float:left;width:85%">
-
-<table width="950" border="0">
+<div class="ui-layout-north">
 
 
-  <tbody>
-    <tr>
-      <th align="center"><h2><?php echo $row_View['Customer']; ?></h2></th>
-    </tr>
-  </tbody>
-</table>
-</p>
+      <h2 align="center"><?php echo $row_View['Customer']; ?></h2>
+    </div>
+<div class="ui-layout-center">
+
 <form id="form1" name="form1" method="POST">
   <table width="1000" border="0">
     <tbody>
@@ -216,6 +221,7 @@ body {
     </tbody>
   </table>
 </form>
+</div>
 </body>
 </html>
 <?php

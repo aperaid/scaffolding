@@ -6,62 +6,19 @@
    background-size: cover;
    }
  
- .layout{
-  display:block;
-  width:1300px;
-  margin:auto;
- }
  
- .pageHeader{
-  float:left;
-  height:50px;
-  width:1300px;
-  background-color:rgba(219, 219, 64, 0.4);
-  border-radius:10px 10px 0px 0px;
- }
  
  .title{
   text-align:center;
   font-size:40px;
  }
  
- .pageLeftMenu{
-  float:left;
-  height:500px;
-  width:160px;
-  overflow:hidden;
-  background-color:rgba(219, 219, 64, 0.4);
- }
  
- .pageContent{
-  float:left;
-  height:500px;
-  width:980px;
-  background-color:rgba(219, 219, 64, 0.4);
-  overflow-y:auto;
-  display:block;
- }
- 
- .pageRightMenu{
-  float:right;
-  height:500px;
-  width:160px;
-  overflow:hidden;
-  background-color:rgba(219, 219, 64, 0.4);
- }
  
  .menuTable{
   margin:auto;
  }
  
- .pageFooter{
-  float:left;
-  height:50px;
-  width:1300px;
-  overflow:hidden;
-  background-color:rgba(219, 219, 64, 0.4);
-  border-radius:0px 0px 10px 10px;
- } 
  
  .footer{
   align: center;
@@ -181,17 +138,6 @@
         background:-webkit-linear-gradient(top, #d1d1d1 0%,#ECECEC 100%);
     }
  
- 
- /*--Table CSS*--/ 
- /*Table header*/
- 
- .divTable {
-  width:100%;
- }
- 
- .mainTable{
-  width:100%;
- }
 
  
  /*text box*/
@@ -215,4 +161,3 @@
   font-size:14px;
  }
  
- /*End of CSS*/granth
