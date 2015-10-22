@@ -57,10 +57,16 @@ $totalRows_SuratJalan = mysql_num_rows($SuratJalan);
 					<td><button class="button" type="button">Warehouse</button></td>
 				</tr>
 				<tr>
-					<td><button class="button" type="button">Customer</button></td>
+					<td>
+                    	<a href="../Customer/Customer.php"><button class="button" type=
+                        "button">Customer</button></a>
+                    </td>
 				</tr>
 				<tr>
-					<td><button class="button" type="button">Project</button></td>
+					<td>
+                    	<a href="../Project/Project.php"><button class="button" type=
+                    	"button">Project</button></a>
+                    </td>
 				</tr>
 				<tr>
 					<td>
