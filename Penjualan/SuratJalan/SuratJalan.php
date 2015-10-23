@@ -160,17 +160,6 @@
 						<td class="tombol"><a href="ViewSuratJalan.php?Id=<?php echo $row_SuratJalan['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteSuratJalan.php?Id=<?php echo $row_SuratJalan['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
 					</tr>
 					<?php } while ($row_SuratJalan = mysql_fetch_assoc($SuratJalan)); ?>
-					<tr>
-						<td class="noinvoice">&nbsp;</td>
-						<td class="tanggal">&nbsp;</td>
-						<td class="noinvoice">&nbsp;</td>
-						<td class="customer">&nbsp;</td>
-						<td class="noinvoice">&nbsp;</td>
-						<td class="project">&nbsp;</td>
-						<td class="status">&nbsp;</td>
-						<td class="status">&nbsp;</td>
-						<td class="tombol">&nbsp;</td>
-					</tr>
 				</tbody>
 			</table>
 		</div>

@@ -147,7 +147,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 		<div class="ui-layout-center">
 			<table id="contentTable" class="display">
 				<thead>
-					<th>No</th>
+					<th>No. Invoice</th>
 					<th>TglStart</th>
 					<th>TglEnd</th>
 					<th>Customer</th>
