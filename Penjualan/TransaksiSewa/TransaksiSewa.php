@@ -70,14 +70,21 @@
 <link rel="stylesheet" type="text/css" href="../../JQuery/DataTable/css/jquery.dataTables.css">
 <!-- jQuery -->
 <script type="text/javascript" charset="utf8" src="../../JQuery/DataTable/js/jquery.js"></script>
+<script type='text/javascript'>
+	var jq1113 = jQuery.noConflict();
+</script>
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="../../JQuery/datatable/js/jquery.dataTables.js"></script>
 <script>
-	$(document).ready( function () {
-	    $('#contentTable').DataTable();
+	jq1113(document).ready( function () {
+	    jq1113('#contentTable').DataTable();
 	} );
 	
 </script>
+<!------------------------------------------------------->
+<link rel="stylesheet" href="../../JQuery/cssmenu/styles.css">
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script src="../../JQuery/cssmenu/script.js"></script>
 <!------------------------------------------------------->
 <!DOCTYPE html>
 <html>
@@ -88,12 +95,27 @@
 	</head>
 	<body>
 		<div class="ui-layout-north" onmouseover="myLayout.allowOverflow('north')" onmouseout="myLayout.resetOverflow(this)">
-			<div class="title">
+			
+            
+            <div class="title">
 				TRANSAKSI SEWA
 			</div>
 		</div>
 		<div class="ui-layout-west">
-			<table class="menuTable">
+			<div id='cssmenu'>
+            <ul>
+               <li><a href='#'><span>Home</span></a></li>
+               <?php do { ?>    
+                	<li>                    
+                    <a href="../<?php echo $row_menu['link']; ?>">
+                    <span>
+					<?php echo $row_menu['nama']; ?></span></a>
+                    </li>                    
+                <?php } while ($row_menu = mysql_fetch_assoc($menu)); ?>
+            </ul>
+            </div>
+            
+            <table class="menuTable">
 				
 				<?php do { ?>    
                 	<tr>
@@ -110,17 +132,17 @@
                     
 			</table>
 		</div>
-		<div class="ui-layout-south">
+		<!--div class="ui-layout-south">
 			<div class="footer">PT. Berlian Djaya Nusantara</div>
 			<div class="copyright">Powered by Apera ERP</div>
-		</div>
-		<div class="ui-layout-east">
+		</div-->
+		<!--div class="ui-layout-east">
 			<table class="menuTable">
 				<tr>
 					<td><a href="InsertTransaksiSewa.php"><button type="button" class="button2">Insert</button></a></td>
 				</tr>
 			</table>
-		</div>
+		</div-->
 		<div class="ui-layout-center">
 			<table id="contentTable" class="display">
 				<thead>
