@@ -36,6 +36,11 @@
 	$SuratJalan = mysql_query($query_SuratJalan, $Connection) or die(mysql_error());
 	$row_SuratJalan = mysql_fetch_assoc($SuratJalan);
 	$totalRows_SuratJalan = mysql_num_rows($SuratJalan);
+		
+	$query_menu = "SELECT * FROM menu ORDER BY Id ASC";
+	$menu = mysql_query($query_menu, $Connection) or die(mysql_error());
+	$row_menu = mysql_fetch_assoc($menu);
+	$totalRows_menu = mysql_num_rows($menu);
 	?>
 <!------------------------------------------------------->
 <link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
@@ -88,65 +93,20 @@
 		</div>
 		<div class="ui-layout-west">
 			<table class="menuTable">
-				<tr>
-					<td><button class="button" type="button">Warehouse</button></td>
-				</tr>
-				<tr>
-					<td>
-						<a href="../Customer/Customer.php"><button class="button" type=
-							"button">Customer</button></a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="../Project/Project.php"><button class="button" type=
-							"button">Project</button></a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="../POCustomer/POCustomer.php"><button class="button" type=
-							"button">PO Customer</button></a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="../TransaksiJual/TransaksiJual.php"><button class="button" type=
-							"button">Transaksi Jual</button></a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="../TransaksiSewa/TransaksiSewa.php"><button class="button" type=
-							"button">Transaksi Sewa</button></a>
-					</td>
-				</tr>
-				<tr>
-					<td><button class="button" type="button">Transport</button></td>
-				</tr>
-				<tr>
-					<td>
-						<a href="../TransaksiClaim/TransaksiClaim.php"><button class="button"
-							type="button">Transaksi Claim</button></a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="../SewaJT/SewaJT.php"><button class="button" type="button">Sewa
-						Jatuh Tempo</button></a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="../SuratJalan/SuratJalan.php"><button class="button" type=
-							"button">Surat Jalan</button></a>
-					</td>
-				</tr>
-				<tr>
-					<td><button class="button" type="button">Cetak Pengembalian
-						Barang</button>
-					</td>
-				</tr>
+				
+				<?php do { ?>    
+                	<tr>
+                    <td class="Menu">
+                    <a href="../<?php echo $row_menu['link']; ?>">
+                    <button type="button" class="button">
+					<?php echo $row_menu['nama']; ?></button></a></td>
+                    </tr>
+                    
+                <?php } while ($row_menu = mysql_fetch_assoc($menu)); ?>
+                    <tr>
+                    <td class="Menu">&nbsp;</td>
+                    </tr>
+                    
 			</table>
 		</div>
 		<div class="ui-layout-south">
