@@ -41,10 +41,11 @@ $Project = mysql_query($query_Project, $Connection) or die(mysql_error());
 $row_Project = mysql_fetch_assoc($Project);
 $totalRows_Project = mysql_num_rows($Project);
 
-	$query_menu = "SELECT * FROM menu ORDER BY Id ASC";
-	$menu = mysql_query($query_menu, $Connection) or die(mysql_error());
-	$row_menu = mysql_fetch_assoc($menu);
-	$totalRows_menu = mysql_num_rows($menu);	
+mysql_select_db($database_Connection, $Connection);
+$query_Menu = "SELECT * FROM menu";
+$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
+$row_Menu = mysql_fetch_assoc($Menu);
+$totalRows_Menu = mysql_num_rows($Menu);	
 ?>
 
 <!doctype html>
@@ -77,18 +78,20 @@ body {
       <tr>
         <th>&nbsp;</th>
       </tr>
+      
 				<?php do { ?>    
                 	<tr>
                     <td class="Menu">
-                    <a href="../<?php echo $row_menu['link']; ?>">
+                    <a href="../<?php echo $row_Menu['link']; ?>">
                     <button type="button" class="button">
-					<?php echo $row_menu['nama']; ?></button></a></td>
+					<?php echo $row_Menu['nama']; ?></button></a></td>
                     </tr>
                     
-                <?php } while ($row_menu = mysql_fetch_assoc($menu)); ?>
+                <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
                     <tr>
                     <td class="Menu">&nbsp;</td>
                     </tr>
+                    
     </tbody>
   </table>
 </div>

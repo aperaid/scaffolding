@@ -144,7 +144,6 @@
  .textbox {
   border:2px solid #FFFFFF;
   border-radius:10px;
-  height: 10px;
   padding:4px 4px;
   font-family:cursive;
   font-size:14px;
@@ -154,10 +153,9 @@
  .textview {
   background: #000000;
   color : #FFFFFF;
-  height:9px;
   border: 3px double #CCCCCC;
   padding:4px 2px;
   font-family:cursive;
   font-size:14px;
  }
- 
+ giri

@@ -1,5 +1,36 @@
 <?php require_once('../../Connections/Connection.php'); ?>
 <?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
 	if (!function_exists("GetSQLValueString")) {
 	function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 	{
@@ -31,17 +62,18 @@
 	}
 	}
 	
-	mysql_select_db($database_Connection, $Connection);
-	$query_POCustomer = "SELECT * FROM jualpocustomer ORDER BY Id ASC";
-	$POCustomer = mysql_query($query_POCustomer, $Connection) or die(mysql_error());
-	$row_POCustomer = mysql_fetch_assoc($POCustomer);
-	$totalRows_POCustomer = mysql_num_rows($POCustomer);
-	
-	$query_menu = "SELECT * FROM menu ORDER BY Id ASC";
-	$menu = mysql_query($query_menu, $Connection) or die(mysql_error());
-	$row_menu = mysql_fetch_assoc($menu);
-	$totalRows_menu = mysql_num_rows($menu);	
-	?>
+mysql_select_db($database_Connection, $Connection);
+$query_POCustomer = "SELECT * FROM jualpocustomer ORDER BY Id ASC";
+$POCustomer = mysql_query($query_POCustomer, $Connection) or die(mysql_error());
+$row_POCustomer = mysql_fetch_assoc($POCustomer);
+$totalRows_POCustomer = mysql_num_rows($POCustomer);
+
+mysql_select_db($database_Connection, $Connection);
+$query_Menu = "SELECT * FROM menu";
+$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
+$row_Menu = mysql_fetch_assoc($Menu);
+$totalRows_Menu = mysql_num_rows($Menu);
+?>
 <!------------------------------------------------------->
 <link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
 <script type="text/javascript" src="../../JQuery/Layout/jquery.js"></script>
@@ -97,12 +129,12 @@
 				<?php do { ?>    
                 	<tr>
                     <td class="Menu">
-                    <a href="../<?php echo $row_menu['link']; ?>">
+                    <a href="../<?php echo $row_Menu['link']; ?>">
                     <button type="button" class="button">
-					<?php echo $row_menu['nama']; ?></button></a></td>
+					<?php echo $row_Menu['nama']; ?></button></a></td>
                     </tr>
                     
-                <?php } while ($row_menu = mysql_fetch_assoc($menu)); ?>
+                <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
                     <tr>
                     <td class="Menu">&nbsp;</td>
                     </tr>
@@ -152,16 +184,6 @@
 						<td ><a href="ViewPOCustomer.php?Id=<?php echo $row_POCustomer['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeletePOCustomer.php?Id=<?php echo $row_POCustomer['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
 					</tr>
 					<?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
-					<tr>
-						<td class="noinvoice">&nbsp;</td>
-						<td class="tanggal">&nbsp;</td>
-						<td class="customer">&nbsp;</td>
-						<td class="JSC">&nbsp;</td>
-						<td class="project">&nbsp;</td>
-						<td class="amount">&nbsp;</td>
-						<td class="status">&nbsp;</td>
-						<td class="tombol">&nbsp;</td>
-					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -169,4 +191,6 @@
 </html>
 <?php
 	mysql_free_result($POCustomer);
+
+mysql_free_result($Menu);
 	?>
