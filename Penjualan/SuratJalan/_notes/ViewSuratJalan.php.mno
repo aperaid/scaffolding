@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_View" value="name:Id;datatype:int,name:No;datatype:string,name:Tgl;datatype:string,name:NoCustomer;datatype:string,name:Customer;datatype:string,name:NoProject;datatype:string,name:Project;datatype:string,name:Status;datatype:string,name:SJPB;datatype:string" />
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+</info>

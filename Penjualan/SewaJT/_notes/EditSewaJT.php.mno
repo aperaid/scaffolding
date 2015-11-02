@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_Edit" value="name:Id;datatype:int,name:No;datatype:string,name:Tgl;datatype:string,name:Customer;datatype:string,name:JSC;datatype:string,name:Project;datatype:string,name:Amount;datatype:int,name:Status;datatype:string" />
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_SelectReference" value="name:Reference;datatype:string,name:Project;datatype:string" />
+	<infoitem key="UD_Purchase" value="name:Id;datatype:int,name:Purchase;datatype:string,name:JS;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Amount;datatype:string,name:TglStart;datatype:string,name:Reference;datatype:string" />
+</info>

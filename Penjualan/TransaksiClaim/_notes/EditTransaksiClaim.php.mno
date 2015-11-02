@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_Edit" value="name:Id;datatype:int,name:No;datatype:string,name:TglStart;datatype:string,name:TglEnd;datatype:string,name:Customer;datatype:string,name:JSC;datatype:string,name:Project;datatype:string,name:Amount;datatype:int,name:Status;datatype:string" />
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+</info>

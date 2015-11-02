@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_TransaksiJual" value="name:Id;datatype:int,name:Reference;datatype:string,name:Invoice;datatype:string,name:TglStart;datatype:string,name:TglEnd;datatype:string,name:Nama;datatype:string,name:Quantity;datatype:int,name:JS;datatype:string,name:Amount;datatype:string,name:PCode;datatype:string,name:Status;datatype:string,name:Project;datatype:string,name:Customer;datatype:string" />
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_Recordset1" value="name:Id;datatype:int,name:Reference;datatype:string,name:TglStart;datatype:string,name:TglEnd;datatype:string,name:Nama;datatype:string,name:Quantity;datatype:int,name:JS;datatype:string,name:Amount;datatype:string,name:PCode;datatype:string,name:Status;datatype:string" />
+</info>
