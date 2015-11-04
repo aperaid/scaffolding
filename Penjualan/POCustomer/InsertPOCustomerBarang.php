@@ -301,7 +301,7 @@ function capital() {
 
 <script>
   $(function() {
-    $( "#TglStart,#TglStart2,#TglStart3,#TglStart4,#TglStart5" ).datepicker();
+    $( "#TglStart,#TglStart,#TglStart,#TglStart,#TglStart" ).datepicker();
   });
 </script>
 
@@ -322,7 +322,7 @@ $(document).ready(function(){
 	$(".addCF").click(function(){
 		if(x < max_fields){ //max input box allowed
             x++; //text box increment
-		$("#customFields").append('<tr><td><input name="Purchase'+ x +'" type="text" class="textbox" id="Purchase" value="<?php echo str_pad($row_Purchase['Id']+1, 5, "0", STR_PAD_LEFT); ?>" readonly></td><td><input type="text" name="Barang'+ x +'" id="Barang" class="textbox"></td><td><select name="JS'+ x +'"' + x +' id="JS"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount'+ x +'" id="Amount" class="textbox"></td><td><input type="text" name="Quantity'+ x +'" id="Quantity" class="textbox"></td><td><input type="text" name="TglStart'+ x +'" id="TglStart" class="textbox"></td><td><a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
+		$("#customFields").append('<tr><td><input name="Purchase'+ x +'" type="text" class="textbox" id="Purchase" value="<?php echo str_pad($row_Purchase['Id']+2, 5, "0", STR_PAD_LEFT); ?>"></td><td><input type="text" name="Barang'+ x +'" id="Barang" class="textbox"></td><td><select name="JS'+ x +'"' + x +' id="JS"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount'+ x +'" id="Amount" class="textbox"></td><td><input type="text" name="Quantity'+ x +'" id="Quantity" class="textbox"></td><td><input type="text" name="TglStart'+ x +'" id="TglStart" class="textbox"></td><td><a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
 		}
 	});
     $("#customFields").on('click','.remCF',function(){
@@ -407,7 +407,7 @@ $(document).ready(function(){
   <input type="hidden" name="MM_insert" value="form1">
   <table width="1000" border="0" id="customFields2">
     <thead>
-      <th><input type="submit" name="submit" id="submit" class="submit" value="Insert"></th>
+      <th><input type="submit" name="submit" id="submit" class="submit" value="Insert">&nbsp;&nbsp;&nbsp;<a href="CancelBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>"><button class="submit" type="button">Cancel</button></a></th>
         <tbody>
         </tbody>
   </table>

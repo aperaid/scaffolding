@@ -32,7 +32,7 @@
 	}
 	
 	mysql_select_db($database_Connection, $Connection);
-	$query_SuratJalan = "SELECT * FROM jualsuratjalan ORDER BY Id ASC";
+	$query_SuratJalan = "SELECT sjkirim.*, project.Project, customer.Customer FROM sjkirim INNER JOIN pocustomer ON sjkirim.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode ORDER BY sjkirim.Id ASC";
 	$SuratJalan = mysql_query($query_SuratJalan, $Connection) or die(mysql_error());
 	$row_SuratJalan = mysql_fetch_assoc($SuratJalan);
 	$totalRows_SuratJalan = mysql_num_rows($SuratJalan);
@@ -94,8 +94,8 @@
 	<body>
 		<div class="ui-layout-north">
 			<div class="title">
-				Surat Jalan
-			</div>
+				SURAT JALAN
+			KIRIM</div>
 		</div>
 		<div class="ui-layout-west">
 			<table class="menuTable">
@@ -127,8 +127,9 @@
 			<table class="menuTable">
 				<tr>
 					<td>
-						<a href="InsertSuratJalan.php"><button class="button2" type=
-							"button">Insert</button></a>
+						<a href="InsertSJKirim.php">
+						<button class="button2" type=
+							"button">Tambah Kirim</button></a>
 					</td>
 				</tr>
 			</table>
@@ -136,28 +137,21 @@
 		<div class="ui-layout-center">
 			<table id="contentTable">
 				<thead>
-					<th class="noinvoice">No. Invoice</th>
-					<th class="tanggal">Tgl Jual</th>
-					<th class="noinvoice">No. Customer</th>
+					<th class="noinvoice">No. SJ</th>
+					<th class="noinvoice">Tanggal Kirim</th>
 					<th class="customer">Customer</th>
-					<th class="noinvoice">No. Project</th>
-					<th class="project">Project</th>
-					<th class="status">Status</th>
-					<th class="status">SJ/PB</th>
+					<th class="noinvoice">Project</th>
 					<th class="tombol">Opsi</th>
 				</thead>
 				<tbody>
 					<?php do { ?>
 					<tr>
-						<td class="noinvoice"><?php echo $row_SuratJalan['No']; ?></td>
-						<td class="tanggal"><?php echo $row_SuratJalan['Tgl']; ?></td>
-						<td class="noinvoice"><?php echo $row_SuratJalan['NoCustomer']; ?></td>
+						<td class="noinvoice"><?php echo $row_SuratJalan['SJKir']; ?></td>
+						<td class="noinvoice"><?php echo $row_SuratJalan['Tgl']; ?></td>
 						<td class="customer"><?php echo $row_SuratJalan['Customer']; ?></td>
-						<td class="noinvoice"><?php echo $row_SuratJalan['NoProject']; ?></td>
-						<td class="project"><?php echo $row_SuratJalan['Project']; ?></td>
-						<td class="status"><?php echo $row_SuratJalan['Status']; ?></td>
-						<td class="status"><?php echo $row_SuratJalan['SJPB']; ?></td>
-						<td class="tombol"><a href="ViewSuratJalan.php?Id=<?php echo $row_SuratJalan['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteSuratJalan.php?Id=<?php echo $row_SuratJalan['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
+						<td class="noinvoice"><?php echo $row_SuratJalan['Project']; ?></td>
+						<td class="tombol"><a href="ViewSJKirim.php?SJKir=<?php echo $row_SuratJalan['SJKir']; ?>"><button type="button" class="button3">View</button></a><a href="DeleteSuratJalan.php?Id=<?php echo $row_SuratJalan['Id']; ?>">
+						  <button type="button" class="button3">Batal</button></a></td>
 					</tr>
 					<?php } while ($row_SuratJalan = mysql_fetch_assoc($SuratJalan)); ?>
 				</tbody>

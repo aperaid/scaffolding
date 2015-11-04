@@ -78,7 +78,7 @@ body {
 				</tr>
 				<tr>
 					<td>
-						<a href="Penjualan/SuratJalan/SuratJalan.php"><button class="button" type=
+						<a href="Penjualan/SJKirim/SJKirim.php"><button class="button" type=
 						"button">Surat Jalan</button></a>
 					</td>
 				</tr>

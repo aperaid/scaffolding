@@ -37,22 +37,22 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
-$colname_Purchase = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_Purchase = $_GET['Reference'];
+$colname_ViewIsiSJKirim = "-1";
+if (isset($_GET['SJKir'])) {
+  $colname_ViewIsiSJKirim = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_Purchase = sprintf("SELECT transaksi.*, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_Purchase, "text"));
-$Purchase = mysql_query($query_Purchase, $Connection) or die(mysql_error());
-$row_Purchase = mysql_fetch_assoc($Purchase);
-$totalRows_Purchase = mysql_num_rows($Purchase);
+$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.Quantity, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_ViewIsiSJKirim, "text"));
+$ViewIsiSJKirim = mysql_query($query_ViewIsiSJKirim, $Connection) or die(mysql_error());
+$row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim);
+$totalRows_ViewIsiSJKirim = mysql_num_rows($ViewIsiSJKirim);
 
 $colname_View = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_View = $_GET['Reference'];
+if (isset($_GET['SJKir'])) {
+  $colname_View = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT Reference FROM transaksi WHERE Reference = %s", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT SJKir FROM sjkirim WHERE SJKir = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -91,8 +91,8 @@ body {
         <th>&nbsp;</th>
       </tr>
       
-				<?php do { ?>    
-                	<tr>
+				<?php do { ?>
+               	<tr>
                     <td class="Menu">
                     <a href="../<?php echo $row_Menu['link']; ?>">
                     <button type="button" class="button">
@@ -114,7 +114,7 @@ body {
 
   <tbody>
     <tr>
-      <th align="center"><h2><?php echo $row_Purchase['Project']; ?></h2></th>
+      <th align="center"><h2><?php echo $row_ViewIsiSJKirim['Project']; ?></h2></th>
     </tr>
   </tbody>
 </table>
@@ -124,26 +124,29 @@ body {
     <thead>
       <tr>
 		<th>&nbsp;</th>
-		<th>No. Purchase</th>
-		<th>J/S</th>
+		<th>No. Isi SJ</th>
 		<th>Barang</th>
-		<th>Amount</th>
+		<th>Warehouse</th>
 		<th>Quantity</th>
-		<th>Tanggal Permintaan</th>
+		<th>Quantity Kirim</th>
+		<th>Quantity Tertanda</th>
+		<th>No. Purchase</th>
       </tr>
     <tbody>      
 	<?php do { ?>
       <tr>
-		<td><input name="Id" type="hidden" id="Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
-		<td><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_Purchase['Purchase']; ?>" readonly></td>
-		<td><input name="JS" type="text" class="textview" id="JS" value="<?php echo $row_Purchase['JS']; ?>" readonly></td>
-		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_Purchase['Barang']; ?>" readonly></td>
-		<td><input name="Amount" type="text" class="textview" id="Amount" value="<?php echo $row_Purchase['Amount']; ?>" readonly></td>
-		<td><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" readonly></td>
-		<td><input name="TglStart" type="text" class="textview" id="TglStart" value="<?php echo $row_Purchase['TglStart']; ?>" readonly></td>
+		<td><input name="Id" type="hidden" id="Id"></td>
+		<td><input name="IsiSJKir" type="text" class="textview" id="IsiSJKir" value="<?php echo $row_ViewIsiSJKirim['IsiSJKir']; ?>" readonly></td>
+		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_ViewIsiSJKirim['Barang']; ?>" readonly></td>
+		<td><input name="Warehouse" type="text" class="textview" id="Warehouse" value="<?php echo $row_ViewIsiSJKirim['Warehouse']; ?>" readonly></td>
+		<td><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_ViewIsiSJKirim['Quantity']; ?>" readonly></td>
+		<td><input name="QKirim" type="text" class="textview" id="QKirim" value="<?php echo $row_ViewIsiSJKirim['QKirim']; ?>" readonly></td>
+		<td><input name="QTertanda" type="text" class="textview" id="QTertanda" value="<?php echo $row_ViewIsiSJKirim['QTertanda']; ?>" readonly></td>
+		<td><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_ViewIsiSJKirim['Purchase']; ?>" readonly></td>
       </tr>
-	<?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
+	<?php } while ($row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim)); ?>
       <tr>
+          <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
@@ -156,10 +159,11 @@ body {
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
 		   <td align="right">&nbsp;</td>
-		   <td align="right"><a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">
-                        <button type="button" class="button2">Edit Barang</button></a></td>
-		   <td></td>
-		   <td><a href="POCustomer.php"><button type="button" class="button2">Cancel</button></a></td>
+		   <td><a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>">
+                        <button type="button" class="button2">Edit Pengiriman</button></a></td>
+		   <td align="right"><a href="SJKirim.php"><button type="button" class="button2">Cancel</button></a></td>
+		   <td>&nbsp;</td>
+		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
       </tr>
     </tbody>
@@ -171,7 +175,7 @@ body {
 <?php
 mysql_free_result($Menu);
 
-mysql_free_result($Purchase);
+mysql_free_result($ViewIsiSJKirim);
 
 mysql_free_result($View);
 ?>

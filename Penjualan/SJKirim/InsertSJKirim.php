@@ -37,20 +37,15 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO jualsuratjalan (`No`, Tgl, NoCustomer, Customer, NoProject, Project, Status, SJPB) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['No'], "text"),
+  $insertSQL = sprintf("INSERT INTO sjkirim (SJKir, Tgl, Reference) VALUES (%s, %s, %s)",
+                       GetSQLValueString($_POST['SJKir'], "text"),
                        GetSQLValueString($_POST['Tgl'], "text"),
-                       GetSQLValueString($_POST['NoCustomer'], "text"),
-                       GetSQLValueString($_POST['Customer'], "text"),
-                       GetSQLValueString($_POST['NoProject'], "text"),
-                       GetSQLValueString($_POST['Project'], "text"),
-                       GetSQLValueString($_POST['Status'], "text"),
-                       GetSQLValueString($_POST['SJPB'], "text"));
+                       GetSQLValueString($_POST['Reference'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 
-  $insertGoTo = "SuratJalan.php";
+  $insertGoTo = "InsertSJKirim2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
@@ -63,6 +58,12 @@ $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
+
+mysql_select_db($database_Connection, $Connection);
+$query_NoSJ = "SELECT Id FROM sjkirim ORDER BY Reference DESC";
+$NoSJ = mysql_query($query_NoSJ, $Connection) or die(mysql_error());
+$row_NoSJ = mysql_fetch_assoc($NoSJ);
+$totalRows_NoSJ = mysql_num_rows($NoSJ);
 ?>
 <!doctype html>
 <html>
@@ -79,15 +80,7 @@ body {
 
 <script>
 function capital() {
-    var x = document.getElementById("No");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("NoCustomer");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("Customer");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("NoProject");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("Project");
+	var x = document.getElementById("Reference");
     x.value = x.value.toUpperCase();
 }
 </script>
@@ -100,6 +93,15 @@ function capital() {
 $(function() {
   $( "#Tgl" ).datepicker();
 });
+</script>
+
+<script type="text/javascript">
+$(function() {
+    var availableTags = <?php include ("../autocomplete3.php");?>;
+    $( "#Reference" ).autocomplete({
+      source: availableTags
+    });
+  });
 </script>
 
 </head>
@@ -155,58 +157,21 @@ $(function() {
     <tbody>
       <tr>
         <th width="250">&nbsp;</th>
-        <th width="125" align="right">No Surat Jalan</th>
+        <th width="125" align="right">No. SJ</th>
         <th width="75" align="right">&nbsp;</th>
-        <td width="532"><input name="No" type="text" id="No" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
+        <td width="532"><input name="SJKir" type="text" class="textbox" id="SJKir" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY") ?>" readonly></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
-        <th align="right">Tgl SJ</th>
+        <th align="right">Tanggal Kirim</th>
         <th align="right">&nbsp;</th>
         <td><input name="Tgl" type="text" id="Tgl" autocomplete="off" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
-        <th align="right">NoCustomer</th>
+        <th align="right">No. Reference</th>
         <th align="right">&nbsp;</th>
-        <td><input name="NoCustomer" type="text" id="NoCustomer" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Customer</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="Customer" type="text" id="Customer" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">NoProject</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="NoProject" type="text" id="NoProject" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Project</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="Project" type="text" id="Project" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Status</th>
-        <th align="right">&nbsp;</th>
-        <td><select name="Status" id="Status">
-            <option>F</option>
-            <option>P</option>
-            <option>O</option>
-        </select></td>
-      </tr>
-      <tr>
-        <td align="center">&nbsp;</td>
-        <th align="right">SJ/PB</th>
-        <th align="right">&nbsp;</th>
-        <td><select name="SJPB" id="SJPB">
-          <option>SJ</option>
-          <option>PB</option>
-        </select></td>
+        <td><input name="Reference" type="text" id="Reference" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
@@ -217,7 +182,7 @@ $(function() {
       <tr>
         <td align="center">&nbsp;</td>
         <td colspan="2" align="center"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
-        <td><a href="SuratJalan.php"><button type="button" class="submit">Cancel</button></a></td>
+        <td><a href="SJKirim.php"><button type="button" class="submit">Cancel</button></a></td>
       </tr>
     </tbody>
   </table>
@@ -225,3 +190,8 @@ $(function() {
 </form>
 </body>
 </html>
+<?php
+mysql_free_result($Menu);
+
+mysql_free_result($NoSJ);
+?>

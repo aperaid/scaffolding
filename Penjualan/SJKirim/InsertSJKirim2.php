@@ -31,28 +31,41 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-if ((isset($_GET['Id'])) && ($_GET['Id'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM jualsuratjalan WHERE Id=%s",
-                       GetSQLValueString($_GET['Id'], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-
-  $deleteGoTo = "SuratJalan.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
-    $deleteGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $deleteGoTo));
-}
+mysql_select_db($database_Connection, $Connection);
+$query_LastReference = "SELECT Reference FROM sjkirim ORDER BY Id DESC";
+$LastReference = mysql_query($query_LastReference, $Connection) or die(mysql_error());
+$row_LastReference = mysql_fetch_assoc($LastReference);
+$totalRows_LastReference = mysql_num_rows($LastReference);
 ?>
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>Untitled Document</title>
+<link href="../../Button.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+body {
+	background-image: url(../../Image/Wood.png);
+	background-repeat: no-repeat;
+}
+</style>
+
+<script type="text/javascript">
+    function submit()
+    {
+        document.getElementById("submit").click(); // Simulates button click
+        document.submitForm.submit(); // Submits the form without the button
+    }
+</script>
+
 </head>
 
-<body>
+<body onLoad="submit()">
+<form id="form1" name="form1" method="post" action="InsertSJKirimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>">
+  <input type="submit" name="submit" id="submit" value="Submit">
+</form>
 </body>
 </html>
+<?php
+mysql_free_result($LastReference);
+?>
