@@ -70,7 +70,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | Insert Customer</title>
+  <title>BDN ERP | Insert Project</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
@@ -196,7 +196,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="PCode" name="PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project">
+                    <input id="PCode" name="PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code">
                   </div>
                 </div>
                 <div class="form-group">
