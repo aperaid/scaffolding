@@ -47,159 +47,323 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 ?>
-<!doctype html>
+
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Untitled Document</title>
-<link href="../../Button.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	background-image: url(../../Image/Wood.png);
-	background-repeat: no-repeat;
-}
-</style>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>BDN ERP | View Customer</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../plugins/datatables/dataTables.bootstrap.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
 
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="wrapper">
 
-<body>
-<div style="float:left;width:15%">
-  <table width="200" border="0">
-    <tbody>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      
-				<?php do { ?>    
-                	<tr>
-                    <td class="Menu">
-                    <a href="../<?php echo $row_Menu['link']; ?>">
-                    <button type="button" class="button">
-					<?php echo $row_Menu['nama']; ?></button></a></td>
-                    </tr>
-                    
-                <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
-                    <tr>
-                    <td class="Menu">&nbsp;</td>
-                    </tr>
-                    
-    </tbody>
-  </table>
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>BDN</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">PT. <b>BDN</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Buka/Tutup</span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">Administrator</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                <p>
+                  Admin - Adminstrator
+                  <small>Super Profile</small>
+                </p>
+              </li>
+              
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-right">
+                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MENU</li>
+        <?php do { ?>
+        <li><a href="../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
+        <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        View Customer
+        <small>View</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Customer</a></li>
+        <li class="active">View Customer</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Company Detail</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form id="form1" name="form1" method="post" class="form-horizontal">
+              <div class="box-body with-border">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Company Code</label>
+                  <div class="col-sm-4">
+                    <input id="CCode" name="CCode" type="text" class="form-control" value="<?php echo $row_View['CCode']; ?>"  readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Nama Perusahaan</label>
+                  <div class="col-sm-7">
+                    <input id="Company" name="Company" type="text" class="form-control" value="<?php echo $row_View['Company']; ?>"  readonly>
+                  </div>
+                  <label class="col-sm-1 control-label">Telp</label>
+                  <div class="col-sm-2">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="fa fa-phone"></i>
+                      </div>
+                      <input id="CompPhone" name="CompPhone" type="text" class="form-control" value="<?php echo $row_View['CompPhone']; ?>"  readonly>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Alamat</label>
+                  <div class="col-sm-4">
+                    <input id="Alamat" name="Alamat" type="text" class="form-control" value="<?php echo $row_View['Alamat']; ?>"  readonly>
+                  </div>
+                  <label class="col-sm-1 control-label">Kota</label>
+                  <div class="col-sm-2">
+                    <input id="Kota" name="Kota" type="number" class="form-control" value="<?php echo $row_View['Kota']; ?>" readonly>
+                  </div>
+                  <label class="col-sm-1 control-label">Fax</label>
+                  <div class="col-sm-2">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="fa fa-fax"></i>
+                      </div>
+                      <input id="Fax" name="Fax" type="text" class="form-control" value="<?php echo $row_View['CompPhone']; ?>" readonly>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">NPWP</label>
+                  <div class="col-sm-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-legal"></i></span>
+                      <input id="NPWP" name="NPWP" type="text" class="form-control" value="<?php echo $row_View['NPWP']; ?>"  readonly>
+                    </div>
+                  </div>
+                  <label class="col-sm-1 control-label">Kodepos</label>
+                  <div class="col-sm-2">
+                    <input id="Zip" name="Zip" type="number" class="form-control" value="<?php echo $row_View['Zip']; ?>"  readonly>
+                  </div>
+                  
+                  <label class="col-sm-1 control-label">Email</label>
+                  <div class="col-sm-2">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                      <input id="CompEmail" name="CompEmail" type="text" class="form-control" value="<?php echo $row_View['CompEmail']; ?>" readonly>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">CP</label>
+                  <div class="col-sm-10">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="fa fa-user"></i>
+                      </div>
+                      <input id="Customer" name="Customer" type="text" class="form-control" value="<?php echo $row_View['Customer']; ?>"  readonly>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Telp</label>
+                  <div class="col-sm-2">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="fa fa-phone"></i>
+                      </div>
+                      <input id="CustPhone" name="CustPhone" type="text" class="form-control" value="<?php echo $row_View['CustPhone']; ?>"  readonly>
+                    </div>
+                  </div>
+                  <label class="col-sm-2 control-label">Email CP</label>
+                  <div class="col-sm-2">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                      <input id="CustEmail" name="CustEmail"type="text" class="form-control" value="<?php echo $row_View['CustEmail']; ?>" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <a href="EditCustomer.php?Id=<?php echo $row_View['Id']; ?>"><button type="button" class="btn btn-info pull-right">Edit</button></a>
+                <div class="btn-group"><a href="Customer.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
+                <div class="btn-group" ><a href="DeleteCustomer.php?Id=<?php echo $row_View['Id']; ?>" onclick="return confirm('Delete Customer?')"><button type="button" class="btn btn-danger pull-left">Delete</button></a></div>
+              </div>
+              <input type="hidden" name="MM_update" value="form1">
+              <!-- /.box-footer -->
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  <!-- Footer Wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> `1.0.0
+    </div>
+    <strong>Copyright &copy; 2015 <a href="http://apera.id">Apera Indonesia</a>.</strong> All rights
+    reserved.
+  </footer>
+  <!-- /.footer-wrapper -->
+  
+  <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
 </div>
 
-<div style="float:left;width:85%">
+<!-- jQuery 2.1.4 -->
+<script src="../../	plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+<script>
+function capital() {
+    var x = document.getElementById("CCode");
+    x.value = x.value.toUpperCase();
+	var x = document.getElementById("Company");
+    x.value = x.value.toUpperCase();
+}
+</script>
+<script>
+  $(document).ready(function() {
+    $("#dialog").dialog({
+      autoOpen: false,
+      modal: true
+    });
+  });
 
-<table width="950" border="0">
+  $(".confirmLink").click(function(e) {
+    e.preventDefault();
+    var targetUrl = $(this).attr("href");
 
+    $("#dialog").dialog({
+      buttons : {
+        "Confirm" : function() {
+          window.location.href = targetUrl;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      }
+    });
 
-  <tbody>
-    <tr>
-      <th align="center"><h2><?php echo $row_View['Company']; ?></h2></th>
-    </tr>
-  </tbody>
-</table>
-</p>
-<form id="form1" name="form1" method="POST">
-  <table width="1005" border="0">
-    <tbody>
-      <tr>
-        <th width="75">&nbsp;</th>
-        <th width="125" align="right">Customer Code</th>
-        <th width="50" align="right">&nbsp;</th>
-        <th colspan="4" align="left"><input name="CCode" type="text" id="CCode" style="width:512px;" value="<?php echo $row_View['CCode']; ?>" readonly class="textview"></th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Company</th>
-        <th align="right">&nbsp;</th>
-        <th colspan="4" align="left"><input name="Company" type="text" id="Company" style="width:512px;" value="<?php echo $row_View['Company']; ?>" readonly class="textview"></th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Customer</th>
-        <th align="right">&nbsp;</th>
-        <th colspan="4" align="left"><input name="Customer" type="text" id="Customer" style="width:512px;" value="<?php echo $row_View['Customer']; ?>" readonly class="textview"></th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Alamat</th>
-        <th align="right">&nbsp;</th>
-        <th colspan="4" align="left"><input name="Alamat" type="text" id="Alamat" style="width:512px;" value="<?php echo $row_View['Alamat']; ?>" readonly class="textview"></th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Kota</th>
-        <th align="right">&nbsp;</th>
-        <th width="150" align="left"><input name="Kota" type="text" id="Kota" value="<?php echo $row_View['Kota']; ?>" readonly class="textview"></th>
-        <th width="100" align="right">Zip Code</th>
-        <th width="50" align="right">&nbsp;</th>
-        <td width="425"><input name="Zip" type="text" id="Zip" value="<?php echo $row_View['Zip']; ?>" readonly class="textview"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Company Phone</th>
-        <th align="right">&nbsp;</th>
-        <th align="left"><input name="CompPhone" type="text" id="CompPhone" value="<?php echo $row_View['CompPhone']; ?>" readonly class="textview"></th>
-        <th align="right">Fax</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="Negara" type="Fax" id="Fax" value="<?php echo $row_View['Fax']; ?>" readonly class="textview"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Customer Phone</th>
-        <th align="right">&nbsp;</th>
-        <th align="left"><input name="CustPhone" type="text" id="CustPhone" value="<?php echo $row_View['CustPhone']; ?>" readonly class="textview"></th>
-        <th align="right">NPWP</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="NPWP" type="text" id="NPWP" value="<?php echo $row_View['NPWP']; ?>" readonly class="textview"></td>
-      </tr>
-      <tr>
-        <td align="center">&nbsp;</td>
-        <th align="right">Company Email</th>
-        <td align="center">&nbsp;</td>
-        <td colspan="4" align="left"><input name="CompEmail" type="text" id="CompEmail" style="width:512px;" value="<?php echo $row_View['CompEmail']; ?>" readonly class="textview"></td>
-      </tr>
-      <tr>
-        <td align="center">&nbsp;</td>
-        <th align="right">Customer Email</th>
-        <td align="center">&nbsp;</td>
-        <td colspan="4" align="left"><input name="CustEmail" type="text" id="CustEmail" style="width:512px;" value="<?php echo $row_View['CustEmail']; ?>" readonly class="textview"></td>
-      </tr>
-      <tr>
-        <td align="center">&nbsp;</td>
-        <td align="center">&nbsp;</td>
-        <td align="center">&nbsp;</td>
-        <td align="center">&nbsp;</td>
-        <td align="center">&nbsp;</td>
-        <td align="center">&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td align="center">&nbsp;</td>
-        <td align="center">&nbsp;</td>
-        <td align="center">&nbsp;</td>
-        <td align="center"><a href="EditCustomer.php?Id=<?php echo $row_View['Id']; ?>">
-          <button type="button" class="button2">Edit Customer</button></a></td>
-        <td colspan="2" align="left"><a><button type="button" class="button2">Print</button></a></td>
-        <td align="left"><a href="Customer.php"><button type="button" class="button2">Back</button></a></td>
-        <td>&nbsp;</td>
-      </tr>
-    </tbody>
-  </table>
-</form>
+    $("#dialog").dialog("open");
+  });
+</script>
 </body>
 </html>
 <?php
-mysql_free_result($View);
-
 mysql_free_result($Menu);
+mysql_free_result($View);
 ?>

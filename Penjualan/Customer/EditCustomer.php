@@ -87,7 +87,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | Insert Customer</title>
+  <title>BDN ERP | Edit Customer</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
@@ -218,30 +218,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
                   <div class="col-sm-7">
                     <input id="Company" name="Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan">
                   </div>
-                  <label class="col-sm-1 control-label">NPWP</label>
-                  <div class="col-sm-2">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="fa fa-legal"></i></span>
-                      <input id="NPWP" name="NPWP" type="text" class="form-control" value="<?php echo $row_Edit['NPWP']; ?>" placeholder="12.456.789.0-012.123">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Alamat</label>
-                  <div class="col-sm-4">
-                    <input id="Alamat" name="Alamat" type="text" class="form-control" value="<?php echo $row_Edit['Alamat']; ?>" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota">
-                  </div>
-                  <label class="col-sm-1 control-label">Kota</label>
-                  <div class="col-sm-2">
-                    <input id="Kota" name="Kota" type="number" class="form-control" value="<?php echo $row_Edit['Kota']; ?>" placeholder="Kota">
-                  </div>
-                  <label class="col-sm-1 control-label">Kodepos</label>
-                  <div class="col-sm-2">
-                    <input id="Zip" name="Zip" type="number" class="form-control" value="<?php echo $row_Edit['Zip']; ?>" placeholder="10203">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Telp</label>
+                  <label class="col-sm-1 control-label">Telp</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <div class="input-group-addon">
@@ -250,7 +227,17 @@ $totalRows_Menu = mysql_num_rows($Menu);
                       <input id="CompPhone" name="CompPhone" type="text" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
                     </div>
                   </div>
-                  <label class="col-sm-2 control-label">Fax</label>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Alamat</label>
+                  <div class="col-sm-4">
+                    <input id="Alamat" name="Alamat" type="text" class="form-control" value="<?php echo $row_Edit['Alamat']; ?>"  placeholder="Jl. Nama Jalan No.1, Kelurahan, Kecamatan">
+                  </div>
+                  <label class="col-sm-1 control-label">Kota</label>
+                  <div class="col-sm-2">
+                    <input id="Kota" name="Kota" type="number" class="form-control" value="<?php echo $row_Edit['Kota']; ?>" placeholder="Nama Kota">
+                  </div>
+                  <label class="col-sm-1 control-label">Fax</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <div class="input-group-addon">
@@ -259,14 +246,29 @@ $totalRows_Menu = mysql_num_rows($Menu);
                       <input id="Fax" name="Fax" type="text" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
                     </div>
                   </div>
-                  <label class="col-sm-2 control-label">Email</label>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">NPWP</label>
+                  <div class="col-sm-4">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-legal"></i></span>
+                      <input id="NPWP" name="NPWP" type="text" class="form-control" value="<?php echo $row_Edit['NPWP']; ?>"  placeholder="12.123.123.0-012.000">
+                    </div>
+                  </div>
+                  <label class="col-sm-1 control-label">Kodepos</label>
+                  <div class="col-sm-2">
+                    <input id="Zip" name="Zip" type="number" class="form-control" value="<?php echo $row_Edit['Zip']; ?>"  placeholder="10203">
+                  </div>
+                  
+                  <label class="col-sm-1 control-label">Email</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input id="CompEmail" name="CompEmail" type="text" class="form-control" value="<?php echo $row_Edit['CompEmail']; ?>" placeholder="Email">
+                      <input id="CompEmail" name="CompEmail" type="text" class="form-control" value="<?php echo $row_Edit['CompEmail']; ?>" placeholder="email@company.com">
                     </div>
                   </div>
                 </div>
+                <hr>
                 <hr>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">CP</label>
@@ -300,6 +302,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
+                <a href="ViewCustomer.php?Id=<?php echo $row_Edit['Id']; ?>"><button type="button" class="btn btn-default pull-left">Back</button></a>
                 <button type="submit" name="submit" id="submit" class="btn btn-info pull-right">Update</button>
               </div>
               <input type="hidden" name="MM_update" value="form1">
