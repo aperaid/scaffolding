@@ -63,10 +63,10 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	
 	mysql_select_db($database_Connection, $Connection);
-$query_SJKirim = "SELECT sjkirim.*, project.Project, customer.Customer FROM sjkirim INNER JOIN pocustomer ON sjkirim.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode ORDER BY sjkirim.Id ASC";
-$SJKirim = mysql_query($query_SJKirim, $Connection) or die(mysql_error());
-$row_SJKirim = mysql_fetch_assoc($SJKirim);
-$totalRows_SJKirim = mysql_num_rows($SJKirim);
+$query_SJKembali = "SELECT sjkembali.*, project.Project, customer.Customer FROM sjkembali INNER JOIN pocustomer ON sjkembali.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode ORDER BY sjkembali.Id ASC";
+$SJKembali = mysql_query($query_SJKembali, $Connection) or die(mysql_error());
+$row_SJKembali = mysql_fetch_assoc($SJKembali);
+$totalRows_SJKembali = mysql_num_rows($SJKembali);
 		
 	$query_menu = "SELECT * FROM menu ORDER BY Id ASC";
 	$menu = mysql_query($query_menu, $Connection) or die(mysql_error());
@@ -126,7 +126,7 @@ $totalRows_SJKirim = mysql_num_rows($SJKirim);
 		<div class="ui-layout-north">
 			<div class="title">
 				SURAT JALAN
-			KIRIM</div>
+			KEMBALI</div>
 		</div>
 		<div class="ui-layout-west">
 			<table class="menuTable">
@@ -158,9 +158,9 @@ $totalRows_SJKirim = mysql_num_rows($SJKirim);
 			<table class="menuTable">
 				<tr>
 					<td>
-						<a href="InsertSJKirim.php">
+						<a href="InsertSJKembali.php">
 						<button class="button2" type=
-							"button">Tambah Kirim</button></a>
+							"button">Tambah Kembali</button></a>
 					</td>
 				</tr>
 			</table>
@@ -169,7 +169,7 @@ $totalRows_SJKirim = mysql_num_rows($SJKirim);
 			<table id="contentTable">
 				<thead>
 					<th class="noinvoice">No. SJ</th>
-					<th class="noinvoice">Tanggal Kirim</th>
+					<th class="noinvoice">Tanggal Tertanda</th>
 					<th class="customer">Customer</th>
 					<th class="noinvoice">Project</th>
 					<th class="tombol">Opsi</th>
@@ -177,18 +177,18 @@ $totalRows_SJKirim = mysql_num_rows($SJKirim);
 				<tbody>
 					<?php do { ?>
 					<tr>
-						<td class="noinvoice"><?php echo $row_SJKirim['SJKir']; ?></td>
-						<td class="noinvoice"><?php echo $row_SJKirim['Tgl']; ?></td>
-						<td class="customer"><?php echo $row_SJKirim['Customer']; ?></td>
-						<td class="noinvoice"><?php echo $row_SJKirim['Project']; ?></td>
-						<td class="tombol"><a href="ViewSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>"><button type="button" class="button3">View</button></a> <a href="DeleteSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>"><button type="button" class="button3">Batal</button></a></td>
+						<td class="noinvoice"><?php echo $row_SJKembali['SJKem']; ?></td>
+						<td class="noinvoice"><?php echo $row_SJKembali['Tgl']; ?></td>
+						<td class="customer"><?php echo $row_SJKembali['Customer']; ?></td>
+						<td class="noinvoice"><?php echo $row_SJKembali['Project']; ?></td>
+						<td class="tombol"><a href="ViewSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>"><button type="button" class="button3">View</button></a>&nbsp;<a href="DeleteSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>"><button type="button" class="button3">Batal</button></a></td>
 					</tr>
-					<?php } while ($row_SJKirim = mysql_fetch_assoc($SJKirim)); ?>
+					<?php } while ($row_SJKembali = mysql_fetch_assoc($SJKembali)); ?>
 				</tbody>
 			</table>
 		</div>
 	</body>
 </html>
 <?php
-	mysql_free_result($SJKirim);
+	mysql_free_result($SJKembali);
 	?>

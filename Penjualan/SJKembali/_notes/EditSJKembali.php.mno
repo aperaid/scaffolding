@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_Edit" value="name:Id;datatype:int,name:No;datatype:string,name:Tgl;datatype:string,name:NoCustomer;datatype:string,name:Customer;datatype:string,name:NoProject;datatype:string,name:Project;datatype:string,name:Status;datatype:string,name:SJPB;datatype:string" />
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_View" value="name:SJKem;datatype:string" />
+	<infoitem key="UD_SJKirim" value="name:Id;datatype:int,name:SJKir;datatype:string,name:IsiSJKir;datatype:string,name:Tgl;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:Purchase;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_IsiSJKirim" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int" />
+	<infoitem key="UD_IsiIsiSJKirim" value="name:Id;datatype:int,name:SJKir;datatype:string,name:IsiSJKir;datatype:string,name:Tgl;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:Purchase;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_EditIsiSJKirim" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_EditIsiSJKembali" value="name:Id;datatype:int,name:IsiSJKem;datatype:string,name:Warehouse;datatype:string,name:QTertanda;datatype:int,name:QTerima;datatype:int,name:Purchase;datatype:string,name:SJKem;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
+</info>

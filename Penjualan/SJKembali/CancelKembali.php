@@ -31,17 +31,17 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM sjkirim WHERE SJKir=%s",
-                       GetSQLValueString($_GET['SJKir'], "int"));
+if ((isset($_GET['Id'])) && ($_GET['Id'] != "")) {
+  $deleteSQL = sprintf("DELETE FROM sjkembali WHERE Id=%s",
+                       GetSQLValueString($_GET['Id'], "text"));
 
-  $alterSQL = sprintf("ALTER TABLE sjkirim AUTO_INCREMENT = 1");
+  $alterSQL = sprintf("ALTER TABLE sjkembali AUTO_INCREMENT = 1");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 
-  $deleteGoTo = "DeleteSJKirim2.php";
+  $deleteGoTo = "SJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
     $deleteGoTo .= $_SERVER['QUERY_STRING'];

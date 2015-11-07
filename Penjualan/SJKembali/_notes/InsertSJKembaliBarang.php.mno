@@ -4,9 +4,11 @@
 	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_View" value="name:Reference;datatype:string" />
 	<infoitem key="UD_IsiSJKirim" value="name:Id;datatype:int,name:SJKir;datatype:string,name:IsiSJKir;datatype:string,name:Tgl;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:Purchase;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
-	<infoitem key="UD_InsertSJKirim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:Quantity;datatype:int,name:QSisa;datatype:int,name:Project;datatype:string" />
-	<infoitem key="UD_Select" value="name:SJKir;datatype:string" />
+	<infoitem key="UD_InsertSJKirim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_Select" value="name:SJKem;datatype:string" />
 	<infoitem key="UD_LastIsiSJKirim" value="name:Id;datatype:int" />
 	<infoitem key="UD_LastReference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_LastId" value="name:Id;datatype:int" />
+	<infoitem key="UD_LastIsiSJKembali" value="name:Id;datatype:int" />
+	<infoitem key="UD_InsertSJKembali" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
 </info>

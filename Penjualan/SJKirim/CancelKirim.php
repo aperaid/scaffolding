@@ -31,9 +31,9 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM sjkirim WHERE Reference=%s",
-                       GetSQLValueString($_GET['Reference'], "text"));
+if ((isset($_GET['Id'])) && ($_GET['Id'] != "")) {
+  $deleteSQL = sprintf("DELETE FROM sjkirim WHERE Id=%s",
+                       GetSQLValueString($_GET['Id'], "text"));
 
   $alterSQL = sprintf("ALTER TABLE sjkirim AUTO_INCREMENT = 1");
 

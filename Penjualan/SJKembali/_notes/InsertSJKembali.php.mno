@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_NoSJ" value="name:Id;datatype:int" />
+	<infoitem key="UD_SelectNo" value="name:Id;datatype:int" />
+</info>
