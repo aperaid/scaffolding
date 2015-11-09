@@ -240,7 +240,7 @@ $(function() {
       <tr>
 		   <td>&nbsp;</td>
 		   <td align="right">&nbsp;</td>
-		   <td align="right"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
+		   <td align="right"><input type="submit" name="submit" id="submit" class="submit" value="Pilih"></td>
 		   <td><a href="CancelKirim.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
       </tr>
