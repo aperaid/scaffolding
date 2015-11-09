@@ -215,7 +215,8 @@ $totalRows_Reference = mysql_num_rows($Reference);
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                  <button type="submit" id="submit" class="btn btn-primary">Insert</button>
+                  <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Back</button></a> 
+                  <button type="submit" id="submit" class="btn btn-primary pull-right">Insert</button>
                 </div>
               <input type="hidden" name="MM_insert" value="form1">
               </form>
