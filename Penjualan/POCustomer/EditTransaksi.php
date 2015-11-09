@@ -191,8 +191,8 @@ $(function() {
 	<?php do { ?>
       <tr>
 		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
-		<td><input name="Purchase[]" type="text" class="textbox" id="Purchase" value="<?php echo $row_Purchase['Purchase']; ?>" readonly></td>
-		<td><input name="JS" type="text" class="textbox" id="JS" value="<?php echo $row_Purchase['JS']; ?>" readonly></td>
+		<td><input name="Purchase[]" type="text" class="textview" id="Purchase" value="<?php echo $row_Purchase['Purchase']; ?>" readonly></td>
+		<td><input name="JS" type="text" class="textview" id="JS" value="<?php echo $row_Purchase['JS']; ?>" readonly></td>
 		<td><input name="Barang[]" type="text" class="textbox" id="Barang" value="<?php echo $row_Purchase['Barang']; ?>"></td>
 		<td><input name="Amount[]" type="text" class="textbox" id="Amount" value="<?php echo $row_Purchase['Amount']; ?>"></td>
 		<td><input name="Quantity[]" type="text" class="textbox" id="Quantity" value="<?php echo $row_Purchase['Quantity']; ?>"></td>

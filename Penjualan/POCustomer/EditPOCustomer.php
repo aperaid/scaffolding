@@ -164,7 +164,7 @@ $(function() {
         <th width="250"><input name="Id" type="hidden" id="Id" value="<?php echo $row_Edit['Id']; ?>"></th>
         <th width="100" align="right">Reference</th>
         <th width="75" align="right">&nbsp;</th>
-        <td width="557"><input name="Reference" type="text" class="textbox" id="Reference" onKeyUp="capital()" value="<?php echo $row_Edit['Reference']; ?>" readonly></td>
+        <td width="557"><input name="Reference" type="text" class="textview" id="Reference" onKeyUp="capital()" value="<?php echo $row_Edit['Reference']; ?>" readonly></td>
       </tr>
       <tr>
         <th>&nbsp;</th>

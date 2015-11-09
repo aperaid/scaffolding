@@ -60,7 +60,7 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 mysql_select_db($database_Connection, $Connection);
-$query_NoSJ = "SELECT Id FROM sjkembali ORDER BY Reference DESC";
+$query_NoSJ = "SELECT Id FROM sjkembali ORDER BY Id DESC";
 $NoSJ = mysql_query($query_NoSJ, $Connection) or die(mysql_error());
 $row_NoSJ = mysql_fetch_assoc($NoSJ);
 $totalRows_NoSJ = mysql_num_rows($NoSJ);

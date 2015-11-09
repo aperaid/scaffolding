@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <info>
 	<infoitem key="UD_View" value="name:SJKir;datatype:string" />
-	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_Purchase" value="name:Id;datatype:int,name:Purchase;datatype:string,name:JS;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Amount;datatype:string,name:TglStart;datatype:string,name:Reference;datatype:string,name:Project;datatype:string" />
 	<infoitem key="UD_SJKirim" value="name:Barang;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
 	<infoitem key="UD_SJKirim2" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string" />
-	<infoitem key="UD_ViewIsiSJKirim" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_ViewIsiSJKirim" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string,name:Barang;datatype:string,name:QSisa;datatype:int,name:Project;datatype:string" />
 </info>

@@ -37,11 +37,12 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase'], "text"),
                        GetSQLValueString($_POST['JS'], "text"),
                        GetSQLValueString($_POST['Barang'], "text"),
                        GetSQLValueString($_POST['Quantity'], "int"),
+					   GetSQLValueString($_POST['Quantity'], "int"),
                        GetSQLValueString($_POST['Amount'], "text"),
                        GetSQLValueString($_POST['TglStart'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -59,11 +60,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase2'], "text"),
                        GetSQLValueString($_POST['JS2'], "text"),
                        GetSQLValueString($_POST['Barang2'], "text"),
                        GetSQLValueString($_POST['Quantity2'], "int"),
+					   GetSQLValueString($_POST['Quantity2'], "int"),
                        GetSQLValueString($_POST['Amount2'], "text"),
                        GetSQLValueString($_POST['TglStart2'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -80,11 +82,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase3'], "text"),
                        GetSQLValueString($_POST['JS3'], "text"),
                        GetSQLValueString($_POST['Barang3'], "text"),
                        GetSQLValueString($_POST['Quantity3'], "int"),
+					   GetSQLValueString($_POST['Quantity3'], "int"),
                        GetSQLValueString($_POST['Amount3'], "text"),
                        GetSQLValueString($_POST['TglStart3'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -101,11 +104,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase4'], "text"),
                        GetSQLValueString($_POST['JS4'], "text"),
                        GetSQLValueString($_POST['Barang4'], "text"),
                        GetSQLValueString($_POST['Quantity4'], "int"),
+					   GetSQLValueString($_POST['Quantity4'], "int"),
                        GetSQLValueString($_POST['Amount4'], "text"),
                        GetSQLValueString($_POST['TglStart4'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -122,11 +126,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase5'], "text"),
                        GetSQLValueString($_POST['JS5'], "text"),
                        GetSQLValueString($_POST['Barang5'], "text"),
                        GetSQLValueString($_POST['Quantity5'], "int"),
+					   GetSQLValueString($_POST['Quantity5'], "int"),
                        GetSQLValueString($_POST['Amount5'], "text"),
                        GetSQLValueString($_POST['TglStart5'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -143,11 +148,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase6'], "text"),
                        GetSQLValueString($_POST['JS6'], "text"),
                        GetSQLValueString($_POST['Barang6'], "text"),
                        GetSQLValueString($_POST['Quantity6'], "int"),
+					   GetSQLValueString($_POST['Quantity6'], "int"),
                        GetSQLValueString($_POST['Amount6'], "text"),
                        GetSQLValueString($_POST['TglStart6'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -164,11 +170,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase7'], "text"),
                        GetSQLValueString($_POST['JS7'], "text"),
                        GetSQLValueString($_POST['Barang7'], "text"),
                        GetSQLValueString($_POST['Quantity7'], "int"),
+					   GetSQLValueString($_POST['Quantity7'], "int"),
                        GetSQLValueString($_POST['Amount7'], "text"),
                        GetSQLValueString($_POST['TglStart7'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -185,11 +192,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase8'], "text"),
                        GetSQLValueString($_POST['JS8'], "text"),
                        GetSQLValueString($_POST['Barang8'], "text"),
                        GetSQLValueString($_POST['Quantity8'], "int"),
+					   GetSQLValueString($_POST['Quantity8'], "int"),
                        GetSQLValueString($_POST['Amount8'], "text"),
                        GetSQLValueString($_POST['TglStart8'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -206,11 +214,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase9'], "text"),
                        GetSQLValueString($_POST['JS9'], "text"),
                        GetSQLValueString($_POST['Barang9'], "text"),
                        GetSQLValueString($_POST['Quantity9'], "int"),
+					   GetSQLValueString($_POST['Quantity9'], "int"),
                        GetSQLValueString($_POST['Amount9'], "text"),
                        GetSQLValueString($_POST['TglStart9'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -227,11 +236,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisa, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase10'], "text"),
                        GetSQLValueString($_POST['JS10'], "text"),
                        GetSQLValueString($_POST['Barang10'], "text"),
                        GetSQLValueString($_POST['Quantity10'], "int"),
+					   GetSQLValueString($_POST['Quantity10'], "int"),
                        GetSQLValueString($_POST['Amount10'], "text"),
                        GetSQLValueString($_POST['TglStart10'], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
@@ -322,7 +332,8 @@ $(document).ready(function(){
 	$(".addCF").click(function(){
 		if(x < max_fields){ //max input box allowed
             x++; //text box increment
-		$("#customFields").append('<tr><td><input name="Purchase'+ x +'" type="text" class="textbox" id="Purchase" value="<?php echo str_pad($row_Purchase['Id']+2, 5, "0", STR_PAD_LEFT); ?>"></td><td><input type="text" name="Barang'+ x +'" id="Barang" class="textbox"></td><td><select name="JS'+ x +'"' + x +' id="JS"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount'+ x +'" id="Amount" class="textbox"></td><td><input type="text" name="Quantity'+ x +'" id="Quantity" class="textbox"></td><td><input type="text" name="TglStart'+ x +'" id="TglStart" class="textbox"></td><td><a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
+			var y = <?php echo $row_Purchase['Id']; ?> + x;
+		$("#customFields").append('<tr><td><input name="Purchase'+ x +'" type="text" class="textbox" id="Purchase" value="'+ y +'"></td><td><input type="text" name="Barang'+ x +'" id="Barang" class="textbox"></td><td><select name="JS'+ x +'" id="JS"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount'+ x +'" id="Amount" class="textbox"></td><td><input type="text" name="Quantity'+ x +'" id="Quantity" class="textbox"></td><td><input type="text" name="TglStart'+ x +'" id="TglStart" class="textbox"></td><td><a href="javascript:void(0);" class="remCF">Remove</a></td></tr>');
 		}
 	});
     $("#customFields").on('click','.remCF',function(){
@@ -392,13 +403,13 @@ $(document).ready(function(){
 				<tbody>
                   <tr>
                     <td><input name="Purchase" type="text" class="textbox" id="Purchase" value="<?php echo str_pad($row_Purchase['Id']+1, 5, "0", STR_PAD_LEFT); ?>" readonly></td>
-                    <td><input type="text" name="Barang" id="Barang" class="textbox"></td>
+                    <td><input name="Barang" type="text" class="textbox" id="Barang" autocomplete="off"></td>
                     <td><select name="JS" id="JS">
                       <option>Jual</option>
                       <option>Sewa</option>
                     </select></td>
-                    <td><input type="text" name="Amount" id="Amount" class="textbox"></td>
-                    <td><input type="text" name="Quantity" id="Quantity" class="textbox"></td>
+                    <td><input name="Amount" type="text" class="textbox" id="Amount" autocomplete="off"></td>
+                    <td><input name="Quantity" type="text" class="textbox" id="Quantity" autocomplete="off"></td>
                     <td><input type="text" name="TglStart" id="TglStart" class="textbox"></td>
                   </tr>
                 </tbody>
