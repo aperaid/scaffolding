@@ -76,6 +76,8 @@ $totalRows_Reference = mysql_num_rows($Reference);
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+  <!-- jQueryUI -->
+  <link rel="stylesheet" href="../../plugins/jQueryUI/jquery-ui.css" >
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -202,7 +204,7 @@ $totalRows_Reference = mysql_num_rows($Reference);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input type="text" class="form-control pull-right date" id="tgl">
+                      <input name="Tgl" type="text" class="form-control pull-right date" id="Tgl">
                     </div>
                   </div>
                   <div class="form-group">
@@ -213,8 +215,9 @@ $totalRows_Reference = mysql_num_rows($Reference);
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                <button type="submit" id="submit" class="btn btn-primary">Insert</button>
-              </div>                
+                  <button type="submit" id="submit" class="btn btn-primary">Insert</button>
+                </div>
+              <input type="hidden" name="MM_insert" value="form1">
               </form>
             </div>
             <!-- /.box -->
@@ -243,6 +246,8 @@ $totalRows_Reference = mysql_num_rows($Reference);
 
 <!-- jQuery 2.1.4 -->
 <script src="../../	plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- jQuery UI -->
+<script src="../../plugins/jQueryUI/jquery-ui.js"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="../../bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
@@ -281,11 +286,25 @@ function capital() {
 }
 </script>
 <script>
-  $('#tgl').datepicker({
+  $('#Tgl').datepicker({
 	  format: "dd/mm/yyyy",
 	  orientation: "bottom left",
 	  todayHighlight: true
   }); 
+</script>
+<script>
+$(function() {
+  var availableTags = <?php include ("../autocomplete.php");?>;
+  $( "#PCode" ).autocomplete({
+	source: availableTags
+  });
+});
+</script>
+<script>
+function capital() {
+	var x = document.getElementById("PCode");
+    x.value = x.value.toUpperCase();
+}
 </script>
 </body>
 </html>

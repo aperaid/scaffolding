@@ -178,7 +178,8 @@ $totalRows_Menu = mysql_num_rows($Menu);
 						<td ><?php echo $row_POCustomer['Project']; ?></td>
                         <td></td>
                         <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Id']; ?>">
-                        <button type="button" class="button3">Edit PO</button></a> <a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>">
+                        <button type="button" class="button3">Edit PO</button></a>
+                        <a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>">
                         <button type="button" class="button3">View Barang</button></a></td>
 					</tr>
 					<?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
