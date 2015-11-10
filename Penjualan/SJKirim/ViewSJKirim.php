@@ -1,6 +1,4 @@
 <?php require_once('../../Connections/Connection.php'); ?>
-<?php require_once('../../Connections/Connection.php'); ?>
-<?php require_once('../../Connections/Connection.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -75,7 +73,7 @@ if (isset($_GET['SJKir'])) {
   $colname_ViewIsiSJKirim = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.QSisa, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_ViewIsiSJKirim, "text"));
+$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_ViewIsiSJKirim, "text"));
 $ViewIsiSJKirim = mysql_query($query_ViewIsiSJKirim, $Connection) or die(mysql_error());
 $row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim);
 $totalRows_ViewIsiSJKirim = mysql_num_rows($ViewIsiSJKirim);
@@ -160,7 +158,7 @@ body {
 		<th>No. Isi SJ</th>
 		<th>Barang</th>
 		<th>Warehouse</th>
-		<th>Quantity Sisa</th>
+		<th>Quantity Sisa Kirim</th>
 		<th>Quantity Kirim</th>
 		<th>Quantity Tertanda</th>
 		<th>No. Purchase</th>
@@ -173,7 +171,7 @@ body {
 		<td><input name="IsiSJKir" type="text" class="textview" id="IsiSJKir" value="<?php echo $row_ViewIsiSJKirim['IsiSJKir']; ?>" readonly></td>
 		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_ViewIsiSJKirim['Barang']; ?>" readonly></td>
 		<td><input name="Warehouse" type="text" class="textview" id="Warehouse" value="<?php echo $row_ViewIsiSJKirim['Warehouse']; ?>" readonly></td>
-		<td><input name="QSisa" type="text" class="textview" id="QSisa" value="<?php echo $row_ViewIsiSJKirim['QSisa']; ?>" readonly></td>
+		<td><input name="QSisaKir" type="text" class="textview" id="QSisaKir" value="<?php echo $row_ViewIsiSJKirim['QSisaKir']; ?>" readonly></td>
 		<td><input name="QKirim" type="text" class="textview" id="QKirim" value="<?php echo $row_ViewIsiSJKirim['QKirim']; ?>" readonly></td>
 		<td><input name="QTertanda" type="text" class="textview" id="QTertanda" value="<?php echo $row_ViewIsiSJKirim['QTertanda']; ?>" readonly></td>
 		<td><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_ViewIsiSJKirim['Purchase']; ?>" readonly></td>

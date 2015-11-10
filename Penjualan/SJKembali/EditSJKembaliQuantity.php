@@ -38,41 +38,51 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 $colname_View = "-1";
-if (isset($_GET['SJKir'])) {
-  $colname_View = $_GET['SJKir'];
+if (isset($_GET['SJKem'])) {
+  $colname_View = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT SJKir FROM sjkirim WHERE SJKir = %s", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT SJKem FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
-$colname_EditIsiSJKirim = "-1";
-if (isset($_GET['SJKir'])) {
-  $colname_EditIsiSJKirim = $_GET['SJKir'];
+$colname_EditIsiSJKembali = "-1";
+if (isset($_GET['SJKem'])) {
+  $colname_EditIsiSJKembali = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
-$EditIsiSJKirim = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_error());
-$row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim);
-$totalRows_EditIsiSJKirim = mysql_num_rows($EditIsiSJKirim);
+$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, transaksi.Barang, transaksi.QSisaKem, project.Project FROM isisjkembali INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
+$row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
+$totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
+for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET Warehouse=%s, QKirim=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['Warehouse'][$i], "text"),
-                       GetSQLValueString($_POST['QKirim'][$i], "text"),
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=%s WHERE Purchase=%s",
+                       GetSQLValueString($_POST['QSisaKem'][$i], "int"),
+                       GetSQLValueString($_POST['Purchase'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkembali SET QTertanda=%s WHERE Id=%s",
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['Id'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
-  $updateGoTo = "ViewSJKirim.php";
+  $updateGoTo = "ViewSJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
     $updateGoTo .= $_SERVER['QUERY_STRING'];
@@ -96,6 +106,19 @@ body {
 	background-repeat: no-repeat;
 }
 </style>
+
+<script language="javascript">
+  function sisa() {
+  for(x = 1; x < 11; x++){
+    var txtFirstNumberValue = document.getElementById('QSisaKem2'+x).value;
+    var txtSecondNumberValue = document.getElementById('QTerima'+x).value;
+	var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
+	  if (!isNaN(result)) {
+		document.getElementById('QSisaKem'+x).value = result;
+      }
+   }
+   }
+</script>
 
 </head>
 
@@ -139,7 +162,7 @@ body {
 
   <tbody>
     <tr>
-      <th align="center"><h2><?php echo $row_EditIsiSJKirim['Project']; ?></h2></th>
+      <th align="center"><h2><?php echo $row_EditIsiSJKembali['Project']; ?></h2></th>
     </tr>
   </tbody>
 </table>
@@ -152,24 +175,27 @@ body {
 		<th>No. Isi SJ</th>
 		<th>Barang</th>
 		<th>Warehouse</th>
-		<th>Quantity Sisa Kirim</th>
-		<th>Quantity Kirim</th>
+		<th>Quantity Sisa Kembali</th>
 		<th>Quantity Tertanda</th>
+		<th>Quantity Terima</th>
 		<th>No. Purchase</th>
       </tr>
     <tbody>      
+    <?php $x=1; ?>
 	<?php do { ?>
       <tr>
-		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>"></td>
-		<td><input name="IsiSJKir" type="text" class="textview" id="IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>" readonly></td>
-		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
-		<td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>"></td>
-		<td><input name="QSisaKir[]" type="text" class="textview" id="QSisaKir" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
-		<td><input name="QKirim[]" type="text" class="textbox" id="QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>"></td>
-		<td><input name="QTertanda" type="text" class="textview" id="QTertanda" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
-		<td><input name="Purchase[]" type="text" class="textview" id="Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>" readonly></td>
+		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
+		  <input name="QSisaKem2" type="hidden" id="QSisaKem2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>"></td>
+		<td><input name="IsiSJKem" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>" readonly></td>
+		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
+		<td><input name="Warehouse[]" type="text" class="textview" id="Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
+		<td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
+		<td><input name="QTertanda[]" type="text" class="textview" id="QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
+		<td><input name="QTerima[]" type="text" class="textbox" id="QTerima<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
+		<td><input name="Purchase[]" type="text" class="textview" id="Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>" readonly></td>
       </tr>
-	<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
+    <?php $x++; ?>
+	<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
       <tr>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
@@ -185,7 +211,7 @@ body {
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
 		   <td><input type="submit" name="submit" id="submit" class="submit" value="Update"></td>
-		   <td align="right"><a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="submit">Cancel</button></a></td>
+		   <td align="right"><a href="ViewSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
@@ -200,7 +226,7 @@ body {
 <?php
 mysql_free_result($Menu);
 
-mysql_free_result($EditIsiSJKirim);
+mysql_free_result($EditIsiSJKembali);
 
 mysql_free_result($View);
 ?>

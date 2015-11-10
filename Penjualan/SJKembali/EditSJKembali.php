@@ -52,7 +52,7 @@ if (isset($_GET['SJKem'])) {
   $colname_EditIsiSJKembali = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, transaksi.Barang, transaksi.Quantity, project.Project FROM isisjkembali INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, transaksi.Barang, transaksi.QSisaKem, project.Project FROM isisjkembali INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
@@ -64,16 +64,13 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkembali SET Warehouse=%s, QTertanda=%s, QTerima=%s WHERE Id=%s",
+  $updateSQL = sprintf("UPDATE isisjkembali SET Warehouse=%s, QTerima=%s WHERE Id=%s",
                        GetSQLValueString($_POST['Warehouse'][$i], "text"),
-                       GetSQLValueString($_POST['QTertanda'][$i], "text"),
                        GetSQLValueString($_POST['QTerima'][$i], "int"),
                        GetSQLValueString($_POST['Id'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-
-
 
   $updateGoTo = "ViewSJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -155,7 +152,7 @@ body {
 		<th>No. Isi SJ</th>
 		<th>Barang</th>
 		<th>Warehouse</th>
-		<th>Quantity</th>
+		<th>Quantity Sisa Kembali</th>
 		<th>Quantity Tertanda</th>
 		<th>Quantity Terima</th>
 		<th>No. Purchase</th>
@@ -164,13 +161,13 @@ body {
 	<?php do { ?>
       <tr>
 		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>"></td>
-		<td><input name="IsiSJKem" type="text" class="textbox" id="IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>" readonly></td>
-		<td><input name="Barang" type="text" class="textbox" id="Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
+		<td><input name="IsiSJKem" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>" readonly></td>
+		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 		<td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>"></td>
-		<td><input name="Quantity" type="text" class="textbox" id="Quantity" value="<?php echo $row_EditIsiSJKembali['Quantity']; ?>" readonly></td>
+		<td><input name="QSisaKem" type="text" class="textview" id="QSisaKem" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
 		<td><input name="QTertanda[]" type="text" class="textbox" id="QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"></td>
-		<td><input name="QTerima[]" type="text" class="textbox" id="QTerima" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
-		<td><input name="Purchase" type="text" class="textbox" id="Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>" readonly></td>
+		<td><input name="QTerima[]" type="text" class="textview" id="QTerima" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly></td>
+		<td><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>" readonly></td>
       </tr>
 	<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
       <tr>

@@ -4,6 +4,8 @@
 	<infoitem key="UD_Select" value="name:SJKir;datatype:string" />
 	<infoitem key="UD_LastIsiSJKirim" value="name:Id;datatype:int" />
 	<infoitem key="UD_LastId" value="name:Id;datatype:int" />
+	<infoitem key="UD_InsertSJKirim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QTerkir;datatype:int,name:Project;datatype:string" />
 	<infoitem key="UD_Reference" value="name:Reference;datatype:string" />
-	<infoitem key="UD_InsertSJKirim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QSisaKir;datatype:int,name:Quantity;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_InsertSJKembali" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QTerkem;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_LastIsiSJKembali" value="name:Id;datatype:int" />
 </info>

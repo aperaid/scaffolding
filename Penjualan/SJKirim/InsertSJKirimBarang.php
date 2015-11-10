@@ -48,7 +48,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKirim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisa, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
+$query_InsertSJKirim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
 $InsertSJKirim = mysql_query($query_InsertSJKirim, $Connection) or die(mysql_error());
 $row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim);
 $totalRows_InsertSJKirim = mysql_num_rows($InsertSJKirim);
@@ -64,44 +64,6 @@ $query_LastId = "SELECT Id FROM sjkirim ORDER BY Id DESC";
 $LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
 $row_LastId = mysql_fetch_assoc($LastId);
 $totalRows_LastId = mysql_num_rows($LastId);
-
-/*if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
-}
-
-for($i=0;$i<$totalRows_InsertSJKirim;$i++){
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (Purchase) VALUES (%s)",
-                       GetSQLValueString($_POST['Purchase'][$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-}
-}*/
-
-/*for($i=0;$i<$totalRows_InsertSJKirim;$i++){
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO isisjkirim (IsiSJKir, Warehouse, QKirim, Purchase, SJKir) VALUES (%s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
-                       GetSQLValueString($_POST['Warehouse'][$i], "text"),
-                       GetSQLValueString($_POST['QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['Purchase'][$i], "text"),
-                       GetSQLValueString($_POST['SJKir'], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-
-  $insertGoTo = "SJKirim.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-    $insertGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $insertGoTo));
-}
-}*/
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $truncateSQL = sprintf("TRUNCATE TABLE inserted");
@@ -215,7 +177,7 @@ $(function() {
 		<th>Pilih Kiriman</th>
 		<th>J/S</th>
 		<th>Barang</th>
-		<th>Quantity Sisa</th>
+		<th>Quantity Sisa Kirim</th>
 		<th>No. Purchase</th>
       </tr>
     <tbody>
@@ -225,7 +187,7 @@ $(function() {
 	    <td align="center"><input type="checkbox" name="checkbox[]" id="checkbox" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"></td>
 	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
 	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
-	    <td><input name="QSisa[]" type="text" class="textview" id="QSisa" value="<?php echo $row_InsertSJKirim['QSisa']; ?>" readonly></td>
+	    <td><input name="QSisaKir[]" type="text" class="textview" id="QSisaKir" value="<?php echo $row_InsertSJKirim['QSisaKir']; ?>" readonly></td>
 	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertSJKirim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
@@ -240,8 +202,8 @@ $(function() {
       <tr>
 		   <td>&nbsp;</td>
 		   <td align="right">&nbsp;</td>
-		   <td align="right"><input type="submit" name="submit" id="submit" class="submit" value="Pilih"></td>
-		   <td><a href="CancelKirim.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="submit">Cancel</button></a></td>
+		   <td align="left"><input type="submit" name="submit" id="submit" class="submit" value="Pilih"></td>
+	    <td><a href="CancelKirim.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
       </tr>
     </tbody>

@@ -119,6 +119,7 @@
 		<div class="ui-layout-center">
 			<table id="contentTable" class="display">
 				<thead>
+					<tr>
 					<th>No. Purchase</th>
 					<th>Project</th>
 					<th>J/S</th>
@@ -126,6 +127,7 @@
 					<th>Quantity</th>
 					<th>Amount</th>
 					<th>Tanggal Jual</th>
+					<th>Status</th>
 					<th>Opsi</th>
 				</thead>
 				<tbody>
@@ -137,15 +139,20 @@
 						<td><?php echo $row_TransaksiJual['Barang']; ?></td>
 						<td><?php echo $row_TransaksiJual['Quantity']; ?></td>
 						<td><?php echo $row_TransaksiJual['Amount']; ?></td>
-						<td><?php echo $row_TransaksiJual['TglStart']; ?></td>
+					  <td><?php echo $row_TransaksiJual['TglStart']; ?></td>
+						<td align="center"><?php
+							if ($row_TransaksiJual['QSisaKir'] == 0 && $test2 = $row_TransaksiJual['QSisaKem'] == 0) {
+							echo'F';
+							}?>
+                        </td>
 						<td><a href="ViewTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>"><button type="button" class="button3">View</button>
 						</a><a href="DeleteTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>">
-						<button type="button" class="button3">Delete</button></a></td>
+					  <button type="button" class="button3">Delete</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiJual = mysql_fetch_assoc($TransaksiJual)); ?>
 				</tbody>
 			</table>
-		</div>
+	</div>
 	</body>
 </html>
 <?php

@@ -48,45 +48,53 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_InsertSJKembali = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, project.Project FROM transaksi INNER JOIN inserted ON transaksi.Purchase=inserted.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND inserted.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
 
 mysql_select_db($database_Connection, $Connection);
-$query_LastIsiSJKembali = "SELECT IsiSJKem FROM isisjkembali ORDER BY Id DESC";
+$query_Select = "SELECT SJKem FROM sjkembali ORDER BY Id DESC";
+$Select = mysql_query($query_Select, $Connection) or die(mysql_error());
+$row_Select = mysql_fetch_assoc($Select);
+$totalRows_Select = mysql_num_rows($Select);
+
+mysql_select_db($database_Connection, $Connection);
+$query_LastIsiSJKembali = "SELECT Id FROM isisjkembali ORDER BY Id DESC";
 $LastIsiSJKembali = mysql_query($query_LastIsiSJKembali, $Connection) or die(mysql_error());
 $row_LastIsiSJKembali = mysql_fetch_assoc($LastIsiSJKembali);
 $totalRows_LastIsiSJKembali = mysql_num_rows($LastIsiSJKembali);
 
-mysql_select_db($database_Connection, $Connection);
-$query_LastId = "SELECT Id FROM sjkembali ORDER BY Id DESC";
-$LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
-$row_LastId = mysql_fetch_assoc($LastId);
-$totalRows_LastId = mysql_num_rows($LastId);
-
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
+$colname_Reference = "-1";
+if (isset($_GET['Reference'])) {
+  $colname_Reference = $_GET['Reference'];
 }
+mysql_select_db($database_Connection, $Connection);
+$query_Reference = sprintf("SELECT Reference FROM transaksi WHERE Reference = %s ORDER BY Id DESC", GetSQLValueString($colname_Reference, "text"));
+$Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
+$row_Reference = mysql_fetch_assoc($Reference);
+$totalRows_Reference = mysql_num_rows($Reference);
 
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (Purchase) VALUES (%s)",
-                       GetSQLValueString($_POST['checkbox'][$i], "int"));
+  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, SJKem) VALUES (%s, %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['IsiSJKem'][$i], "text"),
+                       GetSQLValueString($_POST['Warehouse'][$i], "text"),
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['Purchase'][$i], "text"),
+                       GetSQLValueString($_POST['SJKem'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-  
-  $insertGoTo = "InsertSJKembaliBarang2.php";
+
+  $insertGoTo = "SJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
   }
   header(sprintf("Location: %s", $insertGoTo));
-}}
+}
+}
 
 ?>
 <!doctype html>
@@ -174,36 +182,48 @@ $(function() {
   <table width="1000" border="0">
     <thead>
       <tr>
-		<th>Pilih Kembalian</th>
+		<th>&nbsp;</th>
+		<th>No. Isi SJ</th>
 		<th>J/S</th>
 		<th>Barang</th>
+		<th>Warehouse</th>
 		<th>Quantity Sisa Kembali</th>
+		<th>Quantity Tertanda</th>
 		<th>No. Purchase</th>
       </tr>
     <tbody>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td align="center"><input type="checkbox" name="checkbox[]" id="checkbox" value="<?php echo $row_InsertSJKembali['Purchase']; ?>"></td>
+	    <td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_InsertSJKembali['Id']; ?>"></td>
+	    <td><input name="IsiSJKem[]" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>" readonly></td>
 	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKembali['JS']; ?>" readonly></td>
 	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
+	    <td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off"></td>
 	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>" readonly></td>
+	    <td><input name="QTertanda[]" type="text" class="textbox" id="QTertanda" autocomplete="off" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>"></td>
 	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertSJKembali['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali)); ?>
 	<tr>
           <td>&nbsp;</td>
-        <td>&nbsp;</td>
+        <td><input name="SJKem" type="hidden" class="textbox" id="SJKem" value="<?php echo $row_Select['SJKem']; ?>" readonly></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
       </tr>
       <tr>
 		   <td>&nbsp;</td>
+		   <td>&nbsp;</td>
+		   <td align="right"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
 		   <td align="right">&nbsp;</td>
-		   <td align="left"><input type="submit" name="submit" id="submit" class="submit" value="Pilih"></td>
-	    <td><a href="CancelKembali.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="submit">Cancel</button></a></td>
+		   <td><a href="InsertSJKembaliBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>"><button type="button" class="submit">Cancel</button></a></td>
+		   <td>&nbsp;</td>
+		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
       </tr>
     </tbody>
@@ -216,9 +236,11 @@ $(function() {
 <?php
 mysql_free_result($Menu);
 
+mysql_free_result($Select);
+
 mysql_free_result($LastIsiSJKembali);
 
-mysql_free_result($LastId);
+mysql_free_result($Reference);
 
 mysql_free_result($InsertSJKembali);
 ?>

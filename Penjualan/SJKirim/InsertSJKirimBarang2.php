@@ -48,7 +48,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKirim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisa, project.Project FROM transaksi INNER JOIN inserted ON transaksi.Purchase=inserted.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND inserted.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
+$query_InsertSJKirim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM transaksi INNER JOIN inserted ON transaksi.Purchase=inserted.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND inserted.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
 $InsertSJKirim = mysql_query($query_InsertSJKirim, $Connection) or die(mysql_error());
 $row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim);
 $totalRows_InsertSJKirim = mysql_num_rows($InsertSJKirim);
@@ -204,7 +204,7 @@ $(function() {
 		<th>J/S</th>
 		<th>Barang</th>
 		<th>Warehouse</th>
-		<th>Quantity Sisa</th>
+		<th>Quantity Sisa Kirim</th>
 		<th>Quantity Kirim</th>
 		<th>No. Purchase</th>
       </tr>
@@ -217,8 +217,8 @@ $(function() {
 	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
 	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
 	    <td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off"></td>
-	    <td><input name="QSisa[]" type="text" class="textview" id="QSisa" value="<?php echo $row_InsertSJKirim['QSisa']; ?>" readonly></td>
-	    <td><input name="QKirim[]" type="text" class="textbox" id="QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisa']; ?>"></td>
+	    <td><input name="QSisaKir[]" type="text" class="textview" id="QSisaKir" value="<?php echo $row_InsertSJKirim['QSisaKir']; ?>" readonly></td>
+	    <td><input name="QKirim[]" type="text" class="textbox" id="QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKir']; ?>"></td>
 	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertSJKirim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
@@ -236,8 +236,8 @@ $(function() {
       <tr>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
-		   <td align="right">&nbsp;</td>
 		   <td align="right"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
+		   <td align="right">&nbsp;</td>
 		   <td><a href="InsertSJKirimBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
