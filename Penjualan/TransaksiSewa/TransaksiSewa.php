@@ -177,17 +177,20 @@ $totalRows_Menu = mysql_num_rows($Menu);
 						<td><?php echo $row_TransaksiSewa['Barang']; ?></td>
 						<td><?php echo $row_TransaksiSewa['Quantity']; ?></td>
 						<td><?php echo $row_TransaksiSewa['Amount']; ?></td>
-						<td><?php echo $row_TransaksiSewa['TglStart']; ?></td>
-						<td><?php echo $row_TransaksiSewa['TglStart']; ?></td>
+					  <td><?php echo $row_TransaksiSewa['TglStart']; ?></td>
 						<td align="center"><?php
-							if ($row_TransaksiSewa['QSisaKir'] == 0 && $test2 = $row_TransaksiSewa['QSisaKem'] == 0) {
-							echo'F';
-							}?>
-                        </td>
+							if ($row_TransaksiSewa['Quantity'] == $row_TransaksiSewa['QSisaKir']){
+								echo 'O';
+							}elseif ($row_TransaksiSewa['QSisaKir'] == 0 && $row_TransaksiSewa['QSisaKem'] == 0) {
+								echo'F';
+							}elseif ($row_TransaksiSewa['Quantity'] > $row_TransaksiSewa['QSisaKir']){
+								echo 'P';
+							}
+							?>
 						<td><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>">
 						<button type="button" class="button3">View</button>
 						</a><a href="DeleteTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>">
-						<button type="button" class="button3">Delete</button></a></td>
+					  <button type="button" class="button3">Delete</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
 				</tbody>

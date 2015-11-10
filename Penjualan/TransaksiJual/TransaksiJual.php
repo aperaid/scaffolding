@@ -141,9 +141,14 @@
 						<td><?php echo $row_TransaksiJual['Amount']; ?></td>
 					  <td><?php echo $row_TransaksiJual['TglStart']; ?></td>
 						<td align="center"><?php
-							if ($row_TransaksiJual['QSisaKir'] == 0 && $test2 = $row_TransaksiJual['QSisaKem'] == 0) {
-							echo'F';
-							}?>
+							if ($row_TransaksiJual['Quantity'] == $row_TransaksiJual['QSisaKir']){
+								echo 'O';
+							}elseif ($row_TransaksiJual['QSisaKir'] == 0 && $row_TransaksiJual['QSisaKem'] == 0) {
+								echo'F';
+							}elseif ($row_TransaksiJual['Quantity'] |= $row_TransaksiJual['QSisaKir']){
+								echo 'P';
+							}
+							?>
                         </td>
 						<td><a href="ViewTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>"><button type="button" class="button3">View</button>
 						</a><a href="DeleteTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>">
