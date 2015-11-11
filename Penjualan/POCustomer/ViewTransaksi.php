@@ -57,115 +57,212 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 ?>
-<!doctype html>
+
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Untitled Document</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>BDN ERP | View PO Customer</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../plugins/datatables/dataTables.bootstrap.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="wrapper">
 
-<link href="../../Button.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	background-image: url(../../Image/Wood.png);
-	background-repeat: no-repeat;
-}
-</style>
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>BDN</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">PT. <b>BDN</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Buka/Tutup</span>
+      </a>
 
-</head>
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">Administrator</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
-<body>
-<div style="float:left;width:15%">
-  <table width="200" border="0">
-    <tbody>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-      
-				<?php do { ?>    
-                	<tr>
-                    <td class="Menu">
-                    <a href="../<?php echo $row_Menu['link']; ?>">
-                    <button type="button" class="button">
-					<?php echo $row_Menu['nama']; ?></button></a></td>
-                    </tr>
-                    
-                <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
-                    <tr>
-                    <td class="Menu">&nbsp;</td>
-                    </tr>
-                    
-    </tbody>
-  </table>
+                <p>
+                  Admin - Adminstrator
+                  <small>Super Profile</small>
+                </p>
+              </li>
+              
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-right">
+                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MENU</li>
+        <?php do { ?>
+        <li><a href="../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
+        <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Customer
+        <small>Customer View </small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="">Purchase Order</a></li>
+        <li class="active">View PO</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box box-primary">
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped table-responsive">
+                <thead>
+                <tr>
+                  <th>PurCode</th>
+                  <th>J/S</th>
+                  <th>Item Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Request Date</th>
+                </tr>
+                </thead>
+                <tbody>
+				  <?php do { ?>
+                  <tr>
+                    <td class="hidden"><input name="Id" id="Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
+                    <td><span><?php echo $row_Purchase['Purchase']; ?></span></td>
+                    <td><input name="JS" type="text" class="form-control" id="JS" value="<?php echo $row_Purchase['JS']; ?>" readonly></td>
+                    <td><input name="Barang" type="text" class="form-control" id="Barang" value="<?php echo $row_Purchase['Barang']; ?>" readonly></td>
+                    <td><input name="Amount" type="text" class="form-control" id="Amount" value="<?php echo $row_Purchase['Amount']; ?>" readonly></td>
+                    <td><input name="Quantity" type="text" class="form-control" id="Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" readonly></td>
+                    <td><input name="TglStart" type="text" class="form-control" id="TglStart" value="<?php echo $row_Purchase['TglStart']; ?>" readonly></td>
+                  </tr>
+                <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>PurCode</th>
+                    <th>J/S</th>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Request Date</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>"><button type="button" class="btn btn-primary pull-right">Edit</button></a> 
+              <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Back</button></a>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  <!-- Footer Wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> `1.0.0
+    </div>
+    <strong>Copyright &copy; 2015 <a href="http://apera.id">Apera Indonesia</a>.</strong> All rights
+    reserved.
+  </footer>
+  <!-- /.footer-wrapper -->
+  
+  <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
 </div>
-<div style="float:left;width:85%">
 
-<table width="1100" border="0">
-
-
-  <tbody>
-    <tr>
-      <th align="center"><h2><?php echo $row_Purchase['Project']; ?></h2></th>
-    </tr>
-  </tbody>
-</table>
-</p>
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
-  <table width="1000" border="0">
-    <thead>
-      <tr>
-		<th>&nbsp;</th>
-		<th>No. Purchase</th>
-		<th>J/S</th>
-		<th>Barang</th>
-		<th>Amount</th>
-		<th>Quantity</th>
-		<th>Tanggal Permintaan</th>
-      </tr>
-    <tbody>      
-	<?php do { ?>
-      <tr>
-		<td><input name="Id" type="hidden" id="Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
-		<td><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_Purchase['Purchase']; ?>" readonly></td>
-		<td><input name="JS" type="text" class="textview" id="JS" value="<?php echo $row_Purchase['JS']; ?>" readonly></td>
-		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_Purchase['Barang']; ?>" readonly></td>
-		<td><input name="Amount" type="text" class="textview" id="Amount" value="<?php echo $row_Purchase['Amount']; ?>" readonly></td>
-		<td><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" readonly></td>
-		<td><input name="TglStart" type="text" class="textview" id="TglStart" value="<?php echo $row_Purchase['TglStart']; ?>" readonly></td>
-      </tr>
-	<?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
-      <tr>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-      </tr>
-      <tr>
-		   <td>&nbsp;</td>
-		   <td>&nbsp;</td>
-		   <td align="right">&nbsp;</td>
-		   <td align="right"><a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">
-                        <button type="button" class="button2">Edit Barang</button></a></td>
-		   <td></td>
-		   <td><a href="POCustomer.php"><button type="button" class="button2">Cancel</button></a></td>
-		   <td>&nbsp;</td>
-      </tr>
-    </tbody>
-  </table>
-</form>
-
+<!-- jQuery 2.1.4 -->
+<script src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable();
+  });
+</script>
 </body>
 </html>
 <?php
