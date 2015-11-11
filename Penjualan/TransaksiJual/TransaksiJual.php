@@ -44,92 +44,138 @@
 	$totalRows_Menu = mysql_num_rows($Menu);
 	
 	?>
-<!------------------------------------------------------->
-<link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
-<script type="text/javascript" src="../../JQuery/Layout/jquery.js"></script>
-<script type="text/javascript" src="../../JQuery/Layout/jquery.ui.all.js"></script>
-<script type="text/javascript" src="../../JQuery/Layout/jquery.layout.js"></script>
-<script type='text/javascript'>
-	var jq126 = jQuery.noConflict();
-</script>
-<script type="text/javascript">
-	var myLayout;// a var is required because this page utilizes: myLayout.allowOverflow() method
-	
-	jq126(document).ready(function () {
-	myLayout = jq126('body').layout({
-		// enable showOverflow on west-pane so popups will overlap north pane
-		west__showOverflowOnHover: true
-	
-	//,	west__fxSettings_open: { easing: "easeOutBounce", duration: 750 }
-	});
-	
-	});
-	
-</script>
-<!------------------------------------------------------->
-<!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="../../JQuery/DataTable/css/jquery.dataTables.css">
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="../../JQuery/DataTable/js/jquery.js"></script>
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="../../JQuery/datatable/js/jquery.dataTables.js"></script>
-<script>
-	$(document).ready( function () {
-	    $('#contentTable').DataTable();
-	} );
-	
-</script>
-<!------------------------------------------------------->
+
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>PT. BDN | Transaksi Claim</title>
-		<link href="../../Button.css" rel="stylesheet" type="text/css">
-	</head>
-	<body>
-		<div class="ui-layout-north">
-			<div class="title">
-				TRANSAKSI JUAL
-			</div>
-		</div>
-		<div class="ui-layout-west">
-			<table class="menuTable">
-					
-				<?php do { ?>    
-                	<tr>
-                    <td class="Menu">
-                    <a href="../<?php echo $row_Menu['link']; ?>">
-                    <button type="button" class="button">
-					<?php echo $row_Menu['nama']; ?></button></a></td>
-                    </tr>
-                    
-                <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
-                    <tr>
-                    <td class="Menu">&nbsp;</td>
-                    </tr>
-                    
-			</table>
-		</div>
-		<div class="ui-layout-south">
-			<div class="footer">PT. Berlian Djaya Nusantara</div>
-			<div class="copyright">Powered by Apera ERP</div>
-		</div>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>BDN ERP | Customer</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../plugins/datatables/dataTables.bootstrap.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
 
-		<div class="ui-layout-center">
-			<table id="contentTable" class="display">
-				<thead>
-					<tr>
-					<th>No. Purchase</th>
-					<th>Project</th>
-					<th>J/S</th>
-					<th>Nama Barang</th>
-					<th>Quantity</th>
-					<th>Amount</th>
-					<th>Tanggal Jual</th>
-					<th>Status</th>
-					<th>Opsi</th>
-				</thead>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>BDN</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">PT. <b>BDN</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Buka/Tutup</span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">Administrator</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                <p>
+                  Admin - Adminstrator
+                  <small>Super Profile</small>
+                </p>
+              </li>
+              
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-right">
+                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MENU</li>
+        <?php do { ?>
+        <li><a href="../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
+        <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Transaksi Jual
+        <small> View </small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Transaksi Jual</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped table-responsive">
+                <thead>
+                <tr>
+                  <th>PurCode</th>
+                  <th>Project</th>
+                  <th>J/S</th>
+                  <th>Item Name</th>
+                  <th>Q</th>
+                  <th>Amount</th>
+                  <th>Request Date</th>
+                  <th>Status</th>
+                  <th>Opsi</th>
+                </tr>
+                </thead>
 				<tbody>
 					<?php do { ?>
 					<tr>
@@ -140,25 +186,83 @@
 						<td><?php echo $row_TransaksiJual['Quantity']; ?></td>
 						<td><?php echo $row_TransaksiJual['Amount']; ?></td>
 					  <td><?php echo $row_TransaksiJual['TglStart']; ?></td>
-						<td align="center"><?php
+						<?php
 							if ($row_TransaksiJual['Quantity'] == $row_TransaksiJual['QSisaKir']){
-								echo 'O';
+								echo '<td class="danger"> O </td>';
+							}elseif ($row_TransaksiJual['Quantity'] !=0 && $row_TransaksiJual['QSisaKir'] !=0){
+								echo '<td class="warning"> P </td>';
 							}elseif ($row_TransaksiJual['QSisaKir'] == 0 && $row_TransaksiJual['QSisaKem'] == 0) {
-								echo'F';
-							}elseif ($row_TransaksiJual['Quantity'] |= $row_TransaksiJual['QSisaKir']){
-								echo 'P';
+								echo '<td class="success"> F </td>';
 							}
 							?>
-                        </td>
-						<td><a href="ViewTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>"><button type="button" class="button3">View</button>
-						</a><a href="DeleteTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>">
-					  <button type="button" class="button3">Delete</button></a></td>
+                        
+						<td><a href="ViewTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>"><button type="button" class="btn btn-primary btn-sm">View</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiJual = mysql_fetch_assoc($TransaksiJual)); ?>
 				</tbody>
-			</table>
-	</div>
-	</body>
+                <tfoot>
+                <tr>
+                  <th>PurCode</th>
+                  <th>Project</th>
+                  <th>J/S</th>
+                  <th>Item Name</th>
+                  <th>Q</th>
+                  <th>Amount</th>
+                  <th>Request Date</th>
+                  <th>Status</th>
+                  <th>Opsi</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  <!-- Footer Wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> `1.0.0
+    </div>
+    <strong>Copyright &copy; 2015 <a href="http://apera.id">Apera Indonesia</a>.</strong> All rights
+    reserved.
+  </footer>
+  <!-- /.footer-wrapper -->
+  
+  <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+
+<!-- jQuery 2.1.4 -->
+<script src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable();
+  });
+</script>
+</body>
 </html>
 <?php
 	mysql_free_result($TransaksiJual);
