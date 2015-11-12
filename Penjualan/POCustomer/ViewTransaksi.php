@@ -159,8 +159,8 @@ $totalRows_View = mysql_num_rows($View);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Customer
-        <small>Customer View </small>
+        Purchase Order
+        <small>View Detail</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -200,16 +200,6 @@ $totalRows_View = mysql_num_rows($View);
                   </tr>
                 <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <th>PurCode</th>
-                    <th>J/S</th>
-                    <th>Item Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Request Date</th>
-                  </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->

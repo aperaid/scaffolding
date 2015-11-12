@@ -196,7 +196,7 @@
 							}
 							?>
                         
-						<td><a href="ViewTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>"><button type="button" class="btn btn-primary btn-sm">View</button></a></td>
+						<td><a href="ViewTransaksiJual.php?Id=<?php echo $row_TransaksiJual['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiJual = mysql_fetch_assoc($TransaksiJual)); ?>
 				</tbody>

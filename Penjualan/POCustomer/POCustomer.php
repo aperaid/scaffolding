@@ -212,7 +212,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
                     <td><?php echo $row_POCustomer['Company']; ?></td>
                     <td><?php echo $row_POCustomer['Project']; ?></td>
                     <td></td>
-                    <td><a href="EditPOCustomer.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
+                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
                     <td><a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>
                   <?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>

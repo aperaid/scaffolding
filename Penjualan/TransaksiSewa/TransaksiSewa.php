@@ -227,7 +227,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 							}
 							?>
                         
-						<td><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="btn btn-primary btn-sm">View</button></a></td>
+						<td><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
 				</tbody>
