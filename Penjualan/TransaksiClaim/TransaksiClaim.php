@@ -1,47 +1,84 @@
-<?php require_once('../../Connections/Connection.php'); ?><?php
+<?php require_once('../../Connections/Connection.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
 	if (!function_exists("GetSQLValueString")) {
 	function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 	{
 	  if (PHP_VERSION < 6) {
-		$theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+	    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
 	  }
 	
 	  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
 	
 	  switch ($theType) {
-		case "text":
-		  $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-		  break;    
-		case "long":
-		case "int":
-		  $theValue = ($theValue != "") ? intval($theValue) : "NULL";
-		  break;
-		case "double":
-		  $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
-		  break;
-		case "date":
-		  $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-		  break;
-		case "defined":
-		  $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-		  break;
+	    case "text":
+	      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+	      break;    
+	    case "long":
+	    case "int":
+	      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+	      break;
+	    case "double":
+	      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+	      break;
+	    case "date":
+	      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+	      break;
+	    case "defined":
+	      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+	      break;
 	  }
 	  return $theValue;
 	}
 	}
 	
-	mysql_select_db($database_Connection, $Connection);
-	$query_TransaksiClaim = "SELECT * FROM jualtransaksiclaim ORDER BY Id ASC";
-	$TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_error());
-	$row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
-	$totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
+$colname_TransaksiClaim = "-1";
+if (isset($_GET['Reference'])) {
+  $colname_TransaksiClaim = $_GET['Reference'];
+}
 	
-	mysql_select_db($database_Connection, $Connection);
-	$query_Menu = "SELECT * FROM menu";
-	$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
-	$row_Menu = mysql_fetch_assoc($Menu);
-	$totalRows_Menu = mysql_num_rows($Menu);
-	?>
+mysql_select_db($database_Connection, $Connection);
+$query_TransaksiClaim = "SELECT transaksiclaim.*, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode ORDER BY transaksiclaim.Id ASC";
+$TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_error());
+$row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
+$totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
+	
+mysql_select_db($database_Connection, $Connection);
+$query_Menu = "SELECT * FROM menu";
+$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
+$row_Menu = mysql_fetch_assoc($Menu);
+$totalRows_Menu = mysql_num_rows($Menu);
+?>
 <!------------------------------------------------------->
 <link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
 <script type="text/javascript" src="../../JQuery/Layout/jquery.js"></script>
@@ -82,14 +119,13 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>PT. BDN | Transaksi Claim</title>
+		<title>PT. BDN | Surat Jalan</title>
 		<link href="../../Button.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<div class="ui-layout-north">
 			<div class="title">
-				TRANSAKSI CLAIM
-			</div>
+				TRANSAKSI CLAIM</div>
 		</div>
 		<div class="ui-layout-west">
 			<table class="menuTable">
@@ -121,8 +157,9 @@
 			<table class="menuTable">
 				<tr>
 					<td>
-						<a href="InsertTransaksiClaim.php"><button class="button2" type=
-							"button">Insert</button></a>
+						<a href="InsertTransaksiClaim.php">
+						<button class="button2" type=
+							"button">Tambah Claim</button></a>
 					</td>
 				</tr>
 			</table>
@@ -130,36 +167,32 @@
 		<div class="ui-layout-center">
 			<table id="contentTable">
 				<thead>
-					<th class="noinvoice">No. Invoice</th>
-					<th class="tanggal">Tgl Start</th>
-					<th class="tanggal">Tgl End</th>
-					<th class="customer">Customer</th>
-					<th class="JSC">J/S/C</th>
-					<th class="project">Project</th>
-					<th class="amount">Amount</th>
-					<th class="status">Status</th>
+					<tr>
+					<th class="noinvoice">No. Claim</th>
+					<th class="noinvoice">Tanggal Claim</th>
+					<th class="customer">Project</th>
+					<th class="customer">Amount</th>
+					<th class="customer">Quantity Claim</th>
 					<th class="tombol">Opsi</th>
 				</thead>
 				<tbody>
 					<?php do { ?>
 					<tr>
-						<td><?php echo $row_TransaksiClaim['No']; ?></td>
-						<td><?php echo $row_TransaksiClaim['TglStart']; ?></td>
-						<td><?php echo $row_TransaksiClaim['TglEnd']; ?></td>
-						<td><?php echo $row_TransaksiClaim['Customer']; ?></td>
-						<td><?php echo $row_TransaksiClaim['JSC']; ?></td>
-						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
-						<td><?php echo $row_TransaksiClaim['Amount']; ?></td>
-						<td><?php echo $row_TransaksiClaim['Status']; ?></td>
-						<td><a href="ViewTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="button3">View</button></a>-<a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="button3">Delete</button></a></td>
-						</td>
+						<td align="center" class="noinvoice"><?php echo $row_TransaksiClaim['Claim']; ?></td>
+						<td align="center" class="noinvoice"><?php echo $row_TransaksiClaim['Tgl']; ?></td>
+						<td align="center" class="customer"><?php echo $row_TransaksiClaim['Project']; ?></td>
+						<td align="center" class="customer"><?php echo $row_TransaksiClaim['Amount']; ?></td>
+						<td align="center" class="customer"><?php echo $row_TransaksiClaim['QClaim']; ?></td>
+					  <td align="center" class="tombol"><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?> "><button type="button" class="button3">Batal</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
-	</body>
-	</table>
-	</div>
+				</tbody>
+			</table>
+		</div>
 	</body>
 </html>
 <?php
+	mysql_free_result($Menu);
+
 	mysql_free_result($TransaksiClaim);
 	?>

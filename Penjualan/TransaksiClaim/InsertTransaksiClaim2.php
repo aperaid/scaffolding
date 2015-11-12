@@ -31,31 +31,40 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-if ((isset($_GET['Id'])) && ($_GET['Id'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM transaksiclaim WHERE Id=%s",
-                       GetSQLValueString($_GET['Id'], "int"));
-					   
-  $alterSQL = sprintf("ALTER TABLE transaksiclaim AUTO_INCREMENT = 1");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-
-  $deleteGoTo = "TransaksiClaim.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
-    $deleteGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $deleteGoTo));
-}
+$query_LastReference = "SELECT Reference FROM inserted";
+$LastReference = mysql_query($query_LastReference, $Connection) or die(mysql_error());
+$row_LastReference = mysql_fetch_assoc($LastReference);
+$totalRows_LastReference = mysql_num_rows($LastReference);
 ?>
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>Untitled Document</title>
+<link href="../../Button.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+body {
+	background-image: url(../../Image/Wood.png);
+	background-repeat: no-repeat;
+}
+</style>
+
+<script type="text/javascript">
+    function submit()
+    {
+        document.getElementById("submit").click(); // Simulates button click
+        document.submitForm.submit(); // Submits the form without the button
+    }
+</script>
+
 </head>
 
-<body>
+<body onLoad="submit()">
+<form id="form1" name="form1" method="post" action="InsertTransaksiClaimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>">
+  <input type="submit" name="submit" id="submit" value="Submit">
+</form>
 </body>
 </html>
+<?php
+mysql_free_result($LastReference);
+?>

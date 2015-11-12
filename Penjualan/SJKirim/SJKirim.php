@@ -67,18 +67,13 @@ $query_SJKirim = "SELECT sjkirim.*, project.Project, customer.Customer FROM sjki
 $SJKirim = mysql_query($query_SJKirim, $Connection) or die(mysql_error());
 $row_SJKirim = mysql_fetch_assoc($SJKirim);
 $totalRows_SJKirim = mysql_num_rows($SJKirim);
-		
-	$query_menu = "SELECT * FROM menu ORDER BY Id ASC";
-	$menu = mysql_query($query_menu, $Connection) or die(mysql_error());
-	$row_menu = mysql_fetch_assoc($menu);
-	$totalRows_menu = mysql_num_rows($menu);
 	
-	mysql_select_db($database_Connection, $Connection);
-	$query_Menu = "SELECT * FROM menu";
-	$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
-	$row_Menu = mysql_fetch_assoc($Menu);
-	$totalRows_Menu = mysql_num_rows($Menu);
-	?>
+mysql_select_db($database_Connection, $Connection);
+$query_Menu = "SELECT * FROM menu";
+$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
+$row_Menu = mysql_fetch_assoc($Menu);
+$totalRows_Menu = mysql_num_rows($Menu);
+?>
 <!------------------------------------------------------->
 <link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
 <script type="text/javascript" src="../../JQuery/Layout/jquery.js"></script>
@@ -190,5 +185,7 @@ $totalRows_SJKirim = mysql_num_rows($SJKirim);
 	</body>
 </html>
 <?php
+	mysql_free_result($Menu);
+
 	mysql_free_result($SJKirim);
 	?>

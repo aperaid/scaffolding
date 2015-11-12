@@ -37,20 +37,20 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO jualtransaksiclaim (`No`, TglStart, TglEnd, Customer, JSC, Project, Amount, Status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['No'], "text"),
-                       GetSQLValueString($_POST['TglStart'], "text"),
-                       GetSQLValueString($_POST['TglEnd'], "text"),
-                       GetSQLValueString($_POST['Customer'], "text"),
-                       GetSQLValueString($_POST['JSC'], "text"),
-                       GetSQLValueString($_POST['Project'], "text"),
-                       GetSQLValueString($_POST['Amount'], "int"),
-                       GetSQLValueString($_POST['Status'], "text"));
+  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO inserted (Reference) VALUES (%s)",
+                       GetSQLValueString($_POST['Reference'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 
-  $insertGoTo = "TransaksiClaim.php";
+  $insertGoTo = "InsertTransaksiClaim2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
@@ -79,11 +79,7 @@ body {
 
 <script>
 function capital() {
-    var x = document.getElementById("No");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("Customer");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("Project");
+	var x = document.getElementById("Reference");
     x.value = x.value.toUpperCase();
 }
 </script>
@@ -91,11 +87,13 @@ function capital() {
 <link href="/scaffolding/JQuery2/jquery-ui.css" rel="stylesheet" type="text/css">
 <script src="../../JQuery2/external/jquery/jquery.js"></script>
 <script src="../../JQuery2/jquery-ui.js"></script>
-
-<script>
+<script type="text/javascript">
 $(function() {
-  $( "#TglStart,#TglEnd" ).datepicker();
-});
+    var availableTags = <?php include ("../autocomplete3.php");?>;
+    $( "#Reference" ).autocomplete({
+      source: availableTags
+    });
+  });
 </script>
 
 </head>
@@ -151,55 +149,9 @@ $(function() {
     <tbody>
       <tr>
         <th width="250">&nbsp;</th>
-        <th width="100" align="right">No. Invoice</th>
+        <th width="125" align="right">No. Reference</th>
         <th width="75" align="right">&nbsp;</th>
-        <td width="557"><input name="No" type="text" id="No" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Tgl Start</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="TglStart" type="text" id="TglStart" autocomplete="off" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Tgl End</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="TglEnd" type="text" id="TglEnd" autocomplete="off" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Customer</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="Customer" type="text" id="Customer" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">J/S/C</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="JSC" type="text" id="JSC" autocomplete="off" readonly value="Claim" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Project</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="Project" type="text" id="Project" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Amount</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="Amount" type="text" id="Amount" autocomplete="off" class="textbox"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Status</th>
-        <th align="right">&nbsp;</th>
-        <td><select name="Status" id="Status">
-            <option>F</option>
-            <option>P</option>
-            <option>O</option>
-        </select></td>
+        <td width="532"><input name="Reference" type="text" id="Reference" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
@@ -218,3 +170,6 @@ $(function() {
 </form>
 </body>
 </html>
+<?php
+mysql_free_result($Menu);
+?>

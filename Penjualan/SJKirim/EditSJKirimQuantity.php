@@ -52,7 +52,7 @@ if (isset($_GET['SJKir'])) {
   $colname_EditIsiSJKirim = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
+$query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
 $EditIsiSJKirim = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_error());
 $row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim);
 $totalRows_EditIsiSJKirim = mysql_num_rows($EditIsiSJKirim);
@@ -174,6 +174,7 @@ body {
       <tr>
 		<th>&nbsp;</th>
 		<th>No. Isi SJ</th>
+		<th>J/S</th>
 		<th>Barang</th>
 		<th>Warehouse</th>
 		<th>Quantity Sisa Kirim</th>
@@ -188,6 +189,7 @@ body {
 		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
 		  <input name="QSisaKir2" type="hidden" id="QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>"></td>
 		<td><input name="IsiSJKir" type="text" class="textview" id="IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>" readonly></td>
+		<td><input name="JS" type="text" class="textview" id="JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
 		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
 		<td><input name="Warehouse[]" type="text" class="textview" id="Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
 		<td><input name="QSisaKir[]" type="text" class="textview" id="QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
@@ -206,10 +208,12 @@ body {
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
+          <td>&nbsp;</td>
       </tr>
       <tr>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
+		   <td align="center">&nbsp;</td>
 		   <td>&nbsp;</td>
 		   <td><input type="submit" name="submit" id="submit" class="submit" value="Update"></td>
 		   <td align="right"><a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="submit">Cancel</button></a></td>

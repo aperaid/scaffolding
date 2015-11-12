@@ -42,7 +42,7 @@ if (isset($_GET['SJKem'])) {
   $colname_ViewIsiSJKembali = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_ViewIsiSJKembali = sprintf("SELECT isisjkembali.*, transaksi.Barang, transaksi.QSisaKem, project.Project FROM isisjkembali INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_ViewIsiSJKembali, "text"));
+$query_ViewIsiSJKembali = sprintf("SELECT isisjkembali.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, project.Project FROM isisjkembali INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_ViewIsiSJKembali, "text"));
 $ViewIsiSJKembali = mysql_query($query_ViewIsiSJKembali, $Connection) or die(mysql_error());
 $row_ViewIsiSJKembali = mysql_fetch_assoc($ViewIsiSJKembali);
 $totalRows_ViewIsiSJKembali = mysql_num_rows($ViewIsiSJKembali);
@@ -125,6 +125,7 @@ body {
       <tr>
 		<th>&nbsp;</th>
 		<th>No. Isi SJ</th>
+		<th>J/S</th>
 		<th>Barang</th>
 		<th>Warehouse</th>
 		<th>Quantity Sisa Kembali</th>
@@ -137,6 +138,7 @@ body {
       <tr>
 		<td><input name="Id" type="hidden" id="Id"></td>
 		<td><input name="IsiSJKem" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_ViewIsiSJKembali['IsiSJKem']; ?>" readonly></td>
+		<td><input name="JS" type="text" class="textview" id="JS" value="<?php echo $row_ViewIsiSJKembali['JS']; ?>" readonly></td>
 		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_ViewIsiSJKembali['Barang']; ?>" readonly></td>
 		<td><input name="Warehouse" type="text" class="textview" id="Warehouse" value="<?php echo $row_ViewIsiSJKembali['Warehouse']; ?>" readonly></td>
 		<td><input name="QSisaKem" type="text" class="textview" id="QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
@@ -154,10 +156,12 @@ body {
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
+          <td>&nbsp;</td>
       </tr>
       <tr>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
+		   <td align="center">&nbsp;</td>
 		   <td align="center"><a href="EditSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>">
                         <button type="button" class="button2">Edit Pengembalian</button></a></td>
 		   <td align="center"><a href="EditSJKembaliQuantity.php?SJKem=<?php echo $row_View['SJKem']; ?>">

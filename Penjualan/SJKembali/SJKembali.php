@@ -67,18 +67,13 @@ $query_SJKembali = "SELECT sjkembali.*, project.Project, customer.Customer FROM 
 $SJKembali = mysql_query($query_SJKembali, $Connection) or die(mysql_error());
 $row_SJKembali = mysql_fetch_assoc($SJKembali);
 $totalRows_SJKembali = mysql_num_rows($SJKembali);
-		
-	$query_menu = "SELECT * FROM menu ORDER BY Id ASC";
-	$menu = mysql_query($query_menu, $Connection) or die(mysql_error());
-	$row_menu = mysql_fetch_assoc($menu);
-	$totalRows_menu = mysql_num_rows($menu);
 	
-	mysql_select_db($database_Connection, $Connection);
-	$query_Menu = "SELECT * FROM menu";
-	$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
-	$row_Menu = mysql_fetch_assoc($Menu);
-	$totalRows_Menu = mysql_num_rows($Menu);
-	?>
+mysql_select_db($database_Connection, $Connection);
+$query_Menu = "SELECT * FROM menu";
+$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
+$row_Menu = mysql_fetch_assoc($Menu);
+$totalRows_Menu = mysql_num_rows($Menu);
+?>
 <!------------------------------------------------------->
 <link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
 <script type="text/javascript" src="../../JQuery/Layout/jquery.js"></script>
@@ -190,5 +185,7 @@ $totalRows_SJKembali = mysql_num_rows($SJKembali);
 	</body>
 </html>
 <?php
+	mysql_free_result($Menu);
+
 	mysql_free_result($SJKembali);
 	?>

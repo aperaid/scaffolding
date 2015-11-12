@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_Select" value="name:SJKir;datatype:string" />
+	<infoitem key="UD_LastIsiSJKirim" value="name:Id;datatype:int" />
+	<infoitem key="UD_LastId" value="name:Id;datatype:int" />
+	<infoitem key="UD_InsertSJKirim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QTerkir;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_Reference" value="name:Reference;datatype:string" />
+	<infoitem key="UD_InsertSJKembali" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QTerkem;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_LastIsiSJKembali" value="name:Id;datatype:int" />
+	<infoitem key="UD_InsertTransaksiClaim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:QSisaKem;datatype:int" />
+	<infoitem key="UD_LastClaim" value="name:Id;datatype:int" />
+	<infoitem key="UD_Inserted" value="name:Tgl;datatype:string" />
+	<infoitem key="UD_InsertedTgl" value="name:Tgl;datatype:string" />
+</info>
