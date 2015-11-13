@@ -150,7 +150,7 @@ body {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+<form id="form1" name="form1" method="POST">
   <table width="1000" border="0">
     <thead>
       <tr>
