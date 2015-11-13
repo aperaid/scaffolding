@@ -204,7 +204,7 @@ $totalRows_NoSJ = mysql_num_rows($NoSJ);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="Tgl" type="text" class="form-control pull-right date" id="Tgl">
+                      <input name="Tgl" type="text" autocomplete="off" class="form-control pull-right date" id="Tgl">
                     </div>
                   </div>
                   <div class="form-group">
@@ -290,7 +290,8 @@ function capital() {
   $('#Tgl').datepicker({
 	  format: "dd/mm/yyyy",
 	  orientation: "bottom left",
-	  todayHighlight: true
+	  todayHighlight: true,
+	  autoclose: true
   }); 
 </script>
 <script type="text/javascript">
