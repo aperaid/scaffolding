@@ -239,7 +239,7 @@ $totalRows_View = mysql_num_rows($View);
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-				<a href="SJKirim.php"><button type="button" class="btn btn-default">Cancel</button></a>
+				<a href="SJKirim.php"><button type="button" class="btn btn-default">Back</button></a>
 				<div class="btn-group pull-right">
 					<a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-primary">Edit SJ Kirim</button></a>
 					<a href="EditSJKirimQuantity.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-success">Q Tertanda</button></a>

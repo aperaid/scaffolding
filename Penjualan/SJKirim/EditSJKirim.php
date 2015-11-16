@@ -198,9 +198,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
+		<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
           <div class="box box-primary">
             <div class="box-body no-padding">
-				<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
 				  <table id="example1" class="table table-bordered">
 					<thead>
 					<tr>
@@ -231,7 +231,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					</tbody>
 				  </table>
 				<input type="hidden" name="MM_update" value="form1">
-				</form>
 			</div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -240,7 +239,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 			</div>
           </div>
           <!-- /.box -->
-        </div>
+        </form>
+		</div>
         <!-- /.col -->
       </div>
       <!-- /.row -->

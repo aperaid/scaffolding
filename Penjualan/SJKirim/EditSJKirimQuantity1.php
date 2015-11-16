@@ -64,9 +64,20 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET Warehouse=%s, QKirim=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['Warehouse'][$i], "text"),
-                       GetSQLValueString($_POST['QKirim'][$i], "text"),
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=%s, QSisaKem=QSisaKem+%s WHERE Purchase=%s",
+                       GetSQLValueString($_POST['QSisaKir'][$i], "int"),
+					   GetSQLValueString($_POST['QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['Purchase'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkirim SET QTertanda=%s WHERE Id=%s",
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['Id'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -96,6 +107,19 @@ body {
 	background-repeat: no-repeat;
 }
 </style>
+
+<script language="javascript">
+  function sisa() {
+  for(x = 1; x < 11; x++){
+    var txtFirstNumberValue = document.getElementById('QSisaKir2'+x).value;
+    var txtSecondNumberValue = document.getElementById('QTertanda'+x).value;
+	var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
+	  if (!isNaN(result)) {
+		document.getElementById('QSisaKir'+x).value = result;
+      }
+   }
+   }
+</script>
 
 </head>
 
@@ -159,18 +183,21 @@ body {
 		<th>No. Purchase</th>
       </tr>
     <tbody>      
+    <?php $x=1; ?>
 	<?php do { ?>
       <tr>
-		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>"></td>
+		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
+		<input name="QSisaKir2" type="hidden" id="QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>"></td>
 		<td><input name="IsiSJKir" type="text" class="textview" id="IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>" readonly></td>
 		<td><input name="JS" type="text" class="textview" id="JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
 		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
-		<td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>"></td>
-		<td><input name="QSisaKir[]" type="text" class="textview" id="QSisaKir" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
-		<td><input name="QKirim[]" type="text" class="textbox" id="QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>"></td>
-		<td><input name="QTertanda" type="text" class="textview" id="QTertanda" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
+		<td><input name="Warehouse[]" type="text" class="textview" id="Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
+		<td><input name="QSisaKir[]" type="text" class="textview" id="QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
+		<td><input name="QKirim[]" type="text" class="textview" id="QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
+		<td><input name="QTertanda[]" type="text" class="textbox" id="QTertanda<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
 		<td><input name="Purchase[]" type="text" class="textview" id="Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>" readonly></td>
       </tr>
+    <?php $x++; ?>
 	<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
       <tr>
           <td>&nbsp;</td>
