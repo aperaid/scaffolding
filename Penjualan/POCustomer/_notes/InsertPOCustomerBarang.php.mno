@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <info>
-	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_Reference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_Purchase" value="name:Id;datatype:int" />
 	<infoitem key="UD_LastReference" value="name:Reference;datatype:string" />
+	<infoitem key="UD_LastInvoice" value="name:Id;datatype:int" />
 </info>

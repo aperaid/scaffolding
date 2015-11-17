@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_JS" value="name:JS;datatype:string" />
+	<infoitem key="UD_LastId" value="name:Id;datatype:int" />
+	<infoitem key="UD_Reference" value="name:Reference;datatype:string" />
+	<infoitem key="UD_inserted" value="name:Purchase;datatype:string,name:Reference;datatype:string,name:Tgl;datatype:string,name:PPN;datatype:int,name:Transport;datatype:string" />
+</info>

@@ -35,6 +35,22 @@ $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO inserted (PPN, Transport) VALUES (%s, %s)",
+                       GetSQLValueString($_POST['PPN'], "int"),
+                       GetSQLValueString($_POST['Transport'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
 for($i=0;$i<10;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKir, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
@@ -50,7 +66,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 
-  $insertGoTo = "POCustomer.php";
+  $insertGoTo = "InsertPOCustomerBarang2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
@@ -214,7 +230,7 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>&&Reference=<?php echo $row_LastReference['Reference']; ?>" id="form1" name="form1" method="POST">
                 <div class="box-body">
                   <table class="table table-hover table-bordered" id="customFields">
                     <thead>
@@ -229,6 +245,18 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
+                <table class="table table-hover table-bordered" id="customFields">
+                    <thead>
+                      <th>PPN</th>
+                      <th>Transport</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input name="PPN" type="text" id="PPN" value="0"></td>
+                        <td><input name="Transport" type="text" id="Transport" value="0"></td>
+                      </tr>
+    				</tbody>
+                </table>
                   <a href="CancelBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
                   <button type="submit" id="submit" class="btn btn-success pull-right">Insert</button>
                 </div>
@@ -336,6 +364,7 @@ function capital() {
 });
 </script>
 <script>
+
   $('#Tgl').datepicker({
 	  format: "dd/mm/yyyy",
 	  orientation: "bottom left",
