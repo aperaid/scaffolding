@@ -42,7 +42,7 @@ if (isset($_GET['Reference'])) {
   $colname_Purchase = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_Purchase = sprintf("SELECT transaksi.*, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_Purchase, "text"));
+$query_Purchase = sprintf("SELECT transaksi.*, pocustomer.Tgl, project.*, customer.* FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_Purchase, "text"));
 $Purchase = mysql_query($query_Purchase, $Connection) or die(mysql_error());
 $row_Purchase = mysql_fetch_assoc($Purchase);
 $totalRows_Purchase = mysql_num_rows($Purchase);
@@ -169,52 +169,103 @@ $totalRows_View = mysql_num_rows($View);
       </ol>
     </section>
 
-    <!-- Main content -->
-    <section class="content">
+	<!-- Main content -->
+    <section class="invoice">
+      <!-- title row -->
       <div class="row">
         <div class="col-xs-12">
-
-          <div class="box box-primary">
-            <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped table-responsive">
-                <thead>
-                <tr>
-                  <th>PurCode</th>
-                  <th>J/S</th>
-                  <th>Item Name</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Request Date</th>
-                </tr>
-                </thead>
-                <tbody>
-				  <?php do { ?>
-                  <tr>
-                    <td class="hidden"><input name="Id" id="Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
-                    <td><span><?php echo $row_Purchase['Purchase']; ?></span></td>
-                    <td><input name="JS" type="text" class="form-control" id="JS" value="<?php echo $row_Purchase['JS']; ?>" readonly></td>
-                    <td><input name="Barang" type="text" class="form-control" id="Barang" value="<?php echo $row_Purchase['Barang']; ?>" readonly></td>
-                    <td><input name="Amount" type="text" class="form-control" id="Amount" value="<?php echo $row_Purchase['Amount']; ?>" readonly></td>
-                    <td><input name="Quantity" type="text" class="form-control" id="Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" readonly></td>
-                    <td><input name="TglStart" type="text" class="form-control" id="TglStart" value="<?php echo $row_Purchase['TglStart']; ?>" readonly></td>
-                  </tr>
-                <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
-                </tbody>
-              </table>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>"><button type="button" class="btn btn-primary pull-right">Edit</button></a> 
-              <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Back</button></a>
-            </div>
-          </div>
-          <!-- /.box -->
+          <h2 class="page-header">
+            <i class="fa fa-globe"></i> PT. BDN | 
+			<big><?php echo $row_Purchase['Reference']; ?></big>
+			<small class="pull-right">Date: <?php echo $row_Purchase['Tgl']; ?></small>
+		  </h2>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- info row -->
+      <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+          Company
+          <address>
+            <strong><?php echo $row_Purchase['Company']; ?></strong><br>
+            <?php echo $row_Purchase['Alamat']; ?><br>
+            <?php echo $row_Purchase['Kota']; ?>,  <?php echo $row_Purchase['Zip']; ?><br>
+            Phone: <?php echo $row_Purchase['CompPhone']; ?><br>
+            Email: <?php echo $row_Purchase['CompEmail']; ?>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Project
+          <address>
+            <strong><?php echo $row_Purchase['Project']; ?></strong><br>
+            <?php echo $row_Purchase['Alamat']; ?><br>
+            <?php echo $row_Purchase['Kota']; ?>,  <?php echo $row_Purchase['Zip']; ?><br>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Contact Person
+          <address>
+            <strong><?php echo $row_Purchase['Customer']; ?></strong><br>
+            Phone: <?php echo $row_Purchase['CustPhone']; ?><br>
+            Email: <?php echo $row_Purchase['CustEmail']; ?>
+          </address>
         </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->
+
+      <!-- Table row -->
+      <div class="row">
+        <div class="col-xs-12 table-responsive">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>PurCode</th>
+                <th>J/S</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Request Date</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+				<?php do { ?>
+                  <tr>
+                    <td class="hidden"><input name="Id" id="Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
+                    <td><?php echo $row_Purchase['Purchase']; ?></td>
+                    <td><?php echo $row_Purchase['JS']; ?></td>
+                    <td><?php echo $row_Purchase['Barang']; ?></td>
+                    <td><?php echo $row_Purchase['Quantity']; ?></td>
+                    <td><?php echo $row_Purchase['TglStart']; ?></td>
+                    <td><?php echo $row_Purchase['Amount']; ?></td>
+                  </tr>
+                <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
+            </tbody>
+          </table>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      
+
+      <!-- this row will not appear when printing -->
+      <div class="row no-print">
+        <div class="col-xs-12">
+          <a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+          <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Process
+          </button>
+          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>" type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+            <i class="fa fa-download"></i> Edit
+          </a>
+        </div>
+      </div>
     </section>
     <!-- /.content -->
+	<div class="clearfix"></div>
+	
   </div>
   <!-- /.content-wrapper -->
   
