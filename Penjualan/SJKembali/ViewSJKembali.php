@@ -201,7 +201,7 @@ $totalRows_View = mysql_num_rows($View);
 						<td><input name="QSisaKem" type="text" class="form-control" id="QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
 						<td><input name="QTertanda" type="text" class="form-control" id="QTertanda" value="<?php echo $row_ViewIsiSJKembali['QTertanda']; ?>" readonly></td>
 						<td><input name="QTerima" type="text" class="form-control" id="QTerima" value="<?php echo $row_ViewIsiSJKembali['QTerima']; ?>" readonly></td
-					</tr>
+					></tr>
 					<?php } while ($row_ViewIsiSJKembali = mysql_fetch_assoc($ViewIsiSJKembali)); ?>
                 </tbody>
               </table>

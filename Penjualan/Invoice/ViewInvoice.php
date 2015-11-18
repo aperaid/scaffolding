@@ -114,7 +114,7 @@ if (isset($_GET['Reference'])) {
   $colname_SJKem = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_SJKem = sprintf("SELECT Tgl FROM sjkembali WHERE Reference = %s", GetSQLValueString($colname_SJKem, "text"));
+$query_SJKem = sprintf("SELECT Tgl FROM sjkembali WHERE Reference = %s ORDER BY Id ASC", GetSQLValueString($colname_SJKem, "text"));
 $SJKem = mysql_query($query_SJKem, $Connection) or die(mysql_error());
 $row_SJKem = mysql_fetch_assoc($SJKem);
 $totalRows_SJKem = mysql_num_rows($SJKem);
@@ -124,7 +124,7 @@ if (isset($_GET['Reference'])) {
   $colname_SJKir = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_SJKir = sprintf("SELECT Tgl FROM sjkirim WHERE Reference = %s", GetSQLValueString($colname_SJKir, "text"));
+$query_SJKir = sprintf("SELECT Tgl FROM sjkirim WHERE Reference = %s ORDER BY Id ASC", GetSQLValueString($colname_SJKir, "text"));
 $SJKir = mysql_query($query_SJKir, $Connection) or die(mysql_error());
 $row_SJKir = mysql_fetch_assoc($SJKir);
 $totalRows_SJKir = mysql_num_rows($SJKir);

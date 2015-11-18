@@ -7,6 +7,6 @@
 	<infoitem key="UD_View4" value="name:Id;datatype:int,name:Invoice;datatype:string,name:JSC;datatype:string,name:Tgl;datatype:string,name:PPN;datatype:int,name:Transport;datatype:string,name:Reference;datatype:string" />
 	<infoitem key="UD_Count" value="name:((SUM(Amount*Quantity)+invoice.Transport)*invoice.PPN*0.1)+(SUM(Amount*Quantity)+invoice.Transport);datatype:real" />
 	<infoitem key="UD_SJKem" value="name:Tgl;datatype:string" />
-	<infoitem key="UD_SJKir" value="name:SJKir;datatype:string" />
+	<infoitem key="UD_SJKir" value="name:Tgl;datatype:string" />
 	<infoitem key="UD_Bulan" value="name:SJKem;datatype:string" />
 </info>

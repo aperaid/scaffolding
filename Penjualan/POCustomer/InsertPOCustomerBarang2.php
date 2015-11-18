@@ -127,7 +127,7 @@ body {
 
 </head>
 
-<body>
+<body onLoad="submit()">
 <form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
   <table width="1350" border="0">
     <tbody>
@@ -141,11 +141,11 @@ body {
       <?php do { ?>
         <tr>
           <td>&nbsp;</td>
-          <td><input name="Invoice[]" type="text" id="Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
-          <input name="JS[]" type="text" id="JS" value="<?php echo $row_JS['JS']; ?>">
-          <input name="PPN" type="text" id="PPN" value="<?php echo $row_inserted['PPN']; ?>">
-          <input name="Transport" type="text" id="Transport" value="<?php echo $row_inserted['Transport']; ?>">
-          <input name="Reference[]" type="text" id="Reference" value="<?php echo $row_Reference['Reference']; ?>"></td>
+          <td><input name="Invoice[]" type="hidden" id="Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
+          <input name="JS[]" type="hidden" id="JS" value="<?php echo $row_JS['JS']; ?>">
+          <input name="PPN" type="hidden" id="PPN" value="<?php echo $row_inserted['PPN']; ?>">
+          <input name="Transport" type="hidden" id="Transport" value="<?php echo $row_inserted['Transport']; ?>">
+          <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_Reference['Reference']; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>

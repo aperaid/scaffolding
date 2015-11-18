@@ -175,7 +175,7 @@ $(function() {
     <thead>
       <tr>
 		<th>Pilih Kembalian</th>
-		<th>J/S</th>
+		<th>Tgl Start</th>
 		<th>Barang</th>
 		<th>Quantity Sisa Kembali</th>
 		<th>No. Purchase</th>
@@ -185,7 +185,7 @@ $(function() {
 	<?php do { ?>
 	  <tr>
 	    <td align="center"><input type="checkbox" name="checkbox[]" id="checkbox" value="<?php echo $row_InsertSJKembali['Purchase']; ?>"></td>
-	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKembali['JS']; ?>" readonly></td>
+	    <td><input name="JS[]" type="text" class="textview" id="JS"" readonly></td>
 	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
 	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>" readonly></td>
 	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertSJKembali['Purchase']; ?> readonly></td>

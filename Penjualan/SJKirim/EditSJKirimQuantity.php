@@ -64,10 +64,18 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=%s, QSisaKem=QSisaKem+%s WHERE Purchase=%s",
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=%s WHERE Purchase=%s",
                        GetSQLValueString($_POST['QSisaKir'][$i], "int"),
-					   GetSQLValueString($_POST['QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['Purchase'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=QSisaKem+%s WHERE IsiSJKir=%s",
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -231,6 +239,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 						  <tr>
 							<input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
 							<input name="QSisaKir2" type="hidden" id="QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>">
+                            <input name="IsiSJKir[]" type="hidden" class="textview" id="IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
+                            <input name="Purchase[]" type="hidden" class="textview" id="Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
 							<td><?php echo $row_EditIsiSJKirim['IsiSJKir']; ?></td>
 							<td><?php echo $row_EditIsiSJKirim['Purchase']; ?></td>
 							<td><input name="JS" type="text" class="form-control" id="JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
@@ -239,7 +249,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<td><input name="QSisaKir[]" type="text" class="form-control" id="QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
 							<td><input name="QKirim[]" type="text" class="form-control" id="QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
 							<td><input name="QTertanda[]" type="text" class="form-control" id="QTertanda<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
-						  </tr>
+                          </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
 					</tbody>
