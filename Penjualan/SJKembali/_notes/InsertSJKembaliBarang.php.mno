@@ -10,5 +10,5 @@
 	<infoitem key="UD_LastReference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_LastId" value="name:Id;datatype:int" />
 	<infoitem key="UD_LastIsiSJKembali" value="name:IsiSJKem;datatype:string" />
-	<infoitem key="UD_InsertSJKembali" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QSisaKem;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_InsertSJKembali" value="name:IsiSJKir;datatype:string,name:QSisaKem;datatype:int,name:SJKir;datatype:string,name:Tgl;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int" />
 </info>

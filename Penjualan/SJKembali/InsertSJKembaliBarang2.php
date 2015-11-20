@@ -48,7 +48,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, project.Project FROM transaksi INNER JOIN inserted ON transaksi.Purchase=inserted.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND inserted.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKem, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Quantity, transaksi.Purchase FROM isisjkirim INNER JOIN inserted ON isisjkirim.IsiSJKir=inserted.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE inserted.IsiSJKir ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
@@ -77,11 +77,12 @@ $totalRows_Reference = mysql_num_rows($Reference);
 
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, SJKem) VALUES (%s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, IsiSJKir, SJKem) VALUES (%s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['IsiSJKem'][$i], "text"),
                        GetSQLValueString($_POST['Warehouse'][$i], "text"),
                        GetSQLValueString($_POST['QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['Purchase'][$i], "text"),
+					   GetSQLValueString($_POST['Purchase'][$i], "text"),
+                       GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
                        GetSQLValueString($_POST['SJKem'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -184,25 +185,30 @@ $(function() {
       <tr>
 		<th>&nbsp;</th>
 		<th>No. Isi SJ</th>
-		<th>J/S</th>
+		<th>Tgl Kirim</th>
 		<th>Barang</th>
+		<th>Quantity</th>
 		<th>Warehouse</th>
 		<th>Quantity Sisa Kembali</th>
 		<th>Quantity Tertanda</th>
-		<th>No. Purchase</th>
+		<th>SJ Code</th>
       </tr>
     <tbody>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_InsertSJKembali['Id']; ?>"></td>
+	    <td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_InsertSJKembali['Id']; ?>">
+        	<input name="IsiSJKir[]" type="hidden" id="IsiSJKir" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>">		
+         	<input name="Purchase[]" type="hidden" id="Purchase" value="<?php echo $row_InsertSJKembali['Purchase']; ?>">
+        </td>
 	    <td><input name="IsiSJKem[]" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>" readonly></td>
-	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKembali['JS']; ?>" readonly></td>
-	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
+	    <td><input name="Tgl" type="text" class="textview" id="Tgl" value="<?php echo $row_InsertSJKembali['Tgl']; ?>" readonly></td>
+	    <td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
+	    <td><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_InsertSJKembali['Quantity']; ?>" readonly></td>
 	    <td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off"></td>
 	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>" readonly></td>
 	    <td><input name="QTertanda[]" type="text" class="textbox" id="QTertanda" autocomplete="off" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>"></td>
-	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertSJKembali['Purchase']; ?> readonly></td>
+	    <td><input name="SJKir" type="text" class="textview" id="SJKir" value=<?php echo $row_InsertSJKembali['SJKir']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali)); ?>
@@ -215,12 +221,14 @@ $(function() {
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
+          <td>&nbsp;</td>
       </tr>
       <tr>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
 		   <td align="right"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
 		   <td align="right">&nbsp;</td>
+		   <td>&nbsp;</td>
 		   <td><a href="InsertSJKembaliBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>

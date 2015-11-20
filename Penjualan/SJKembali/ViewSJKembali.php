@@ -42,7 +42,7 @@ if (isset($_GET['SJKem'])) {
   $colname_ViewIsiSJKembali = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_ViewIsiSJKembali = sprintf("SELECT isisjkembali.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, project.Project FROM isisjkembali INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_ViewIsiSJKembali, "text"));
+$query_ViewIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_ViewIsiSJKembali, "text"));
 $ViewIsiSJKembali = mysql_query($query_ViewIsiSJKembali, $Connection) or die(mysql_error());
 $row_ViewIsiSJKembali = mysql_fetch_assoc($ViewIsiSJKembali);
 $totalRows_ViewIsiSJKembali = mysql_num_rows($ViewIsiSJKembali);
@@ -181,7 +181,7 @@ $totalRows_View = mysql_num_rows($View);
                 <tr>
 					<th>#</th>
 					<th>#Pur</th>
-					<th>J/S</th>
+					<th>Tanggal Kirim</th>
 					<th>Barang</th>
 					<th>Warehouse</th>
 					<th>Q Sisa Kembali</th>
@@ -195,7 +195,7 @@ $totalRows_View = mysql_num_rows($View);
 						<input name="Id" type="hidden" id="Id">
 						<td><?php echo $row_ViewIsiSJKembali['IsiSJKem']; ?></td>
 						<td><?php echo $row_ViewIsiSJKembali['Purchase']; ?></td>
-						<td><input name="JS" type="text" class="form-control" id="JS" value="<?php echo $row_ViewIsiSJKembali['JS']; ?>" readonly></td>
+						<td><input name="Tgl" type="text" class="form-control" id="Tgl" value="<?php echo $row_ViewIsiSJKembali['Tgl']; ?>" readonly></td>
 						<td><input name="Barang" type="text" class="form-control" id="Barang" value="<?php echo $row_ViewIsiSJKembali['Barang']; ?>" readonly></td>
 						<td><input name="Warehouse" type="text" class="form-control" id="Warehouse" value="<?php echo $row_ViewIsiSJKembali['Warehouse']; ?>" readonly></td>
 						<td><input name="QSisaKem" type="text" class="form-control" id="QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>

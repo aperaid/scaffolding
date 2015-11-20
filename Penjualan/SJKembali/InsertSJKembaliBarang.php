@@ -48,7 +48,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKem, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Quantity FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
@@ -74,7 +74,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (Purchase) VALUES (%s)",
+  $insertSQL = sprintf("INSERT INTO inserted (IsiSJKir) VALUES (%s)",
                        GetSQLValueString($_POST['checkbox'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -175,20 +175,22 @@ $(function() {
     <thead>
       <tr>
 		<th>Pilih Kembalian</th>
-		<th>Tgl Start</th>
+		<th>Tgl Kirim</th>
 		<th>Barang</th>
+		<th>Quantity</th>
 		<th>Quantity Sisa Kembali</th>
-		<th>No. Purchase</th>
+		<th>SJ Code</th>
       </tr>
     <tbody>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td align="center"><input type="checkbox" name="checkbox[]" id="checkbox" value="<?php echo $row_InsertSJKembali['Purchase']; ?>"></td>
-	    <td><input name="JS[]" type="text" class="textview" id="JS"" readonly></td>
+	    <td align="center"><input type="checkbox" name="checkbox[]" id="checkbox" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>"></td>
+	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKembali['Tgl']; ?>"" readonly></td>
 	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
+	    <td><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_InsertSJKembali['Quantity']; ?>" readonly></td>
 	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>" readonly></td>
-	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertSJKembali['Purchase']; ?> readonly></td>
+	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value="<?php echo $row_InsertSJKembali['SJKir']; ?>" readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali)); ?>
@@ -198,11 +200,13 @@ $(function() {
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
+          <td>&nbsp;</td>
       </tr>
       <tr>
 		   <td>&nbsp;</td>
 		   <td align="right">&nbsp;</td>
 		   <td align="left"><input type="submit" name="submit" id="submit" class="submit" value="Pilih"></td>
+		   <td>&nbsp;</td>
 	    <td><a href="CancelKembali.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
       </tr>

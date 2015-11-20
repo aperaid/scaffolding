@@ -53,18 +53,6 @@ if (isset($_GET['Reference'])) {
   $colname_ViewJS = $_GET['JS'];
   $colname_ViewInvoice = $_GET['Invoice'];
 }
-mysql_select_db($database_Connection, $Connection);
-$query_Count = sprintf("SELECT ((SUM(Amount*Quantity)+invoice.Transport)*invoice.PPN*0.1)+(SUM(Amount*Quantity)+invoice.Transport) FROM invoice INNER JOIN transaksi ON invoice.Reference=transaksi.Reference WHERE transaksi.Reference = %s AND transaksi.JS = %s AND invoice.Invoice = %s", GetSQLValueString($colname_Count, "text"), GetSQLValueString($colname_ViewJS, "text"), GetSQLValueString($colname_ViewInvoice, "text"));
-$Count = mysql_query($query_Count, $Connection) or die(mysql_error());
-$row_Count = mysql_fetch_assoc($Count);
-$totalRows_Count = mysql_num_rows($Count);
-
-$maxRows_View2 = 10;
-$pageNum_View2 = 0;
-if (isset($_GET['pageNum_View2'])) {
-  $pageNum_View2 = $_GET['pageNum_View2'];
-}
-$startRow_View2 = $pageNum_View2 * $maxRows_View2;
 
 $colname_View2 = "-1";
 if (isset($_GET['JS'])) {
@@ -72,10 +60,9 @@ if (isset($_GET['JS'])) {
   $colname_ViewJS = $_GET['JS'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT Purchase, Barang, Quantity, Amount FROM transaksi WHERE Reference = %s AND JS = %s", GetSQLValueString($colname_View2, "text"),
+$query_View2 = sprintf("SELECT sjkirim.SJKir, sjkembali.SJKem, transaksi.Purchase, transaksi.Barang, isisjkembali.QTertanda, sjkirim.Tgl AS S, sjkembali.Tgl AS E, transaksi.Amount FROM transaksi RIGHT JOIN isisjkirim ON isisjkirim.Purchase = transaksi.Purchase LEFT JOIN sjkirim ON sjkirim.SJKir = isisjkirim.SJKir RIGHT JOIN isisjkembali ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN sjkembali ON sjkembali.SJKem = isisjkembali.SJKem WHERE transaksi.Reference = %s AND transaksi.JS = %s", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"));
-$query_limit_View2 = sprintf("%s LIMIT %d, %d", $query_View2, $startRow_View2, $maxRows_View2);
-$View2 = mysql_query($query_limit_View2, $Connection) or die(mysql_error());
+$View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
 
 if (isset($_GET['totalRows_View2'])) {
@@ -84,7 +71,6 @@ if (isset($_GET['totalRows_View2'])) {
   $all_View2 = mysql_query($query_View2);
   $totalRows_View2 = mysql_num_rows($all_View2);
 }
-$totalPages_View2 = ceil($totalRows_View2/$maxRows_View2)-1;
 
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
@@ -108,27 +94,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   }
   header(sprintf("Location: %s", $updateGoTo));
 }
-
-$colname_SJKem = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_SJKem = $_GET['Reference'];
-}
-mysql_select_db($database_Connection, $Connection);
-$query_SJKem = sprintf("SELECT Tgl FROM sjkembali WHERE Reference = %s ORDER BY Id ASC", GetSQLValueString($colname_SJKem, "text"));
-$SJKem = mysql_query($query_SJKem, $Connection) or die(mysql_error());
-$row_SJKem = mysql_fetch_assoc($SJKem);
-$totalRows_SJKem = mysql_num_rows($SJKem);
-
-$colname_SJKir = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_SJKir = $_GET['Reference'];
-}
-mysql_select_db($database_Connection, $Connection);
-$query_SJKir = sprintf("SELECT Tgl FROM sjkirim WHERE Reference = %s ORDER BY Id ASC", GetSQLValueString($colname_SJKir, "text"));
-$SJKir = mysql_query($query_SJKir, $Connection) or die(mysql_error());
-$row_SJKir = mysql_fetch_assoc($SJKir);
-$totalRows_SJKir = mysql_num_rows($SJKir);
-
 ?>
 
 <!------------------------------------------------------->
@@ -154,20 +119,24 @@ $totalRows_SJKir = mysql_num_rows($SJKir);
 	
 </script>
 
-<script>
-var z = "Jual";
-if(z != "Sewa") {
-	document.getElementById("Period").style.display='none';
-}
-</script>
- 
 <script language="javascript">
-  function bagi() {
-    var txtFirstNumberValue = document.getElementById('Period').value;
-    var txtSecondNumberValue = document.getElementById('Period2').value;
-	var result = parseInt(txtFirstNumberValue) / parseInt(txtSecondNumberValue);
+  function ppn() {
+    var txtFirstNumberValue = document.getElementById('Totals2').value;
+    var txtSecondNumberValue = document.getElementById('PPN').value;
+	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue);
 	  if (!isNaN(result)) {
-		document.getElementById('Index').value = result;
+		document.getElementById('Totals').value = result;
+      }
+   }
+</script>
+
+<script language="javascript">
+  function transport() {
+    var txtFirstNumberValue = document.getElementById('Totals2').value;
+    var txtSecondNumberValue = document.getElementById('Transport').value;
+	var result = parseFloat(txtFirstNumberValue) + parseFloat(txtSecondNumberValue);
+	  if (!isNaN(result)) {
+		document.getElementById('Totals').value = result;
       }
    }
 </script>
@@ -243,51 +212,40 @@ body {
   <table width="1000" border="0">
     <tbody>
       <tr>
+        <th align="center">SJ Kirim</th>
+        <th align="center">SJ Kembali</th>
         <th align="center">No. Purchase</th>
         <th align="center">Item</th>
+        <th>S</th>
+        <th>E</th>
+        <th>S-E</th>
+        <th>Periode</th>
+        <th>I</th>
         <th>Quantity</th>
         <th>Amount</th>
-        <th>Period</th>
-      </tr>
-      <?php do { ?>
+        <th>Total</th>
+        </tr>
+      <?php 
+	  $total = 0;
+	  do { ?>
       
         <tr>
+          <td align="center"><input name="SJKir" type="text" class="textview" id="SJKir" value="<?php echo $row_View2['SJKir']; ?>" readonly></td>
+          <td align="center"><input name="SJKem" type="text" class="textview" id="SJKem" value="<?php echo $row_View2['SJKem']; ?>" readonly></td>
           <td align="center"><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_View2['Purchase']; ?>" readonly></td>
           <td align="center"><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_View2['Barang']; ?>" readonly></td>
-          <td align="center"><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_View2['Quantity']; ?>" readonly></td>
-          <td align="center"><input name="Amount" type="text" class="textview" id="Amount" value="<?php echo $row_View2['Amount']; ?>" readonly></td>
-          <?php $sjkem = strtotime($row_SJKem['Tgl']); $sjkir = strtotime($row_SJKir['Tgl']); ?>
-          <td align="center"><input type="text" name="Perio" id="Perio" value="<?php echo ($sjkem - $sjkir) / 86400 ?>"></td>
-        </tr>
-      <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
-    </tbody>
-</table>
-  <table width="1000" border="0">
-    <tbody>
-      <tr>
-        <th width="160">&nbsp;</th>
-        <th width="90" align="right">Pajak</th>
-        <th width="129" align="right">&nbsp;</th>
-        <td colspan="2"><input name="PPN" type="text" class="textbox" id="PPN" autocomplete="off" value="<?php echo $row_View['PPN']; ?>"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Transport</th>
-        <th align="right">&nbsp;</th>
-        <td colspan="2"><input name="Transport" type="text" class="textbox" id="Transport" autocomplete="off" value="<?php echo $row_View['Transport']; ?>"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Total</th>
-        <th align="right">&nbsp;</th>
-        <td colspan="2"><input name="Total" type="text" class="textview" id="Total" value="<?php echo $row_Count['((SUM(Amount*Quantity)+invoice.Transport)*invoice.PPN*0.1)+(SUM(Amount*Quantity)+invoice.Transport)']; ?>" readonly></td>
-      </tr>
-      <tr>
-        <td align="center">&nbsp;</td>
-        <th align="right">Period</th>
-        <td align="center">&nbsp;</td>
-        <td colspan="2">
-			<?php $bln = substr($row_View['Tgl'], 3, -5); $thn = substr($row_View['Tgl'], 6);
+          <td align="center"><input name="TglStart" type="text" class="textview" id="TglStart" value="<?php echo $row_View2['S']; ?>" readonly></td>
+          <td align="center"><input name="TglEnd" type="text" class="textview" id="TglEnd" value="<?php echo $row_View2['E']; ?>" readonly></td>
+          <td align="center">
+            <?php 
+		  $date1 = $row_View2['S'];
+		  $date2 = $row_View2['E'];
+		  $date1 = str_replace('/', '-', $date1);
+		  $date2 = str_replace('/', '-', $date2);
+		  $sjkem = strtotime($date2); $sjkir = strtotime($date1); ?>
+            <input name="S-E" type="text" class="textview" id="S-E" value="<?php echo (($sjkem - $sjkir) / 86400)+1 ?>" readonly></td>
+          <td align="center">
+            <?php $bln = substr($row_View2['S'], 3, -5); $thn = substr($row_View2['S'], 6);
 			if ($bln == 1){
 				$bln = 31;
 				}
@@ -331,16 +289,37 @@ body {
 				$bln = "ada kesalahan bulan";
 				}
 			?>
-        	<input name="Period" id="Period" type="text" value="<?php echo $bln ?>" class="textbox" onKeyUp="bagi()">
-        	<input name="Period2" id="Period2" type="text" value="<?php echo $bln ?>" class="textview">
-        </td>
+            <input name="Periode" type="text" class="textview" id="Periode" value="<?php echo $bln ?>" readonly></td>
+          <td align="center"><input name="Indeks" type="text" class="textview" id="Indeks" value="<?php echo round(((($sjkem - $sjkir) / 86400)+1)/$bln, 4) ?>" readonly></td>
+          <td align="center"><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_View2['QTertanda']; ?>" readonly></td>
+          <td align="center"><input name="Amount" type="text" class="textview" id="Amount" value="<?php echo $row_View2['Amount']; ?>" readonly></td>
+          <?php $test = ((($sjkem - $sjkir) / 86400)+1)/$bln*$row_View2['QTertanda']* $row_View2['Amount']; $total += $test ?>
+          <td align="center"><input name="Total" type="text" class="textview" id="Total" value="<?php echo round($test, 2) ?>" readonly></td>
         </tr>
+      <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
+    </tbody>
+</table>
+  <table width="1000" border="0">
+    <tbody>
       <tr>
-        <td align="center">&nbsp;</td>
-        <th align="right">Index</th>
-        <td align="center">&nbsp;</td>
-        <td colspan="2"><input name="Index" id="Index" type="text" class="textview" value="1" readonly></td>
-        </tr>
+        <th width="160">&nbsp;</th>
+        <th width="90" align="right">Pajak</th>
+        <th width="129" align="right">&nbsp;</th>
+        <td colspan="2"><input name="PPN" type="text" class="textbox" id="PPN" autocomplete="off" value="<?php echo $row_View['PPN']; ?>" onKeyUp="ppn()"></td>
+      </tr>
+      <tr>
+        <th>&nbsp;</th>
+        <th align="right">Transport</th>
+        <th align="right">&nbsp;</th>
+        <td colspan="2"><input name="Transport" type="text" class="textbox" id="Transport" autocomplete="off" value="<?php echo $row_View['Transport']; ?>" onKeyUp="transport()"></td>
+      </tr>
+      <tr>
+        <th>&nbsp;</th>
+        <th align="right">Total</th>
+        <th align="right">&nbsp;</th>
+        <input name="Totals2" type="hidden" id="Totals2" value="<?php echo round($total, 2); ?>" >
+        <td colspan="2"><input name="Total" type="text" class="textview" id="Totals" value="<?php echo round($total, 2); ?>" readonly></td>
+      </tr>
       <tr>
         <td align="center">&nbsp;</td>
         <td colspan="2" align="center">&nbsp;</td>

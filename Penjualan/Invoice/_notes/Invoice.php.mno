@@ -2,5 +2,5 @@
 <info>
 	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_TransaksiSewa" value="name:Id;datatype:int,name:Purchase;datatype:string,name:JS;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:QSisaKir;datatype:int,name:QSisaKem;datatype:int,name:Amount;datatype:string,name:TglStart;datatype:string,name:Reference;datatype:string,name:Status;datatype:string,name:Project;datatype:string,name:Company;datatype:string" />
-	<infoitem key="UD_Invoice" value="name:Id;datatype:int,name:Invoice;datatype:string,name:JSC;datatype:string,name:Tgl;datatype:string,name:PPN;datatype:int,name:Transport;datatype:string,name:Reference;datatype:string,name:Project;datatype:string,name:Company;datatype:string" />
+	<infoitem key="UD_Invoice" value="name:Id;datatype:int,name:Invoice;datatype:string,name:JSC;datatype:string,name:Tgl;datatype:string,name:PPN;datatype:int,name:Transport;datatype:string,name:Reference;datatype:string,name:SJKir;datatype:string,name:Project;datatype:string,name:Company;datatype:string" />
 </info>
