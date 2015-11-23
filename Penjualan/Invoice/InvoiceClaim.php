@@ -63,7 +63,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	
 	mysql_select_db($database_Connection, $Connection);
-$query_Invoice = "SELECT invoice.*, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Sewa'";
+$query_Invoice = "SELECT invoice.*, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Claim'";
 $Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
 $row_Invoice = mysql_fetch_assoc($Invoice);
 $totalRows_Invoice = mysql_num_rows($Invoice);
@@ -121,7 +121,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 			
             
             <div class="title">
-				INVOICE SEWA</div>
+				INVOICE CLAIM</div>
 		</div>
 		<div class="ui-layout-west">
             <table class="menuTable">
@@ -168,7 +168,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 					<?php } while ($row_Invoice = mysql_fetch_assoc($Invoice)); ?>
 				</tbody>
 			</table>
-			<table width="1350" border="0">
+            <table width="1350" border="0">
 			  <tbody>
 			    <tr>
 			      <td><a href="InvoiceJual.php">

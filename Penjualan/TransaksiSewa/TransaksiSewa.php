@@ -63,7 +63,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	
 	mysql_select_db($database_Connection, $Connection);
-$query_TransaksiSewa = "SELECT transaksi.*, project.Project, customer.Customer FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JS = 'Sewa'";
+$query_TransaksiSewa = "SELECT pocustomer.* FROM pocustomer";
 $TransaksiSewa = mysql_query($query_TransaksiSewa, $Connection) or die(mysql_error());
 $row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa);
 $totalRows_TransaksiSewa = mysql_num_rows($TransaksiSewa);
@@ -196,13 +196,13 @@ $totalRows_Menu = mysql_num_rows($Menu);
               <table id="example1" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
-                  <th>PurCode</th>
+                  <th>No. Invoice</th>
+                  <th>Tgl Start</th>
+                  <th>Tgl End</th>
+                  <th>Customer</th>
+                  <th>J/S/C</th>
                   <th>Project</th>
-                  <th>J/S</th>
-                  <th>Item Name</th>
-                  <th>Q</th>
                   <th>Amount</th>
-                  <th>Request Date</th>
                   <th>Status</th>
                   <th>Opsi</th>
                 </tr>
@@ -211,8 +211,8 @@ $totalRows_Menu = mysql_num_rows($Menu);
 					<?php do { ?>
 					<tr>
 						<td><?php echo $row_TransaksiSewa['Purchase']; ?></td>
-						<td><?php echo $row_TransaksiSewa['Project']; ?></td>
-						<td><?php echo $row_TransaksiSewa['JS']; ?></td>
+						<td><?php echo $row_TransaksiSewa['S']; ?></td>
+						<td><?php echo $row_TransaksiSewa['E']; ?></td>
 						<td><?php echo $row_TransaksiSewa['Barang']; ?></td>
 						<td><?php echo $row_TransaksiSewa['Quantity']; ?></td>
 						<td><?php echo $row_TransaksiSewa['Amount']; ?></td>
