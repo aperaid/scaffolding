@@ -286,6 +286,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
+                <a href="customer.php"><button type="button" class="btn btn-default pull-Left">Cancel</button></a>
                 <button type="submit" name="submit" id="submit" class="btn btn-info pull-right">Insert</button>
               </div>
               <input type="hidden" name="MM_insert" value="form1">

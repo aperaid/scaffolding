@@ -153,8 +153,8 @@ $totalRows_Menu = mysql_num_rows($Menu);
         <small>View</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Customer</a></li>
+        <li><a href="Customer.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="Customer.php">Customer</a></li>
         <li class="active">View Customer</li>
       </ol>
     </section>
@@ -268,7 +268,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
               <div class="box-footer">
                 <a href="EditCustomer.php?Id=<?php echo $row_View['Id']; ?>"><button type="button" class="btn btn-info pull-right">Edit</button></a>
                 <div class="btn-group"><a href="Customer.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
-                <div class="btn-group" ><a href="DeleteCustomer.php?Id=<?php echo $row_View['Id']; ?>" onclick="return confirm('Delete Customer?')"><button type="button" class="btn btn-danger pull-left">Delete</button></a></div>
+                <div class="btn-group" ><a href="DeleteCustomer.php?CCode=<?php echo $row_View['CCode']; ?>" onclick="return confirm('Delete Customer?')"><button type="button" class="btn btn-danger pull-left">Delete</button></a></div>
               </div>
               <input type="hidden" name="MM_update" value="form1">
               <!-- /.box-footer -->

@@ -31,9 +31,9 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-if ((isset($_GET['Id'])) && ($_GET['Id'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM customer WHERE Id=%s",
-                       GetSQLValueString($_GET['Id'], "int"));
+if ((isset($_GET['CCode'])) && ($_GET['CCode'] != "")) {
+  $deleteSQL = sprintf("SELECT delete_customer('%s')",
+                       GetSQLValueString($_GET['CCode'], "Text"));
 					   
   $alterSQL = sprintf("ALTER TABLE customer AUTO_INCREMENT = 1");
 
