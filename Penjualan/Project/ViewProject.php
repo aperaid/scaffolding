@@ -237,7 +237,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
               <div class="box-footer">
                 <a href="EditProject.php?PCode=<?php echo $row_View['PCode']; ?>"><button type="button" class="btn btn-info pull-right">Edit</button></a>
                 <div class="btn-group"><a href="Project.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
-                <div class="btn-group" ><a href="DeleteProject.php?Id=<?php echo $row_View['Id']; ?>" onclick="return confirm('Delete Project?')"><button type="button" class="btn btn-danger pull-left">Delete</button></a></div>
+                <div class="btn-group" ><a href="DeleteProject.php?PCode=<?php echo $row_View['PCode']; ?>" onclick="return confirm('Delete Project?')"><button type="button" class="btn btn-danger pull-left">Delete</button></a></div>
               </div>
               <input type="hidden" name="MM_update" value="form1">
               <!-- /.box-footer -->

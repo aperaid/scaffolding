@@ -31,9 +31,9 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-if ((isset($_GET['Id'])) && ($_GET['Id'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM project WHERE Id=%s",
-                       GetSQLValueString($_GET['Id'], "int"));
+if ((isset($_GET['PCode'])) && ($_GET['PCode'] != "")) {
+  $deleteSQL = sprintf("SELECT delete_project('%s')",
+                       GetSQLValueString($_GET['PCode'], "Text"));
 					   
   $alterSQL = sprintf("ALTER TABLE project AUTO_INCREMENT = 1");
 
