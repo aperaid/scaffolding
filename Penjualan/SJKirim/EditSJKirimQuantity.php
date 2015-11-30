@@ -73,7 +73,25 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=QSisaKem+%s WHERE IsiSJKir=%s",
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=%s WHERE IsiSJKir=%s",
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+%s WHERE Purchase=%s",
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['Purchase'][$i], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+%s WHERE IsiSJKir=%s",
                        GetSQLValueString($_POST['QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
 

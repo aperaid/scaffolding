@@ -48,7 +48,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKem, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Quantity, transaksi.Purchase FROM isisjkirim INNER JOIN inserted ON isisjkirim.IsiSJKir=inserted.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE inserted.IsiSJKir ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Quantity, transaksi.Purchase, transaksi.Reference FROM isisjkirim INNER JOIN inserted ON isisjkirim.IsiSJKir=inserted.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE inserted.IsiSJKir ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
@@ -75,14 +75,65 @@ $Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
 $row_Reference = mysql_fetch_assoc($Reference);
 $totalRows_Reference = mysql_num_rows($Reference);
 
+$colname_GetPeriode = "-1";
+if (isset($_GET['Reference'])) {
+  $colname_GetPeriode = $_GET['Reference'];
+}
+mysql_select_db($database_Connection, $Connection);
+$query_GetPeriode = sprintf("SELECT MAX(periode.Periode) FROM isisjkirim RIGHT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference WHERE transaksi.Reference = %s", GetSQLValueString($colname_GetPeriode, "text"));
+$GetPeriode = mysql_query($query_GetPeriode, $Connection) or die(mysql_error());
+$row_GetPeriode = mysql_fetch_assoc($GetPeriode);
+$totalRows_GetPeriode = mysql_num_rows($GetPeriode);
+
+mysql_select_db($database_Connection, $Connection);
+$query_LastTgl = "SELECT Tgl FROM sjkembali ORDER BY Id DESC";
+$LastTgl = mysql_query($query_LastTgl, $Connection) or die(mysql_error());
+$row_LastTgl = mysql_fetch_assoc($LastTgl);
+$totalRows_LastTgl = mysql_num_rows($LastTgl);
+
+for($i=0;$i<$totalRows_InsertSJKembali;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert-%s WHERE IsiSJKir=%s",
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['IsiSJKir'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE Periode=%s AND IsiSJKir = %s",
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['Periode'][$i], "text"),
+					   GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference) VALUES (%s, %s, %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['Periode'][$i], "int"),
+                       GetSQLValueString($_POST['S'][$i], "text"),
+                       GetSQLValueString($_POST['E'][$i], "text"),
+                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
+					   GetSQLValueString($_POST['Reference'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+}
+
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, IsiSJKir, SJKem) VALUES (%s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, Periode, IsiSJKir, SJKem) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['IsiSJKem'][$i], "text"),
                        GetSQLValueString($_POST['Warehouse'][$i], "text"),
                        GetSQLValueString($_POST['QTertanda'][$i], "int"),
 					   GetSQLValueString($_POST['Purchase'][$i], "text"),
-                       GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
+                       GetSQLValueString($_POST['Periode'][$i], "text"),
+					   GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
                        GetSQLValueString($_POST['SJKem'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -197,17 +248,23 @@ $(function() {
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_InsertSJKembali['Id']; ?>">
-        	<input name="IsiSJKir[]" type="hidden" id="IsiSJKir" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>">		
-         	<input name="Purchase[]" type="hidden" id="Purchase" value="<?php echo $row_InsertSJKembali['Purchase']; ?>">
+	    <td><p>
+        <?php $FirstDate = substr($row_LastTgl['Tgl'], 2); ?>
+	      <input name="Id[]" type="hidden" id="Id" value="<?php echo $row_InsertSJKembali['Id']; ?>">
+          <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_InsertSJKembali['Reference']; ?>">
+	      <input name="IsiSJKir[]" type="hidden" id="IsiSJKir" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>">
+	      <input name="Purchase[]" type="hidden" id="Purchase" value="<?php echo $row_InsertSJKembali['Purchase']; ?>">
+	        <input name="Periode[]" type="hidden" id="Periode" value="<?php echo $row_GetPeriode['MAX(periode.Periode)']; ?>">
+	        <input name="S[]" type="hidden" id="S" value="<?php echo '01', $FirstDate; ?>">
+	        <input name="E[]" type="hidden" id="E" value="<?php echo $row_LastTgl['Tgl']; ?>">
         </td>
 	    <td><input name="IsiSJKem[]" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>" readonly></td>
 	    <td><input name="Tgl" type="text" class="textview" id="Tgl" value="<?php echo $row_InsertSJKembali['Tgl']; ?>" readonly></td>
 	    <td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
 	    <td><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_InsertSJKembali['Quantity']; ?>" readonly></td>
 	    <td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off"></td>
-	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>" readonly></td>
-	    <td><input name="QTertanda[]" type="text" class="textbox" id="QTertanda" autocomplete="off" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>"></td>
+	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
+	    <td><input name="QTertanda[]" type="text" class="textbox" id="QTertanda" autocomplete="off" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>"></td>
 	    <td><input name="SJKir" type="text" class="textview" id="SJKir" value=<?php echo $row_InsertSJKembali['SJKir']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
@@ -237,6 +294,7 @@ $(function() {
     </tbody>
   </table>
   <input type="hidden" name="MM_insert" value="form1">
+  <input type="hidden" name="MM_update" value="form1">
 </form>
 
 </body>
@@ -250,5 +308,9 @@ mysql_free_result($LastIsiSJKembali);
 
 mysql_free_result($Reference);
 
+mysql_free_result($GetPeriode);
+
 mysql_free_result($InsertSJKembali);
+
+mysql_free_result($LastTgl);
 ?>

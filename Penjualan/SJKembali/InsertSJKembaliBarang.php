@@ -48,7 +48,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKem, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Quantity FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKemInsert, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Quantity FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
@@ -189,7 +189,7 @@ $(function() {
 	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKembali['Tgl']; ?>"" readonly></td>
 	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
 	    <td><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_InsertSJKembali['Quantity']; ?>" readonly></td>
-	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKem']; ?>" readonly></td>
+	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
 	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value="<?php echo $row_InsertSJKembali['SJKir']; ?>" readonly></td>
 	    </tr>
 	  <?php $increment++; ?>

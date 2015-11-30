@@ -204,7 +204,7 @@ $totalRows_Reference = mysql_num_rows($Reference);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="Tgl" type="text" class="form-control pull-right date" id="Tgl">
+                      <input name="Tgl" type="text" class="form-control pull-right date" id="Tgl" autocomplete="off">
                     </div>
                   </div>
                   <div class="form-group">

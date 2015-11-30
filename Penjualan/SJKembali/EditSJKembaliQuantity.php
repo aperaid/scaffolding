@@ -64,9 +64,20 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=%s WHERE Purchase=%s",
-                       GetSQLValueString($_POST['QSisaKem'][$i], "int"),
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem-%s WHERE Purchase=%s",
+                       GetSQLValueString($_POST['QTerima'][$i], "int"),
                        GetSQLValueString($_POST['Purchase'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=%s WHERE IsiSJKir=%s",
+                       GetSQLValueString($_POST['QSisaKem'][$i], "int"),
+                       GetSQLValueString($_POST['IsiSJKir'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -186,6 +197,7 @@ body {
 	<?php do { ?>
       <tr>
 		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
+          <input name="IsiSJKir[]" type="hidden" id="IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
 		  <input name="QSisaKem2" type="hidden" id="QSisaKem2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>"></td>
 		<td><input name="IsiSJKem" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>" readonly></td>
 		<td><input name="Tgl" type="text" class="textview" id="Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>

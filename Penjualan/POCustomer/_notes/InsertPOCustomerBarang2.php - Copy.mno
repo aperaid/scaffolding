@@ -5,6 +5,4 @@
 	<infoitem key="UD_Reference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_inserted" value="name:Purchase;datatype:string,name:IsiSJKir;datatype:string,name:PPN;datatype:int,name:Transport;datatype:string,name:Reference;datatype:string" />
 	<infoitem key="UD_InvoiceTransaksi" value="name:JS;datatype:string" />
-	<infoitem key="UD_LastR" value="name:Reference;datatype:string" />
-	<infoitem key="UD_LastReference" value="name:Reference;datatype:string" />
 </info>

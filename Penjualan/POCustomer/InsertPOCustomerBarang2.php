@@ -89,7 +89,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['Invoice'][$i], "text"),
                        GetSQLValueString($_POST['JS'][$i], "text"),
 					   GetSQLValueString($_POST['PPN'][$i], "text"),
-					   GetSQLValueString($_POST['Transport'], "text"),
+					   GetSQLValueString($_POST['Transport'][$i], "text"),
                        GetSQLValueString($_POST['Reference'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -143,8 +143,8 @@ body {
           <td>&nbsp;</td>
           <td><input name="Invoice[]" type="hidden" id="Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
           <input name="JS[]" type="hidden" id="JS" value="<?php echo $row_JS['JS']; ?>">
-          <input name="PPN" type="hidden" id="PPN" value="<?php echo $row_inserted['PPN']; ?>">
-          <input name="Transport" type="hidden" id="Transport" value="<?php echo $row_inserted['Transport']; ?>">
+          <input name="PPN[]" type="hidden" id="PPN" value="<?php echo $row_inserted['PPN']; ?>">
+          <input name="Transport[]" type="hidden" id="Transport" value="<?php echo $row_inserted['Transport']; ?>">
           <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_Reference['Reference']; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
@@ -160,7 +160,9 @@ body {
     </tbody>
   </table>
   <input type="hidden" name="MM_insert" value="form1">
+  <noscript>
   <input type="submit" name="submit" id="submit" value="Submit">
+  </noscript>
 </form>
 
 

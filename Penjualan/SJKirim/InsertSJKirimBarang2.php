@@ -48,7 +48,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKirim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM transaksi INNER JOIN inserted ON transaksi.Purchase=inserted.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND inserted.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
+$query_InsertSJKirim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKirInsert, transaksi.Reference, project.Project FROM transaksi RIGHT JOIN inserted ON transaksi.Purchase=inserted.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND inserted.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
 $InsertSJKirim = mysql_query($query_InsertSJKirim, $Connection) or die(mysql_error());
 $row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim);
 $totalRows_InsertSJKirim = mysql_num_rows($InsertSJKirim);
@@ -75,6 +75,12 @@ $Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
 $row_Reference = mysql_fetch_assoc($Reference);
 $totalRows_Reference = mysql_num_rows($Reference);
 
+mysql_select_db($database_Connection, $Connection);
+$query_LastTgl = "SELECT Tgl FROM sjkirim ORDER BY Id DESC";
+$LastTgl = mysql_query($query_LastTgl, $Connection) or die(mysql_error());
+$row_LastTgl = mysql_fetch_assoc($LastTgl);
+$totalRows_LastTgl = mysql_num_rows($LastTgl);
+
 /*if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $truncateSQL = sprintf("TRUNCATE TABLE inserted");
 
@@ -93,6 +99,17 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }*/
 
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKirInsert=QSisaKirInsert-%s WHERE Purchase=%s",
+                       GetSQLValueString($_POST['QKirim'][$i], "int"),
+                       GetSQLValueString($_POST['Purchase'][$i], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO isisjkirim (IsiSJKir, Warehouse, QKirim, Purchase, SJKir) VALUES (%s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
@@ -100,6 +117,16 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['QKirim'][$i], "int"),
                        GetSQLValueString($_POST['Purchase'][$i], "text"),
                        GetSQLValueString($_POST['SJKir'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+  
+    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference) VALUES (1, %s, %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['S'][$i], "text"),
+                       GetSQLValueString($_POST['E'][$i], "text"),
+                       GetSQLValueString($_POST['QKirim'][$i], "int"),
+                       GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
+					   GetSQLValueString($_POST['Reference'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -209,16 +236,75 @@ $(function() {
 		<th>No. Purchase</th>
       </tr>
     <tbody>
+    <?php $tgl = 0; $bln = substr($row_LastTgl['Tgl'], 3, -5); $thn = substr($row_LastTgl['Tgl'], 6);
+			if ($bln == 1){
+				$tgl = 31;
+				$bln = '01';
+				}
+			elseif ($bln == 2){
+				$tgl = 28;
+				$bln = '02';
+				if ($thn == 2016 || $thn == 2020 || $thn == 2024){
+				$tgl = 29;
+				$bln = '02';
+				}
+				}
+			elseif ($bln == 3){
+				$tgl = 31;
+				$bln = '03';
+				}
+			elseif ($bln == 4){
+				$tgl = 30;
+				$bln = '04';
+				}
+			elseif ($bln == 5){
+				$tgl = 31;
+				$bln = '05';
+				}
+			elseif ($bln == 6){
+				$tgl = 30;
+				$bln = '06';
+				}
+			elseif ($bln == 7){
+				$tgl = 31;
+				$bln = '07';
+				}
+			elseif ($bln == 8){
+				$tgl = 31;
+				$bln = '08';
+				}
+			elseif ($bln == 9){
+				$tgl = 30;
+				$bln = '09';
+				}
+			elseif ($bln == 10){
+				$tgl = 31;
+				$bln = '10';
+				}
+			elseif ($bln == 11){
+				$tgl = 30;
+				$bln = '11';
+				}
+			elseif ($bln == 12){
+				$tgl = 31;
+				$bln = '12';
+				}
+			?>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_InsertSJKirim['Id']; ?>"></td>
+	    <td><p>
+	      <input name="Id[]" type="hidden" id="Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
+	      <input name="S[]" type="hidden" id="S" value="<?php echo $row_LastTgl['Tgl']; ?>">
+	      <input name="E[]" type="hidden" id="E" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>">
+	      <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
+          </p></td>
 	    <td><input name="IsiSJKir[]" type="text" class="textview" id="IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>" readonly></td>
 	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
 	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
 	    <td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off"></td>
-	    <td><input name="QSisaKir[]" type="text" class="textview" id="QSisaKir" value="<?php echo $row_InsertSJKirim['QSisaKir']; ?>" readonly></td>
-	    <td><input name="QKirim[]" type="text" class="textbox" id="QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKir']; ?>"></td>
+	    <td><input name="QSisaKirInsert[]" type="text" class="textview" id="QSisaKirInsert" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
+	    <td><input name="QKirim[]" type="text" class="textbox" id="QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>"></td>
 	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertSJKirim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
@@ -246,6 +332,7 @@ $(function() {
     </tbody>
   </table>
   <input type="hidden" name="MM_insert" value="form1">
+  <input type="hidden" name="MM_update" value="form1">
 </form>
 
 </body>
@@ -258,6 +345,8 @@ mysql_free_result($Select);
 mysql_free_result($LastIsiSJKirim);
 
 mysql_free_result($Reference);
+
+mysql_free_result($LastTgl);
 
 mysql_free_result($InsertSJKirim);
 ?>

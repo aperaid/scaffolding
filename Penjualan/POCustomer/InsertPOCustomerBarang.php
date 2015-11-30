@@ -53,11 +53,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 for($i=0;$i<10;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKir, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase'][$i], "text"),
                        GetSQLValueString($_POST['JS'][$i], "text"),
                        GetSQLValueString($_POST['Barang'][$i], "text"),
                        GetSQLValueString($_POST['Quantity'][$i], "int"),
+					   GetSQLValueString($_POST['Quantity'][$i], "int"),
 					   GetSQLValueString($_POST['Quantity'][$i], "int"),
                        GetSQLValueString($_POST['Amount'][$i], "text"),
                        GetSQLValueString($_POST['TglStart'][$i], "text"),
@@ -230,7 +231,7 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>&&Reference=<?php echo $row_LastReference['Reference']; ?>" id="form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>Reference=<?php echo $row_LastReference['Reference']; ?>" id="form1" name="form1" method="POST">
                 <div class="box-body">
                   <table class="table table-hover table-bordered" id="customFields">
                     <thead>
@@ -252,8 +253,8 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
                     </thead>
                     <tbody>
                       <tr>
-                        <td><input name="PPN" type="text" id="PPN" value="0"></td>
-                        <td><input name="Transport" type="text" id="Transport" value="0"></td>
+                        <td><input name="PPN" type="text" id="PPN" value="0" autocomplete="off"></td>
+                        <td><input name="Transport" type="text" id="Transport" value="0" autocomplete="off"></td>
                       </tr>
     				</tbody>
                 </table>
@@ -354,7 +355,7 @@ function capital() {
 		if(x < max_fields){ //max input box allowed
             x++; //text box count increment
 			z++;
-		$("#customFields").append('<tr><td class="hidden"><input name="Purchase[]" class="textbox" id="Purchase" value="'+ z +'"></td><td><input type="text" name="Barang[]" id="Barang" class="form-control"></td><td><select name="JS[]" id="JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount[]" id="Amount" class="form-control"></td><td><input type="text" name="Quantity[]" id="Quantity" class="form-control"></td><td><input type="text" name="TglStart[]" id="Tgl" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
+		$("#customFields").append('<tr><td class="hidden"><input name="Purchase[]" class="textbox" id="Purchase" value="'+ z +'"></td><td><input type="text" name="Barang[]" id="Barang" autocomplete="off" class="form-control"></td><td><select name="JS[]" id="JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount[]" autocomplete="off" id="Amount" class="form-control"></td><td><input type="text" name="Quantity[]" id="Quantity" autocomplete="off" class="form-control"></td><td><input type="text" name="TglStart[]" id="Tgl" autocomplete="off" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
 		}
 	});
     $("#customFields").on('click','.remCF',function(){

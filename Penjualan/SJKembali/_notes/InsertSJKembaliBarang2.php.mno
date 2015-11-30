@@ -7,5 +7,7 @@
 	<infoitem key="UD_InsertSJKirim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QTerkir;datatype:int,name:Project;datatype:string" />
 	<infoitem key="UD_Reference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_LastIsiSJKembali" value="name:Id;datatype:int" />
-	<infoitem key="UD_InsertSJKembali" value="name:IsiSJKir;datatype:string,name:QSisaKem;datatype:int,name:SJKir;datatype:string,name:Tgl;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Purchase;datatype:string" />
+	<infoitem key="UD_InsertSJKembali" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:QSisaKemInsert;datatype:int,name:QSisaKem;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string,name:QSisaKemInsert;datatype:int,name:SJKir;datatype:string,name:Tgl;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Purchase;datatype:string,name:Reference;datatype:string" />
+	<infoitem key="UD_GetPeriode" value="name:MAX(periode.Periode);datatype:int" />
+	<infoitem key="UD_LastTgl" value="name:Tgl;datatype:string" />
 </info>

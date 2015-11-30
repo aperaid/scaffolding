@@ -48,7 +48,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKirim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
+$query_InsertSJKirim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKirInsert, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference  INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
 $InsertSJKirim = mysql_query($query_InsertSJKirim, $Connection) or die(mysql_error());
 $row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim);
 $totalRows_InsertSJKirim = mysql_num_rows($InsertSJKirim);
@@ -225,7 +225,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                         <td><input type="checkbox" name="checkbox[]" id="checkbox" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"></td>
                         <td><input name="JS[]" type="text" class="form-control" id="JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
                         <td><input name="Barang[]" type="text" class="form-control" id="Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
-                        <td><input name="QSisaKir[]" type="text" class="form-control" id="QSisaKir" value="<?php echo $row_InsertSJKirim['QSisaKir']; ?>" readonly></td>
+                        <td><input name="QSisaKirInsert[]" type="text" class="form-control" id="QSisaKirInsert" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
                         <td><input name="Purchase[]" type="text" class="form-control" id="Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>" readonly></td>
                         </tr>
                       <?php $increment++; ?>
