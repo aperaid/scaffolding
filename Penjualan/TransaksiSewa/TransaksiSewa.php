@@ -63,7 +63,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	
 	mysql_select_db($database_Connection, $Connection);
-$query_TransaksiSewa = "SELECT transaksi.*, project.Project, customer.Customer FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JS = 'Sewa'";
+$query_TransaksiSewa = "SELECT pocustomer.Reference, project.Project, customer.Company, project.Project, customer.Customer FROM pocustomer LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode ORDER BY pocustomer.Id";
 $TransaksiSewa = mysql_query($query_TransaksiSewa, $Connection) or die(mysql_error());
 $row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa);
 $totalRows_TransaksiSewa = mysql_num_rows($TransaksiSewa);
@@ -196,51 +196,27 @@ $totalRows_Menu = mysql_num_rows($Menu);
               <table id="example1" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
-                  <th>PurCode</th>
+                  <th>Reference</th>
                   <th>Project</th>
-                  <th>J/S</th>
-                  <th>Item Name</th>
-                  <th>Q</th>
-                  <th>Amount</th>
-                  <th>Request Date</th>
-                  <th>Status</th>
+                  <th>Customer</th>
                   <th>Opsi</th>
                 </tr>
                 </thead>
 				<tbody>
 					<?php do { ?>
 					<tr>
-						<td><?php echo $row_TransaksiSewa['Purchase']; ?></td>
+						<td><?php echo $row_TransaksiSewa['Reference']; ?></td>
 						<td><?php echo $row_TransaksiSewa['Project']; ?></td>
-						<td><?php echo $row_TransaksiSewa['JS']; ?></td>
-						<td><?php echo $row_TransaksiSewa['Barang']; ?></td>
-						<td><?php echo $row_TransaksiSewa['Quantity']; ?></td>
-						<td><?php echo $row_TransaksiSewa['Amount']; ?></td>
-					  <td><?php echo $row_TransaksiSewa['TglStart']; ?></td>
-                      <td><?php
-							if ($row_TransaksiSewa['Quantity'] == $row_TransaksiSewa['QSisaKir']){
-								echo '<td class="danger"> O </td>';
-							}elseif ($row_TransaksiSewa['Quantity'] !=0 && $row_TransaksiSewa['QSisaKir'] !=0){
-								echo '<td class="warning"> P </td>';
-							}elseif ($row_TransaksiSewa['QSisaKir'] == 0 && $row_TransaksiSewa['QSisaKem'] == 0) {
-								echo '<td class="success"> F </td>';
-							}
-							?>
-                        </td>
-						<td><a href="ViewTransaksiSewa.php?Id=<?php echo $row_TransaksiSewa['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+						<td><?php echo $row_TransaksiSewa['Customer']; ?></td>
+						<td><a href="ViewTransaksiSewa.php?Reference=<?php echo $row_TransaksiSewa['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
 				</tbody>
                 <tfoot>
                 <tr>
-                  <th>PurCode</th>
+                  <th>Reference</th>
                   <th>Project</th>
-                  <th>J/S</th>
-                  <th>Item Name</th>
-                  <th>Q</th>
-                  <th>Amount</th>
-                  <th>Request Date</th>
-                  <th>Status</th>
+                  <th>Customer</th>
                   <th>Opsi</th>
                 </tr>
                 </tfoot>

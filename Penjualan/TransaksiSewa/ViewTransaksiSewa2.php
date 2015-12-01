@@ -72,21 +72,16 @@ $colname_View = "-1";
 if (isset($_GET['Reference'])) {
   $colname_View = $_GET['Reference'];
 }
+
+$colname_View2 = "-1";
+if (isset($_GET['Periode'])) {
+  $colname_View2 = $_GET['Periode'];
+}
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference = %s GROUP BY periode.Periode ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT periode.Id, periode.Periode, transaksi.Barang, periode.S, periode.E, customer.Company, project.Project, periode.Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
-
-$colname_LastPeriode = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_LastPeriode = $_GET['Reference'];
-}
-mysql_select_db($database_Connection, $Connection);
-$query_LastPeriode = sprintf("SELECT Periode FROM periode WHERE Reference = %s ORDER BY Periode DESC", GetSQLValueString($colname_LastPeriode, "text"));
-$LastPeriode = mysql_query($query_LastPeriode, $Connection) or die(mysql_error());
-$row_LastPeriode = mysql_fetch_assoc($LastPeriode);
-$totalRows_LastPeriode = mysql_num_rows($LastPeriode);
 ?>
 
 <!DOCTYPE html>
@@ -192,7 +187,6 @@ $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
       <h1>
         Transaksi Sewa
         <small> View </small>
-        <large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&&Periode=<?php echo $row_LastPeriode['Periode']; ?>"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -211,10 +205,13 @@ $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
                 <thead>
                 <tr>
                   <th>Periode</th>
+                  <th>Barang</th>
                   <th>Start</th>
                   <th>End</th>
-                  <th>Customer</th>
+                  <th>Company</th>
                   <th>Project</th>
+                  <th>Quantity</th>
+                  <th>Amount</th>
                   <th>Opsi</th>
                 </tr>
                 </thead>
@@ -222,21 +219,27 @@ $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
 					<?php do { ?>
 					<tr>
 						<td><?php echo $row_View['Periode']; ?></td>
+                        <td><?php echo $row_View['Barang']; ?></td>
 						<td><?php echo $row_View['S']; ?></td>
 						<td><?php echo $row_View['E']; ?></td>
-						<td><?php echo $row_View['Customer']; ?></td>
+						<td><?php echo $row_View['Company']; ?></td>
 						<td><?php echo $row_View['Project']; ?></td>
-						<td><a href="ViewTransaksiSewa2.php?Reference=<?php echo $row_View['Reference']; ?>&&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+                        <td><?php echo $row_View['Quantity']; ?></td>
+                        <td><?php echo $row_View['Amount']; ?></td>
+						<td></td>
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
                 <tfoot>
                 <tr>
                   <th>Periode</th>
+                  <th>Barang</th>
                   <th>Start</th>
                   <th>End</th>
                   <th>Customer</th>
                   <th>Project</th>
+                  <th>Quantity</th>
+                  <th>Amount</th>
                   <th>Opsi</th>
                 </tr>
                 </tfoot>
@@ -295,6 +298,4 @@ $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
 mysql_free_result($Menu);
 
 mysql_free_result($View);
-
-mysql_free_result($LastPeriode);
 	?>

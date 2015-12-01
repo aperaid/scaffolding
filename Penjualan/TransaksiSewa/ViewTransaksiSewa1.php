@@ -31,70 +31,28 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-	if (!function_exists("GetSQLValueString")) {
-	function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
-	{
-	  if (PHP_VERSION < 6) {
-	    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
-	  }
-	
-	  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
-	
-	  switch ($theType) {
-	    case "text":
-	      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-	      break;    
-	    case "long":
-	    case "int":
-	      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
-	      break;
-	    case "double":
-	      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
-	      break;
-	    case "date":
-	      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-	      break;
-	    case "defined":
-	      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-	      break;
-	  }
-	  return $theValue;
-	}
-	}
-	
-	mysql_select_db($database_Connection, $Connection);
-$query_Menu = "SELECT * FROM menu";
-$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
-$row_Menu = mysql_fetch_assoc($Menu);
-$totalRows_Menu = mysql_num_rows($Menu);
-
 $colname_View = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_View = $_GET['Reference'];
+if (isset($_GET['Id'])) {
+  $colname_View = $_GET['Id'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference = %s GROUP BY periode.Periode ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT transaksi.*, project.Project, customer.Customer FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE transaksi.Id = %s", GetSQLValueString($colname_View, "int"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
-$colname_LastPeriode = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_LastPeriode = $_GET['Reference'];
-}
 mysql_select_db($database_Connection, $Connection);
-$query_LastPeriode = sprintf("SELECT Periode FROM periode WHERE Reference = %s ORDER BY Periode DESC", GetSQLValueString($colname_LastPeriode, "text"));
-$LastPeriode = mysql_query($query_LastPeriode, $Connection) or die(mysql_error());
-$row_LastPeriode = mysql_fetch_assoc($LastPeriode);
-$totalRows_LastPeriode = mysql_num_rows($LastPeriode);
+$query_Menu = "SELECT * FROM menu";
+$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
+$row_Menu = mysql_fetch_assoc($Menu);
+$totalRows_Menu = mysql_num_rows($Menu);
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | Customer</title>
+  <title>BDN ERP | View Customer</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
@@ -191,60 +149,110 @@ $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
     <section class="content-header">
       <h1>
         Transaksi Sewa
-        <small> View </small>
-        <large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&&Periode=<?php echo $row_LastPeriode['Periode']; ?>"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>
+        <small>Detail</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Transaksi Sewa</li>
+        <li><a href="TransaksiJual.php">Transaksi Sewa</a></li>
+        <li class="active">View Detail</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-xs-12">
-
-          <div class="box">
-            <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped table-responsive">
-                <thead>
-                <tr>
-                  <th>Periode</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Customer</th>
-                  <th>Project</th>
-                  <th>Opsi</th>
-                </tr>
-                </thead>
-				<tbody>
-					<?php do { ?>
-					<tr>
-						<td><?php echo $row_View['Periode']; ?></td>
-						<td><?php echo $row_View['S']; ?></td>
-						<td><?php echo $row_View['E']; ?></td>
-						<td><?php echo $row_View['Customer']; ?></td>
-						<td><?php echo $row_View['Project']; ?></td>
-						<td><a href="ViewTransaksiSewa2.php?Reference=<?php echo $row_View['Reference']; ?>&&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-					</tr>
-					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
-				</tbody>
-                <tfoot>
-                <tr>
-                  <th>Periode</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Customer</th>
-                  <th>Project</th>
-                  <th>Opsi</th>
-                </tr>
-                </tfoot>
-              </table>
+        <div class="col-xs-4">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Company Detail</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body with-border">
+              <div class="form-group">
+                  <label for="exampleInputEmail1">Company Name</label>
+                  <input name="Customer" type="text" class="form-control" id="Customer" value="<?php echo $row_View['Customer']; ?>" readonly>
+              </div>
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
+          
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Project Detail</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body with-border">
+              <div class="form-group">
+                  <label>Project Name</label>
+                  <input name="Project" type="text" class="form-control" id="Project" value="<?php echo $row_View['Project']; ?>" readonly>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-8">
+          <!-- Horizontal Form -->
+          <form>
+            <div class="box box-info">
+              <div class="box-header with-border">
+                <h3 class="box-title">Transaction Detail</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body with-border form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">PO Code</label>
+                  <div class="col-sm-7">
+                    <input name="Purchase" type="text" class="form-control" id="Purchase" value="<?php echo $row_View['Reference']; ?>" readonly>
+                  </div>
+                  <div class="col-sm-2">
+                    <a href="../POCustomer/ViewTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>"><span class="btn btn-primary">View PO</button></a>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Transaction Code</label>
+                  <div class="col-sm-9">
+                    <input name="Purchase" type="text" class="form-control" id="Purchase" value="<?php echo $row_View['Purchase']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">J/S</label>
+                  <div class="col-sm-9">
+                    <input name="Purchase" type="text" class="form-control" id="Purchase" value="<?php echo $row_View['JS']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Item Name</label>
+                  <div class="col-sm-9">
+                    <input name="Purchase" type="text" class="form-control" id="Purchase" value="<?php echo $row_View['Barang']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Quantity</label>
+                  <div class="col-sm-9">
+                    <input name="Purchase" type="text" class="form-control" id="Purchase" value="<?php echo $row_View['Quantity']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Sell Date</label>
+                  <div class="col-sm-9">
+                    <input name="Purchase" type="text" class="form-control" id="Purchase" value="<?php echo $row_View['TglStart']; ?>" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Price</label>
+                  <div class="col-sm-9">
+                    <input name="Purchase" type="text" class="form-control" id="Purchase" value="<?php echo $row_View['Amount']; ?>" readonly>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </form>
         </div>
         <!-- /.col -->
       </div>
@@ -269,7 +277,7 @@ $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
 </div>
 
 <!-- jQuery 2.1.4 -->
-<script src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="../../	plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="../../bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
@@ -287,14 +295,52 @@ $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
 <script>
   $(function () {
     $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+<script>
+function capital() {
+    var x = document.getElementById("CCode");
+    x.value = x.value.toUpperCase();
+	var x = document.getElementById("Company");
+    x.value = x.value.toUpperCase();
+}
+</script>
+<script>
+  $(document).ready(function() {
+    $("#dialog").dialog({
+      autoOpen: false,
+      modal: true
+    });
+  });
+
+  $(".confirmLink").click(function(e) {
+    e.preventDefault();
+    var targetUrl = $(this).attr("href");
+
+    $("#dialog").dialog({
+      buttons : {
+        "Confirm" : function() {
+          window.location.href = targetUrl;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $("#dialog").dialog("open");
   });
 </script>
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
 mysql_free_result($View);
-
-mysql_free_result($LastPeriode);
-	?>
+?>

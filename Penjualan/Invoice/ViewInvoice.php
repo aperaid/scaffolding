@@ -60,7 +60,7 @@ if (isset($_GET['JS'])) {
   $colname_ViewJS = $_GET['JS'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, periode.Quantity, periode.S, periode.E, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
+$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, periode.Quantity, periode.S, periode.E, periode.SJKem, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
 LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
 WHERE transaksi.Reference = %s AND transaksi.JS = %s ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"));
@@ -122,21 +122,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 </script>
 
 <script language="javascript">
-  function ppn() {
+  function tot() {
     var txtFirstNumberValue = document.getElementById('Totals2').value;
     var txtSecondNumberValue = document.getElementById('PPN').value;
-	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue);
-	  if (!isNaN(result)) {
-		document.getElementById('Totals').value = result;
-      }
-   }
-</script>
-
-<script language="javascript">
-  function transport() {
-    var txtFirstNumberValue = document.getElementById('Totals2').value;
-    var txtSecondNumberValue = document.getElementById('Transport').value;
-	var result = parseFloat(txtFirstNumberValue) + parseFloat(txtSecondNumberValue);
+	var txtThirdNumberValue = document.getElementById('Transport').value;
+	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue) + parseFloat(txtThirdNumberValue);
 	  if (!isNaN(result)) {
 		document.getElementById('Totals').value = result;
       }
@@ -233,7 +223,7 @@ body {
       
         <tr>
           <td align="center"><input name="SJKir" type="text" class="textview" id="SJKir" value="<?php echo $row_View2['SJKir']; ?>" readonly></td>
-          <td align="center"><input name="SJKem" type="text" class="textview" id="SJKem" value="" readonly></td>
+          <td align="center"><input name="SJKem" type="text" class="textview" id="SJKem" value="<?php echo $row_View2['SJKem']; ?>" readonly></td>
           <td align="center"><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_View2['Purchase']; ?>" readonly></td>
           <td align="center"><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_View2['Barang']; ?>" readonly></td>
           <td align="center"><input name="TglStart" type="text" class="textview" id="TglStart" value="<?php echo $row_View2['S']; ?>" readonly></td>
@@ -245,7 +235,7 @@ body {
 		  $date1 = str_replace('/', '-', $date1);
 		  $date2 = str_replace('/', '-', $date2);
 		  $sjkem = strtotime($date2); $sjkir = strtotime($date1); ?>
-            <input name="S-E" type="text" class="textview" id="S-E" value="<?php echo (($sjkem - $sjkir) / 86400)+1 ?>" readonly></td>
+            <input name="S-E" type="text" class="textview" id="S-E" value="<?php echo round((($sjkem - $sjkir) / 86400),1)+1 ?>" readonly></td>
           <td align="center">
             <?php $bln = substr($row_View2['S'], 3, -5); $thn = substr($row_View2['S'], 6);
 			if ($bln == 1){
@@ -307,20 +297,22 @@ body {
         <th width="160">&nbsp;</th>
         <th width="90" align="right">Pajak</th>
         <th width="129" align="right">&nbsp;</th>
-        <td colspan="2"><input name="PPN" type="text" class="textbox" id="PPN" autocomplete="off" value="<?php echo $row_View['PPN']; ?>" onKeyUp="ppn()"></td>
+        <td colspan="2"><input name="PPN" type="text" class="textbox" id="PPN" autocomplete="off" value="<?php echo $row_View['PPN']; ?>" onKeyUp="tot()">
+          <input name="PPN2" type="hidden" class="textbox" id="PPN2" autocomplete="off" value="<?php echo $row_View['PPN']; ?>"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Transport</th>
         <th align="right">&nbsp;</th>
-        <td colspan="2"><input name="Transport" type="text" class="textbox" id="Transport" autocomplete="off" value="<?php echo $row_View['Transport']; ?>" onKeyUp="transport()"></td>
+        <td colspan="2"><input name="Transport" type="text" class="textbox" id="Transport" autocomplete="off" value="<?php echo $row_View['Transport']; ?>" onKeyUp="tot()">
+          <input name="Transport2" type="hidden" class="textbox" id="Transport2" autocomplete="off" value="<?php echo $row_View['Transport']; ?>"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Total</th>
         <th align="right">&nbsp;</th>
         <input name="Totals2" type="hidden" id="Totals2" value="<?php echo round($total, 2); ?>" >
-        <td colspan="2"><input name="Total" type="text" class="textview" id="Totals" value="<?php echo round($total, 2); ?>" readonly></td>
+        <td colspan="2"><input name="Total" type="text" class="textview" id="Totals" value="<?php echo round(($total*$row_View['PPN']*0.1)+$total+$row_View['Transport'], 2); ?>" readonly></td>
       </tr>
       <tr>
         <td align="center">&nbsp;</td>

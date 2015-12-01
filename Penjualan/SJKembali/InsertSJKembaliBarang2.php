@@ -102,7 +102,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE Periode=%s AND IsiSJKir = %s",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE Periode=%s AND IsiSJKir = %s",
                        GetSQLValueString($_POST['QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['Periode'][$i], "text"),
 					   GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
@@ -112,12 +112,13 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference) VALUES (%s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Periode'][$i], "int"),
                        GetSQLValueString($_POST['S'][$i], "text"),
                        GetSQLValueString($_POST['E'][$i], "text"),
                        GetSQLValueString($_POST['QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
+					   GetSQLValueString($_POST['SJKem'], "text"),
 					   GetSQLValueString($_POST['Reference'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
