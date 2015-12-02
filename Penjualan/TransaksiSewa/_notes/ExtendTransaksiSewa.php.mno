@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <info>
 	<infoitem key="UD_Extend" value="name:Id;datatype:int,name:Periode;datatype:int,name:S;datatype:string,name:E;datatype:string,name:Quantity;datatype:int,name:IsiSJKir;datatype:string,name:SJKem;datatype:string,name:Reference;datatype:string" />
+	<infoitem key="UD_Invoice" value="name:PPN;datatype:int,name:Transport;datatype:string" />
+	<infoitem key="UD_LastInvoiceId" value="name:Id;datatype:int" />
 </info>

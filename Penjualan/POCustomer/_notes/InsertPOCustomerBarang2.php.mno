@@ -7,4 +7,5 @@
 	<infoitem key="UD_InvoiceTransaksi" value="name:JS;datatype:string" />
 	<infoitem key="UD_LastR" value="name:Reference;datatype:string" />
 	<infoitem key="UD_LastReference" value="name:Reference;datatype:string" />
+	<infoitem key="UD_LastTgl" value="name:Tgl;datatype:string" />
 </info>
