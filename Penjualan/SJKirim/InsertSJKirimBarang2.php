@@ -121,15 +121,21 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
   
-    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference) VALUES (1, %s, %s, %s, %s, %s)",
+    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Deletes) VALUES (1, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['S'][$i], "text"),
                        GetSQLValueString($_POST['E'][$i], "text"),
                        GetSQLValueString($_POST['QKirim'][$i], "int"),
                        GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
-					   GetSQLValueString($_POST['Reference'][$i], "text"));
+					   GetSQLValueString($_POST['Reference'][$i], "text"),
+					   GetSQLValueString($_POST['JS'][$i], "text"));
+					   
+	$deleteSQL = sprintf("DELETE FROM periode WHERE Deletes='Jual'");
+	$alterSQL = sprintf("ALTER TABLE sjkembali AUTO_INCREMENT = 1");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 
   $insertGoTo = "SJKirim.php";
   if (isset($_SERVER['QUERY_STRING'])) {
