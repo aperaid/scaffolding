@@ -45,10 +45,12 @@ $totalRows_Menu = mysql_num_rows($Menu);
 $colname_InsertTransaksiClaim = "-1";
 if (isset($_GET['Reference'])) {
   $colname_InsertTransaksiClaim = $_GET['Reference'];
+  $colname_Periode = $_GET['Periode'];
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, project.Project FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND transaksi.JS = 'Sewa' ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"));
+$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, periode.Quantity, periode.IsiSJKir FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase WHERE periode.SJKem IS NULL AND periode.Reference=%s AND periode.Periode=%s ORDER BY periode.Id ASC
+", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
@@ -60,7 +62,7 @@ $row_LastId = mysql_fetch_assoc($LastId);
 $totalRows_LastId = mysql_num_rows($LastId);
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE inserted SET Purchase=''");
+  $updateSQL = sprintf("UPDATE inserted SET IsiSJKir=''");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -68,7 +70,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (Purchase) VALUES (%s)",
+  $insertSQL = sprintf("INSERT INTO inserted (IsiSJKir) VALUES (%s)",
                        GetSQLValueString($_POST['checkbox'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -178,10 +180,10 @@ $(function() {
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td align="center"><input type="checkbox" name="checkbox[]" id="checkbox" value="<?php echo $row_InsertTransaksiClaim['Purchase']; ?>"></td>
+	    <td align="center"><input type="checkbox" name="checkbox[]" id="checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>"></td>
 	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertTransaksiClaim['JS']; ?>" readonly></td>
 	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
-	    <td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
+	    <td><input name="Quantity[]" type="text" class="textview" id="Quantity" value="<?php echo $row_InsertTransaksiClaim['Quantity']; ?>" readonly></td>
 	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>

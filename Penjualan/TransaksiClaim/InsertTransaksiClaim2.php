@@ -31,7 +31,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$query_LastReference = "SELECT Reference FROM inserted";
+$query_LastReference = "SELECT inserted.Reference, MAX(periode.Periode) FROM inserted LEFT JOIN periode ON inserted.Reference=periode.Reference";
 $LastReference = mysql_query($query_LastReference, $Connection) or die(mysql_error());
 $row_LastReference = mysql_fetch_assoc($LastReference);
 $totalRows_LastReference = mysql_num_rows($LastReference);
@@ -60,7 +60,7 @@ body {
 </head>
 
 <body onLoad="submit()">
-<form id="form1" name="form1" method="post" action="InsertTransaksiClaimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>">
+<form id="form1" name="form1" method="post" action="InsertTransaksiClaimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>&Periode=<?php echo $row_LastReference['MAX(periode.Periode)']; ?>">
   <input type="submit" name="submit" id="submit" value="Submit">
 </form>
 </body>

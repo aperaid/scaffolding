@@ -8,8 +8,9 @@
 	<infoitem key="UD_Reference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_InsertSJKembali" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QTerkem;datatype:int,name:Project;datatype:string" />
 	<infoitem key="UD_LastIsiSJKembali" value="name:Id;datatype:int" />
-	<infoitem key="UD_InsertTransaksiClaim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:QSisaKem;datatype:int" />
+	<infoitem key="UD_InsertTransaksiClaim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:QSisaKem;datatype:int,name:Periode;datatype:int,name:IsiSJKir;datatype:string" />
 	<infoitem key="UD_LastClaim" value="name:Id;datatype:int" />
 	<infoitem key="UD_Inserted" value="name:Tgl;datatype:string" />
 	<infoitem key="UD_InsertedTgl" value="name:Tgl;datatype:string" />
+	<infoitem key="UD_Periode" value="name:MAX(Periode);datatype:int" />
 </info>
