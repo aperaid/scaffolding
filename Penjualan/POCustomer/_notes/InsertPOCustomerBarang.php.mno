@@ -5,4 +5,5 @@
 	<infoitem key="UD_Purchase" value="name:Id;datatype:int" />
 	<infoitem key="UD_LastReference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_LastInvoice" value="name:Id;datatype:int" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>
