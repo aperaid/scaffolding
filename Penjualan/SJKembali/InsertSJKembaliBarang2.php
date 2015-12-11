@@ -106,9 +106,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                        GetSQLValueString($_POST['QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['Periode'][$i], "text"),
 					   GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
+  $deleteSQL = sprintf("DELETE FROM periode WHERE Quantity=0");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {

@@ -126,7 +126,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 for($i=0;$i<10;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, TglStart, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Purchase'][$i], "text"),
                        GetSQLValueString($_POST['JS'][$i], "text"),
                        GetSQLValueString($_POST['Barang'][$i], "text"),
@@ -134,7 +134,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['Quantity'][$i], "int"),
 					   GetSQLValueString($_POST['Quantity'][$i], "int"),
                        GetSQLValueString($_POST['Amount'][$i], "text"),
-                       GetSQLValueString($_POST['TglStart'][$i], "text"),
                        GetSQLValueString($_POST['Reference'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -322,7 +321,6 @@ $totalRows_User = mysql_num_rows($User);
                       <th>J/S</th>
                       <th>Amount</th>
                       <th>Quantity</th>
-                      <th>Tanggal Permintaan</th>
                       <th><a href="javascript:void(0);" id="addCF" class=" glyphicon glyphicon-plus"></a></th>
                     </thead>
                   </table>
@@ -438,7 +436,7 @@ function capital() {
 		if(x < max_fields){ //max input box allowed
             x++; //text box count increment
 			z++;
-		$("#customFields").append('<tr><td class="hidden"><input name="Purchase[]" class="textbox" id="Purchase" value="'+ z +'"></td><td><input type="text" name="Barang[]" id="Barang" autocomplete="off" class="form-control"></td><td><select name="JS[]" id="JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount[]" autocomplete="off" id="Amount" class="form-control"></td><td><input type="text" name="Quantity[]" id="Quantity" autocomplete="off" class="form-control"></td><td><input type="text" name="TglStart[]" id="Tgl" autocomplete="off" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
+		$("#customFields").append('<tr><td class="hidden"><input name="Purchase[]" class="textbox" id="Purchase" value="'+ z +'"></td><td><input type="text" name="Barang[]" id="Barang" autocomplete="off" class="form-control"></td><td><select name="JS[]" id="JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount[]" autocomplete="off" id="Amount" class="form-control"></td><td><input type="text" name="Quantity[]" id="Quantity" autocomplete="off" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
 		}
 	});
     $("#customFields").on('click','.remCF',function(){
@@ -447,14 +445,7 @@ function capital() {
     });
 });
 </script>
-<script>
 
-  $('#Tgl').datepicker({
-	  format: "dd/mm/yyyy",
-	  orientation: "bottom left",
-	  todayHighlight: true
-  }); 
-</script>
 </body>
 </html>
 <?php

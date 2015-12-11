@@ -46,11 +46,40 @@ if (isset($_GET['Periode'])) {
   $colname_Extend2 = $_GET['Periode'];
 }
 
+$colname_Invoice = "-1";
+if (isset($_GET['Reference'])) {
+  $colname_Invoice = $_GET['Reference'];
+}
+mysql_select_db($database_Connection, $Connection);
+$query_Invoice = sprintf("SELECT PPN, Transport FROM invoice WHERE Reference = %s", GetSQLValueString($colname_Invoice, "text"));
+$Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
+$row_Invoice = mysql_fetch_assoc($Invoice);
+$totalRows_Invoice = mysql_num_rows($Invoice);
+
+mysql_select_db($database_Connection, $Connection);
+$query_LastInvoiceId = "SELECT Id FROM invoice ORDER BY Id DESC";
+$LastInvoiceId = mysql_query($query_LastInvoiceId, $Connection) or die(mysql_error());
+$row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
+$totalRows_LastInvoiceId = mysql_num_rows($LastInvoiceId);
+
 mysql_select_db($database_Connection, $Connection);
 $query_Extend = sprintf("SELECT periode.* FROM periode WHERE periode.Reference=%s AND periode.Periode=%s AND SJKem IS NULL ORDER BY periode.Id ASC", GetSQLValueString($colname_Extend, "text"),GetSQLValueString($colname_Extend2, "text"));
 $Extend = mysql_query($query_Extend, $Connection) or die(mysql_error());
 $row_Extend = mysql_fetch_assoc($Extend);
 $totalRows_Extend = mysql_num_rows($Extend);
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Transport, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['Invoice'], "text"),
+                       GetSQLValueString($_POST['Tgl'], "text"),
+                       GetSQLValueString($_POST['PPN'], "int"),
+                       GetSQLValueString($_POST['Transport'], "text"),
+                       GetSQLValueString($_POST['Reference2'], "text"),
+                       GetSQLValueString($_POST['Periode2'], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
 
 for($i=0;$i<$totalRows_Extend;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
@@ -167,20 +196,26 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 				$thn = $thn + 1;
 				}
 			?>
+            <?php $Reference = $row_Extend['Reference']; $Periode = $row_Extend['Periode']; ?>
       <?php do { ?>
         <tr>
-          <td><input name="Periode[]" type="hidden" id="Periode" value="<?php echo $row_Extend['Periode']+1; ?>">
+          <td><input name="Periode[]" type="hidden" id="Periode" value="<?php echo $Periode+1; ?>">
             <input name="S[]" type="hidden" id="S" value="<?php echo $stgl, '/', $bln, '/', $thn; ?>">
             <input name="E[]" type="hidden" id="E" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
             <input name="Quantity[]" type="hidden" id="Quantity" value="<?php echo $row_Extend['Quantity']; ?>">
             <input name="IsiSJKir[]" type="hidden" id="IsiSJKir" value="<?php echo $row_Extend['IsiSJKir']; ?>">
-          <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_Extend['Reference']; ?>"></td>
+          <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $Reference; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
       <?php } while ($row_Extend = mysql_fetch_assoc($Extend)); ?>
       <tr>
-        <td>&nbsp;</td>
+        <td><input name="Invoice" type="hidden" id="Invoice" value="<?php echo str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
+          <input name="Tgl" type="hidden" id="Tgl" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
+          <input name="PPN" type="hidden" id="PPN" value="<?php echo $row_Invoice['PPN']; ?>">
+          <input name="Transport" type="hidden" id="Transport" value="<?php echo $row_Invoice['Transport']; ?>">
+<input name="Reference2" type="hidden" id="Reference2" value="<?php echo $Reference; ?>">
+        <input name="Periode2" type="hidden" id="Periode2" value="<?php echo $Periode+1; ?>"></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
@@ -196,4 +231,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 </html>
 <?php
 mysql_free_result($Extend);
+
+mysql_free_result($Invoice);
+
+mysql_free_result($LastInvoiceId);
 ?>
