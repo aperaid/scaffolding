@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <info>
-	<infoitem key="UD_TransaksiJual" value="name:Id;datatype:int,name:Purchase;datatype:string,name:JS;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:QSisaKir;datatype:int,name:QSisaKem;datatype:int,name:Amount;datatype:string,name:TglStart;datatype:string,name:Reference;datatype:string,name:Project;datatype:string,name:Customer;datatype:string" />
+	<infoitem key="UD_TransaksiJual" value="name:Reference;datatype:string,name:Tgl;datatype:string,name:Project;datatype:string,name:Company;datatype:string,name:Project;datatype:string,name:Customer;datatype:string" />
 	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_Recordset1" value="name:Id;datatype:int,name:Reference;datatype:string,name:TglStart;datatype:string,name:TglEnd;datatype:string,name:Nama;datatype:string,name:Quantity;datatype:int,name:JS;datatype:string,name:Amount;datatype:string,name:PCode;datatype:string,name:Status;datatype:string" />
 	<infoitem key="UD_Customer" value="name:Id;datatype:int,name:CCode;datatype:string,name:Company;datatype:string,name:Customer;datatype:string,name:Alamat;datatype:blob,name:Zip;datatype:int,name:Kota;datatype:string,name:CompPhone;datatype:string,name:CustPhone;datatype:string,name:Fax;datatype:string,name:NPWP;datatype:string,name:CompEmail;datatype:blob,name:CustEmail;datatype:blob" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>

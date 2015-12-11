@@ -146,12 +146,8 @@ if (isset($_GET['Reference'])) {
   $colname_View = $_GET['Reference'];
 }
 
-$colname_View2 = "-1";
-if (isset($_GET['Periode'])) {
-  $colname_View2 = $_GET['Periode'];
-}
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, transaksi.Barang, periode.S, periode.E, customer.Company, project.Project, periode.Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"));
+$query_View = sprintf("SELECT pocustomer.Tgl, transaksi.Id, transaksi.Barang, customer.Company, project.Project, transaksi.Quantity, transaksi.Amount FROM transaksi LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode = project.PCode LEFT JOIN customer ON project.CCode = customer.CCode WHERE transaksi.JS = 'Jual' AND transaksi.Reference=%s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -268,12 +264,12 @@ $totalRows_User = mysql_num_rows($User);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Transaksi Sewa
+        Transaksi Jual
         <small> View </small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Transaksi Sewa</li>
+        <li class="active">Transaksi Jual</li>
       </ol>
     </section>
 
@@ -287,10 +283,8 @@ $totalRows_User = mysql_num_rows($User);
               <table id="example1" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
-                  <th>Periode</th>
                   <th>Barang</th>
-                  <th>Start</th>
-                  <th>End</th>
+                  <th>Tanggal Jual</th>
                   <th>Company</th>
                   <th>Project</th>
                   <th>Quantity</th>
@@ -301,25 +295,21 @@ $totalRows_User = mysql_num_rows($User);
 				<tbody>
 					<?php do { ?>
 					<tr>
-						<td><?php echo $row_View['Periode']; ?></td>
-                        <td><?php echo $row_View['Barang']; ?></td>
-						<td><?php echo $row_View['S']; ?></td>
-						<td><?php echo $row_View['E']; ?></td>
+                    	<td><?php echo $row_View['Barang']; ?></td>
+                        <td><?php echo $row_View['Tgl']; ?></td>
 						<td><?php echo $row_View['Company']; ?></td>
-						<td><?php echo $row_View['Project']; ?></td>
+                        <td><?php echo $row_View['Project']; ?></td>
                         <td><?php echo $row_View['Quantity']; ?></td>
-                        <td><?php echo $row_View['Amount']; ?></td>
+						<td><?php echo $row_View['Amount']; ?></td>
 						<td></td>
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
                 <tfoot>
                 <tr>
-                  <th>Periode</th>
                   <th>Barang</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Customer</th>
+                  <th>Tanggal Jual</th>
+                  <th>Company</th>
                   <th>Project</th>
                   <th>Quantity</th>
                   <th>Amount</th>
