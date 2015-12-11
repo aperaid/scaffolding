@@ -41,6 +41,13 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
 <head>
 <meta charset="utf-8">
 <title>Untitled Document</title>
+<link href="../../Button.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+body {
+	background-image: url(../../Image/Wood.png);
+	background-repeat: no-repeat;
+}
+</style>
 
 <script type="text/javascript">
     function submit()
@@ -54,7 +61,7 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
 
 <body onLoad="submit()">
 <form id="form1" name="form1" method="post" action="InsertSJKembaliBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>">
-  <input type="submit" name="submit" id="submit" value="">
+  <input type="submit" name="submit" id="submit" value="Submit">
 </form>
 </body>
 </html>

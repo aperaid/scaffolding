@@ -58,15 +58,12 @@ $colname_View2 = "-1";
 if (isset($_GET['JS'])) {
   $colname_View2 = $_GET['Reference'];
   $colname_ViewJS = $_GET['JS'];
-  $colname_ViewPeriode = $_GET['Periode'];
 }
-
 mysql_select_db($database_Connection, $Connection);
 $query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, periode.Quantity, periode.S, periode.E, periode.SJKem, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
 LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
-WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
-GetSQLValueString($colname_ViewJS, "text"),
-GetSQLValueString($colname_ViewPeriode, "text"));
+WHERE transaksi.Reference = %s AND transaksi.JS = %s ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
+GetSQLValueString($colname_ViewJS, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
 

@@ -83,21 +83,14 @@ $inserted = mysql_query($query_inserted, $Connection) or die(mysql_error());
 $row_inserted = mysql_fetch_assoc($inserted);
 $totalRows_inserted = mysql_num_rows($inserted);
 
-mysql_select_db($database_Connection, $Connection);
-$query_LastTgl = "SELECT Tgl FROM pocustomer ORDER BY Id DESC";
-$LastTgl = mysql_query($query_LastTgl, $Connection) or die(mysql_error());
-$row_LastTgl = mysql_fetch_assoc($LastTgl);
-$totalRows_LastTgl = mysql_num_rows($LastTgl);
-
 for($i=0;$i<$totalRows_JS;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, PPN, Transport, Reference, Tgl, Periode) VALUES (%s, %s, %s, %s, %s, %s, 1)",
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, PPN, Transport, Reference) VALUES (%s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Invoice'][$i], "text"),
                        GetSQLValueString($_POST['JS'][$i], "text"),
 					   GetSQLValueString($_POST['PPN'][$i], "text"),
 					   GetSQLValueString($_POST['Transport'][$i], "text"),
-                       GetSQLValueString($_POST['Reference'][$i], "text"),
-					   GetSQLValueString($_POST['Tgl'][$i], "text"));
+                       GetSQLValueString($_POST['Reference'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -116,6 +109,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <head>
 <meta charset="utf-8">
 <title>Untitled Document</title>
+<link href="../../Button.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+body {
+	background-image: url(../../Image/Wood.png);
+	background-repeat: no-repeat;
+}
+</style>
 
 <script type="text/javascript">
     function submit()
@@ -137,60 +137,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
-      <?php $tgl = 0; $bln = substr($row_LastTgl['Tgl'], 3, -5); $thn = substr($row_LastTgl['Tgl'], 6);
-			if ($bln == 1){
-				$tgl = 31;
-				$bln = '01';
-				}
-			elseif ($bln == 2){
-				$tgl = 28;
-				$bln = '02';
-				if ($thn == 2016 || $thn == 2020 || $thn == 2024){
-				$tgl = 29;
-				$bln = '02';
-				}
-				}
-			elseif ($bln == 3){
-				$tgl = 31;
-				$bln = '03';
-				}
-			elseif ($bln == 4){
-				$tgl = 30;
-				$bln = '04';
-				}
-			elseif ($bln == 5){
-				$tgl = 31;
-				$bln = '05';
-				}
-			elseif ($bln == 6){
-				$tgl = 30;
-				$bln = '06';
-				}
-			elseif ($bln == 7){
-				$tgl = 31;
-				$bln = '07';
-				}
-			elseif ($bln == 8){
-				$tgl = 31;
-				$bln = '08';
-				}
-			elseif ($bln == 9){
-				$tgl = 30;
-				$bln = '09';
-				}
-			elseif ($bln == 10){
-				$tgl = 31;
-				$bln = '10';
-				}
-			elseif ($bln == 11){
-				$tgl = 30;
-				$bln = '11';
-				}
-			elseif ($bln == 12){
-				$tgl = 31;
-				$bln = '12';
-				}
-			?>
       <?php $x=1; ?>
       <?php do { ?>
         <tr>
@@ -199,8 +145,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
           <input name="JS[]" type="hidden" id="JS" value="<?php echo $row_JS['JS']; ?>">
           <input name="PPN[]" type="hidden" id="PPN" value="<?php echo $row_inserted['PPN']; ?>">
           <input name="Transport[]" type="hidden" id="Transport" value="<?php echo $row_inserted['Transport']; ?>">
-          <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_Reference['Reference']; ?>">
-          <input name="Tgl[]" type="hidden" id="Tgl" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>"></td>
+          <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_Reference['Reference']; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
@@ -215,8 +160,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     </tbody>
   </table>
   <input type="hidden" name="MM_insert" value="form1">
-  <input type="submit" name="submit" id="submit" value="">
+  <noscript>
+  <input type="submit" name="submit" id="submit" value="Submit">
+  </noscript>
 </form>
+
+
+
 </body>
 </html>
 <?php
@@ -227,8 +177,6 @@ mysql_free_result($LastId);
 mysql_free_result($Reference);
 
 mysql_free_result($inserted);
-
-mysql_free_result($LastTgl);
 
 
 ?>

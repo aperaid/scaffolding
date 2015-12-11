@@ -162,7 +162,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 						<td><?php echo $row_Invoice['Company']; ?></td>
 						<td>&nbsp;</td>
 						<td><?php echo $row_Invoice['Tgl']; ?></td>
-					  <td align="center"><a href="ViewInvoice.php?Reference=<?php echo $row_Invoice['Reference']; ?>&JS=<?php echo $row_Invoice['JSC']; ?>&Invoice=<?php echo $row_Invoice['Invoice']; ?>&Periode=<?php echo $row_Invoice['Periode']; ?>">
+					  <td align="center"><a href="ViewInvoice.php?Reference=<?php echo $row_Invoice['Reference']; ?>&JS=<?php echo $row_Invoice['JSC']; ?>&Invoice=<?php echo $row_Invoice['Invoice']; ?>">
 					  <button type="button" class="button3">View</button></a></td>
 					</tr>
 					<?php } while ($row_Invoice = mysql_fetch_assoc($Invoice)); ?>
