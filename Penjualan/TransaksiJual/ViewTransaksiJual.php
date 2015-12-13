@@ -289,7 +289,6 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Project</th>
                   <th>Quantity</th>
                   <th>Amount</th>
-                  <th>Opsi</th>
                 </tr>
                 </thead>
 				<tbody>
@@ -301,7 +300,6 @@ $totalRows_User = mysql_num_rows($User);
                         <td><?php echo $row_View['Project']; ?></td>
                         <td><?php echo $row_View['Quantity']; ?></td>
 						<td><?php echo $row_View['Amount']; ?></td>
-						<td></td>
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
@@ -313,7 +311,6 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Project</th>
                   <th>Quantity</th>
                   <th>Amount</th>
-                  <th>Opsi</th>
                 </tr>
                 </tfoot>
               </table>

@@ -83,13 +83,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
 for($i=0;$i<$totalRows_Extend;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference) VALUES (%s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Periode'][$i], "int"),
                        GetSQLValueString($_POST['S'][$i], "text"),
                        GetSQLValueString($_POST['E'][$i], "text"),
                        GetSQLValueString($_POST['Quantity'][$i], "int"),
                        GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
-                       GetSQLValueString($_POST['Reference'][$i], "text"));
+                       GetSQLValueString($_POST['Reference'][$i], "text"),
+					   GetSQLValueString($_POST['Purchase'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -204,7 +205,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
             <input name="E[]" type="hidden" id="E" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
             <input name="Quantity[]" type="hidden" id="Quantity" value="<?php echo $row_Extend['Quantity']; ?>">
             <input name="IsiSJKir[]" type="hidden" id="IsiSJKir" value="<?php echo $row_Extend['IsiSJKir']; ?>">
-          <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $Reference; ?>"></td>
+            <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $Reference; ?>"></td>
+            <input name="Purchase[]" type="hidden" id="Purchase" value="<?php echo $row_Extend['Purchase']; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>

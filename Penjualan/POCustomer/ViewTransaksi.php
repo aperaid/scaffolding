@@ -321,7 +321,7 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_Purchase['JS']; ?></td>
                     <td><?php echo $row_Purchase['Barang']; ?></td>
                     <td><?php echo $row_Purchase['Quantity']; ?></td>
-                    <td><?php echo $row_Purchase['TglStart']; ?></td>
+                    <td><?php echo $row_Purchase['Tgl']; ?></td>
                     <td><?php echo $row_Purchase['Amount']; ?></td>
                   </tr>
                 <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>

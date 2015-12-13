@@ -174,6 +174,13 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=0 WHERE JS='Jual'");
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+%s WHERE IsiSJKir=%s",
                        GetSQLValueString($_POST['QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
@@ -191,6 +198,14 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkirim LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase SET isisjkirim.QSisaKemInsert=0, isisjkirim.QSisaKem=0 WHERE transaksi.JS='Jual'");
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
   $updateGoTo = "ViewSJKirim.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -199,7 +214,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   }
   
   header(sprintf("Location: %s", $updateGoTo));
-}
 }
 ?>
 
