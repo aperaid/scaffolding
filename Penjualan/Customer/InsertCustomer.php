@@ -302,7 +302,7 @@ $totalRows_User = mysql_num_rows($User);
                   </div>
                   <label class="col-sm-1 control-label">Kota</label>
                   <div class="col-sm-2">
-                    <input id="Kota" name="Kota" type="number" class="form-control" placeholder="Kota">
+                    <input id="Kota" name="Kota" type="text" class="form-control" placeholder="Kota">
                   </div>
                   <label class="col-sm-1 control-label">Kodepos</label>
                   <div class="col-sm-2">

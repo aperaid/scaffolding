@@ -109,7 +109,7 @@ if (isset($_GET['PCode'])) {
   $colname_View = $_GET['PCode'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT project.*, customer.Alamat, customer.Company, customer.CompPhone, customer.Customer, customer.CustPhone, customer.CCode FROM project INNER JOIN customer ON project.CCode=customer.CCode WHERE PCode = %s", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT project.PCode, project.Project, project.Alamat, customer.Company, customer.CompPhone, customer.Customer, customer.CustPhone, customer.CCode FROM project INNER JOIN customer ON project.CCode=customer.CCode WHERE PCode = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -268,7 +268,7 @@ $totalRows_User = mysql_num_rows($User);
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Alamat</label>
+                  <label class="col-sm-2 control-label">Alamat Project</label>
                   <div class="col-sm-6">
                     <input id="Alamat" name="Alamat" type="text" class="form-control" value="<?php echo $row_View['Alamat']; ?>"  readonly>
                   </div>

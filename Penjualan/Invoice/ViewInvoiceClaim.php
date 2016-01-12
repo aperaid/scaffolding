@@ -47,21 +47,12 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
-$colname_Count = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_Count = $_GET['Reference'];
-  $colname_ViewJS = $_GET['JS'];
-  $colname_ViewInvoice = $_GET['Invoice'];
-}
-
 $colname_View2 = "-1";
 if (isset($_GET['JS'])) {
   $colname_View2 = $_GET['Reference'];
-  $colname_ViewJS = $_GET['JS'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT isisjkirim.QKirim, sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, sjkirim.Tgl AS S, transaksi.Amount FROM transaksi RIGHT JOIN isisjkirim ON isisjkirim.Purchase = transaksi.Purchase LEFT JOIN sjkirim ON sjkirim.SJKir = isisjkirim.SJKir WHERE transaksi.Reference = %s AND transaksi.JS = %s", GetSQLValueString($colname_View2, "text"),
-GetSQLValueString($colname_ViewJS, "text"));
+$query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount FROM transaksiclaim LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s", GetSQLValueString($colname_View2, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
 
@@ -215,8 +206,9 @@ body {
         <th align="center">SJ Kirim</th>
         <th align="center">No. Purchase</th>
         <th align="center">Item</th>
-        <th>Quantity Kirim</th>
-        <th>Amount</th>
+        <th>Tgl Claim</th>
+        <th>Quantity Claim</th>
+        <th>Claim Amount</th>
         <th>Total</th>
         </tr>
       <?php 
@@ -224,12 +216,13 @@ body {
 	  do { ?>
       
         <tr>
-          <td align="center"><input name="SJKir" type="text" class="textview" id="SJKir" value="<?php echo $row_View2['SJKir']; ?>" readonly></td>
+          <td align="center"><input name="SJKir" type="text" class="textview" id="SJKir" value="" readonly></td>
           <td align="center"><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_View2['Purchase']; ?>" readonly></td>
           <td align="center"><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_View2['Barang']; ?>" readonly></td>
-          <td align="center"><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_View2['QKirim']; ?>" readonly></td>
+          <td align="center"><input name="Tgl" type="text" class="textview" id="Tgl" value="<?php echo $row_View2['Tgl']; ?>" readonly></td>
+          <td align="center"><input name="Quantity" type="text" class="textview" id="Quantity" value="<?php echo $row_View2['QClaim']; ?>" readonly></td>
           <td align="center"><input name="Amount" type="text" class="textview" id="Amount" value="<?php echo $row_View2['Amount']; ?>" readonly></td>
-          <?php $test = $row_View2['QKirim']* $row_View2['Amount']; $total += $test ?>
+          <?php $test = $row_View2['QClaim']* $row_View2['Amount']; $total += $test ?>
           <td align="center"><input name="Total" type="text" class="textview" id="Total" value="<?php echo round($test, 2) ?>" readonly></td>
         </tr>
       <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
@@ -268,7 +261,7 @@ body {
           <button type="button" class="button2">Print</button>
         </a></td>
         <td align="center"><input type="submit" name="submit" id="submit" class="button2" value="Update"></td>
-        <td><a href="InvoiceJual.php">
+        <td><a href="InvoiceClaim.php">
           <button type="button" class="button2">Cancel</button>
         </a></td>
       </tr>

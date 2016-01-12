@@ -2,4 +2,5 @@
 <info>
 	<infoitem key="UD_Edit" value="name:Id;datatype:int,name:PCode;datatype:string,name:Project;datatype:string,name:CCode;datatype:string" />
 	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>

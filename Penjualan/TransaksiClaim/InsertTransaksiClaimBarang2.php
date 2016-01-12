@@ -111,7 +111,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Periode=%s",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Periode=%s AND SJKem IS NULL",
                        GetSQLValueString($_POST['QClaim'][$i], "int"),
                        GetSQLValueString($_POST['IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['Periode'][$i], "text"));
@@ -137,7 +137,7 @@ for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode) VALUES (%s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['Claim'][$i], "text"),
-                       GetSQLValueString($_POST['Tgl'][$i], "text"),
+                       GetSQLValueString($_POST['Tgl'], "text"),
                        GetSQLValueString($_POST['QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['Amount'][$i], "int"),
                        GetSQLValueString($_POST['Purchase'][$i], "text"),

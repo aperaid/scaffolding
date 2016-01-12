@@ -110,9 +110,10 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO project (PCode, Project, CCode) VALUES (%s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO project (PCode, Project, Alamat, CCode) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['PCode'], "text"),
                        GetSQLValueString($_POST['Project'], "text"),
+					   GetSQLValueString($_POST['Alamat'], "text"),
                        GetSQLValueString($_POST['CCode'], "text"));
 
   mysql_select_db($database_Connection, $Connection);

@@ -318,7 +318,7 @@ $totalRows_User = mysql_num_rows($User);
                   </div>
                   <label class="col-sm-1 control-label">Kota</label>
                   <div class="col-sm-2">
-                    <input id="Kota" name="Kota" type="number" class="form-control" value="<?php echo $row_Edit['Kota']; ?>" placeholder="Nama Kota">
+                    <input id="Kota" name="Kota" type="text" class="form-control" value="<?php echo $row_Edit['Kota']; ?>" placeholder="Nama Kota">
                   </div>
                   <label class="col-sm-1 control-label">Fax</label>
                   <div class="col-sm-2">
@@ -326,7 +326,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-fax"></i>
                       </div>
-                      <input id="Fax" name="Fax" type="text" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
+                      <input id="Fax" name="Fax" type="text" class="form-control" value="<?php echo $row_Edit['Fax']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                 </div>

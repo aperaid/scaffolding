@@ -202,11 +202,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-<<<<<<< HEAD
   $updateSQL = sprintf("UPDATE isisjkirim LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase SET isisjkirim.QSisaKemInsert=0, isisjkirim.QSisaKem=0 WHERE transaksi.JS='Jual'");
-=======
-  $updateSQL = sprintf("UPDATE isisjkirim LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase SET isisjkirim.QTertanda=0, isisjkirim.QSisaKemInsert=0, isisjkirim.QSisaKem=0 WHERE transaksi.JS='Jual'");
->>>>>>> origin/master
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
