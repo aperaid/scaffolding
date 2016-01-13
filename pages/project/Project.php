@@ -20,7 +20,7 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   unset($_SESSION['MM_UserGroup']);
   unset($_SESSION['PrevUrl']);
 	
-  $logoutGoTo = "../../Users/Login.php";
+  $logoutGoTo = "../login/Login.php";
   if ($logoutGoTo) {
     header("Location: $logoutGoTo");
     exit;
@@ -60,7 +60,7 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) {
   return $isValid; 
 }
 
-$MM_restrictGoTo = "../../Users/Login.php";
+$MM_restrictGoTo = "../login/Login.php";
 if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
   $MM_qsChar = "?";
   $MM_referrer = $_SERVER['PHP_SELF'];
@@ -180,13 +180,13 @@ $totalRows_Menu = mysql_num_rows($Menu);
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="../../library/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs"><?php echo "Welcome ".$_SESSION['MM_Username']; ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="../../library/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
                   <?php echo $_SESSION['MM_Username']; ?> - <?php echo $row_User['Name']; ?>
@@ -216,7 +216,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
       <ul class="sidebar-menu">
         <li class="header">MENU</li>
         <?php do { ?>
-        <li><a href="../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
+        <li><a href="../../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
         <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
       </ul>
     </section>
@@ -245,7 +245,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 
           <div class="box">
             <div class="box-body">
-              <table id="example1" class="table table-condensed table-hover">
+              <table id="tb_project" name="tb_project" class="table table-condensed table-hover">
                 <thead>
                 <tr>
                   <th>Project Code</th>
@@ -258,7 +258,8 @@ $totalRows_Menu = mysql_num_rows($Menu);
                   <tr>
                     <td><?php echo $row_Project['PCode']; ?></td>
                     <td><?php echo $row_Project['Project']; ?></td>
-                    <td><a href="ViewProject.php?PCode=<?php echo $row_Project['PCode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+                    <td><a href="ViewProject.php?PCode=<?php echo $row_Project['PCode']; ?>">
+                    <button type="button" id="bt_project_view" name="bt_project_view" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>
                   <?php } while ($row_Project = mysql_fetch_assoc($Project)); ?>
                 </tbody>
