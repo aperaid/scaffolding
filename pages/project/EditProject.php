@@ -192,7 +192,7 @@ $totalRows_User = mysql_num_rows($User);
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="../../index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>BDN</b></span>
       <!-- logo for regular state and mobile devices -->
@@ -211,13 +211,13 @@ $totalRows_User = mysql_num_rows($User);
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../library/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="../../library/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs"><?php echo "Welcome ".$_SESSION['MM_Username']; ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="../library/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="../../library/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
                   <?php echo $_SESSION['MM_Username']; ?> - <?php echo $row_User['Name']; ?>

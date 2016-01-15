@@ -7,6 +7,6 @@
 
 <body>
 <p>You can't access that page </p>
-<p>Back to <a href="../index.php">index</a></p>
+<p>Back to <a href="../../../index.php">index</a></p>
 </body>
 </html>

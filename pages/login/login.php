@@ -46,7 +46,7 @@ if (isset($_POST['Username'])) {
   $loginUsername=$_POST['Username'];
   $password=$_POST['Password'];
   $MM_fldUserAuthorization = "Access";
-  $MM_redirectLoginSuccess = "../../index.php";
+  $MM_redirectLoginSuccess = "../../../../index.php";
   $MM_redirectLoginFailed = "Login.php";
   $MM_redirecttoReferrer = false;
   mysql_select_db($database_Connection, $Connection);
@@ -104,7 +104,7 @@ if (isset($_POST['Username'])) {
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>BDN</b> erp</a>
+    <a href="../../../../index.php"><b>BDN</b> erp</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
