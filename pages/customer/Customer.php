@@ -21,7 +21,7 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
   unset($_SESSION['MM_Username']);
   unset($_SESSION['MM_UserGroup']);
   unset($_SESSION['PrevUrl']);
-  $logoutGoTo = "../../pages/login/Login.php";
+  $logoutGoTo = "../login/Login.php";
   if ($logoutGoTo) {
     header("Location: $logoutGoTo");
     exit;
@@ -60,7 +60,7 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup)
   }
   return $isValid;
 }
-$MM_restrictGoTo = "../../Users/Login.php";
+$MM_restrictGoTo = "../login/Login.php";
 if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("", $MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {
   $MM_qsChar   = "?";
   $MM_referrer = $_SERVER['PHP_SELF'];

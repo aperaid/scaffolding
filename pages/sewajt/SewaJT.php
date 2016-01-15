@@ -78,7 +78,7 @@ body {
 				<?php do { ?>    
                 	<tr>
                     <td class="Menu">
-                    <a href="../<?php echo $row_Menu['link']; ?>">
+                    <a href="../../<?php echo $row_Menu['link']; ?>">
                     <button type="button" class="button">
 					<?php echo $row_Menu['nama']; ?></button></a></td>
                     </tr>

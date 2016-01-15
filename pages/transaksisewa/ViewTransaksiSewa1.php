@@ -136,7 +136,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
       <ul class="sidebar-menu">
         <li class="header">MENU</li>
         <?php do { ?>
-        <li><a href="../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
+        <li><a href="../../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
         <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
       </ul>
     </section>
