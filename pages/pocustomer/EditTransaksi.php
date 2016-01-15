@@ -147,10 +147,9 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_Purchase;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET Quantity=%s, Amount=%s, TglStart=%s WHERE Id=%s",
+  $updateSQL = sprintf("UPDATE transaksi SET Quantity=%s, Amount=%s WHERE Id=%s",
                        GetSQLValueString($_POST['Quantity'][$i], "int"),
                        GetSQLValueString($_POST['Amount'][$i], "text"),
-                       GetSQLValueString($_POST['TglStart'][$i], "text"),
                        GetSQLValueString($_POST['Id'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -274,7 +273,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
         <small>View Detail</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="">Purchase Order</a></li>
         <li class="active">View PO</li>
       </ol>
@@ -350,8 +349,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                       <td><?php echo $row_Purchase['JS']; ?></td>
                       <td><?php echo $row_Purchase['Barang']; ?></td>
                       <td><input name="Quantity[]" type="text" class="form-control" id="Quantity" value="<?php echo $row_Purchase['Quantity']; ?>"></td>
-                      <td><input name="TglStart[]" type="text" class="form-control" id="TglStart" value="<?php echo $row_Purchase['TglStart']; ?>"></td>
                       <td><input name="Amount[]" type="text" class="form-control" id="Amount" value="<?php echo $row_Purchase['Amount']; ?>"></td>
+                      <td></td>
                     </tr>
                   <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
             </tbody>
