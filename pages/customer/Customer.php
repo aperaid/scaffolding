@@ -227,7 +227,7 @@ $totalRows_User = mysql_num_rows($User);
         <large><a href="InsertCustomer.php"><button id="bt_customer_insert" name="bt_customer_insert" type="button" class="btn btn-success btn-sm">New Customer</button></a></large>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Customer</li>
       </ol>
     </section>

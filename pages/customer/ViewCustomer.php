@@ -236,7 +236,7 @@ $totalRows_User = mysql_num_rows($User);
         <small>View</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="Customer.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="Customer.php">Customer</a></li>
         <li class="active">View Customer</li>
       </ol>
