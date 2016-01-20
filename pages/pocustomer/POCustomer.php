@@ -264,7 +264,7 @@ $totalRows_User = mysql_num_rows($User);
         <large><a href="InsertPOCustomer.php"><button type="button" class="btn btn-success btn-sm">New PO</button></a></large>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Purchase Order</li>
       </ol>
     </section>

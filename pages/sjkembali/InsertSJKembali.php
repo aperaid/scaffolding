@@ -258,8 +258,8 @@ $totalRows_User = mysql_num_rows($User);
         <small>New</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="customer.php">SJ Kembali</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../SJKembali/sjkembali.php">SJ Kembali</a></li>
         <li class="active">Insert SJ Kembali</li>
       </ol>
     </section>

@@ -277,8 +277,8 @@ $totalRows_User = mysql_num_rows($User);
         <small>View Detail</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="">SJ Kirim</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../SJKirim/sjkirim.php">SJ Kirim</a></li>
         <li class="active">View SJ</li>
       </ol>
     </section>

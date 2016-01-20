@@ -274,7 +274,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="">Purchase Order</a></li>
+        <li><a href="../POCustomer/pocustomer.php">Purchase Order</a></li>
         <li class="active">View PO</li>
       </ol>
     </section>
