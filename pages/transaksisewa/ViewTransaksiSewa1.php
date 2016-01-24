@@ -153,8 +153,8 @@ $totalRows_Menu = mysql_num_rows($Menu);
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="TransaksiJual.php">Transaksi Sewa</a></li>
-        <li class="active">View Detail</li>
+        <li><a href="TransaksiSewa.php">View Transaksi Sewa</a></li>
+        <li class="active">View Transaksi Sewa</li>
       </ol>
     </section>
 

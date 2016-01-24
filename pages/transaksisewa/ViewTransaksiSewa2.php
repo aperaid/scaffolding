@@ -273,7 +273,8 @@ $totalRows_User = mysql_num_rows($User);
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Transaksi Sewa</li>
+        <li><a href="TransaksiSewa.php">Transaksi Sewa</a></li>
+        <li class="active">View Transaksi Sewa</li>
       </ol>
     </section>
 
