@@ -270,7 +270,7 @@ $totalRows_User = mysql_num_rows($User);
 
           <div class="box">
             <div class="box-body">
-              <table id="tb_customer" name="tb_customer" class="table table-condensed table-hover">
+              <table id="tb_customer_example1" name="tb_customer" class="table table-condensed table-hover">
                 <thead>
                 <tr>
                   <th>Customer Code</th>

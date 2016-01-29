@@ -253,18 +253,18 @@ $totalRows_User = mysql_num_rows($User);
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form id="form1" name="form1" method="post" class="form-horizontal">
+            <form id="fm_viewcustomer_form1" name="form1" method="post" class="form-horizontal">
               <div class="box-body with-border">
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="CCode" name="CCode" type="text" class="form-control" value="<?php echo $row_View['CCode']; ?>"  readonly>
+                    <input id="tx_viewcustomer_CCode" name="CCode" type="text" class="form-control" value="<?php echo $row_View['CCode']; ?>"  readonly>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
-                    <input id="Company" name="Company" type="text" class="form-control" value="<?php echo $row_View['Company']; ?>"  readonly>
+                    <input id="tx_viewcustomer_Company" name="Company" type="text" class="form-control" value="<?php echo $row_View['Company']; ?>"  readonly>
                   </div>
                   <label class="col-sm-1 control-label">Telp</label>
                   <div class="col-sm-2">
@@ -272,18 +272,18 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="CompPhone" name="CompPhone" type="text" class="form-control" value="<?php echo $row_View['CompPhone']; ?>"  readonly>
+                      <input id="tx_viewcustomer_CompPhone" name="CompPhone" type="text" class="form-control" value="<?php echo $row_View['CompPhone']; ?>"  readonly>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat</label>
                   <div class="col-sm-4">
-                    <input id="Alamat" name="Alamat" type="text" class="form-control" value="<?php echo $row_View['Alamat']; ?>"  readonly>
+                    <input id="tx_viewcustomer_Alamat" name="Alamat" type="text" class="form-control" value="<?php echo $row_View['Alamat']; ?>"  readonly>
                   </div>
                   <label class="col-sm-1 control-label">Kota</label>
                   <div class="col-sm-2">
-                    <input id="Kota" name="Kota" type="text" class="form-control" value="<?php echo $row_View['Kota']; ?>" readonly>
+                    <input id="tx_viewcustomer_Kota" name="Kota" type="text" class="form-control" value="<?php echo $row_View['Kota']; ?>" readonly>
                   </div>
                   <label class="col-sm-1 control-label">Fax</label>
                   <div class="col-sm-2">
@@ -291,7 +291,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-fax"></i>
                       </div>
-                      <input id="Fax" name="Fax" type="text" class="form-control" value="<?php echo $row_View['Fax']; ?>" readonly>
+                      <input id="tx_viewcustomer_Fax" name="Fax" type="text" class="form-control" value="<?php echo $row_View['Fax']; ?>" readonly>
                     </div>
                   </div>
                 </div>
@@ -300,19 +300,19 @@ $totalRows_User = mysql_num_rows($User);
                   <div class="col-sm-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
-                      <input id="NPWP" name="NPWP" type="text" class="form-control" value="<?php echo $row_View['NPWP']; ?>"  readonly>
+                      <input id="tx_viewcustomer_NPWP" name="NPWP" type="text" class="form-control" value="<?php echo $row_View['NPWP']; ?>"  readonly>
                     </div>
                   </div>
                   <label class="col-sm-1 control-label">Kodepos</label>
                   <div class="col-sm-2">
-                    <input id="Zip" name="Zip" type="number" class="form-control" value="<?php echo $row_View['Zip']; ?>"  readonly>
+                    <input id="nb_viewcustomer_Zip" name="Zip" type="number" class="form-control" value="<?php echo $row_View['Zip']; ?>"  readonly>
                   </div>
                   
                   <label class="col-sm-1 control-label">Email</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input id="CompEmail" name="CompEmail" type="text" class="form-control" value="<?php echo $row_View['CompEmail']; ?>" readonly>
+                      <input id="tx_viewcustomer_CompEmail" name="CompEmail" type="text" class="form-control" value="<?php echo $row_View['CompEmail']; ?>" readonly>
                     </div>
                   </div>
                 </div>
@@ -324,7 +324,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-user"></i>
                       </div>
-                      <input id="Customer" name="Customer" type="text" class="form-control" value="<?php echo $row_View['Customer']; ?>"  readonly>
+                      <input id="tx_viewcustomer_Customer" name="Customer" type="text" class="form-control" value="<?php echo $row_View['Customer']; ?>"  readonly>
                     </div>
                   </div>
                 </div>
@@ -335,14 +335,14 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="CustPhone" name="CustPhone" type="text" class="form-control" value="<?php echo $row_View['CustPhone']; ?>"  readonly>
+                      <input id="tx_viewcustomer_CustPhone" name="CustPhone" type="text" class="form-control" value="<?php echo $row_View['CustPhone']; ?>"  readonly>
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input id="CustEmail" name="CustEmail"type="text" class="form-control" value="<?php echo $row_View['CustEmail']; ?>" readonly>
+                      <input id="tx_viewcustomer_CustEmail" name="CustEmail"type="text" class="form-control" value="<?php echo $row_View['CustEmail']; ?>" readonly>
                     </div>
                   </div>
                 </div>
