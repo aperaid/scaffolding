@@ -1,4 +1,4 @@
-<?php require_once('../../connection/connection.php'); ?>
+<?php require_once('../../connections/Connection.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -120,7 +120,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <script type="text/javascript">
     function submit()
     {
-        document.getElementById("submit").click(); // Simulates button click
+        document.getElementById("bt_insertpocustomerbarang2_submit").click(); // Simulates button click
         document.submitForm.submit(); // Submits the form without the button
     }
 </script>
@@ -128,7 +128,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 </head>
 
 <body onLoad="submit()">
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomerbarang2_form1" name="form1" method="POST">
   <table width="1350" border="0">
     <tbody>
       <tr>
@@ -195,12 +195,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
       <?php do { ?>
         <tr>
           <td>&nbsp;</td>
-          <td><input name="Invoice[]" type="hidden" id="Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
-          <input name="JS[]" type="hidden" id="JS" value="<?php echo $row_JS['JS']; ?>">
-          <input name="PPN[]" type="hidden" id="PPN" value="<?php echo $row_inserted['PPN']; ?>">
-          <input name="Transport[]" type="hidden" id="Transport" value="<?php echo $row_inserted['Transport']; ?>">
-          <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_Reference['Reference']; ?>">
-          <input name="Tgl[]" type="hidden" id="Tgl" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>"></td>
+          <td><input name="Invoice[]" type="hidden" id="hd_insertpocustomerbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
+          <input name="JS[]" type="hidden" id="hd_insertpocustomerbarang2_JS" value="<?php echo $row_JS['JS']; ?>">
+          <input name="PPN[]" type="hidden" id="hd_insertpocustomerbarang2_PPN" value="<?php echo $row_inserted['PPN']; ?>">
+          <input name="Transport[]" type="hidden" id="hd_insertpocustomerbarang2_Transport" value="<?php echo $row_inserted['Transport']; ?>">
+          <input name="Reference[]" type="hidden" id="hd_insertpocustomerbarang2_Reference" value="<?php echo $row_Reference['Reference']; ?>">
+          <input name="Tgl[]" type="hidden" id="hd_insertpocustomerbarang2_Tgl" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
@@ -215,7 +215,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     </tbody>
   </table>
   <input type="hidden" name="MM_insert" value="form1">
-  <input type="submit" name="submit" id="submit" value="">
+  <input type="submit" name="submit" id="bt_insertpocustomerbarang2_submit" value="">
 </form>
 </body>
 </html>

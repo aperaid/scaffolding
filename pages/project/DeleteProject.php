@@ -1,4 +1,4 @@
-a<?php require_once('../../connection/connection.php'); ?>
+a<?php require_once('../../connections/Connection.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 

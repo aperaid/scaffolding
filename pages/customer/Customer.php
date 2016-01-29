@@ -1,7 +1,7 @@
 <!--PHP-->
 
 <?php
-require_once('../../connection/connection.php');
+require_once('../../connections/Connection.php');
 ?>
 <?php
 //initialize the session
@@ -76,6 +76,37 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("", $MM_authorizedUsers
 
 <?php
 if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
+if (!function_exists("GetSQLValueString")) {
   function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "")
   {
     if (PHP_VERSION < 6) {
@@ -106,21 +137,21 @@ if (!function_exists("GetSQLValueString")) {
 mysql_select_db($database_Connection, $Connection);
 $query_Customer = "SELECT * FROM customer ORDER BY Id ASC";
 $Customer = mysql_query($query_Customer, $Connection) or die(mysql_error());
-$row_Customer       = mysql_fetch_assoc($Customer);
+$row_Customer = mysql_fetch_assoc($Customer);
 $totalRows_Customer = mysql_num_rows($Customer);
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
-$row_Menu       = mysql_fetch_assoc($Menu);
+$row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
-$colname_User   = "-1";
+$colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
 }
 mysql_select_db($database_Connection, $Connection);
 $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueString($colname_User, "text"));
 $User = mysql_query($query_User, $Connection) or die(mysql_error());
-$row_User       = mysql_fetch_assoc($User);
+$row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
 ?>
 
@@ -310,4 +341,6 @@ $totalRows_User = mysql_num_rows($User);
 <?php
 mysql_free_result($Customer);
 mysql_free_result($User);
+
+mysql_free_result($Menu);
 ?>

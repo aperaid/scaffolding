@@ -1,4 +1,4 @@
-<?php require_once('../../connection/connection.php'); ?>
+<?php require_once('../../connections/Connection.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -110,7 +110,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 <script type="text/javascript" charset="utf8" src="../../JQuery/datatable/js/jquery.dataTables.js"></script>
 <script>
 	$(document).ready( function () {
-	    $('#contentTable').DataTable();
+	    $('#tb_transaksiclaim_contentTable').DataTable();
 	} );
 	
 </script>
@@ -165,7 +165,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 			</table>
 		</div>
 		<div class="ui-layout-center">
-			<table id="contentTable">
+			<table id="tb_transaksiclaim_contentTable">
 				<thead>
 					<tr>
 					<th class="noinvoice">No. Claim</th>

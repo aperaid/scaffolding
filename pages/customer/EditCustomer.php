@@ -1,4 +1,4 @@
-<?php require_once('../../connection/connection.php'); ?>
+<?php require_once('../../connections/Connection.php'); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -141,13 +141,13 @@ $colname_Edit = "-1";
 if (isset($_GET['Id'])) {
   $colname_Edit = $_GET['Id'];
 }
-mysql_select_db($database_Connection, $Connection);
+mysql_select_db($database_connection, $Connection);
 $query_Edit = sprintf("SELECT * FROM customer WHERE Id = %s", GetSQLValueString($colname_Edit, "int"));
 $Edit = mysql_query($query_Edit, $Connection) or die(mysql_error());
 $row_Edit = mysql_fetch_assoc($Edit);
 $totalRows_Edit = mysql_num_rows($Edit);
 
-mysql_select_db($database_Connection, $Connection);
+mysql_select_db($database_connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
@@ -157,7 +157,7 @@ $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
 }
-mysql_select_db($database_Connection, $Connection);
+mysql_select_db($database_connection, $Connection);
 $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueString($colname_User, "text"));
 $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);

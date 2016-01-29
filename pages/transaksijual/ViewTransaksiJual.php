@@ -1,4 +1,4 @@
-<?php require_once('../../connection/connection.php'); ?>
+<?php require_once('../../connections/Connection.php'); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -281,7 +281,7 @@ $totalRows_User = mysql_num_rows($User);
 
           <div class="box">
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped table-responsive">
+              <table id="tb_viewtransaksijual_example1" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
                   <th>Barang</th>
@@ -360,7 +360,7 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tb_viewtransaksijual_example1").DataTable();
   });
 </script>
 </body>

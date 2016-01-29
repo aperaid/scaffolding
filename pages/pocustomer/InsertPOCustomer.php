@@ -1,4 +1,4 @@
-<?php require_once('../../connection/connection.php'); ?>
+<?php require_once('../../connections/Connection.php'); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -275,11 +275,11 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomer_form1" name="form1" method="POST">
                 <div class="box-body">
                   <div class="form-group">
                     <label>Reference</label>
-                    <input name="Reference" type="text" class="form-control" id="Reference" onKeyUp="capital()" value="<?php echo str_pad($row_Reference['Id']+1, 5, "0", STR_PAD_LEFT); ?>/<?php echo date("dmy") ?>" readonly>
+                    <input name="Reference" type="text" class="form-control" id="tx_insertpocustomer_Reference" onKeyUp="capital()" value="<?php echo str_pad($row_Reference['Id']+1, 5, "0", STR_PAD_LEFT); ?>/<?php echo date("dmy") ?>" readonly>
                   </div>
                   <div class="form-group">
                     <label>Date</label>
@@ -287,19 +287,19 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="Tgl" type="text" class="form-control pull-right date" id="Tgl" autocomplete="off">
+                      <input name="Tgl" type="text" class="form-control pull-right date" id="tx_insertpocustomer_Tgl" autocomplete="off">
                     </div>
                   </div>
                   <div class="form-group">
                     <label>Project Code</label>
-                    <input name="PCode" type="text" class="form-control" id="PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
+                    <input name="PCode" type="text" class="form-control" id="tx_insertpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
                     <p class="help-block">Enter the beginning of the Project Code, then pick from the dropdown</p>
                   </div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
                   <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Back</button></a> 
-                  <button type="submit" id="submit" class="btn btn-primary pull-right">Insert</button>
+                  <button type="submit" id="bt_insertpocustomer_submit" class="btn btn-primary pull-right">Insert</button>
                 </div>
               <input type="hidden" name="MM_insert" value="form1">
               </form>

@@ -1,4 +1,4 @@
-<?php require_once('../../connection/connection.php'); ?>
+<?php require_once('../../connections/Connection.php'); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -313,36 +313,36 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>Reference=<?php echo $row_LastReference['Reference']; ?>" id="form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>Reference=<?php echo $row_LastReference['Reference']; ?>" id="fm_insertpocustomerbarang_form1" name="form1" method="POST">
                 <div class="box-body">
-                  <table class="table table-hover table-bordered" id="customFields">
+                  <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
                     <thead>
                       <th>Barang</th>
                       <th>J/S</th>
                       <th>Amount</th>
                       <th>Quantity</th>
-                      <th><a href="javascript:void(0);" id="addCF" class=" glyphicon glyphicon-plus"></a></th>
+                      <th><a href="javascript:void(0);" id="hf_insertpocustomerbarang_addCF" class=" glyphicon glyphicon-plus"></a></th>
                     </thead>
                   </table>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                <table class="table table-hover table-bordered" id="customFields">
+                <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
                     <thead>
                       <th>PPN</th>
                       <th>Transport</th>
                     </thead>
                     <tbody>
                       <tr>
-                        <td><input name="PPN" type="text" id="PPN" value="0" autocomplete="off"></td>
-                        <td><input name="Transport" type="text" id="Transport" value="0" autocomplete="off"></td>
+                        <td><input name="PPN" type="text" id="tx_insertpocustomerbarang_PPN" value="0" autocomplete="off"></td>
+                        <td><input name="Transport" type="text" id="tx_insertpocustomerbarang_Transport" value="0" autocomplete="off"></td>
                       </tr>
     				</tbody>
                 </table>
                   <a href="CancelBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
-                  <button type="submit" id="submit" class="btn btn-success pull-right">Insert</button>
+                  <button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
                 </div>
-              <input name="Reference" type="hidden" id="Reference" value="<?php echo $row_LastReference['Reference']; ?>">
+              <input name="Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $row_LastReference['Reference']; ?>">
               <input type="hidden" name="MM_insert" value="form1">
               </form>
             </div>
@@ -432,14 +432,14 @@ function capital() {
 	var x = 0; //initial text box count
 	var y = <?php echo $row_Purchase['Id']; ?>;
 	var z = y;
-	$("#addCF").click(function(){
+	$("#hf_insertpocustomerbarang_addCF").click(function(){
 		if(x < max_fields){ //max input box allowed
             x++; //text box count increment
 			z++;
-		$("#customFields").append('<tr><td class="hidden"><input name="Purchase[]" class="textbox" id="Purchase" value="'+ z +'"></td><td><input type="text" name="Barang[]" id="Barang" autocomplete="off" class="form-control"></td><td><select name="JS[]" id="JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount[]" autocomplete="off" id="Amount" class="form-control"></td><td><input type="text" name="Quantity[]" id="Quantity" autocomplete="off" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
+		$("#tb_insertpocustomerbarang_customFields").append('<tr><td class="hidden"><input type="hidden" name="Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control"></td><td><select name="JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control"></td><td><input type="text" name="Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
 		}
 	});
-    $("#customFields").on('click','.remCF',function(){
+    $("#tb_insertpocustomerbarang_customFields").on('click','.remCF',function(){
         $(this).parent().parent().remove();
 		x--;
     });

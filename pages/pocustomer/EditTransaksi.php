@@ -1,4 +1,4 @@
-<?php require_once('../../connection/connection.php'); ?>
+<?php require_once('../../connections/Connection.php'); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -281,7 +281,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 	<!-- Main content -->
     <section class="invoice">
-	  <form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+	  <form action="<?php echo $editFormAction; ?>" id="fm_edittransaksi_form1" name="form1" method="POST">
       <!-- title row -->
       <div class="row">
         <div class="col-xs-12">
@@ -344,12 +344,12 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
             <tbody>
 				<?php do { ?>
                     <tr>
-                      <td class="hidden"><input name="Id[]" id="Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
+                      <td class="hidden"><input name="Id[]" id="hd_edittransaksi_Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
                       <td><?php echo $row_Purchase['Purchase']; ?></td>
                       <td><?php echo $row_Purchase['JS']; ?></td>
                       <td><?php echo $row_Purchase['Barang']; ?></td>
-                      <td><input name="Quantity[]" type="text" class="form-control" id="Quantity" value="<?php echo $row_Purchase['Quantity']; ?>"></td>
-                      <td><input name="Amount[]" type="text" class="form-control" id="Amount" value="<?php echo $row_Purchase['Amount']; ?>"></td>
+                      <td><input name="Quantity[]" type="text" class="form-control" id="tx_edittransaksi_Quantity" value="<?php echo $row_Purchase['Quantity']; ?>"></td>
+                      <td><input name="Amount[]" type="text" class="form-control" id="tx_edittransaksi_Amount" value="<?php echo $row_Purchase['Amount']; ?>"></td>
                       <td></td>
                     </tr>
                   <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
@@ -364,7 +364,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
       <!-- this row will not appear when printing -->
       <div class="row no-print">
         <div class="col-xs-12">
-            <button type="submit" name="submit" id="submit" class="btn btn-success pull-right">Update</button> 
+            <button type="submit" name="submit" id="bt_edittransaksi_submit" class="btn btn-success pull-right">Update</button> 
             <a href="ViewTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Back</button></a>
         </div>
       </div>
