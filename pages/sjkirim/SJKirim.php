@@ -276,7 +276,7 @@ $totalRows_User = mysql_num_rows($User);
 
           <div class="box">
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped table-responsive">
+              <table id="tb_sjkirim_example1" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
                   <th>SJ Code</th>
@@ -352,7 +352,7 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tb_sjkirim_example1").DataTable();
   });
 </script>
 </body>

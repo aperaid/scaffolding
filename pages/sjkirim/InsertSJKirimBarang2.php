@@ -229,7 +229,7 @@ $(function() {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_insertsjkiribarang2_form1" name="form1" method="POST">
   <table width="1000" border="0">
     <thead>
       <tr>
@@ -301,24 +301,24 @@ $(function() {
 	<?php do { ?>
 	  <tr>
 	    <td><p>
-	      <input name="Id[]" type="hidden" id="Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
-	      <input name="S[]" type="hidden" id="S" value="<?php echo $row_LastTgl['Tgl']; ?>">
-	      <input name="E[]" type="hidden" id="E" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>">
-	      <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
+	      <input name="Id[]" type="hidden" id="hd_insertsjkiribarang2_Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
+	      <input name="S[]" type="hidden" id="hd_insertsjkiribarang2_S" value="<?php echo $row_LastTgl['Tgl']; ?>">
+	      <input name="E[]" type="hidden" id="hd_insertsjkiribarang2_E" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>">
+	      <input name="Reference[]" type="hidden" id="hd_insertsjkiribarang2_Reference" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
           </p></td>
-	    <td><input name="IsiSJKir[]" type="text" class="textview" id="IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>" readonly></td>
-	    <td><input name="JS[]" type="text" class="textview" id="JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
-	    <td><input name="Barang[]" type="text" class="textview" id="Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
-	    <td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off"></td>
-	    <td><input name="QSisaKirInsert[]" type="text" class="textview" id="QSisaKirInsert" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
-	    <td><input name="QKirim[]" type="text" class="textbox" id="QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>"></td>
-	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase" value=<?php echo $row_InsertSJKirim['Purchase']; ?> readonly></td>
+	    <td><input name="IsiSJKir[]" type="text" class="textview" id="tx_insertsjkiribarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>" readonly></td>
+	    <td><input name="JS[]" type="text" class="textview" id="tx_insertsjkiribarang2_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
+	    <td><input name="Barang[]" type="text" class="textview" id="tx_insertsjkiribarang2_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
+	    <td><input name="Warehouse[]" type="text" class="textbox" id="tx_insertsjkiribarang2_Warehouse" autocomplete="off"></td>
+	    <td><input name="QSisaKirInsert[]" type="text" class="textview" id="tx_insertsjkiribarang2_QSisaKirInsert" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
+	    <td><input name="QKirim[]" type="text" class="textbox" id="tx_insertsjkiribarang2_QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>"></td>
+	    <td><input name="Purchase[]" type="text" class="textview" id="tx_insertsjkiribarang2_Purchase" value=<?php echo $row_InsertSJKirim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim)); ?>
 	<tr>
           <td>&nbsp;</td>
-        <td><input name="SJKir" type="hidden" class="textbox" id="SJKir" value="<?php echo $row_Select['SJKir']; ?>" readonly></td>
+        <td><input name="SJKir" type="hidden" class="textbox" id="hd_insertsjkiribarang2_SJKir" value="<?php echo $row_Select['SJKir']; ?>" readonly></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
@@ -329,7 +329,7 @@ $(function() {
       <tr>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
-		   <td align="right"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
+		   <td align="right"><input type="submit" name="submit" id="bt_insertsjkiribarang2_submit" class="submit" value="Insert"></td>
 		   <td align="right">&nbsp;</td>
 		   <td><a href="InsertSJKirimBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>

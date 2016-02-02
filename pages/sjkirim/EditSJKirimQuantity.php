@@ -332,10 +332,10 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
-		<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+		<form action="<?php echo $editFormAction; ?>" id="fm_editsjkirimquantity_form1" name="form1" method="POST">
           <div class="box box-primary">
             <div class="box-body no-padding">
-				  <table id="example1" class="table table-bordered">
+				  <table id="tb_editsjkirimquantity_example1" class="table table-bordered">
 					<thead>
 					<tr>
 						<th>#</th>
@@ -352,18 +352,18 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 						  <?php $x=1; ?>
 						<?php do { ?>
 						  <tr>
-							<input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
-							<input name="QSisaKir2" type="hidden" id="QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>">
-                            <input name="IsiSJKir[]" type="hidden" class="textview" id="IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
-                            <input name="Purchase[]" type="hidden" class="textview" id="Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
+							<input name="Id[]" type="hidden" id="hd_editsjkirimquantity_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
+							<input name="QSisaKir2" type="hidden" id="hd_editsjkirimquantity_QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>">
+                            <input name="IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkirimquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
+                            <input name="Purchase[]" type="hidden" class="textview" id="hd_editsjkirimquantity_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
 							<td><?php echo $row_EditIsiSJKirim['IsiSJKir']; ?></td>
 							<td><?php echo $row_EditIsiSJKirim['Purchase']; ?></td>
-							<td><input name="JS" type="text" class="form-control" id="JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
-							<td><input name="Barang" type="text" class="form-control" id="Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
-							<td><input name="Warehouse[]" type="text" class="form-control" id="Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
-							<td><input name="QSisaKir[]" type="text" class="form-control" id="QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
-							<td><input name="QKirim[]" type="text" class="form-control" id="QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
-							<td><input name="QTertanda[]" type="text" class="form-control" id="QTertanda<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
+							<td><input name="JS" type="text" class="form-control" id="tx_editsjkirimquantity_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
+							<td><input name="Barang" type="text" class="form-control" id="tx_editsjkirimquantity_Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
+							<td><input name="Warehouse[]" type="text" class="form-control" id="hd_editsjkirimquantity_Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
+							<td><input name="QSisaKir[]" type="text" class="form-control" id="tx_editsjkirimquantity_QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
+							<td><input name="QKirim[]" type="text" class="form-control" id="tx_editsjkirimquantity_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
+							<td><input name="QTertanda[]" type="text" class="form-control" id="tx_editsjkirimquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
@@ -373,7 +373,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
             <!-- /.box-body -->
             <div class="box-footer">
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
-				<button type="submit" name="submit" id="submit" class="btn btn-success pull-right">Update</input>
+				<button type="submit" name="submit" id="bt_editsjkirimquantity_submit" class="btn btn-success pull-right">Update</button>
 			</div>
           </div>
           <!-- /.box -->
@@ -421,11 +421,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <script language="javascript">
   function sisa() {
   for(x = 1; x < 11; x++){
-    var txtFirstNumberValue = document.getElementById('QSisaKir2'+x).value;
-    var txtSecondNumberValue = document.getElementById('QTertanda'+x).value;
+    var txtFirstNumberValue = document.getElementById('hd_editsjkirimquantity_QSisaKir2'+x).value;
+    var txtSecondNumberValue = document.getElementById('tx_editsjkirimquantity_QTertanda'+x).value;
 	var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
 	  if (!isNaN(result)) {
-		document.getElementById('QSisaKir'+x).value = result;
+		document.getElementById('tx_editsjkirimquantity_QSisaKir'+x).value = result;
       }
    }
    }

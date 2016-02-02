@@ -243,7 +243,7 @@ $(function() {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_inserttransaksiclaimbarang2_form1" name="form1" method="POST">
   <table width="1000" border="0">
     <thead>
       <tr>
@@ -259,16 +259,16 @@ $(function() {
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td><input name="IsiSJKir[]" type="hidden" id="IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
-	      <input name="Reference[]" type="hidden" id="Reference" value="<?php echo $row_Reference['Reference']; ?>">
-<input name="Periode[]" type="hidden" id="Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
-	      <input name="Invoice[]" type="hidden" id="Invoice" value="<?php echo str_pad($row_LastId['Id'] + $increment, 5, "0", STR_PAD_LEFT); ?>"></td>
-	    <td><input name="Claim[]" type="text" class="textview" id="Claim" value="<?php echo $row_LastClaim['Id'] + $increment; ?>" readonly></td>
-	    <td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
-	    <td><input name="QSisaKem" type="text" class="textview" id="QSisaKem" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
-	    <td><input name="QClaim[]" type="text" class="textbox" id="QClaim" autocomplete="off" value="0"></td>
-	    <td><input name="Amount[]" type="text" class="textbox" id="Amount" autocomplete="off" value="0"></td>
-	    <td><input name="Purchase[]" type="text" class="textview" id="Purchase[]" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
+	    <td><input name="IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
+	      <input name="Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $row_Reference['Reference']; ?>">
+<input name="Periode[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
+	      <input name="Invoice[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $increment, 5, "0", STR_PAD_LEFT); ?>"></td>
+	    <td><input name="Claim[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang2_Claim" value="<?php echo $row_LastClaim['Id'] + $increment; ?>" readonly></td>
+	    <td><input name="Barang" type="text" class="textview" id="tx_inserttransaksiclaimbarang2_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
+	    <td><input name="QSisaKem" type="text" class="textview" id="tx_inserttransaksiclaimbarang2_QSisaKem" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
+	    <td><input name="QClaim[]" type="text" class="textbox" id="tx_inserttransaksiclaimbarang2_QClaim" autocomplete="off" value="0"></td>
+	    <td><input name="Amount[]" type="text" class="textbox" id="tx_inserttransaksiclaimbarang2_Amount" autocomplete="off" value="0"></td>
+	    <td><input name="Purchase[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang2_Purchase[]" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim)); ?>
@@ -282,20 +282,20 @@ $(function() {
 	    <td>&nbsp;</td>
       </tr>
 	  <tr>
-          <td><input name="Invoice2" type="hidden" id="Invoice2" value="<?php echo str_pad($row_LastId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
-            <input name="Reference2" type="hidden" id="Reference2" value="<?php echo $row_Reference['Reference']; ?>">
-          <input name="Periode2" type="hidden" id="Periode2" value="<?php echo $row_Periode['MAX(Periode)']; ?>"></td>
+          <td><input name="Invoice2" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice2" value="<?php echo str_pad($row_LastId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
+            <input name="Reference2" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference2" value="<?php echo $row_Reference['Reference']; ?>">
+          <input name="Periode2" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode2" value="<?php echo $row_Periode['MAX(Periode)']; ?>"></td>
         <td>&nbsp;</td>
-        <td><input name="Tgl" type="text" class="textbox" id="Tgl" autocomplete="off"></td>
+        <td><input name="Tgl" type="text" class="textbox" id="hd_inserttransaksiclaimbarang2_Tgl" autocomplete="off"></td>
           <td>&nbsp;</td>
-          <td><input name="PPN" type="text" class="textbox" id="PPN" autocomplete="off" value=""></td>
+          <td><input name="PPN" type="text" class="textbox" id="hd_inserttransaksiclaimbarang2_PPN" autocomplete="off" value=""></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
       </tr>
       <tr>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>
-		   <td align="right"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
+		   <td align="right"><input type="submit" name="submit" id="bt_inserttransaksiclaimbarang2_submit" class="submit" value="Insert"></td>
 		   <td>&nbsp;</td>
 		   <td><a href="InsertTransaksiClaimBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>&Periode=<?php echo $row_Periode['MAX(Periode)']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>

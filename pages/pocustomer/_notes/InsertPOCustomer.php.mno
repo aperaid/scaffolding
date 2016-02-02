@@ -2,4 +2,5 @@
 <info>
 	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_Reference" value="name:Id;datatype:int" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>

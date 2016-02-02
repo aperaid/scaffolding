@@ -275,11 +275,11 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkirim_form1" name="form1" method="POST">
                 <div class="box-body">
                   <div class="form-group">
                     <label>No. Surat Jalan</label>
-                    <input name="SJKir" type="text" class="form-control" id="SJKir" onKeyUp="capital()" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY") ?>" readonly>
+                    <input name="SJKir" type="text" class="form-control" id="tx_insertsjkirim_SJKir" onKeyUp="capital()" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY") ?>" readonly>
                   </div>
                   <div class="form-group">
                     <label>Send Date</label>
@@ -287,19 +287,19 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="Tgl" type="text" autocomplete="off" class="form-control pull-right date" id="Tgl">
+                      <input name="Tgl" type="text" autocomplete="off" class="form-control pull-right date" id="tx_insertsjkirim_Tgl">
                     </div>
                   </div>
                   <div class="form-group">
                     <label>PO Code</label>
-                    <input name="Reference" type="text" class="form-control" id="Reference" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
+                    <input name="Reference" type="text" class="form-control" id="tx_insertsjkirim_Reference" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
                     <p class="help-block">Enter the beginning of the PO Code, then pick from the dropdown</p>
                   </div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
                   <a href="SJKirim.php"><button type="button" class="btn btn-default pull-left">Back</button></a> 
-                  <button type="submit" id="submit" class="btn btn-primary pull-right">Insert</button>
+                  <button type="submit" id="bt_insertsjkirim_submit" class="btn btn-primary pull-right">Insert</button>
                 </div>
               <input type="hidden" name="MM_insert" value="form1">
               </form>
@@ -380,7 +380,7 @@ function capital() {
 <script type="text/javascript">
 $(function() {
     var availableTags = <?php include ("../autocomplete3.php");?>;
-    $( "#Reference" ).autocomplete({
+    $( "#tx_insertsjkirim_Reference" ).autocomplete({
       source: availableTags
     });
   });

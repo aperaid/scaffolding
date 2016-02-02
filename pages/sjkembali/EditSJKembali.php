@@ -144,7 +144,7 @@ body {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_editsjkembali_form1" name="form1" method="POST">
   <table width="1000" border="0">
     <thead>
       <tr>
@@ -161,15 +161,15 @@ body {
     <tbody>      
 	<?php do { ?>
       <tr>
-		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>"></td>
-		<td><input name="IsiSJKem" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>" readonly></td>
-		<td><input name="Tgl" type="text" class="textview" id="Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
-		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
-		<td><input name="Warehouse[]" type="text" class="textbox" id="Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>"></td>
-		<td><input name="QSisaKem" type="text" class="textview" id="QSisaKem" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
-		<td><input name="QTertanda[]" type="text" class="textbox" id="QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"></td>
-		<td><input name="QTerima[]" type="text" class="textview" id="QTerima" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly></td>
-		<td><input name="Purchase" type="text" class="textview" id="Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>" readonly></td>
+		<td><input name="Id[]" type="hidden" id="hd_editsjkembali_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>"></td>
+		<td><input name="IsiSJKem" type="text" class="textview" id="tx_editsjkembali_IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>" readonly></td>
+		<td><input name="Tgl" type="text" class="textview" id="tx_editsjkembali_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
+		<td><input name="Barang" type="text" class="textview" id="tx_editsjkembali_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
+		<td><input name="Warehouse[]" type="text" class="textbox" id="tx_editsjkembali_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>"></td>
+		<td><input name="QSisaKem" type="text" class="textview" id="tx_editsjkembali_QSisaKem" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
+		<td><input name="QTertanda[]" type="text" class="textbox" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"></td>
+		<td><input name="QTerima[]" type="text" class="textview" id="tx_editsjkembali_QTerima" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly></td>
+		<td><input name="Purchase" type="text" class="textview" id="tx_editsjkembali_Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>" readonly></td>
       </tr>
 	<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
       <tr>
@@ -188,7 +188,7 @@ body {
 		   <td>&nbsp;</td>
 		   <td align="center">&nbsp;</td>
 		   <td>&nbsp;</td>
-		   <td><input type="submit" name="submit" id="submit" class="submit" value="Update"></td>
+		   <td><input type="submit" name="submit" id="bt_editsjkembali_submit" class="submit" value="Update"></td>
 		   <td align="right"><a href="ViewSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>

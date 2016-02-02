@@ -145,50 +145,50 @@ $(function() {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_insertsewajt_form1" name="form1" method="POST">
   <table width="1000" border="0">
     <tbody>
       <tr>
         <th width="250">&nbsp;</th>
         <th width="100" align="right">No. Invoice</th>
         <th width="75" align="right">&nbsp;</th>
-        <td width="557"><input name="No" type="text" id="No" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
+        <td width="557"><input name="No" type="text" id="tx_insertsewajt_No" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Tgl Invoice</th>
         <th align="right">&nbsp;</th>
-        <td><input name="Tgl" type="text" id="Tgl" autocomplete="off" class="textbox"></td>
+        <td><input name="Tgl" type="text" id="tx_insertsewajt_Tgl" autocomplete="off" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Customer</th>
         <th align="right">&nbsp;</th>
-        <td><input name="Customer" type="text" id="Customer" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
+        <td><input name="Customer" type="text" id="tx_insertsewajt_Customer" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">J/S</th>
         <th align="right">&nbsp;</th>
-        <td><input name="JS" type="text" id="JS" readonly value="Sewa" class="textbox"></td>
+        <td><input name="JS" type="text" id="tx_insertsewajt_JS" readonly value="Sewa" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Project</th>
         <th align="right">&nbsp;</th>
-        <td><input name="Project" type="text" id="Project" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
+        <td><input name="Project" type="text" id="tx_insertsewajt_Project" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Amount</th>
         <th align="right">&nbsp;</th>
-        <td><input name="Amount" type="text" id="Amount" autocomplete="off" class="textbox"></td>
+        <td><input name="Amount" type="text" id="tx_insertsewajt_Amount" autocomplete="off" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Status</th>
         <th align="right">&nbsp;</th>
-        <td><select name="Status" id="Status">
+        <td><select name="Status" id="db_insertsewajt_Status">
             <option>F</option>
             <option>P</option>
             <option>O</option>
@@ -202,7 +202,7 @@ $(function() {
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
-        <td colspan="2" align="center"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
+        <td colspan="2" align="center"><input type="submit" name="submit" id="bt_insertsewajt_submit" class="submit" value="Insert"></td>
         <td><a href="SewaJT.php"><button type="button" class="submit">Cancel</button></a></td>
       </tr>
     </tbody>

@@ -259,7 +259,7 @@ $totalRows_User = mysql_num_rows($User);
 
           <div class="box box-primary">
             <div class="box-body no-padding">
-              <table id="example1" class="table table-bordered">
+              <table id="tb_viewsjkembali_example1" class="table table-bordered">
                 <thead>
                 <tr>
 					<th>#</th>
@@ -275,15 +275,15 @@ $totalRows_User = mysql_num_rows($User);
                 <tbody>
 					<?php do { ?>
 					<tr>
-						<input name="Id" type="hidden" id="Id">
+						<input name="Id" type="hidden" id="hd_viewsjkembali_Id">
 						<td><?php echo $row_ViewIsiSJKembali['IsiSJKem']; ?></td>
 						<td><?php echo $row_ViewIsiSJKembali['Purchase']; ?></td>
-						<td><input name="Tgl" type="text" class="form-control" id="Tgl" value="<?php echo $row_ViewIsiSJKembali['Tgl']; ?>" readonly></td>
-						<td><input name="Barang" type="text" class="form-control" id="Barang" value="<?php echo $row_ViewIsiSJKembali['Barang']; ?>" readonly></td>
-						<td><input name="Warehouse" type="text" class="form-control" id="Warehouse" value="<?php echo $row_ViewIsiSJKembali['Warehouse']; ?>" readonly></td>
-						<td><input name="QSisaKem" type="text" class="form-control" id="QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
-						<td><input name="QTertanda" type="text" class="form-control" id="QTertanda" value="<?php echo $row_ViewIsiSJKembali['QTertanda']; ?>" readonly></td>
-						<td><input name="QTerima" type="text" class="form-control" id="QTerima" value="<?php echo $row_ViewIsiSJKembali['QTerima']; ?>" readonly></td
+						<td><input name="Tgl" type="text" class="form-control" id="tx_viewsjkembali_Tgl" value="<?php echo $row_ViewIsiSJKembali['Tgl']; ?>" readonly></td>
+						<td><input name="Barang" type="text" class="form-control" id="tx_viewsjkembali_Barang" value="<?php echo $row_ViewIsiSJKembali['Barang']; ?>" readonly></td>
+						<td><input name="Warehouse" type="text" class="form-control" id="tx_viewsjkembali_Warehouse" value="<?php echo $row_ViewIsiSJKembali['Warehouse']; ?>" readonly></td>
+						<td><input name="QSisaKem" type="text" class="form-control" id="tx_viewsjkembali_QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
+						<td><input name="QTertanda" type="text" class="form-control" id="tx_viewsjkembali_QTertanda" value="<?php echo $row_ViewIsiSJKembali['QTertanda']; ?>" readonly></td>
+						<td><input name="QTerima" type="text" class="form-control" id="tx_viewsjkembali_QTerima" value="<?php echo $row_ViewIsiSJKembali['QTerima']; ?>" readonly></td
 					></tr>
 					<?php } while ($row_ViewIsiSJKembali = mysql_fetch_assoc($ViewIsiSJKembali)); ?>
                 </tbody>

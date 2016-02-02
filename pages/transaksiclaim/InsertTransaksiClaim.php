@@ -90,7 +90,7 @@ function capital() {
 <script type="text/javascript">
 $(function() {
     var availableTags = <?php include ("../autocomplete3.php");?>;
-    $( "#Reference" ).autocomplete({
+    $( "#tx_inserttransaksiclaim_Reference" ).autocomplete({
       source: availableTags
     });
   });
@@ -144,14 +144,14 @@ $(function() {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_inserttransaksiclaim_form1" name="form1" method="POST">
   <table width="1000" border="0">
     <tbody>
       <tr>
         <th width="250">&nbsp;</th>
         <th width="125" align="right">No. Reference</th>
         <th width="75" align="right">&nbsp;</th>
-        <td width="532"><input name="Reference" type="text" id="Reference" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
+        <td width="532"><input name="Reference" type="text" id="tx_inserttransaksiclaim_Reference" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
@@ -161,7 +161,7 @@ $(function() {
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
-        <td colspan="2" align="center"><input type="submit" name="submit" id="submit" class="submit" value="Insert"></td>
+        <td colspan="2" align="center"><input type="submit" name="submit" id="bt_inserttransaksiclaim_submit" class="submit" value="Insert"></td>
         <td><a href="TransaksiClaim.php"><button type="button" class="submit">Cancel</button></a></td>
       </tr>
     </tbody>

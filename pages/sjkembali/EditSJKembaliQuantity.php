@@ -121,11 +121,11 @@ body {
 <script language="javascript">
   function sisa() {
   for(x = 1; x < 11; x++){
-    var txtFirstNumberValue = document.getElementById('QSisaKem2'+x).value;
-    var txtSecondNumberValue = document.getElementById('QTerima'+x).value;
+    var txtFirstNumberValue = document.getElementById('hd_editsjkembaliquantity_QSisaKem2'+x).value;
+    var txtSecondNumberValue = document.getElementById('tx_editsjkembaliquantity_QTerima'+x).value;
 	var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
 	  if (!isNaN(result)) {
-		document.getElementById('QSisaKem'+x).value = result;
+		document.getElementById('tx_editsjkembaliquantity_QSisaKem'+x).value = result;
       }
    }
    }
@@ -178,7 +178,7 @@ body {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_editsjkembaliquantity_form1" name="form1" method="POST">
   <table width="1000" border="0">
     <thead>
       <tr>
@@ -196,17 +196,17 @@ body {
     <?php $x=1; ?>
 	<?php do { ?>
       <tr>
-		<td><input name="Id[]" type="hidden" id="Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
-          <input name="IsiSJKir[]" type="hidden" id="IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
-		  <input name="QSisaKem2" type="hidden" id="QSisaKem2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>"></td>
-		<td><input name="IsiSJKem" type="text" class="textview" id="IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>" readonly></td>
-		<td><input name="Tgl" type="text" class="textview" id="Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
-		<td><input name="Barang" type="text" class="textview" id="Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
-		<td><input name="Warehouse[]" type="text" class="textview" id="Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
-		<td><input name="QSisaKem[]" type="text" class="textview" id="QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
-		<td><input name="QTertanda[]" type="text" class="textview" id="QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
-		<td><input name="QTerima[]" type="text" class="textbox" id="QTerima<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
-		<td><input name="Purchase[]" type="text" class="textview" id="Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>" readonly></td>
+		<td><input name="Id[]" type="hidden" id="hd_editsjkembaliquantity_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
+          <input name="IsiSJKir[]" type="hidden" id="hd_editsjkembaliquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
+		  <input name="QSisaKem2" type="hidden" id="hd_editsjkembaliquantity_QSisaKem2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>"></td>
+		<td><input name="IsiSJKem" type="text" class="textview" id="tx_editsjkembaliquantity_IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>" readonly></td>
+		<td><input name="Tgl" type="text" class="textview" id="tx_editsjkembaliquantity_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
+		<td><input name="Barang" type="text" class="textview" id="tx_editsjkembaliquantity_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
+		<td><input name="Warehouse[]" type="text" class="textview" id="tx_editsjkembaliquantity_Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
+		<td><input name="QSisaKem[]" type="text" class="textview" id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
+		<td><input name="QTertanda[]" type="text" class="textview" id="tx_editsjkembaliquantity_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
+		<td><input name="QTerima[]" type="text" class="textbox" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
+		<td><input name="Purchase[]" type="text" class="textview" id="tx_editsjkembaliquantity_Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>" readonly></td>
       </tr>
     <?php $x++; ?>
 	<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
@@ -226,7 +226,7 @@ body {
 		   <td>&nbsp;</td>
 		   <td align="center">&nbsp;</td>
 		   <td>&nbsp;</td>
-		   <td><input type="submit" name="submit" id="submit" class="submit" value="Update"></td>
+		   <td><input type="submit" name="submit" id="bt_editsjkembaliquantity_submit" class="submit" value="Update"></td>
 		   <td align="right"><a href="ViewSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
 		   <td>&nbsp;</td>

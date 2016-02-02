@@ -46,7 +46,7 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
 <script type="text/javascript">
     function submit()
     {
-        document.getElementById("submit").click(); // Simulates button click
+        document.getElementById("bt_insertsjkirim2_submit").click(); // Simulates button click
         document.submitForm.submit(); // Submits the form without the button
     }
 </script>
@@ -54,8 +54,8 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
 </head>
 
 <body onLoad="submit()">
-<form id="form1" name="form1" method="post" action="InsertSJKirimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>">
-  <input type="submit" name="submit" id="submit" value="">
+<form id="fm_insertsjkirim2_form1" name="form1" method="post" action="InsertSJKirimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>">
+  <input type="submit" name="submit" id="bt_insertsjkirim2_submit" value="">
 </form>
 </body>
 </html>

@@ -105,7 +105,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 <script type="text/javascript" charset="utf8" src="../../JQuery/datatable/js/jquery.dataTables.js"></script>
 <script>
 	$(document).ready( function () {
-	    $('#contentTable').DataTable();
+	    $('#tb_invoicejual_contentTable').DataTable();
 	} );
 	
 </script>
@@ -142,7 +142,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 			</table>
 		</div>
 		<div class="ui-layout-center">
-			<table id="contentTable" class="display">
+			<table id="tb_invoicejual_contentTable" class="display">
 				<thead>
 					<tr>
 					<th>No. Invoice</th>

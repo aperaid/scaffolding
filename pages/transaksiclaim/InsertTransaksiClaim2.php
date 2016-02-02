@@ -52,7 +52,7 @@ body {
 <script type="text/javascript">
     function submit()
     {
-        document.getElementById("submit").click(); // Simulates button click
+        document.getElementById("bt_inserttransaksiclaim2_submit").click(); // Simulates button click
         document.submitForm.submit(); // Submits the form without the button
     }
 </script>
@@ -60,8 +60,8 @@ body {
 </head>
 
 <body onLoad="submit()">
-<form id="form1" name="form1" method="post" action="InsertTransaksiClaimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>&Periode=<?php echo $row_LastReference['MAX(periode.Periode)']; ?>">
-  <input type="submit" name="submit" id="submit" value="Submit">
+<form id="fm_inserttransaksiclaim2_form1" name="form1" method="post" action="InsertTransaksiClaimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>&Periode=<?php echo $row_LastReference['MAX(periode.Periode)']; ?>">
+  <input type="submit" name="submit" id="bt_inserttransaksiclaim2_submit" value="Submit">
 </form>
 </body>
 </html>

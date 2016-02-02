@@ -290,7 +290,7 @@ $totalRows_User = mysql_num_rows($User);
 
           <div class="box box-primary">
             <div class="box-body no-padding">
-              <table id="example1" class="table table-bordered">
+              <table id="tb_viewsjkirim_example1" class="table table-bordered">
                 <thead>
                 <tr>
 					<th>#</th>
@@ -306,15 +306,15 @@ $totalRows_User = mysql_num_rows($User);
                 <tbody>
 					<?php do { ?>
 						<tr>
-							<input name="Id" type="hidden" id="Id">
+							<input name="Id" type="hidden" id="hd_viewsjkirim_Id">
 							<td><?php echo $row_ViewIsiSJKirim['IsiSJKir']; ?></td>
 							<td><?php echo $row_ViewIsiSJKirim['Purchase']; ?></td>
-							<td><input name="JS" type="text" class="form-control" id="JS" value="<?php echo $row_ViewIsiSJKirim['JS']; ?>" readonly></td>
-							<td><input name="Barang" type="text" class="form-control" id="Barang" value="<?php echo $row_ViewIsiSJKirim['Barang']; ?>" readonly></td>
-							<td><input name="Warehouse" type="text" class="form-control" id="Warehouse" value="<?php echo $row_ViewIsiSJKirim['Warehouse']; ?>" readonly></td>
-							<td><input name="QSisaKir" type="text" class="form-control" id="QSisaKir" value="<?php echo $row_ViewIsiSJKirim['QSisaKir']; ?>" readonly></td>
-							<td><input name="QKirim" type="text" class="form-control" id="QKirim" value="<?php echo $row_ViewIsiSJKirim['QKirim']; ?>" readonly></td>
-							<td><input name="QTertanda" type="text" class="form-control" id="QTertanda" value="<?php echo $row_ViewIsiSJKirim['QTertanda']; ?>" readonly></td>
+							<td><input name="JS" type="text" class="form-control" id="tx_viewsjkirim_JS" value="<?php echo $row_ViewIsiSJKirim['JS']; ?>" readonly></td>
+							<td><input name="Barang" type="text" class="form-control" id="tx_viewsjkirim_Barang" value="<?php echo $row_ViewIsiSJKirim['Barang']; ?>" readonly></td>
+							<td><input name="Warehouse" type="text" class="form-control" id="tx_viewsjkirim_Warehouse" value="<?php echo $row_ViewIsiSJKirim['Warehouse']; ?>" readonly></td>
+							<td><input name="QSisaKir" type="text" class="form-control" id="tx_viewsjkirim_QSisaKir" value="<?php echo $row_ViewIsiSJKirim['QSisaKir']; ?>" readonly></td>
+							<td><input name="QKirim" type="text" class="form-control" id="tx_viewsjkirim_QKirim" value="<?php echo $row_ViewIsiSJKirim['QKirim']; ?>" readonly></td>
+							<td><input name="QTertanda" type="text" class="form-control" id="tx_viewsjkirim_QTertanda" value="<?php echo $row_ViewIsiSJKirim['QTertanda']; ?>" readonly></td>
 						</tr>
 					<?php } while ($row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim)); ?>
                 </tbody>
