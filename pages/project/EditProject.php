@@ -280,37 +280,37 @@ $totalRows_User = mysql_num_rows($User);
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="post" class="form-horizontal">
+            <form action="<?php echo $editFormAction; ?>" id="fm_editproject_form1" name="form1" method="post" class="form-horizontal">
               <div class="box-body with-border">
                 <div class="form-group">
-                  <input name="Id" type="hidden" id="Id" value="<?php echo $row_Edit['Id']; ?>">
+                  <input name="Id" type="hidden" id="hd_editproject_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="PCode" name="PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" value="<?php echo $row_Edit['PCode']; ?>">
+                    <input id="tx_editproject_PCode" name="PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" value="<?php echo $row_Edit['PCode']; ?>">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Name</label>
                   <div class="col-sm-4">
-                    <input id="Project" name="Project" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project" value="<?php echo $row_Edit['Project']; ?>">
+                    <input id="tx_editproject_Project" name="Project" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project" value="<?php echo $row_Edit['Project']; ?>">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat Project</label>
                   <div class="col-sm-4">
-                    <input id="Alamat" name="Alamat" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota" value="<?php echo $row_Edit['Alamat']; ?>">
+                    <input id="tx_editproject_Alamat" name="Alamat" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota" value="<?php echo $row_Edit['Alamat']; ?>">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="CCode" name="CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code" value="<?php echo $row_Edit['CCode']; ?>">
+                    <input id="tx_editproject_CCode" name="CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code" value="<?php echo $row_Edit['CCode']; ?>">
                   </div>
                 </div>
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button type="submit" name="submit" id="submit" class="btn btn-info pull-right">Update</button>
+                <button type="submit" name="submit" id="bt_editproject_submit" class="btn btn-info pull-right">Update</button>
                 <div class="btn-group"><a href="ViewProject.php?PCode=<?php echo $row_Edit['PCode']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a></div>
               </div>
               <input type="hidden" name="MM_update" value="form1">

@@ -245,7 +245,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 
           <div class="box">
             <div class="box-body">
-              <table id="tb_project" name="tb_project" class="table table-condensed table-hover">
+              <table id="tb_project_example1" name="tb_project" class="table table-condensed table-hover">
                 <thead>
                 <tr>
                   <th>Project Code</th>
