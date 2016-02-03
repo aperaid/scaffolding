@@ -287,19 +287,19 @@ $totalRows_User = mysql_num_rows($User);
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form action="<?php echo $editFormAction; ?>" id="fm_editcustomer_form1" name="form1" method="post" class="form-horizontal">
+            <form action="<?php echo $editFormAction; ?>" id="fm_editcustomer_form1" name="fm_editcustomer_form1" method="post" class="form-horizontal">
               <div class="box-body with-border">
                 <div class="form-group">
-                  <input name="Id" type="hidden" id="hd_editcustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
+                  <input name="hd_editcustomer_Id" type="hidden" id="hd_editcustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_editcustomer_CCode" name="CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code">
+                    <input id="tx_editcustomer_CCode" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
-                    <input id="tx_editcustomer_Company" name="Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan">
+                    <input id="tx_editcustomer_Company" name="tx_editcustomer_Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan">
                   </div>
                   <label class="col-sm-1 control-label">Telp</label>
                   <div class="col-sm-2">
@@ -307,18 +307,18 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_editcustomer_CompPhone" name="CompPhone" type="text" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
+                      <input id="tx_editcustomer_CompPhone" name="tx_editcustomer_CompPhone" type="text" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat</label>
                   <div class="col-sm-4">
-                    <input id="tx_editcustomer_Alamat" name="Alamat" type="text" class="form-control" value="<?php echo $row_Edit['Alamat']; ?>"  placeholder="Jl. Nama Jalan No.1, Kelurahan, Kecamatan">
+                    <input id="tx_editcustomer_Alamat" name="tx_editcustomer_Alamat" type="text" class="form-control" value="<?php echo $row_Edit['Alamat']; ?>"  placeholder="Jl. Nama Jalan No.1, Kelurahan, Kecamatan">
                   </div>
                   <label class="col-sm-1 control-label">Kota</label>
                   <div class="col-sm-2">
-                    <input id="tx_editcustomer_Kota" name="Kota" type="text" class="form-control" value="<?php echo $row_Edit['Kota']; ?>" placeholder="Nama Kota">
+                    <input id="tx_editcustomer_Kota" name="tx_editcustomer_Kota" type="text" class="form-control" value="<?php echo $row_Edit['Kota']; ?>" placeholder="Nama Kota">
                   </div>
                   <label class="col-sm-1 control-label">Fax</label>
                   <div class="col-sm-2">
@@ -326,7 +326,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-fax"></i>
                       </div>
-                      <input id="tx_editcustomer_Fax" name="Fax" type="text" class="form-control" value="<?php echo $row_Edit['Fax']; ?>" placeholder="021-123456">
+                      <input id="tx_editcustomer_Fax" name="tx_editcustomer_Fax" type="text" class="form-control" value="<?php echo $row_Edit['Fax']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                 </div>
@@ -335,19 +335,19 @@ $totalRows_User = mysql_num_rows($User);
                   <div class="col-sm-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
-                      <input id="tx_editcustomer_NPWP" name="NPWP" type="text" class="form-control" value="<?php echo $row_Edit['NPWP']; ?>"  placeholder="12.123.123.0-012.000">
+                      <input id="tx_editcustomer_NPWP" name="tx_editcustomer_NPWP" type="text" class="form-control" value="<?php echo $row_Edit['NPWP']; ?>"  placeholder="12.123.123.0-012.000">
                     </div>
                   </div>
                   <label class="col-sm-1 control-label">Kodepos</label>
                   <div class="col-sm-2">
-                    <input id="nb_editcustomer_Zip" name="Zip" type="number" class="form-control" value="<?php echo $row_Edit['Zip']; ?>"  placeholder="10203">
+                    <input id="nb_editcustomer_Zip" name="nb_editcustomer_Zip" type="number" class="form-control" value="<?php echo $row_Edit['Zip']; ?>"  placeholder="10203">
                   </div>
                   
                   <label class="col-sm-1 control-label">Email</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input id="tx_editcustomer_CompEmail" name="CompEmail" type="text" class="form-control" value="<?php echo $row_Edit['CompEmail']; ?>" placeholder="email@company.com">
+                      <input id="tx_editcustomer_CompEmail" name="tx_editcustomer_CompEmail" type="text" class="form-control" value="<?php echo $row_Edit['CompEmail']; ?>" placeholder="email@company.com">
                     </div>
                   </div>
                 </div>
@@ -360,7 +360,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-user"></i>
                       </div>
-                      <input id="tx_editcustomer_Customer" name="Customer" type="text" class="form-control" value="<?php echo $row_Edit['Customer']; ?>" placeholder="Nama CP">
+                      <input id="tx_editcustomer_Customer" name="tx_editcustomer_Customer" type="text" class="form-control" value="<?php echo $row_Edit['Customer']; ?>" placeholder="Nama CP">
                     </div>
                   </div>
                 </div>
@@ -371,14 +371,14 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_editcustomer_CustPhone" name="CustPhone" type="text" class="form-control" value="<?php echo $row_Edit['CustPhone']; ?>" placeholder="021-123456">
+                      <input id="tx_editcustomer_CustPhone" name="tx_editcustomer_CustPhone" type="text" class="form-control" value="<?php echo $row_Edit['CustPhone']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input id="tx_editcustomer_CustEmail" name="CustEmail"type="text" class="form-control" value="<?php echo $row_Edit['CustEmail']; ?>" placeholder="Email CP">
+                      <input id="tx_editcustomer_CustEmail" name="tx_editcustomer_CustEmail"type="text" class="form-control" value="<?php echo $row_Edit['CustEmail']; ?>" placeholder="Email CP">
                     </div>
                   </div>
                 </div>
@@ -386,7 +386,7 @@ $totalRows_User = mysql_num_rows($User);
               <!-- /.box-body -->
               <div class="box-footer">
                 <a href="ViewCustomer.php?Id=<?php echo $row_Edit['Id']; ?>"><button type="button" class="btn btn-default pull-left">Back</button></a>
-                <button type="submit" name="submit" id="bt_editcustomer_submit" class="btn btn-info pull-right">Update</button>
+                <button type="submit" name="bt_editcustomer_submit" id="bt_editcustomer_submit" class="btn btn-info pull-right">Update</button>
               </div>
               <input type="hidden" name="MM_update" value="form1">
               <!-- /.box-footer -->

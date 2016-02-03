@@ -274,39 +274,39 @@ $totalRows_User = mysql_num_rows($User);
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form action="<?php echo $editFormAction; ?>" id="fm_insertcustomer_form1" name="form1" method="post" class="form-horizontal">
+            <form action="<?php echo $editFormAction; ?>" id="fm_insertcustomer_form1" name="fm_insertcustomer_form1" method="post" class="form-horizontal">
               <div class="box-body with-border">
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertcustomer_CCode" name="CCode" type="text" class="form-control" placeholder="Company Code">
+                    <input id="tx_insertcustomer_CCode" name="tx_insertcustomer_CCode" type="text" class="form-control" placeholder="Company Code">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
-                    <input id="tx_insertcustomer_Company" name="Company" type="text" class="form-control" placeholder="Nama Perusahaan">
+                    <input id="tx_insertcustomer_Company" name="tx_insertcustomer_Company" type="text" class="form-control" placeholder="Nama Perusahaan">
                   </div>
                   <label class="col-sm-1 control-label">NPWP</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
-                      <input id="tx_insertcustomer_NPWP" name="NPWP" type="text" class="form-control" placeholder="12.456.789.0-012.123">
+                      <input id="tx_insertcustomer_NPWP" name="tx_insertcustomer_NPWP" type="text" class="form-control" placeholder="12.456.789.0-012.123">
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertcustomer_Alamat" name="Alamat" type="text" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota">
+                    <input id="tx_insertcustomer_Alamat" name="tx_insertcustomer_Alamat" type="text" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota">
                   </div>
                   <label class="col-sm-1 control-label">Kota</label>
                   <div class="col-sm-2">
-                    <input id="tx_insertcustomer_Kota" name="Kota" type="text" class="form-control" placeholder="Kota">
+                    <input id="tx_insertcustomer_Kota" name="tx_insertcustomer_Kota" type="text" class="form-control" placeholder="Kota">
                   </div>
                   <label class="col-sm-1 control-label">Kodepos</label>
                   <div class="col-sm-2">
-                    <input id="nb_insertcustomer_Zip" name="Zip" type="number" class="form-control" placeholder="10203">
+                    <input id="nb_insertcustomer_Zip" name="nb_insertcustomer_Zip" type="number" class="form-control" placeholder="10203">
                   </div>
                 </div>
                 <div class="form-group">
@@ -316,7 +316,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_insertcustomer_CompPhone" name="CompPhone" type="text" class="form-control" placeholder="021-123456">
+                      <input id="tx_insertcustomer_CompPhone" name="tx_insertcustomer_CompPhone" type="text" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Fax</label>
@@ -325,14 +325,14 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-fax"></i>
                       </div>
-                      <input id="tx_insertcustomer_Fax" name="Fax" type="text" class="form-control" placeholder="021-123456">
+                      <input id="tx_insertcustomer_Fax" name="tx_insertcustomer_Fax" type="text" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input id="tx_insertcustomer_CompEmail" name="CompEmail" type="text" class="form-control" placeholder="Email">
+                      <input id="tx_insertcustomer_CompEmail" name="tx_insertcustomer_CompEmail" type="text" class="form-control" placeholder="Email">
                     </div>
                   </div>
                 </div>
@@ -344,7 +344,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-user"></i>
                       </div>
-                      <input id="tx_insertcustomer_Customer" name="Customer" type="text" class="form-control" placeholder="Nama CP">
+                      <input id="tx_insertcustomer_Customer" name="tx_insertcustomer_Customer" type="text" class="form-control" placeholder="Nama CP">
                     </div>
                   </div>
                 </div>
@@ -355,14 +355,14 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_insertcustomer_CustPhone" name="CustPhone" type="text" class="form-control" placeholder="021-123456">
+                      <input id="tx_insertcustomer_CustPhone" name="tx_insertcustomer_CustPhone" type="text" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                      <input id="tx_insertcustomer_CustEmail" name="CustEmail"type="text" class="form-control" placeholder="Email CP">
+                      <input id="tx_insertcustomer_CustEmail" name="tx_insertcustomer_CustEmail"type="text" class="form-control" placeholder="Email CP">
                     </div>
                   </div>
                 </div>
@@ -370,7 +370,7 @@ $totalRows_User = mysql_num_rows($User);
               <!-- /.box-body -->
               <div class="box-footer">
                 <a href="customer.php"><button type="button" class="btn btn-default pull-Left">Cancel</button></a>
-                <button type="submit" name="submit" id="bt_insertcustomer_submit" class="btn btn-info pull-right">Insert</button>
+                <button type="submit" name="bt_insertcustomer_submit" id="bt_insertcustomer_submit" class="btn btn-info pull-right">Insert</button>
               </div>
               <input type="hidden" name="MM_insert" value="form1">
               <!-- /.box-footer -->
