@@ -370,7 +370,7 @@ function capital() {
 }
 </script>
 <script>
-  $('#Tgl').datepicker({
+  $('#tx_insertpocustomer_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
 	  orientation: "bottom left",
 	  todayHighlight: true
@@ -379,14 +379,14 @@ function capital() {
 <script>
 $(function() {
   var availableTags = <?php include ("../autocomplete.php");?>;
-  $( "#PCode" ).autocomplete({
+  $( "#tx_insertpocustomer_PCode" ).autocomplete({
 	source: availableTags
   });
 });
 </script>
 <script>
 function capital() {
-	var x = document.getElementById("PCode");
+	var x = document.getElementById("tx_insertpocustomer_PCode");
     x.value = x.value.toUpperCase();
 }
 </script>
