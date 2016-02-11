@@ -118,8 +118,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO inserted (PPN, Transport) VALUES (%s, %s)",
-                       GetSQLValueString($_POST['PPN'], "int"),
-                       GetSQLValueString($_POST['Transport'], "text"));
+                       GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"),
+                       GetSQLValueString($_POST['tx_insertpocustomerbarang_Transport'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -127,14 +127,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 for($i=0;$i<10;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['Purchase'][$i], "text"),
-                       GetSQLValueString($_POST['JS'][$i], "text"),
-                       GetSQLValueString($_POST['Barang'][$i], "text"),
-                       GetSQLValueString($_POST['Quantity'][$i], "int"),
-					   GetSQLValueString($_POST['Quantity'][$i], "int"),
-					   GetSQLValueString($_POST['Quantity'][$i], "int"),
-                       GetSQLValueString($_POST['Amount'][$i], "text"),
-                       GetSQLValueString($_POST['Reference'], "text"));
+                       GetSQLValueString($_POST['hd_insertpocustomerbarang_Purchase'][$i], "text"),
+                       GetSQLValueString($_POST['db_insertpocustomerbarang_JS'][$i], "text"),
+                       GetSQLValueString($_POST['tx_inputpocustomerbarang_Barang'][$i], "text"),
+                       GetSQLValueString($_POST['tx_insertpocustomerbarang_Quantity'][$i], "int"),
+					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Quantity'][$i], "int"),
+					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Quantity'][$i], "int"),
+                       GetSQLValueString($_POST['tx_insertpocustomerbarang_Amount'][$i], "text"),
+                       GetSQLValueString($_POST['hd_inputpocustomerbarang_Reference'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -296,8 +296,8 @@ $totalRows_User = mysql_num_rows($User);
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="../POCustomer/pocustomer.php">Purchase Order</a></li>
-        <li><a href="">New PO</a></li>
+        <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
+        <li><a href="../POCustomer/InsertPOCustomer.php">New PO</a></li>
         <li class="active">Insert PO Item</li>
       </ol>
     </section>
@@ -313,7 +313,7 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>Reference=<?php echo $row_LastReference['Reference']; ?>" id="fm_insertpocustomerbarang_form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>Reference=<?php echo $row_LastReference['Reference']; ?>" id="fm_insertpocustomerbarang_form1" name="fm_insertpocustomerbarang_form1" method="POST">
                 <div class="box-body">
                   <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
                     <thead>
@@ -334,15 +334,15 @@ $totalRows_User = mysql_num_rows($User);
                     </thead>
                     <tbody>
                       <tr>
-                        <td><input name="PPN" type="text" id="tx_insertpocustomerbarang_PPN" value="0" autocomplete="off"></td>
-                        <td><input name="Transport" type="text" id="tx_insertpocustomerbarang_Transport" value="0" autocomplete="off"></td>
+                        <td><input name="tx_insertpocustomerbarang_PPN" type="text" id="tx_insertpocustomerbarang_PPN" value="0" autocomplete="off"></td>
+                        <td><input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" value="0" autocomplete="off"></td>
                       </tr>
     				</tbody>
                 </table>
                   <a href="CancelBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
                   <button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
                 </div>
-              <input name="Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $row_LastReference['Reference']; ?>">
+              <input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $row_LastReference['Reference']; ?>">
               <input type="hidden" name="MM_insert" value="form1">
               </form>
             </div>
@@ -391,41 +391,6 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
-</script>
-<script>
-function capital() {
-    var x = document.getElementById("CCode");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("Company");
-    x.value = x.value.toUpperCase();
-}
-</script>
-<script>
-$(function() {
-  var availableTags = <?php include ("../autocomplete.php");?>;
-  $( "#PCode" ).autocomplete({
-	source: availableTags
-  });
-});
-</script>
-<script>
-function capital() {
-	var x = document.getElementById("PCode");
-    x.value = x.value.toUpperCase();
-}
-</script>
-<script>
      $(document).ready(function(){
 	var max_fields      = 10; //maximum input boxes allowed
 	
@@ -436,7 +401,7 @@ function capital() {
 		if(x < max_fields){ //max input box allowed
             x++; //text box count increment
 			z++;
-		$("#tb_insertpocustomerbarang_customFields").append('<tr><td class="hidden"><input type="hidden" name="Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control"></td><td><select name="JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control"></td><td><input type="text" name="Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
+		$("#tb_insertpocustomerbarang_customFields").append('<tr><td class="hidden"><input type="hidden" name="hd_insertpocustomerbarang_Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="tx_inputpocustomerbarang_Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control"></td><td><select name="db_insertpocustomerbarang_JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="tx_insertpocustomerbarang_Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control"></td><td><input type="text" name="tx_insertpocustomerbarang_Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
 		}
 	});
     $("#tb_insertpocustomerbarang_customFields").on('click','.remCF',function(){
@@ -445,11 +410,9 @@ function capital() {
     });
 });
 </script>
-
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($User);
+  mysql_free_result($Menu);
+  mysql_free_result($User);
 ?>

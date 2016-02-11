@@ -66,5 +66,5 @@ body {
 </body>
 </html>
 <?php
-mysql_free_result($LastReference);
+  mysql_free_result($LastReference);
 ?>

@@ -60,5 +60,5 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
 </body>
 </html>
 <?php
-mysql_free_result($LastReference);
+  mysql_free_result($LastReference);
 ?>

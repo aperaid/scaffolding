@@ -211,9 +211,7 @@ $(function() {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($LastId);
-
-mysql_free_result($InsertTransaksiClaim);
+  mysql_free_result($Menu);
+  mysql_free_result($LastId);
+  mysql_free_result($InsertTransaksiClaim);
 ?>

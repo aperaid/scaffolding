@@ -220,15 +220,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 </body>
 </html>
 <?php
-mysql_free_result($JS);
-
-mysql_free_result($LastId);
-
-mysql_free_result($Reference);
-
-mysql_free_result($inserted);
-
-mysql_free_result($LastTgl);
-
-
+  mysql_free_result($JS);
+  mysql_free_result($LastId);
+  mysql_free_result($Reference);
+  mysql_free_result($inserted);
+  mysql_free_result($LastTgl);
 ?>

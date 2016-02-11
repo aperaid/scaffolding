@@ -272,7 +272,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="../SJKirim/sjkirim.php">SJ Kirim</a></li>
+        <li><a href="../SJKirim/SJKirim.php">SJ Kirim</a></li>
         <li class="active">Edit SJ</li>
       </ol>
     </section>
@@ -364,11 +364,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($EditIsiSJKirim);
-
-mysql_free_result($User);
-
-mysql_free_result($View);
+  mysql_free_result($Menu);
+  mysql_free_result($EditIsiSJKirim);
+  mysql_free_result($User);
+  mysql_free_result($View);
 ?>

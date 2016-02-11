@@ -342,6 +342,6 @@ body {
 </body>
 </html>
 <?php
-mysql_free_result($View);
-mysql_free_result($View2);
+  mysql_free_result($View);
+  mysql_free_result($View2);
 ?>

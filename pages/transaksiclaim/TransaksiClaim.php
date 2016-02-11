@@ -192,7 +192,6 @@ $totalRows_Menu = mysql_num_rows($Menu);
 	</body>
 </html>
 <?php
-	mysql_free_result($Menu);
-
-	mysql_free_result($TransaksiClaim);
-	?>
+  mysql_free_result($Menu);
+  mysql_free_result($TransaksiClaim);
+?>

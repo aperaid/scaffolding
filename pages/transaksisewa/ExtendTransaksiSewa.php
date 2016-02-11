@@ -232,9 +232,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 </body>
 </html>
 <?php
-mysql_free_result($Extend);
-
-mysql_free_result($Invoice);
-
-mysql_free_result($LastInvoiceId);
+  mysql_free_result($Extend);
+  mysql_free_result($Invoice);
+  mysql_free_result($LastInvoiceId);
 ?>

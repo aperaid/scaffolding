@@ -309,15 +309,10 @@ $(function() {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($LastClaim);
-
-mysql_free_result($Reference);
-
-mysql_free_result($Periode);
-
-mysql_free_result($LastId);
-
-mysql_free_result($InsertTransaksiClaim);
+  mysql_free_result($Menu);
+  mysql_free_result($LastClaim);
+  mysql_free_result($Reference);
+  mysql_free_result($Periode);
+  mysql_free_result($LastId);
+  mysql_free_result($InsertTransaksiClaim);
 ?>

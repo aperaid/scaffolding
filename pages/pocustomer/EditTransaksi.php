@@ -274,7 +274,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="../POCustomer/pocustomer.php">Purchase Order</a></li>
+        <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
         <li class="active">View PO</li>
       </ol>
     </section>
@@ -349,8 +349,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                       <td><?php echo $row_Purchase['JS']; ?></td>
                       <td><?php echo $row_Purchase['Barang']; ?></td>
                       <td><input name="Quantity[]" type="text" class="form-control" id="tx_edittransaksi_Quantity" value="<?php echo $row_Purchase['Quantity']; ?>"></td>
+                      <td><?php echo $row_Purchase['Tgl']; ?></td>
                       <td><input name="Amount[]" type="text" class="form-control" id="tx_edittransaksi_Amount" value="<?php echo $row_Purchase['Amount']; ?>"></td>
-                      <td></td>
                     </tr>
                   <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
             </tbody>
@@ -405,20 +405,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
-<!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable();
-  });
-</script>
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($Purchase);
-
-mysql_free_result($View);
-
-mysql_free_result($User);
+  mysql_free_result($Menu);
+  mysql_free_result($Purchase);
+  mysql_free_result($View);
+  mysql_free_result($User);
 ?>

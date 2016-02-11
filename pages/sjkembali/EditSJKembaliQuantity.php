@@ -240,9 +240,7 @@ body {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($EditIsiSJKembali);
-
-mysql_free_result($View);
+  mysql_free_result($Menu);
+  mysql_free_result($EditIsiSJKembali);
+  mysql_free_result($View);
 ?>

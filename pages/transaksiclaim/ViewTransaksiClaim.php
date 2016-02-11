@@ -178,9 +178,7 @@ body {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($ViewIsiSJKembali);
-
-mysql_free_result($View);
+  mysql_free_result($Menu);
+  mysql_free_result($ViewIsiSJKembali);
+  mysql_free_result($View);
 ?>

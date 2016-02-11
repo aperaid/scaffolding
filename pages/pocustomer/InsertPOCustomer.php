@@ -111,9 +111,9 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO pocustomer (Reference, Tgl, PCode) VALUES (%s, %s, %s)",
-                       GetSQLValueString($_POST['Reference'], "text"),
-                       GetSQLValueString($_POST['Tgl'], "text"),
-                       GetSQLValueString($_POST['PCode'], "text"));
+                       GetSQLValueString($_POST['tx_insertpocustomer_Reference'], "text"),
+                       GetSQLValueString($_POST['tx_insertpocustomer_Tgl'], "text"),
+                       GetSQLValueString($_POST['tx_insertpocustomer_PCode'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -259,7 +259,7 @@ $totalRows_User = mysql_num_rows($User);
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="../POCustomer/pocustomer.php">Purchase Order</a></li>
+        <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
         <li class="active">Insert PO</li>
       </ol>
     </section>
@@ -275,11 +275,11 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomer_form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomer_form1" name="fm_insertpocustomer_form1" method="POST">
                 <div class="box-body">
                   <div class="form-group">
                     <label>Reference</label>
-                    <input name="Reference" type="text" class="form-control" id="tx_insertpocustomer_Reference" onKeyUp="capital()" value="<?php echo str_pad($row_Reference['Id']+1, 5, "0", STR_PAD_LEFT); ?>/<?php echo date("dmy") ?>" readonly>
+                    <input name="tx_insertpocustomer_Reference" type="text" class="form-control" id="tx_insertpocustomer_Reference" onKeyUp="capital()" value="<?php echo str_pad($row_Reference['Id']+1, 5, "0", STR_PAD_LEFT); ?>/<?php echo date("dmy") ?>" readonly>
                   </div>
                   <div class="form-group">
                     <label>Date</label>
@@ -287,12 +287,12 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="Tgl" type="text" class="form-control pull-right date" id="tx_insertpocustomer_Tgl" autocomplete="off">
+                      <input name="tx_insertpocustomer_Tgl" type="text" class="form-control pull-right date" id="tx_insertpocustomer_Tgl" autocomplete="off">
                     </div>
                   </div>
                   <div class="form-group">
                     <label>Project Code</label>
-                    <input name="PCode" type="text" class="form-control" id="tx_insertpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
+                    <input name="tx_insertpocustomer_PCode" type="text" class="form-control" id="tx_insertpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
                     <p class="help-block">Enter the beginning of the Project Code, then pick from the dropdown</p>
                   </div>
                 </div>
@@ -349,31 +349,11 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
-</script>
-<script>
-function capital() {
-    var x = document.getElementById("CCode");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("Company");
-    x.value = x.value.toUpperCase();
-}
-</script>
-<script>
   $('#tx_insertpocustomer_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
 	  orientation: "bottom left",
-	  todayHighlight: true
+	  todayHighlight: true,
+	  autoclose: true
   }); 
 </script>
 <script>
@@ -393,7 +373,6 @@ function capital() {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($User);
+  mysql_free_result($Menu);
+  mysql_free_result($User);
 ?>

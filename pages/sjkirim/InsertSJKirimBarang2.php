@@ -345,15 +345,10 @@ $(function() {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($Select);
-
-mysql_free_result($LastIsiSJKirim);
-
-mysql_free_result($Reference);
-
-mysql_free_result($LastTgl);
-
-mysql_free_result($InsertSJKirim);
+  mysql_free_result($Menu);
+  mysql_free_result($Select);
+  mysql_free_result($LastIsiSJKirim);
+  mysql_free_result($Reference);
+  mysql_free_result($LastTgl);
+  mysql_free_result($InsertSJKirim);
 ?>

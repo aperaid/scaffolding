@@ -231,5 +231,5 @@ $(function() {
 </body>
 </html>
 <?php
-mysql_free_result($Edit);
+  mysql_free_result($Edit);
 ?>

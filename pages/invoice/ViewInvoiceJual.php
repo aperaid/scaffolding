@@ -132,11 +132,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 <script language="javascript">
   function transport() {
-    var txtFirstNumberValue = document.getElementById('Totals2').value;
-    var txtSecondNumberValue = document.getElementById('Transport').value;
+    var txtFirstNumberValue = document.getElementById('hd_viewinvoicejual_Totals2').value;
+    var txtSecondNumberValue = document.getElementById('tx_viewinvoicejual_Transport').value;
 	var result = parseFloat(txtFirstNumberValue) + parseFloat(txtSecondNumberValue);
 	  if (!isNaN(result)) {
-		document.getElementById('Totals').value = result;
+		document.getElementById('tx_viewinvoicejual_Totals').value = result;
       }
    }
 </script>
@@ -281,6 +281,6 @@ body {
 </body>
 </html>
 <?php
-mysql_free_result($View);
-mysql_free_result($View2);
+  mysql_free_result($View);
+  mysql_free_result($View2);
 ?>

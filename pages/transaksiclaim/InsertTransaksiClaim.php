@@ -171,5 +171,5 @@ $(function() {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
+  mysql_free_result($Menu);
 ?>

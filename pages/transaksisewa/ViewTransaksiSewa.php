@@ -278,7 +278,7 @@ $totalRows_User = mysql_num_rows($User);
         <large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&&Periode=<?php echo $row_LastPeriode['Periode']; ?>"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="TransaksiSewa.php">Transaksi Sewa</a></li>
         <li class="active">View Transaksi Sewa</li>
       </ol>

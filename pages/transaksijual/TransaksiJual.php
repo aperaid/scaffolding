@@ -355,7 +355,6 @@ $totalRows_User = mysql_num_rows($User);
 </body>
 </html>
 <?php
-	mysql_free_result($TransaksiJual);
-
-mysql_free_result($User);
-	?>
+  mysql_free_result($TransaksiJual);
+  mysql_free_result($User);
+?>

@@ -303,17 +303,11 @@ $(function() {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($Select);
-
-mysql_free_result($LastIsiSJKembali);
-
-mysql_free_result($Reference);
-
-mysql_free_result($GetPeriode);
-
-mysql_free_result($InsertSJKembali);
-
-mysql_free_result($LastTgl);
+  mysql_free_result($Menu);
+  mysql_free_result($Select);
+  mysql_free_result($LastIsiSJKembali);
+  mysql_free_result($Reference);
+  mysql_free_result($GetPeriode);
+  mysql_free_result($InsertSJKembali);
+  mysql_free_result($LastTgl);
 ?>

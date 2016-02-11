@@ -264,7 +264,7 @@ $totalRows_User = mysql_num_rows($User);
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="../POCustomer/pocustomer.php">Purchase Order</a></li>
+        <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
         <li class="active">Insert PO</li>
       </ol>
     </section>
@@ -355,28 +355,7 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
-</script>
-<script>
-function capital() {
-    var x = document.getElementById("CCode");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("Company");
-    x.value = x.value.toUpperCase();
-}
-</script>
-<script>
-  $('#Tgl').datepicker({
+  $('#tx_editpocustomer_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
 	  orientation: "bottom left",
 	  todayHighlight: true,
@@ -386,23 +365,21 @@ function capital() {
 <script>
 $(function() {
   var availableTags = <?php include ("../autocomplete.php");?>;
-  $( "#PCode" ).autocomplete({
+  $( "#tx_editpocustomer_PCode" ).autocomplete({
 	source: availableTags
   });
 });
 </script>
 <script>
 function capital() {
-	var x = document.getElementById("PCode");
+	var x = document.getElementById("tx_editpocustomer_PCode");
     x.value = x.value.toUpperCase();
 }
 </script>
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($User);
-
-mysql_free_result($Edit);
+  mysql_free_result($Menu);
+  mysql_free_result($User);
+  mysql_free_result($Edit);
 ?>

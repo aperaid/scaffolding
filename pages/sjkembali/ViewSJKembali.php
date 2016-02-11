@@ -247,7 +247,7 @@ $totalRows_User = mysql_num_rows($User);
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="../SJKembali/sjkembali.php">SJ Kembali</a></li>
+        <li><a href="../SJKembali/SJKembali.php">SJ Kembali</a></li>
         <li class="active">View SJ</li>
       </ol>
     </section>
@@ -340,11 +340,8 @@ $totalRows_User = mysql_num_rows($User);
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($ViewIsiSJKembali);
-
-mysql_free_result($View);
-
-mysql_free_result($User);
+  mysql_free_result($Menu);
+  mysql_free_result($ViewIsiSJKembali);
+  mysql_free_result($View);
+  mysql_free_result($User);
 ?>

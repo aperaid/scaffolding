@@ -259,7 +259,7 @@ $totalRows_User = mysql_num_rows($User);
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="../SJKirim/sjkirim.php">SJ Kirim</a></li>
+        <li><a href="../SJKirim/SJKirim.php">SJ Kirim</a></li>
         <li class="active">Insert SJ Kirim</li>
       </ol>
     </section>
@@ -348,29 +348,9 @@ $totalRows_User = mysql_num_rows($User);
 <!-- datepicker -->
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
+
 <script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
-</script>
-<script>
-function capital() {
-    var x = document.getElementById("CCode");
-    x.value = x.value.toUpperCase();
-	var x = document.getElementById("Company");
-    x.value = x.value.toUpperCase();
-}
-</script>
-<script>
-  $('#Tgl').datepicker({
+  $('#tx_insertsjkirim_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
 	  orientation: "bottom left",
 	  todayHighlight: true,
@@ -385,18 +365,10 @@ $(function() {
     });
   });
 </script>
-<script>
-function capital() {
-	var x = document.getElementById("PCode");
-    x.value = x.value.toUpperCase();
-}
-</script>
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($NoSJ);
-
-mysql_free_result($User);
+  mysql_free_result($Menu);
+  mysql_free_result($NoSJ);
+  mysql_free_result($User);
 ?>

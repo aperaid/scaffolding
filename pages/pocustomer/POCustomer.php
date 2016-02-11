@@ -233,7 +233,6 @@ $totalRows_User = mysql_num_rows($User);
               </li>
             </ul>
           </li>
-          
         </ul>
       </div>
     </nav>
@@ -273,7 +272,6 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
-
           <div class="box">
             <div class="box-body">
               <table id="tb_pocustomer_example1" class="table table-bordered table-striped table-responsive">
@@ -295,8 +293,8 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_POCustomer['Company']; ?></td>
                     <td><?php echo $row_POCustomer['Project']; ?></td>
                     <td></td>
-                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
-                    <td><a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a>
+                    <a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>
                   <?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
                 </tbody>
@@ -364,6 +362,5 @@ $totalRows_User = mysql_num_rows($User);
 <?php
   mysql_free_result($POCustomer);
   mysql_free_result($Menu);
-
-mysql_free_result($User);
+  mysql_free_result($User);
 ?>

@@ -218,11 +218,8 @@ $(function() {
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($LastIsiSJKembali);
-
-mysql_free_result($LastId);
-
-mysql_free_result($InsertSJKembali);
+  mysql_free_result($Menu);
+  mysql_free_result($LastIsiSJKembali);
+  mysql_free_result($LastId);
+  mysql_free_result($InsertSJKembali);
 ?>

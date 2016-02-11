@@ -247,7 +247,7 @@ $totalRows_User = mysql_num_rows($User);
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="../POCustomer/pocustomer.php">Purchase Order</a></li>
+        <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
         <li class="active">View PO</li>
       </ol>
     </section>
@@ -316,7 +316,7 @@ $totalRows_User = mysql_num_rows($User);
             <tbody>
 				<?php do { ?>
                   <tr>
-                    <td class="hidden"><input name="Id" id="Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
+                    <td class="hidden"><input name="hd_viewtransaksi_Id" id="hd_viewtransaksi_Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
                     <td><?php echo $row_Purchase['Purchase']; ?></td>
                     <td><?php echo $row_Purchase['JS']; ?></td>
                     <td><?php echo $row_Purchase['Barang']; ?></td>
@@ -331,8 +331,6 @@ $totalRows_User = mysql_num_rows($User);
         <!-- /.col -->
       </div>
       <!-- /.row -->
-
-      
 
       <!-- this row will not appear when printing -->
       <div class="row no-print">
@@ -381,20 +379,11 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
-<!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable();
-  });
-</script>
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($Purchase);
-
-mysql_free_result($View);
-
-mysql_free_result($User);
+  mysql_free_result($Menu);
+  mysql_free_result($Purchase);
+  mysql_free_result($View);
+  mysql_free_result($User);
 ?>

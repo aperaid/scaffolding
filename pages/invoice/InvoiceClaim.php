@@ -184,5 +184,5 @@ $totalRows_Menu = mysql_num_rows($Menu);
 	</body>
 </html>
 <?php
-	mysql_free_result($Invoice);
+  mysql_free_result($Invoice);
 ?>
