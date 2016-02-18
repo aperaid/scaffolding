@@ -45,7 +45,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO inserted (Reference) VALUES (%s)",
-                       GetSQLValueString($_POST['Reference'], "text"));
+                       GetSQLValueString($_POST['tx_inserttransaksiclaim_Reference'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -69,33 +69,32 @@ $totalRows_Menu = mysql_num_rows($Menu);
 <head>
 <meta charset="utf-8">
 <title>Untitled Document</title>
-<link href="../../Button.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	background-image: url(../../Image/Wood.png);
-	background-repeat: no-repeat;
-}
-</style>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="../../library/bootstrap/css/bootstrap.min.css">
+  <!-- jQueryUI -->
+  <link rel="stylesheet" href="../../library/jQueryUI/jquery-ui.css" >
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../library/font-awesome-4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../../library/ionicons-2.0.1/css/ionicons.min.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../library/datatables/dataTables.bootstrap.css">
+  <!-- datepicker -->
+  <link rel="stylesheet" href="../../library/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../library/dist/css/skins/_all-skins.min.css">
 
-<script>
-function capital() {
-	var x = document.getElementById("Reference");
-    x.value = x.value.toUpperCase();
-}
-</script>
-
-<link href="/scaffolding/JQuery2/jquery-ui.css" rel="stylesheet" type="text/css">
-<script src="../../JQuery2/external/jquery/jquery.js"></script>
-<script src="../../JQuery2/jquery-ui.js"></script>
-<script type="text/javascript">
-$(function() {
-    var availableTags = <?php include ("../autocomplete3.php");?>;
-    $( "#tx_inserttransaksiclaim_Reference" ).autocomplete({
-      source: availableTags
-    });
-  });
-</script>
-
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
 
 <body>
@@ -144,14 +143,14 @@ $(function() {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="fm_inserttransaksiclaim_form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_inserttransaksiclaim_form1" name="fm_inserttransaksiclaim_form1" method="POST">
   <table width="1000" border="0">
     <tbody>
       <tr>
         <th width="250">&nbsp;</th>
         <th width="125" align="right">No. Reference</th>
         <th width="75" align="right">&nbsp;</th>
-        <td width="532"><input name="Reference" type="text" id="tx_inserttransaksiclaim_Reference" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
+        <td width="532"><input name="tx_inserttransaksiclaim_Reference" type="text" id="tx_inserttransaksiclaim_Reference" autocomplete="off" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
@@ -161,13 +160,41 @@ $(function() {
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
-        <td colspan="2" align="center"><input type="submit" name="submit" id="bt_inserttransaksiclaim_submit" class="submit" value="Insert"></td>
+        <td colspan="2" align="center"><input type="submit" name="bt_inserttransaksiclaim_submit" id="bt_inserttransaksiclaim_submit" class="submit" value="Insert"></td>
         <td><a href="TransaksiClaim.php"><button type="button" class="submit">Cancel</button></a></td>
       </tr>
     </tbody>
   </table>
   <input type="hidden" name="MM_insert" value="form1">
 </form>
+<!-- jQuery 2.1.4 -->
+<script src="../../library/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- jQuery UI -->
+<script src="../../library/jQueryUI/jquery-ui.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="../../library/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="../../library/datatables/jquery.dataTables.min.js"></script>
+<script src="../../library/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../library/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../library/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../library/dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../library/dist/js/demo.js"></script>
+<!-- datepicker -->
+<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<!-- page script -->
+<script type="text/javascript">
+$(function() {
+    var availableTags = <?php include ("../autocomplete3.php");?>;
+    $( "#tx_inserttransaksiclaim_Reference" ).autocomplete({
+      source: availableTags
+    });
+  });
+</script>
 </body>
 </html>
 <?php

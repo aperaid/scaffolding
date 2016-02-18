@@ -119,7 +119,7 @@ body {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="fm_viewtransaksiclaim_form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_viewtransaksiclaim_form1" name="fm_viewtransaksiclaim_form1" method="POST">
   <table width="1000" border="0">
     <thead>
       <tr>
@@ -136,15 +136,15 @@ body {
     <tbody>      
 	<?php do { ?>
       <tr>
-		<td><input name="Id" type="hidden" id="hd_viewtransaksiclaim_Id"></td>
-		<td><input name="IsiSJKem" type="text" class="textview" id="tx_viewtransaksiclaim_IsiSJKem" value="<?php echo $row_ViewIsiSJKembali['IsiSJKem']; ?>" readonly></td>
-		<td><input name="JS" type="text" class="textview" id="tx_viewtransaksiclaim_JS" value="<?php echo $row_ViewIsiSJKembali['JS']; ?>" readonly></td>
-		<td><input name="Barang" type="text" class="textview" id="tx_viewtransaksiclaim_Barang" value="<?php echo $row_ViewIsiSJKembali['Barang']; ?>" readonly></td>
-		<td><input name="Warehouse" type="text" class="textview" id="tx_viewtransaksiclaim_Warehouse" value="<?php echo $row_ViewIsiSJKembali['Warehouse']; ?>" readonly></td>
-		<td><input name="QSisaKem" type="text" class="textview" id="tx_viewtransaksiclaim_QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
-		<td><input name="QTertanda" type="text" class="textview" id="tx_viewtransaksiclaim_QTertanda" value="<?php echo $row_ViewIsiSJKembali['QTertanda']; ?>" readonly></td>
-		<td><input name="QTerima" type="text" class="textview" id="tx_viewtransaksiclaim_QTerima" value="<?php echo $row_ViewIsiSJKembali['QTerima']; ?>" readonly></td>
-		<td><input name="Purchase" type="text" class="textview" id="tx_viewtransaksiclaim_Purchase" value="<?php echo $row_ViewIsiSJKembali['Purchase']; ?>" readonly></td>
+		<td><input name="hd_viewtransaksiclaim_Id" type="hidden" id="hd_viewtransaksiclaim_Id"></td>
+		<td><input name="tx_viewtransaksiclaim_IsiSJKem" type="text" class="textview" id="tx_viewtransaksiclaim_IsiSJKem" value="<?php echo $row_ViewIsiSJKembali['IsiSJKem']; ?>" readonly></td>
+		<td><input name="tx_viewtransaksiclaim_JS" type="text" class="textview" id="tx_viewtransaksiclaim_JS" value="<?php echo $row_ViewIsiSJKembali['JS']; ?>" readonly></td>
+		<td><input name="tx_viewtransaksiclaim_Barang" type="text" class="textview" id="tx_viewtransaksiclaim_Barang" value="<?php echo $row_ViewIsiSJKembali['Barang']; ?>" readonly></td>
+		<td><input name="tx_viewtransaksiclaim_Warehouse" type="text" class="textview" id="tx_viewtransaksiclaim_Warehouse" value="<?php echo $row_ViewIsiSJKembali['Warehouse']; ?>" readonly></td>
+		<td><input name="tx_viewtransaksiclaim_QSisaKem" type="text" class="textview" id="tx_viewtransaksiclaim_QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
+		<td><input name="tx_viewtransaksiclaim_QTertanda" type="text" class="textview" id="tx_viewtransaksiclaim_QTertanda" value="<?php echo $row_ViewIsiSJKembali['QTertanda']; ?>" readonly></td>
+		<td><input name="tx_viewtransaksiclaim_QTerima" type="text" class="textview" id="tx_viewtransaksiclaim_QTerima" value="<?php echo $row_ViewIsiSJKembali['QTerima']; ?>" readonly></td>
+		<td><input name="tx_viewtransaksiclaim_Purchase" type="text" class="textview" id="tx_viewtransaksiclaim_Purchase" value="<?php echo $row_ViewIsiSJKembali['Purchase']; ?>" readonly></td>
       </tr>
 	<?php } while ($row_ViewIsiSJKembali = mysql_fetch_assoc($ViewIsiSJKembali)); ?>
       <tr>
