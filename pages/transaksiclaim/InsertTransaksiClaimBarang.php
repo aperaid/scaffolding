@@ -71,7 +71,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO inserted (IsiSJKir) VALUES (%s)",
-                       GetSQLValueString($_POST['cb_inserttransaksiclaimbarang_checkbox'][$i], "int"));
+                       GetSQLValueString($_POST['checkbox'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -166,7 +166,7 @@ $(function() {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="fm_inserttransaksiclaimbarang_form1" name="fm_inserttransaksiclaimbarang_form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_inserttransaksiclaimbarang_form1" name="form1" method="POST">
   <table width="1000" border="0">
     <thead>
       <tr>
@@ -180,11 +180,11 @@ $(function() {
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td align="center"><input type="checkbox" name="cb_inserttransaksiclaimbarang_checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>"></td>
-	    <td><input name="tx_inserttransaksiclaimbarang_JS[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang_JS" value="<?php echo $row_InsertTransaksiClaim['JS']; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang_Barang[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang_Quantity[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang_Quantity" value="<?php echo $row_InsertTransaksiClaim['Quantity']; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang_Purchase[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang_Purchase" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
+	    <td align="center"><input type="checkbox" name="checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>"></td>
+	    <td><input name="JS[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang_JS" value="<?php echo $row_InsertTransaksiClaim['JS']; ?>" readonly></td>
+	    <td><input name="Barang[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
+	    <td><input name="Quantity[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang_Quantity" value="<?php echo $row_InsertTransaksiClaim['Quantity']; ?>" readonly></td>
+	    <td><input name="Purchase[]" type="text" class="textview" id="tx_inserttransaksiclaimbarang_Purchase" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim)); ?>
@@ -198,7 +198,7 @@ $(function() {
       <tr>
 		   <td>&nbsp;</td>
 		   <td align="right">&nbsp;</td>
-		   <td align="left"><input type="submit" name="bt_inserttransaksiclaimbarang_submit" id="bt_inserttransaksiclaimbarang_submit" class="submit" value="Pilih"></td>
+		   <td align="left"><input type="submit" name="submit" id="bt_inserttransaksiclaimbarang_submit" class="submit" value="Pilih"></td>
 	    <td><a href="TransaksiClaim.php"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>
       </tr>
