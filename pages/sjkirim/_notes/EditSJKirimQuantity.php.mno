@@ -2,6 +2,6 @@
 <info>
 	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_View" value="name:SJKir;datatype:string" />
-	<infoitem key="UD_EditIsiSJKirim" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:QSisaKemInsert;datatype:int,name:QSisaKem;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QSisaKir;datatype:int,name:Project;datatype:string" />
+	<infoitem key="UD_EditIsiSJKirim" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:QSisaKem;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QSisaKir;datatype:int,name:Project;datatype:string" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>
