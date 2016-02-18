@@ -92,12 +92,12 @@ $totalRows_LastTgl = mysql_num_rows($LastTgl);
 for($i=0;$i<$totalRows_JS;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, PPN, Transport, Reference, Tgl, Periode) VALUES (%s, %s, %s, %s, %s, %s, 1)",
-                       GetSQLValueString($_POST['hd_insertpocustomerbarang2_Invoice'][$i], "text"),
-                       GetSQLValueString($_POST['hd_insertpocustomerbarang2_JS'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_PPN'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_Transport'][$i], "text"),
-                       GetSQLValueString($_POST['hd_insertpocustomerbarang2_Reference'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_Tgl'][$i], "text"));
+                       GetSQLValueString($_POST['Invoice'][$i], "text"),
+                       GetSQLValueString($_POST['JS'][$i], "text"),
+					   GetSQLValueString($_POST['PPN'][$i], "text"),
+					   GetSQLValueString($_POST['Transport'][$i], "text"),
+                       GetSQLValueString($_POST['Reference'][$i], "text"),
+					   GetSQLValueString($_POST['Tgl'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -128,7 +128,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 </head>
 
 <body onLoad="submit()">
-<form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomerbarang2_form1" name="fm_insertpocustomerbarang2_form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomerbarang2_form1" name="form1" method="POST">
   <table width="1350" border="0">
     <tbody>
       <tr>
@@ -195,12 +195,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
       <?php do { ?>
         <tr>
           <td>&nbsp;</td>
-          <td><input name="hd_insertpocustomerbarang2_Invoice[]" type="hidden" id="hd_insertpocustomerbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
-          <input name="hd_insertpocustomerbarang2_JS[]" type="hidden" id="hd_insertpocustomerbarang2_JS" value="<?php echo $row_JS['JS']; ?>">
-          <input name="hd_insertpocustomerbarang2_PPN[]" type="hidden" id="hd_insertpocustomerbarang2_PPN" value="<?php echo $row_inserted['PPN']; ?>">
-          <input name="hd_insertpocustomerbarang2_Transport[]" type="hidden" id="hd_insertpocustomerbarang2_Transport" value="<?php echo $row_inserted['Transport']; ?>">
-          <input name="hd_insertpocustomerbarang2_Reference[]" type="hidden" id="hd_insertpocustomerbarang2_Reference" value="<?php echo $row_Reference['Reference']; ?>">
-          <input name="hd_insertpocustomerbarang2_Tgl[]" type="hidden" id="hd_insertpocustomerbarang2_Tgl" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>"></td>
+          <td><input name="Invoice[]" type="hidden" id="hd_insertpocustomerbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
+          <input name="JS[]" type="hidden" id="hd_insertpocustomerbarang2_JS" value="<?php echo $row_JS['JS']; ?>">
+          <input name="PPN[]" type="hidden" id="hd_insertpocustomerbarang2_PPN" value="<?php echo $row_inserted['PPN']; ?>">
+          <input name="Transport[]" type="hidden" id="hd_insertpocustomerbarang2_Transport" value="<?php echo $row_inserted['Transport']; ?>">
+          <input name="Reference[]" type="hidden" id="hd_insertpocustomerbarang2_Reference" value="<?php echo $row_Reference['Reference']; ?>">
+          <input name="Tgl[]" type="hidden" id="hd_insertpocustomerbarang2_Tgl" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
@@ -215,7 +215,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     </tbody>
   </table>
   <input type="hidden" name="MM_insert" value="form1">
-  <input type="submit" name="bt_insertpocustomerbarang2_submit" id="bt_insertpocustomerbarang2_submit" value="">
+  <input type="submit" name="submit" id="bt_insertpocustomerbarang2_submit" value="">
 </form>
 </body>
 </html>
