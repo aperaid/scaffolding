@@ -111,9 +111,9 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO sjkirim (SJKir, Tgl, Reference) VALUES (%s, %s, %s)",
-                       GetSQLValueString($_POST['SJKir'], "text"),
-                       GetSQLValueString($_POST['Tgl'], "text"),
-                       GetSQLValueString($_POST['Reference'], "text"));
+                       GetSQLValueString($_POST['tx_insertsjkirim_SJKir'], "text"),
+                       GetSQLValueString($_POST['tx_insertsjkirim_Tgl'], "text"),
+                       GetSQLValueString($_POST['tx_insertsjkirim_Reference'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -275,11 +275,11 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkirim_form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkirim_form1" name="fm_insertsjkirim_form1" method="POST">
                 <div class="box-body">
                   <div class="form-group">
                     <label>No. Surat Jalan</label>
-                    <input name="SJKir" type="text" class="form-control" id="tx_insertsjkirim_SJKir" onKeyUp="capital()" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY") ?>" readonly>
+                    <input name="tx_insertsjkirim_SJKir" type="text" class="form-control" id="tx_insertsjkirim_SJKir" onKeyUp="capital()" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY") ?>" readonly>
                   </div>
                   <div class="form-group">
                     <label>Send Date</label>
@@ -287,12 +287,12 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="Tgl" type="text" autocomplete="off" class="form-control pull-right date" id="tx_insertsjkirim_Tgl">
+                      <input name="tx_insertsjkirim_Tgl" type="text" autocomplete="off" class="form-control pull-right date" id="tx_insertsjkirim_Tgl">
                     </div>
                   </div>
                   <div class="form-group">
                     <label>PO Code</label>
-                    <input name="Reference" type="text" class="form-control" id="tx_insertsjkirim_Reference" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
+                    <input name="tx_insertsjkirim_Reference" type="text" class="form-control" id="tx_insertsjkirim_Reference" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
                     <p class="help-block">Enter the beginning of the PO Code, then pick from the dropdown</p>
                   </div>
                 </div>

@@ -173,6 +173,8 @@ $totalRows_User = mysql_num_rows($User);
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../../library/dist/css/skins/_all-skins.min.css">
+  <!-- Remove spinner arrow on input number -->
+  <link rel="stylesheet" type="text/css" href="../mystyle.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -279,19 +281,19 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertcustomer_CCode" name="CCode" type="text" class="form-control" placeholder="Company Code">
+                    <input id="tx_insertcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="CCode" type="text" class="form-control" placeholder="Company Code">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
-                    <input id="tx_insertcustomer_Company" name="Company" type="text" class="form-control" placeholder="Nama Perusahaan">
+                    <input id="tx_insertcustomer_Company" autocomplete="off" onKeyUp="capital()" name="Company" type="text" class="form-control" placeholder="Nama Perusahaan">
                   </div>
                   <label class="col-sm-1 control-label">NPWP</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
-                      <input id="tx_insertcustomer_NPWP" name="NPWP" type="text" class="form-control" placeholder="12.456.789.0-012.123">
+                      <input id="nb_insertcustomer_NPWP" name="NPWP" type="number" class="form-control" placeholder="12.456.789.0-012.123">
                     </div>
                   </div>
                 </div>
@@ -316,7 +318,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_insertcustomer_CompPhone" name="CompPhone" type="text" class="form-control" placeholder="021-123456">
+                      <input id="nb_insertcustomer_CompPhone" name="CompPhone" type="number" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Fax</label>
@@ -325,7 +327,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-fax"></i>
                       </div>
-                      <input id="tx_insertcustomer_Fax" name="Fax" type="text" class="form-control" placeholder="021-123456">
+                      <input id="nb_insertcustomer_Fax" name="Fax" type="number" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email</label>
@@ -355,7 +357,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_insertcustomer_CustPhone" name="CustPhone" type="text" class="form-control" placeholder="021-123456">
+                      <input id="nb_insertcustomer_CustPhone" name="CustPhone" type="number" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>
@@ -431,16 +433,15 @@ $totalRows_User = mysql_num_rows($User);
 </script>
 <script>
 function capital() {
-    var x = document.getElementById("CCode");
+    var x = document.getElementById("tx_insertcustomer_CCode");
     x.value = x.value.toUpperCase();
-	var x = document.getElementById("Company");
+	var x = document.getElementById("tx_insertcustomer_Company");
     x.value = x.value.toUpperCase();
 }
 </script>
 </body>
 </html>
 <?php
-mysql_free_result($Menu);
-
-mysql_free_result($User);
+  mysql_free_result($Menu);
+  mysql_free_result($User);
 ?>

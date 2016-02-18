@@ -1,8 +1,4 @@
-<!--PHP-->
-
-<?php
-require_once('../../connections/Connection.php');
-?>
+<?php require_once('../../connections/Connection.php'); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -270,7 +266,7 @@ $totalRows_User = mysql_num_rows($User);
 
           <div class="box">
             <div class="box-body">
-              <table id="tb_customer_example1" name="tb_customer" class="table table-condensed table-hover">
+              <table id="tb_customer_example1" name="tb_customer_example1" class="table table-condensed table-hover">
                 <thead>
                 <tr>
                   <th>Customer Code</th>
@@ -333,14 +329,13 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 <script>
   $(function () {
-    $("tb_customer").DataTable();
+    $("tb_customer_example1").DataTable();
   });
 </script>
 </body>
 </html>
 <?php
-mysql_free_result($Customer);
-mysql_free_result($User);
-
-mysql_free_result($Menu);
+  mysql_free_result($Customer);
+  mysql_free_result($User);
+  mysql_free_result($Menu);
 ?>
