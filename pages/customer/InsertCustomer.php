@@ -282,21 +282,18 @@ $totalRows_User = mysql_num_rows($User);
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
                     <input id="tx_insertcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="CCode" type="text" class="form-control" placeholder="Company Code">
-                    <input id="tx_insertcustomer_CCode" name="tx_insertcustomer_CCode" type="text" class="form-control" placeholder="Company Code">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
                     <input id="tx_insertcustomer_Company" autocomplete="off" onKeyUp="capital()" name="Company" type="text" class="form-control" placeholder="Nama Perusahaan">
-                    <input id="tx_insertcustomer_Company" name="tx_insertcustomer_Company" type="text" class="form-control" placeholder="Nama Perusahaan">
                   </div>
                   <label class="col-sm-1 control-label">NPWP</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
                       <input id="nb_insertcustomer_NPWP" name="NPWP" type="number" class="form-control" placeholder="12.456.789.0-012.123">
-                      <input id="tx_insertcustomer_NPWP" name="tx_insertcustomer_NPWP" type="text" class="form-control" placeholder="12.456.789.0-012.123">
                     </div>
                   </div>
                 </div>
@@ -322,7 +319,6 @@ $totalRows_User = mysql_num_rows($User);
                         <i class="fa fa-phone"></i>
                       </div>
                       <input id="nb_insertcustomer_CompPhone" name="CompPhone" type="number" class="form-control" placeholder="021-123456">
-                      <input id="tx_insertcustomer_CompPhone" name="tx_insertcustomer_CompPhone" type="text" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Fax</label>
@@ -332,7 +328,6 @@ $totalRows_User = mysql_num_rows($User);
                         <i class="fa fa-fax"></i>
                       </div>
                       <input id="nb_insertcustomer_Fax" name="Fax" type="number" class="form-control" placeholder="021-123456">
-                      <input id="tx_insertcustomer_Fax" name="tx_insertcustomer_Fax" type="text" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email</label>
@@ -363,7 +358,6 @@ $totalRows_User = mysql_num_rows($User);
                         <i class="fa fa-phone"></i>
                       </div>
                       <input id="nb_insertcustomer_CustPhone" name="CustPhone" type="number" class="form-control" placeholder="021-123456">
-                      <input id="tx_insertcustomer_CustPhone" name="tx_insertcustomer_CustPhone" type="text" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>

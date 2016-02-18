@@ -296,14 +296,12 @@ $totalRows_User = mysql_num_rows($User);
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
                     <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code">
-                    <input id="tx_editcustomer_CCode" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
                     <input id="tx_editcustomer_Company" autocomplete="off" onKeyUp="capital()" name="Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan">
-                    <input id="tx_editcustomer_Company" name="tx_editcustomer_Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan">
                   </div>
                   <label class="col-sm-1 control-label">Telp</label>
                   <div class="col-sm-2">
@@ -312,7 +310,6 @@ $totalRows_User = mysql_num_rows($User);
                         <i class="fa fa-phone"></i>
                       </div>
                       <input id="nb_editcustomer_CompPhone" name="CompPhone" type="number" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
-                      <input id="tx_editcustomer_CompPhone" name="tx_editcustomer_CompPhone" type="text" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                 </div>
@@ -332,7 +329,6 @@ $totalRows_User = mysql_num_rows($User);
                         <i class="fa fa-fax"></i>
                       </div>
                       <input id="nb_editcustomer_Fax" name="Fax" type="number" class="form-control" value="<?php echo $row_Edit['Fax']; ?>" placeholder="021-123456">
-                      <input id="tx_editcustomer_Fax" name="tx_editcustomer_Fax" type="text" class="form-control" value="<?php echo $row_Edit['Fax']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                 </div>
@@ -342,7 +338,6 @@ $totalRows_User = mysql_num_rows($User);
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
                       <input id="nb_editcustomer_NPWP" name="NPWP" type="number" class="form-control" value="<?php echo $row_Edit['NPWP']; ?>"  placeholder="12.123.123.0-012.000">
-                      <input id="tx_editcustomer_NPWP" name="tx_editcustomer_NPWP" type="text" class="form-control" value="<?php echo $row_Edit['NPWP']; ?>"  placeholder="12.123.123.0-012.000">
                     </div>
                   </div>
                   <label class="col-sm-1 control-label">Kodepos</label>
@@ -379,7 +374,6 @@ $totalRows_User = mysql_num_rows($User);
                         <i class="fa fa-phone"></i>
                       </div>
                       <input id="nb_editcustomer_CustPhone" name="CustPhone" type="number" class="form-control" value="<?php echo $row_Edit['CustPhone']; ?>" placeholder="021-123456">
-                      <input id="tx_editcustomer_CustPhone" name="tx_editcustomer_CustPhone" type="text" class="form-control" value="<?php echo $row_Edit['CustPhone']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>
