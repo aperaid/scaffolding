@@ -53,8 +53,8 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
 </head>
 
 <body onLoad="submit()">
-<form id="form1" name="fm_insertsjkembali2_form1" method="post" action="InsertSJKembaliBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>">
-  <input type="submit" name="submit" id="bt_insertsjkembali2_submit" value="">
+<form id="fm_insertsjkembali2_form1" name="fm_insertsjkembali2_form1" method="post" action="InsertSJKembaliBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>">
+  <input type="submit" name="bt_insertsjkembali2_submit" id="bt_insertsjkembali2_submit" value="">
 </form>
 </body>
 </html>

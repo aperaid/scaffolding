@@ -111,18 +111,18 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO customer (CCode, Company, Customer, Alamat, Zip, Kota, CompPhone, CustPhone, Fax, NPWP, CompEmail, CustEmail) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['CCode'], "text"),
-                       GetSQLValueString($_POST['Company'], "text"),
-                       GetSQLValueString($_POST['Customer'], "text"),
-                       GetSQLValueString($_POST['Alamat'], "text"),
-                       GetSQLValueString($_POST['Zip'], "int"),
-                       GetSQLValueString($_POST['Kota'], "text"),
-                       GetSQLValueString($_POST['CompPhone'], "text"),
-                       GetSQLValueString($_POST['CustPhone'], "text"),
-                       GetSQLValueString($_POST['Fax'], "text"),
-                       GetSQLValueString($_POST['NPWP'], "text"),
-                       GetSQLValueString($_POST['CompEmail'], "text"),
-                       GetSQLValueString($_POST['CustEmail'], "text"));
+                       GetSQLValueString($_POST['tx_insertcustomer_CCode'], "text"),
+                       GetSQLValueString($_POST['tx_insertcustomer_Company'], "text"),
+                       GetSQLValueString($_POST['tx_insertcustomer_Customer'], "text"),
+                       GetSQLValueString($_POST['tx_insertcustomer_Alamat'], "text"),
+                       GetSQLValueString($_POST['nb_insertcustomer_Zip'], "int"),
+                       GetSQLValueString($_POST['tx_insertcustomer_Kota'], "text"),
+                       GetSQLValueString($_POST['nb_insertcustomer_CompPhone'], "text"),
+                       GetSQLValueString($_POST['nb_insertcustomer_CustPhone'], "text"),
+                       GetSQLValueString($_POST['nb_insertcustomer_Fax'], "text"),
+                       GetSQLValueString($_POST['nb_insertcustomer_NPWP'], "text"),
+                       GetSQLValueString($_POST['tx_insertcustomer_CompEmail'], "text"),
+                       GetSQLValueString($_POST['tx_insertcustomer_CustEmail'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -281,19 +281,19 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="CCode" type="text" class="form-control" placeholder="Company Code">
+                    <input id="tx_insertcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_insertcustomer_CCode" type="text" class="form-control" placeholder="Company Code">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
-                    <input id="tx_insertcustomer_Company" autocomplete="off" onKeyUp="capital()" name="Company" type="text" class="form-control" placeholder="Nama Perusahaan">
+                    <input id="tx_insertcustomer_Company" autocomplete="off" onKeyUp="capital()" name="tx_insertcustomer_Company" type="text" class="form-control" placeholder="Nama Perusahaan">
                   </div>
                   <label class="col-sm-1 control-label">NPWP</label>
                   <div class="col-sm-2">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
-                      <input id="nb_insertcustomer_NPWP" name="NPWP" type="number" class="form-control" placeholder="12.456.789.0-012.123">
+                      <input id="nb_insertcustomer_NPWP" name="nb_insertcustomer_NPWP" type="number" class="form-control" placeholder="12.456.789.0-012.123">
                     </div>
                   </div>
                 </div>
@@ -318,7 +318,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="nb_insertcustomer_CompPhone" name="CompPhone" type="number" class="form-control" placeholder="021-123456">
+                      <input id="nb_insertcustomer_CompPhone" name="nb_insertcustomer_CompPhone" type="number" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Fax</label>
@@ -327,7 +327,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-fax"></i>
                       </div>
-                      <input id="nb_insertcustomer_Fax" name="Fax" type="number" class="form-control" placeholder="021-123456">
+                      <input id="nb_insertcustomer_Fax" name="nb_insertcustomer_Fax" type="number" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email</label>
@@ -357,7 +357,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="nb_insertcustomer_CustPhone" name="CustPhone" type="number" class="form-control" placeholder="021-123456">
+                      <input id="nb_insertcustomer_CustPhone" name="nb_insertcustomer_CustPhone" type="number" class="form-control" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>

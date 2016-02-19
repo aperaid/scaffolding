@@ -75,7 +75,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO inserted (IsiSJKir) VALUES (%s)",
-                       GetSQLValueString($_POST['checkbox'][$i], "int"));
+                       GetSQLValueString($_POST['cb_insertsjkembalibarang_checkbox'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -170,7 +170,7 @@ $(function() {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="fm_insertsjkembalibarang_form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_insertsjkembalibarang_form1" name="fm_insertsjkembalibarang_form1" method="POST">
   <table width="1000" border="0">
     <thead>
       <tr>
@@ -185,12 +185,12 @@ $(function() {
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
-	    <td align="center"><input type="checkbox" name="checkbox[]" id="cb_insertsjkembalibarang_checkbox" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>"></td>
-	    <td><input name="JS[]" type="text" class="textview" id="tx_insertsjkembalibarang_JS" value="<?php echo $row_InsertSJKembali['Tgl']; ?>"" readonly></td>
-	    <td><input name="Barang[]" type="text" class="textview" id="tx_insertsjkembalibarang_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
-	    <td><input name="Quantity" type="text" class="textview" id="tx_insertsjkembalibarang_Quantity" value="<?php echo $row_InsertSJKembali['Quantity']; ?>" readonly></td>
-	    <td><input name="QSisaKem[]" type="text" class="textview" id="tx_insertsjkembalibarang_QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
-	    <td><input name="Purchase[]" type="text" class="textview" id="tx_insertsjkembalibarang_Purchase" value="<?php echo $row_InsertSJKembali['SJKir']; ?>" readonly></td>
+	    <td align="center"><input type="checkbox" name="cb_insertsjkembalibarang_checkbox[]" id="cb_insertsjkembalibarang_checkbox" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>"></td>
+	    <td><input name="tx_insertsjkembalibarang_JS[]" type="text" class="textview" id="tx_insertsjkembalibarang_JS" value="<?php echo $row_InsertSJKembali['Tgl']; ?>"" readonly></td>
+	    <td><input name="tx_insertsjkembalibarang_Barang[]" type="text" class="textview" id="tx_insertsjkembalibarang_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkembalibarang_Quantity" type="text" class="textview" id="tx_insertsjkembalibarang_Quantity" value="<?php echo $row_InsertSJKembali['Quantity']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkembalibarang_QSisaKem[]" type="text" class="textview" id="tx_insertsjkembalibarang_QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkembalibarang_Purchase[]" type="text" class="textview" id="tx_insertsjkembalibarang_Purchase" value="<?php echo $row_InsertSJKembali['SJKir']; ?>" readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali)); ?>
@@ -205,7 +205,7 @@ $(function() {
       <tr>
 		   <td>&nbsp;</td>
 		   <td align="right">&nbsp;</td>
-		   <td align="left"><input type="submit" name="submit" id="bt_insertsjkembalibarang_submit" class="submit" value="Pilih"></td>
+		   <td align="left"><input type="submit" name="bt_insertsjkembalibarang_submit" id="bt_insertsjkembalibarang_submit" class="submit" value="Pilih"></td>
 		   <td>&nbsp;</td>
 	    <td><a href="CancelKembali.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="submit">Cancel</button></a></td>
 		   <td>&nbsp;</td>

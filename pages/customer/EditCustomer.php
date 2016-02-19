@@ -111,19 +111,19 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE customer SET CCode=%s, Company=%s, Customer=%s, Alamat=%s, Zip=%s, Kota=%s, CompPhone=%s, CustPhone=%s, Fax=%s, NPWP=%s, CompEmail=%s, CustEmail=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['CCode'], "text"),
-                       GetSQLValueString($_POST['Company'], "text"),
-                       GetSQLValueString($_POST['Customer'], "text"),
-                       GetSQLValueString($_POST['Alamat'], "text"),
-                       GetSQLValueString($_POST['Zip'], "int"),
-                       GetSQLValueString($_POST['Kota'], "text"),
-                       GetSQLValueString($_POST['CompPhone'], "text"),
-                       GetSQLValueString($_POST['CustPhone'], "text"),
-                       GetSQLValueString($_POST['Fax'], "text"),
-                       GetSQLValueString($_POST['NPWP'], "text"),
-                       GetSQLValueString($_POST['CompEmail'], "text"),
-                       GetSQLValueString($_POST['CustEmail'], "text"),
-                       GetSQLValueString($_POST['Id'], "int"));
+                       GetSQLValueString($_POST['tx_editcustomer_CCode'], "text"),
+                       GetSQLValueString($_POST['tx_editcustomer_Company'], "text"),
+                       GetSQLValueString($_POST['tx_editcustomer_Customer'], "text"),
+                       GetSQLValueString($_POST['tx_editcustomer_Alamat'], "text"),
+                       GetSQLValueString($_POST['nb_editcustomer_Zip'], "int"),
+                       GetSQLValueString($_POST['tx_editcustomer_Kota'], "text"),
+                       GetSQLValueString($_POST['nb_editcustomer_CompPhone'], "text"),
+                       GetSQLValueString($_POST['nb_editcustomer_CustPhone'], "text"),
+                       GetSQLValueString($_POST['nb_editcustomer_Fax'], "text"),
+                       GetSQLValueString($_POST['nb_editcustomer_NPWP'], "text"),
+                       GetSQLValueString($_POST['tx_editcustomer_CompEmail'], "text"),
+                       GetSQLValueString($_POST['tx_editcustomer_CustEmail'], "text"),
+                       GetSQLValueString($_POST['hd_editcustomer_Id'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -295,13 +295,13 @@ $totalRows_User = mysql_num_rows($User);
                   <input name="hd_editcustomer_Id" type="hidden" id="hd_editcustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code">
+                    <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
-                    <input id="tx_editcustomer_Company" autocomplete="off" onKeyUp="capital()" name="Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan">
+                    <input id="tx_editcustomer_Company" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan">
                   </div>
                   <label class="col-sm-1 control-label">Telp</label>
                   <div class="col-sm-2">
@@ -309,7 +309,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="nb_editcustomer_CompPhone" name="CompPhone" type="number" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
+                      <input id="nb_editcustomer_CompPhone" name="nb_editcustomer_CompPhone" type="number" class="form-control" value="<?php echo $row_Edit['CompPhone']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                 </div>
@@ -328,7 +328,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-fax"></i>
                       </div>
-                      <input id="nb_editcustomer_Fax" name="Fax" type="number" class="form-control" value="<?php echo $row_Edit['Fax']; ?>" placeholder="021-123456">
+                      <input id="nb_editcustomer_Fax" name="nb_editcustomer_Fax" type="number" class="form-control" value="<?php echo $row_Edit['Fax']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                 </div>
@@ -337,7 +337,7 @@ $totalRows_User = mysql_num_rows($User);
                   <div class="col-sm-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
-                      <input id="nb_editcustomer_NPWP" name="NPWP" type="number" class="form-control" value="<?php echo $row_Edit['NPWP']; ?>"  placeholder="12.123.123.0-012.000">
+                      <input id="nb_editcustomer_NPWP" name="nb_editcustomer_NPWP" type="number" class="form-control" value="<?php echo $row_Edit['NPWP']; ?>"  placeholder="12.123.123.0-012.000">
                     </div>
                   </div>
                   <label class="col-sm-1 control-label">Kodepos</label>
@@ -373,7 +373,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="nb_editcustomer_CustPhone" name="CustPhone" type="number" class="form-control" value="<?php echo $row_Edit['CustPhone']; ?>" placeholder="021-123456">
+                      <input id="nb_editcustomer_CustPhone" name="nb_editcustomer_CustPhone" type="number" class="form-control" value="<?php echo $row_Edit['CustPhone']; ?>" placeholder="021-123456">
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>

@@ -272,7 +272,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_viewcustomer_CompPhone" name="tx_viewcustomer_CompPhone" type="text" class="form-control" value="<?php echo $row_View['CompPhone']; ?>"  readonly>
+                      <input id="nb_viewcustomer_CompPhone" name="nb_viewcustomer_CompPhone" type="text" class="form-control" value="<?php echo $row_View['CompPhone']; ?>"  readonly>
                     </div>
                   </div>
                 </div>
@@ -291,7 +291,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-fax"></i>
                       </div>
-                      <input id="tx_viewcustomer_Fax" name="tx_viewcustomer_Fax" type="text" class="form-control" value="<?php echo $row_View['Fax']; ?>" readonly>
+                      <input id="nb_viewcustomer_Fax" name="nb_viewcustomer_Fax" type="text" class="form-control" value="<?php echo $row_View['Fax']; ?>" readonly>
                     </div>
                   </div>
                 </div>
@@ -300,7 +300,7 @@ $totalRows_User = mysql_num_rows($User);
                   <div class="col-sm-4">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-legal"></i></span>
-                      <input id="tx_viewcustomer_NPWP" name="tx_viewcustomer_NPWP" type="text" class="form-control" value="<?php echo $row_View['NPWP']; ?>"  readonly>
+                      <input id="nb_viewcustomer_NPWP" name="nb_viewcustomer_NPWP" type="text" class="form-control" value="<?php echo $row_View['NPWP']; ?>"  readonly>
                     </div>
                   </div>
                   <label class="col-sm-1 control-label">Kodepos</label>
@@ -335,7 +335,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_viewcustomer_CustPhone" name="tx_viewcustomer_CustPhone" type="text" class="form-control" value="<?php echo $row_View['CustPhone']; ?>"  readonly>
+                      <input id="nb_viewcustomer_CustPhone" name="nb_viewcustomer_CustPhone" type="text" class="form-control" value="<?php echo $row_View['CustPhone']; ?>"  readonly>
                     </div>
                   </div>
                   <label class="col-sm-2 control-label">Email CP</label>

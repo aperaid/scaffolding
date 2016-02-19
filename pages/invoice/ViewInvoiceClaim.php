@@ -71,9 +71,9 @@ $totalRows_Menu = mysql_num_rows($Menu);
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s WHERE Invoice=%s",
-                       GetSQLValueString($_POST['PPN'], "int"),
-                       GetSQLValueString($_POST['Transport'], "text"),
-                       GetSQLValueString($_POST['Invoice'], "text"));
+                       GetSQLValueString($_POST['tx_viewinvoiceclaim_PPN'], "int"),
+                       GetSQLValueString($_POST['tx_viewinvoiceclaim_Transport'], "text"),
+                       GetSQLValueString($_POST['tx_viewinvoiceclaim_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -177,26 +177,26 @@ body {
     </div>
 <div class="ui-layout-center">
 
-<form action="<?php echo $editFormAction; ?>" id="fm_viewinvoiceclaim_form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_viewinvoiceclaim_form1" name="fm_viewinvoiceclaim_form1" method="POST">
   <table width="1000" border="0">
     <tbody>
       <tr>
         <th width="162">&nbsp;</th>
         <th width="87" align="right">No. Invoice</th>
         <th width="128" align="right">&nbsp;</th>
-        <td width="605"><input name="Invoice" type="text" class="textview" id="tx_viewinvoiceclaim_Invoice" value="<?php echo $row_View['Invoice']; ?>" readonly></td>
+        <td width="605"><input name="tx_viewinvoiceclaim_Invoice" type="text" class="textview" id="tx_viewinvoiceclaim_Invoice" value="<?php echo $row_View['Invoice']; ?>" readonly></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Project</th>
         <th align="right">&nbsp;</th>
-        <td><input name="TglStart" type="text" class="textview" id="tx_viewinvoiceclaim_TglStart" value="<?php echo $row_View['Project']; ?>" readonly></td>
+        <td><input name="tx_viewinvoiceclaim_TglStart" type="text" class="textview" id="tx_viewinvoiceclaim_TglStart" value="<?php echo $row_View['Project']; ?>" readonly></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Company</th>
         <th align="right">&nbsp;</th>
-        <td><input name="TglEnd" type="text" class="textview" id="tx_viewinvoiceclaim_TglEnd" value="<?php echo $row_View['Company']; ?>" readonly></td>
+        <td><input name="tx_viewinvoiceclaim_TglEnd" type="text" class="textview" id="tx_viewinvoiceclaim_TglEnd" value="<?php echo $row_View['Company']; ?>" readonly></td>
       </tr>
     </tbody>
   </table>
@@ -216,14 +216,14 @@ body {
 	  do { ?>
       
         <tr>
-          <td align="center"><input name="SJKir" type="text" class="textview" id="tx_viewinvoiceclaim_SJKir" value="" readonly></td>
-          <td align="center"><input name="Purchase" type="text" class="textview" id="tx_viewinvoiceclaim_Purchase" value="<?php echo $row_View2['Purchase']; ?>" readonly></td>
-          <td align="center"><input name="Barang" type="text" class="textview" id="tx_viewinvoiceclaim_Barang" value="<?php echo $row_View2['Barang']; ?>" readonly></td>
-          <td align="center"><input name="Tgl" type="text" class="textview" id="tx_viewinvoiceclaim_Tgl" value="<?php echo $row_View2['Tgl']; ?>" readonly></td>
-          <td align="center"><input name="Quantity" type="text" class="textview" id="tx_viewinvoiceclaim_Quantity" value="<?php echo $row_View2['QClaim']; ?>" readonly></td>
-          <td align="center"><input name="Amount" type="text" class="textview" id="tx_viewinvoiceclaim_Amount" value="<?php echo $row_View2['Amount']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_SJKir" type="text" class="textview" id="tx_viewinvoiceclaim_SJKir" value="" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Purchase" type="text" class="textview" id="tx_viewinvoiceclaim_Purchase" value="<?php echo $row_View2['Purchase']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Barang" type="text" class="textview" id="tx_viewinvoiceclaim_Barang" value="<?php echo $row_View2['Barang']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Tgl" type="text" class="textview" id="tx_viewinvoiceclaim_Tgl" value="<?php echo $row_View2['Tgl']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Quantity" type="text" class="textview" id="tx_viewinvoiceclaim_Quantity" value="<?php echo $row_View2['QClaim']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Amount" type="text" class="textview" id="tx_viewinvoiceclaim_Amount" value="<?php echo $row_View2['Amount']; ?>" readonly></td>
           <?php $test = $row_View2['QClaim']* $row_View2['Amount']; $total += $test ?>
-          <td align="center"><input name="Total" type="text" class="textview" id="tx_viewinvoiceclaim_Total" value="<?php echo round($test, 2) ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Total" type="text" class="textview" id="tx_viewinvoiceclaim_Total" value="<?php echo round($test, 2) ?>" readonly></td>
         </tr>
       <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
     </tbody>
@@ -234,20 +234,20 @@ body {
         <th width="160">&nbsp;</th>
         <th width="90" align="right">Pajak</th>
         <th width="129" align="right">&nbsp;</th>
-        <td colspan="2"><input name="PPN" type="text" class="textbox" id="tx_viewinvoiceclaim_PPN" autocomplete="off" value="<?php echo $row_View['PPN']; ?>" onKeyUp="ppn()"></td>
+        <td colspan="2"><input name="tx_viewinvoiceclaim_PPN" type="text" class="textbox" id="tx_viewinvoiceclaim_PPN" autocomplete="off" value="<?php echo $row_View['PPN']; ?>" onKeyUp="ppn()"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Transport</th>
         <th align="right">&nbsp;</th>
-        <td colspan="2"><input name="Transport" type="text" class="textbox" id="tx_viewinvoiceclaim_Transport" autocomplete="off" value="<?php echo $row_View['Transport']; ?>" onKeyUp="transport()"></td>
+        <td colspan="2"><input name="tx_viewinvoiceclaim_Transport" type="text" class="textbox" id="tx_viewinvoiceclaim_Transport" autocomplete="off" value="<?php echo $row_View['Transport']; ?>" onKeyUp="transport()"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Total</th>
         <th align="right">&nbsp;</th>
-        <input name="Totals2" type="hidden" id="hd_viewinvoiceclaim_Totals2" value="<?php echo round($total, 2); ?>" >
-        <td colspan="2"><input name="Total" type="text" class="textview" id="tx_viewinvoiceclaim_Totals" value="<?php echo round($total, 2); ?>" readonly></td>
+        <input name="hd_viewinvoiceclaim_Totals2" type="hidden" id="hd_viewinvoiceclaim_Totals2" value="<?php echo round($total, 2); ?>" >
+        <td colspan="2"><input name="tx_viewinvoiceclaim_Totals" type="text" class="textview" id="tx_viewinvoiceclaim_Totals" value="<?php echo round($total, 2); ?>" readonly></td>
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
@@ -260,7 +260,7 @@ body {
         <td colspan="2" align="right"><a>
           <button type="button" class="button2">Print</button>
         </a></td>
-        <td align="center"><input type="submit" name="submit" id="bt_viewinvoiceclaim_submit" class="button2" value="Update"></td>
+        <td align="center"><input type="submit" name="bt_viewinvoiceclaim_submit" id="bt_viewinvoiceclaim_submit" class="button2" value="Update"></td>
         <td><a href="InvoiceClaim.php">
           <button type="button" class="button2">Cancel</button>
         </a></td>
