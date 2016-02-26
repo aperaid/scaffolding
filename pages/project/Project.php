@@ -245,7 +245,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 
           <div class="box">
             <div class="box-body">
-              <table id="tb_project_example1" name="tb_project" class="table table-condensed table-hover">
+              <table id="tb_project_example1" name="tb_project" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
                   <th>Project Code</th>
@@ -315,7 +315,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 <!-- page script -->
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tb_project_example1").DataTable();
   });
 </script>
 </body>
