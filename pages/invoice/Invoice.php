@@ -155,7 +155,6 @@ $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
 ?>
-?>
 
 <!DOCTYPE html>
 <html>
@@ -257,7 +256,7 @@ $totalRows_User = mysql_num_rows($User);
       <h1>
         Invoice Sewa
         <small>View</small>
-        <large><a href="InvoiceJual.php"><button id="bt_customer_insert" name="bt_customer_insert" type="button" class="btn btn-success btn-sm">Invoice Jual</button></a><a href="Invoice.php"><button id="bt_customer_insert" name="bt_customer_insert" type="button" class="btn btn-success btn-sm">Invoice Sewa</button></a><a href="InvoiceClaim.php"><button id="bt_customer_insert" name="bt_customer_insert" type="button" class="btn btn-success btn-sm">Invoice Claim</button></a></large>
+        <large><a href="InvoiceJual.php"><button id="bt_invoice_invoicejual" name="bt_invoice_invoicejual" type="button" class="btn btn-success btn-sm">Invoice Jual</button></a><a href="Invoice.php"><button id="bt_invoice_invoicesewa" name="bt_invoice_invoicesewa" type="button" class="btn btn-success btn-sm">Invoice Sewa</button></a><a href="InvoiceClaim.php"><button id="bt_invoice_invoiceclaim" name="bt_invoice_invoiceclaim" type="button" class="btn btn-success btn-sm">Invoice Claim</button></a></large>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -271,7 +270,7 @@ $totalRows_User = mysql_num_rows($User);
         <div class="col-xs-12">
           <div class="box">
             <div class="box-body">
-              <table id="tb_customer_example1" name="tb_customer_example1" class="table table-bordered table-striped table-responsive">
+              <table id="tb_invoice_example1" name="tb_invoice_example1" class="table table-bordered table-striped table-responsive">
                 <thead>
 					<tr>
 					<th>No. Invoice</th>
@@ -351,7 +350,7 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 <script>
   $(function () {
-    $("#tb_customer_example1").DataTable();
+    $("#tb_invoice_example1").DataTable();
   });
 </script>
 </body>
