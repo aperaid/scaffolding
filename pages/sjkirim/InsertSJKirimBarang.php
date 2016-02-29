@@ -72,6 +72,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
+
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -158,7 +159,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO inserted (Purchase) VALUES (%s)",
-                       GetSQLValueString($_POST['checkbox'][$i], "int"));
+                       GetSQLValueString($_POST['cb_insertsjkirimbarang_checkbox'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -169,8 +170,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     $insertGoTo .= $_SERVER['QUERY_STRING'];
   }
   header(sprintf("Location: %s", $insertGoTo));
-}}
-
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -288,7 +289,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
-          <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkirimbarang_form1" name="form1" method="POST">
+          <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkirimbarang_form1" name="fm_insertsjkirimbarang_form1" method="POST">
             <div class="box box-primary">
               <div class="box-body">
                 <table id="tb_insertsjkirimbarang_example1" class="table table-bordered table-striped table-responsive">
@@ -305,25 +306,25 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                     <?php $increment = 1; ?>
                     <?php do { ?>
                       <tr>
-                        <td><input type="checkbox" name="checkbox[]" id="cb_insertsjkirimbarang_checkbox" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"></td>
-                        <td><input name="JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
-                        <td><input name="Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
-                        <td><input name="QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkirimbarang_QSisaKirInsert" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
-                        <td><input name="Purchase[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>" readonly></td>
+                        <td><input type="checkbox" name="cb_insertsjkirimbarang_checkbox[]" id="cb_insertsjkirimbarang_checkbox" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"></td>
+                        <td><input name="tx_insertsjkirimbarang_JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
+                        <td><input name="tx_insertsjkirimbarang_Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
+                        <td><input name="tx_insertsjkirimbarang_QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkirimbarang_QSisaKirInsert" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
+                        <td><input name="tx_insertsjkirimbarang_Purchase[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>" readonly></td>
                         </tr>
                       <?php $increment++; ?>
                       <?php } while ($row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim)); ?>
                   </tbody>
                 </table>
-                <input type="hidden" name="MM_update" value="form1">
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button type="submit" name="submit" id="bt_insertsjkirimbarang_submit" class="btn btn-primary pull-right">Choose</button> 
+                <button type="submit" name="bt_insertsjkirimbarang_submit" id="bt_insertsjkirimbarang_submit" class="btn btn-primary pull-right">Choose</button> 
                 <a href="CancelKirim.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
               </div>
             </div>
             <!-- /.box -->
+            <input type="hidden" name="MM_update" value="form1">
             <input type="hidden" name="MM_insert" value="form1">
           </form>
           <!-- /.col -->

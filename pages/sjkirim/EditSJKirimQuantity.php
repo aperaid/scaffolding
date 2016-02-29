@@ -148,8 +148,8 @@ if (isset($_SERVER['QUERY_STRING'])) {
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=%s WHERE Purchase=%s",
-                       GetSQLValueString($_POST['QSisaKir'][$i], "int"),
-                       GetSQLValueString($_POST['Purchase'][$i], "text"));
+                       GetSQLValueString($_POST['tx_editsjkirimquantity_QSisaKir'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_Purchase'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -157,8 +157,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=%s WHERE IsiSJKir=%s",
-                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
+                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -166,8 +166,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+%s WHERE Purchase=%s",
-                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['Purchase'][$i], "int"));
+                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_Purchase'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -182,8 +182,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+%s WHERE IsiSJKir=%s",
-                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['IsiSJKir'][$i], "int"));
+                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -193,8 +193,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE isisjkirim SET QTertanda=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['Id'][$i], "int"));
+                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_Id'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -332,7 +332,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
-		<form action="<?php echo $editFormAction; ?>" id="fm_editsjkirimquantity_form1" name="form1" method="POST">
+		<form action="<?php echo $editFormAction; ?>" id="fm_editsjkirimquantity_form1" name="fm_editsjkirimquantity_form1" method="POST">
           <div class="box box-primary">
             <div class="box-body no-padding">
 				  <table id="tb_editsjkirimquantity_example1" class="table table-bordered">
@@ -352,18 +352,18 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 						  <?php $x=1; ?>
 						<?php do { ?>
 						  <tr>
-							<input name="Id[]" type="hidden" id="hd_editsjkirimquantity_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
-							<input name="QSisaKir2" type="hidden" id="hd_editsjkirimquantity_QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>">
-                            <input name="IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkirimquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
-                            <input name="Purchase[]" type="hidden" class="textview" id="hd_editsjkirimquantity_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
+							<input name="hd_editsjkirimquantity_Id[]" type="hidden" id="hd_editsjkirimquantity_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
+							<input name="hd_editsjkirimquantity_QSisaKir2" type="hidden" id="hd_editsjkirimquantity_QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>">
+                            <input name="hd_editsjkirimquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkirimquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
+                            <input name="hd_editsjkirimquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkirimquantity_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
 							<td><?php echo $row_EditIsiSJKirim['IsiSJKir']; ?></td>
 							<td><?php echo $row_EditIsiSJKirim['Purchase']; ?></td>
-							<td><input name="JS" type="text" class="form-control" id="tx_editsjkirimquantity_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
-							<td><input name="Barang" type="text" class="form-control" id="tx_editsjkirimquantity_Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
-							<td><input name="Warehouse[]" type="text" class="form-control" id="hd_editsjkirimquantity_Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
-							<td><input name="QSisaKir[]" type="text" class="form-control" id="tx_editsjkirimquantity_QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
-							<td><input name="QKirim[]" type="text" class="form-control" id="tx_editsjkirimquantity_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
-							<td><input name="QTertanda[]" type="text" class="form-control" id="tx_editsjkirimquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
+							<td><input name="tx_editsjkirimquantity_JS" type="text" class="form-control" id="tx_editsjkirimquantity_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
+							<td><input name="tx_editsjkirimquantity_Barang" type="text" class="form-control" id="tx_editsjkirimquantity_Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
+							<td><input name="hd_editsjkirimquantity_Warehouse[]" type="text" class="form-control" id="hd_editsjkirimquantity_Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
+							<td><input name="tx_editsjkirimquantity_QSisaKir[]" type="text" class="form-control" id="tx_editsjkirimquantity_QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
+							<td><input name="tx_editsjkirimquantity_QKirim[]" type="text" class="form-control" id="tx_editsjkirimquantity_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
+							<td><input name="tx_editsjkirimquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkirimquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
@@ -373,7 +373,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
             <!-- /.box-body -->
             <div class="box-footer">
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
-				<button type="submit" name="submit" id="bt_editsjkirimquantity_submit" class="btn btn-success pull-right">Update</button>
+				<button type="submit" name="bt_editsjkirimquantity_submit" id="bt_editsjkirimquantity_submit" class="btn btn-success pull-right">Update</button>
 			</div>
           </div>
           <!-- /.box -->

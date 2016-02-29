@@ -3,4 +3,5 @@
 	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_NoSJ" value="name:Id;datatype:int" />
 	<infoitem key="UD_NoClaim" value="name:Id;datatype:int" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>

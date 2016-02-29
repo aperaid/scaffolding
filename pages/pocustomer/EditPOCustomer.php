@@ -280,12 +280,12 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="fm_editpocustomer_form1" name="form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>" id="fm_editpocustomer_form1" name="fm_editpocustomer_form1" method="POST">
                 <div class="box-body">
-                <input name="Id" type="hidden" id="hd_editpocustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
+                <input name="hd_editpocustomer_Id" type="hidden" id="hd_editpocustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <div class="form-group">
                     <label>Reference</label>
-                    <input name="Reference" type="text" class="form-control" id="tx_editpocustomer_Reference" onKeyUp="capital()" value="<?php echo $row_Edit['Reference']; ?>" readonly>
+                    <input name="tx_editpocustomer_Reference" type="text" class="form-control" id="tx_editpocustomer_Reference" onKeyUp="capital()" value="<?php echo $row_Edit['Reference']; ?>" readonly>
                   </div>
                   <div class="form-group">
                     <label>Date</label>
@@ -293,19 +293,19 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="Tgl" type="text" class="form-control pull-right date" id="tx_editpocustomer_Tgl" value="<?php echo $row_Edit['Tgl']; ?>">
+                      <input name="tx_editpocustomer_Tgl" type="text" class="form-control pull-right date" id="tx_editpocustomer_Tgl" value="<?php echo $row_Edit['Tgl']; ?>">
                     </div>
                   </div>
                   <div class="form-group">
                     <label>Project Code</label>
-                    <input name="PCode" type="text" class="form-control" id="tx_editpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01" value="<?php echo $row_Edit['PCode']; ?>">
+                    <input name="tx_editpocustomer_PCode" type="text" class="form-control" id="tx_editpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01" value="<?php echo $row_Edit['PCode']; ?>">
                     <p class="help-block">Enter the beginning of the Project Code, then pick from the dropdown</p>
                   </div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
                   <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Back</button></a> 
-                  <button type="submit" id="bt_editpocustomer_submit" class="btn btn-primary pull-right">Update</button>
+                  <button name="bt_editpocustomer_submit" type="submit" id="bt_editpocustomer_submit" class="btn btn-primary pull-right">Update</button>
                 </div>
               <input type="hidden" name="MM_update" value="form1">
               </form>

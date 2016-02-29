@@ -130,16 +130,19 @@ if (!function_exists("GetSQLValueString")) {
     return $theValue;
   }
 }
+
 mysql_select_db($database_Connection, $Connection);
 $query_Customer = "SELECT * FROM customer ORDER BY Id ASC";
 $Customer = mysql_query($query_Customer, $Connection) or die(mysql_error());
 $row_Customer = mysql_fetch_assoc($Customer);
 $totalRows_Customer = mysql_num_rows($Customer);
+
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -250,7 +253,7 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content-header">
       <h1>
         Customer
-        <small>Customer View </small>
+        <small> View </small>
         <large><a href="InsertCustomer.php"><button id="bt_customer_insert" name="bt_customer_insert" type="button" class="btn btn-success btn-sm">New Customer</button></a></large>
       </h1>
       <ol class="breadcrumb">

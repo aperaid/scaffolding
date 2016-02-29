@@ -121,7 +121,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 </head>
 
 <body onLoad="submit()">
-<form action="<?php echo $editFormAction; ?>" id="fm_extendtransaksisewa_form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_extendtransaksisewa_form1" name="fm_extendtransaksisewa_form1" method="POST">
   <table width="1350" border="0">
     <tbody>
       <tr>
@@ -200,31 +200,31 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
             <?php $Reference = $row_Extend['Reference']; $Periode = $row_Extend['Periode']; ?>
       <?php do { ?>
         <tr>
-          <td><input name="Periode[]" type="hidden" id="hd_extendtransaksisewa_Periode" value="<?php echo $Periode+1; ?>">
-            <input name="S[]" type="hidden" id="hd_extendtransaksisewa_S" value="<?php echo $stgl, '/', $bln, '/', $thn; ?>">
-            <input name="E[]" type="hidden" id="hd_extendtransaksisewa_E" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
-            <input name="Quantity[]" type="hidden" id="hd_extendtransaksisewa_Quantity" value="<?php echo $row_Extend['Quantity']; ?>">
-            <input name="IsiSJKir[]" type="hidden" id="hd_extendtransaksisewa_IsiSJKir" value="<?php echo $row_Extend['IsiSJKir']; ?>">
-            <input name="Reference[]" type="hidden" id="hd_extendtransaksisewa_Reference" value="<?php echo $Reference; ?>">
-            <input name="Purchase[]" type="hidden" id="hd_extendtransaksisewa_Purchase" value="<?php echo $row_Extend['Purchase']; ?>"></td>
+          <td><input name="hd_extendtransaksisewa_Periode[]" type="hidden" id="hd_extendtransaksisewa_Periode" value="<?php echo $Periode+1; ?>">
+            <input name="hd_extendtransaksisewa_S[]" type="hidden" id="hd_extendtransaksisewa_S" value="<?php echo $stgl, '/', $bln, '/', $thn; ?>">
+            <input name="hd_extendtransaksisewa_E[]" type="hidden" id="hd_extendtransaksisewa_E" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
+            <input name="hd_extendtransaksisewa_Quantity[]" type="hidden" id="hd_extendtransaksisewa_Quantity" value="<?php echo $row_Extend['Quantity']; ?>">
+            <input name="hd_extendtransaksisewa_IsiSJKir[]" type="hidden" id="hd_extendtransaksisewa_IsiSJKir" value="<?php echo $row_Extend['IsiSJKir']; ?>">
+            <input name="hd_extendtransaksisewa_Reference[]" type="hidden" id="hd_extendtransaksisewa_Reference" value="<?php echo $Reference; ?>">
+            <input name="hd_extendtransaksisewa_Purchase[]" type="hidden" id="hd_extendtransaksisewa_Purchase" value="<?php echo $row_Extend['Purchase']; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
       <?php } while ($row_Extend = mysql_fetch_assoc($Extend)); ?>
       <tr>
-        <td><input name="Invoice" type="hidden" id="hd_extendtransaksisewa_Invoice" value="<?php echo str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
-          <input name="Tgl" type="hidden" id="hd_extendtransaksisewa_Tgl" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
-          <input name="PPN" type="hidden" id="hd_extendtransaksisewa_PPN" value="<?php echo $row_Invoice['PPN']; ?>">
-          <input name="Transport" type="hidden" id="hd_extendtransaksisewa_Transport" value="<?php echo $row_Invoice['Transport']; ?>">
-<input name="Reference2" type="hidden" id="hd_extendtransaksisewa_Reference2" value="<?php echo $Reference; ?>">
-        <input name="Periode2" type="hidden" id="hd_extendtransaksisewa_Periode2" value="<?php echo $Periode+1; ?>"></td>
+        <td><input name="hd_extendtransaksisewa_Invoice" type="hidden" id="hd_extendtransaksisewa_Invoice" value="<?php echo str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
+          <input name="hd_extendtransaksisewa_Tgl" type="hidden" id="hd_extendtransaksisewa_Tgl" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
+          <input name="hd_extendtransaksisewa_PPN" type="hidden" id="hd_extendtransaksisewa_PPN" value="<?php echo $row_Invoice['PPN']; ?>">
+          <input name="hd_extendtransaksisewa_Transport" type="hidden" id="hd_extendtransaksisewa_Transport" value="<?php echo $row_Invoice['Transport']; ?>">
+<input name="hd_extendtransaksisewa_Reference2" type="hidden" id="hd_extendtransaksisewa_Reference2" value="<?php echo $Reference; ?>">
+        <input name="hd_extendtransaksisewa_Periode2" type="hidden" id="hd_extendtransaksisewa_Periode2" value="<?php echo $Periode+1; ?>"></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
     </tbody>
   </table>
   <p>
-    <input type="submit" name="submit" id="bt_extendtransaksisewa_submit" value="">
+    <input type="submit" name="bt_extendtransaksisewa_submit" id="bt_extendtransaksisewa_submit" value="">
   </p>
   <p>&nbsp;</p>
   <input type="hidden" name="MM_insert" value="form1">

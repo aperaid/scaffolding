@@ -38,15 +38,15 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE jualtransaksiclaim SET `No`=%s, TglStart=%s, TglEnd=%s, Customer=%s, JSC=%s, Project=%s, Amount=%s, Status=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['No'], "text"),
-                       GetSQLValueString($_POST['TglStart'], "text"),
-                       GetSQLValueString($_POST['TglEnd'], "text"),
-                       GetSQLValueString($_POST['Customer'], "text"),
-                       GetSQLValueString($_POST['JSC'], "text"),
-                       GetSQLValueString($_POST['Project'], "text"),
-                       GetSQLValueString($_POST['Amount'], "int"),
-                       GetSQLValueString($_POST['Status2'], "text"),
-                       GetSQLValueString($_POST['Id'], "int"));
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_No'], "text"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_TglStart'], "text"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_TglEnd'], "text"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_Customer'], "text"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_JSC'], "text"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_Project'], "text"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_Amount'], "int"),
+                       GetSQLValueString($_POST['db_edittransaksiclaim_Status2'], "text"),
+                       GetSQLValueString($_POST['hd_edittransaksiclaim_Id'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -157,57 +157,57 @@ $(function() {
   </tbody>
 </table>
 </p>
-<form action="<?php echo $editFormAction; ?>" id="fm_edittransaksiclaim_form1" name="form1" method="POST">
+<form action="<?php echo $editFormAction; ?>" id="fm_edittransaksiclaim_form1" name="fm_edittransaksiclaim_form1" method="POST">
   <table width="1000" border="0">
     <tbody>
       <tr>
-        <th width="250"><input name="Id" type="hidden" id="hd_edittransaksiclaim_Id" value="<?php echo $row_Edit['Id']; ?>"></th>
+        <th width="250"><input name="hd_edittransaksiclaim_Id" type="hidden" id="hd_edittransaksiclaim_Id" value="<?php echo $row_Edit['Id']; ?>"></th>
         <th width="100" align="right">No. Invoice</th>
         <th width="75" align="right">&nbsp;</th>
-        <td width="557"><input name="No" type="text" id="tx_edittransaksiclaim_No" autocomplete="off" value="<?php echo $row_Edit['No']; ?>" onKeyUp="capital()" class="textbox"></td>
+        <td width="557"><input name="tx_edittransaksiclaim_No" type="text" id="tx_edittransaksiclaim_No" autocomplete="off" value="<?php echo $row_Edit['No']; ?>" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Tgl Start</th>
         <th align="right">&nbsp;</th>
-        <td><input name="TglStart" type="text" id="tx_edittransaksiclaim_TglStart" autocomplete="off" value="<?php echo $row_Edit['TglStart']; ?>" class="textbox"></td>
+        <td><input name="tx_edittransaksiclaim_TglStart" type="text" id="tx_edittransaksiclaim_TglStart" autocomplete="off" value="<?php echo $row_Edit['TglStart']; ?>" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Tgl End</th>
         <th align="right">&nbsp;</th>
-        <td><input name="TglEnd" type="text" id="tx_edittransaksiclaim_TglEnd" autocomplete="off" value="<?php echo $row_Edit['TglEnd']; ?>" class="textbox"></td>
+        <td><input name="tx_edittransaksiclaim_TglEnd" type="text" id="tx_edittransaksiclaim_TglEnd" autocomplete="off" value="<?php echo $row_Edit['TglEnd']; ?>" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Customer</th>
         <th align="right">&nbsp;</th>
-        <td><input name="Customer" type="text" id="tx_edittransaksiclaim_Customer" autocomplete="off" value="<?php echo $row_Edit['Customer']; ?>" onKeyUp="capital()" class="textbox"></td>
+        <td><input name="tx_edittransaksiclaim_Customer" type="text" id="tx_edittransaksiclaim_Customer" autocomplete="off" value="<?php echo $row_Edit['Customer']; ?>" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">J/S/C</th>
         <th align="right">&nbsp;</th>
-        <td><input name="JSC" type="text" id="tx_edittransaksiclaim_JSC" autocomplete="off" value="<?php echo $row_Edit['JSC']; ?>" readonly class="textbox"></td>
+        <td><input name="tx_edittransaksiclaim_JSC" type="text" id="tx_edittransaksiclaim_JSC" autocomplete="off" value="<?php echo $row_Edit['JSC']; ?>" readonly class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Project</th>
         <th align="right">&nbsp;</th>
-        <td><input name="Project" type="text" id="tx_edittransaksiclaim_Project" autocomplete="off" value="<?php echo $row_Edit['Project']; ?>" onKeyUp="capital()" class="textbox"></td>
+        <td><input name="tx_edittransaksiclaim_Project" type="text" id="tx_edittransaksiclaim_Project" autocomplete="off" value="<?php echo $row_Edit['Project']; ?>" onKeyUp="capital()" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Amount</th>
         <th align="right">&nbsp;</th>
-        <td><input name="Amount" type="text" id="tx_edittransaksiclaim_Amount" autocomplete="off" value="<?php echo $row_Edit['Amount']; ?>" class="textbox"></td>
+        <td><input name="tx_edittransaksiclaim_Amount" type="text" id="tx_edittransaksiclaim_Amount" autocomplete="off" value="<?php echo $row_Edit['Amount']; ?>" class="textbox"></td>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th align="right">Status</th>
         <th align="right">&nbsp;</th>
-        <td><input name="Status" type="text" id="tx_edittransaksiclaim_Status" value="<?php echo $row_Edit['Status']; ?>" readonly class="textbox">
-          <select name="Status2" id="db_edittransaksiclaim_Status2">
+        <td><input name="tx_edittransaksiclaim_Status" type="text" id="tx_edittransaksiclaim_Status" value="<?php echo $row_Edit['Status']; ?>" readonly class="textbox">
+          <select name="db_edittransaksiclaim_Status2" id="db_edittransaksiclaim_Status2">
             <option>F</option>
             <option>P</option>
             <option>O</option>
@@ -221,7 +221,7 @@ $(function() {
       </tr>
       <tr>
         <td align="center">&nbsp;</td>
-        <td colspan="2" align="center"><input type="submit" name="submit" id="bt_edittransaksiclaim_submit" class="submit" value="Edit"></td>
+        <td colspan="2" align="center"><input type="submit" name="bt_edittransaksiclaim_submit" id="bt_edittransaksiclaim_submit" class="submit" value="Edit"></td>
         <td><a href="ViewTransaksiClaim.php?Id=<?php echo $row_Edit['Id']; ?>"><button type="button" class="submit">Cancel</button></a></td>
       </tr>
     </tbody>

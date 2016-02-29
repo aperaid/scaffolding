@@ -229,7 +229,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
     <section class="content-header">
       <h1>
         Project
-        <small>Project View </small>
+        <small> View </small>
         <large><a href="InsertProject.php"><button type="button" class="btn btn-success btn-sm">New Project</button></a></large>
       </h1>
       <ol class="breadcrumb">
