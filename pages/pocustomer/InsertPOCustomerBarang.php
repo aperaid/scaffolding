@@ -72,6 +72,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
+
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -327,15 +328,15 @@ $totalRows_User = mysql_num_rows($User);
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
+                <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_example1" name="tb_insertpocustomerbarang_example1">
                     <thead>
                       <th>PPN</th>
                       <th>Transport</th>
                     </thead>
                     <tbody>
                       <tr>
-                        <td><input name="tx_insertpocustomerbarang_PPN" type="text" id="tx_insertpocustomerbarang_PPN" value="0" autocomplete="off"></td>
-                        <td><input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" value="0" autocomplete="off"></td>
+                        <td><input name="tx_insertpocustomerbarang_PPN" type="text" id="tx_insertpocustomerbarang_PPN" class="form-control" value="0" autocomplete="off"></td>
+                        <td><input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" value="0" autocomplete="off"></td>
                       </tr>
     				</tbody>
                 </table>

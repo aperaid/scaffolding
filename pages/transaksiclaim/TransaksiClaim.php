@@ -295,7 +295,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Amount']; ?></td>
 						<td><?php echo $row_TransaksiClaim['QClaim']; ?></td>
-					  <td><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?> "><button type="button" class="btn btn-block btn-primary btn-sm">Batal</button></a></td>
+					  <td><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Batal</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
 				</tbody>

@@ -284,6 +284,7 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Customer</th>
                   <th>Project</th>
                   <th>Opsi</th>
+                  <th>Opsi</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -294,6 +295,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td class="customer"><?php echo $row_SJKirim['Customer']; ?></td>
 						<td class="noinvoice"><?php echo $row_SJKirim['Project']; ?></td>
 						<td><a href="ViewSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+                        <td><a href="DeleteSJKirim.php?SJKem=<?php echo $row_SJKirim['SJKir']; ?>" onclick="return confirm('Delete Pengiriman?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Cancel</button></a></td>
 					</tr>
 				  <?php } while ($row_SJKirim = mysql_fetch_assoc($SJKirim)); ?>
                 </tbody>

@@ -27,6 +27,7 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
+
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -72,6 +73,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
+
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -284,6 +286,7 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Customer</th>
                   <th>Project</th>
                   <th>Opsi</th>
+                  <th>Opsi</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -294,7 +297,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_SJKembali['Customer']; ?></td>
 						<td><?php echo $row_SJKembali['Project']; ?></td>
 						<td><a href="ViewSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>"><button type="button" class="btn btn-primary btn-sm btn-block">View</button></a></td>
-						<td><a href="DeleteSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>"><button type="button" class="btn btn-primary btn-sm btn-danger">Cancel</button></a></td>
+						<td><a href="DeleteSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>" onclick="return confirm('Delete Pengembalian?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Cancel</button></a></td>
 					</tr>
 					<?php } while ($row_SJKembali = mysql_fetch_assoc($SJKembali)); ?>
 				</tbody>

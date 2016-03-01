@@ -13,4 +13,5 @@
 	<infoitem key="UD_Inserted" value="name:Tgl;datatype:string" />
 	<infoitem key="UD_InsertedTgl" value="name:Tgl;datatype:string" />
 	<infoitem key="UD_Periode" value="name:MAX(Periode);datatype:int" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>
