@@ -171,7 +171,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | View PO Customer</title>
+  <title>BDN ERP | View Edit SJ Kirim</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
@@ -267,13 +267,13 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        SJ Kirim
-        <small>Edit Detail</small>
+        Surat Jalan Kirim
+        <small>Edit</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li><a href="../SJKirim/SJKirim.php">SJ Kirim</a></li>
-        <li class="active">Edit SJ</li>
+        <li class="active">Edit SJ Kirim</li>
       </ol>
     </section>
 

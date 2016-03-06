@@ -1,5 +1,80 @@
 <?php require_once('../../connections/Connection.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+// ** Logout the current user. **
+$logoutAction = $_SERVER['PHP_SELF']."?doLogout=true";
+if ((isset($_SERVER['QUERY_STRING'])) && ($_SERVER['QUERY_STRING'] != "")){
+  $logoutAction .="&". htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
+  //to fully log out a visitor we need to clear the session varialbles
+  $_SESSION['MM_Username'] = NULL;
+  $_SESSION['MM_UserGroup'] = NULL;
+  $_SESSION['PrevUrl'] = NULL;
+  unset($_SESSION['MM_Username']);
+  unset($_SESSION['MM_UserGroup']);
+  unset($_SESSION['PrevUrl']);
+	
+  $logoutGoTo = "../login/Login.php";
+  if ($logoutGoTo) {
+    header("Location: $logoutGoTo");
+    exit;
+  }
+}
+?>
+
+<?php
+if (!isset($_SESSION)) {
+  session_start();
+}
+$MM_authorizedUsers = "";
+$MM_donotCheckaccess = "true";
+
+// *** Restrict Access To Page: Grant or deny access to this page
+function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) { 
+  // For security, start by assuming the visitor is NOT authorized. 
+  $isValid = False; 
+
+  // When a visitor has logged into this site, the Session variable MM_Username set equal to their username. 
+  // Therefore, we know that a user is NOT logged in if that Session variable is blank. 
+  if (!empty($UserName)) { 
+    // Besides being logged in, you may restrict access to only certain users based on an ID established when they login. 
+    // Parse the strings into arrays. 
+    $arrUsers = Explode(",", $strUsers); 
+    $arrGroups = Explode(",", $strGroups); 
+    if (in_array($UserName, $arrUsers)) { 
+      $isValid = true; 
+    } 
+    // Or, you may restrict access to only certain users based on their username. 
+    if (in_array($UserGroup, $arrGroups)) { 
+      $isValid = true; 
+    } 
+    if (($strUsers == "") && true) { 
+      $isValid = true; 
+    } 
+  } 
+  return $isValid; 
+}
+
+$MM_restrictGoTo = "../login/Login.php";
+if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
+  $MM_qsChar = "?";
+  $MM_referrer = $_SERVER['PHP_SELF'];
+  if (strpos($MM_restrictGoTo, "?")) $MM_qsChar = "&";
+  if (isset($_SERVER['QUERY_STRING']) && strlen($_SERVER['QUERY_STRING']) > 0) 
+  $MM_referrer .= "?" . $_SERVER['QUERY_STRING'];
+  $MM_restrictGoTo = $MM_restrictGoTo. $MM_qsChar . "accesscheck=" . urlencode($MM_referrer);
+  header("Location: ". $MM_restrictGoTo); 
+  exit;
+}
+?>
+
+<?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
@@ -85,123 +160,166 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   }
   header(sprintf("Location: %s", $updateGoTo));
 }
+
+$colname_User = "-1";
+if (isset($_SESSION['MM_Username'])) {
+  $colname_User = $_SESSION['MM_Username'];
+}
+mysql_select_db($database_Connection, $Connection);
+$query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueString($colname_User, "text"));
+$User = mysql_query($query_User, $Connection) or die(mysql_error());
+$row_User = mysql_fetch_assoc($User);
+$totalRows_User = mysql_num_rows($User);
 ?>
 
-<!------------------------------------------------------->
-<link rel="stylesheet" type="text/css" href="../../JQuery/Layout/layout.css">
-<script type="text/javascript" src="../../JQuery/Layout/jquery.js"></script>
-<script type="text/javascript" src="../../JQuery/Layout/jquery.ui.all.js"></script>
-<script type="text/javascript" src="../../JQuery/Layout/jquery.layout.js"></script>
-<script type='text/javascript'>
-	var jq126 = jQuery.noConflict();
-</script>
-<script type="text/javascript">
-	var myLayout;// a var is required because this page utilizes: myLayout.allowOverflow() method
-	
-	jq126(document).ready(function () {
-	myLayout = jq126('body').layout({
-		// enable showOverflow on west-pane so popups will overlap north pane
-		west__showOverflowOnHover: true
-	
-	//,	west__fxSettings_open: { easing: "easeOutBounce", duration: 750 }
-	});
-	
-	});
-	
-</script>
-
-<script language="javascript">
-  function ppn() {
-    var txtFirstNumberValue = document.getElementById('hd_viewinvoiceclaim_Totals2').value;
-    var txtSecondNumberValue = document.getElementById('tx_viewinvoiceclaim_PPN').value;
-	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue);
-	  if (!isNaN(result)) {
-		document.getElementById('tx_viewinvoiceclaim_Totals').value = result;
-      }
-   }
-</script>
-
-<script language="javascript">
-  function transport() {
-    var txtFirstNumberValue = document.getElementById('hd_viewinvoiceclaim_Totals2').value;
-    var txtSecondNumberValue = document.getElementById('tx_viewinvoiceclaim_Transport').value;
-	var result = parseFloat(txtFirstNumberValue) + parseFloat(txtSecondNumberValue);
-	  if (!isNaN(result)) {
-		document.getElementById('tx_viewinvoiceclaim_Totals').value = result;
-      }
-   }
-</script>
- 
-<!------------------------------------------------------->
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Untitled Document</title>
-<link href="../../Button.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	background-image: url(../../Image/Wood.png);
-	background-repeat: no-repeat;
-}
-</style>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>BDN ERP | View Invoice Claim</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="../../library/bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../library/font-awesome-4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../../library/ionicons-2.0.1/css/ionicons.min.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../library/datatables/dataTables.bootstrap.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../library/dist/css/skins/_all-skins.min.css">
 
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="wrapper">
 
-<body>
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="../../index.php" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>BDN</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">PT. <b>BDN</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Buka/Tutup</span>
+      </a>
 
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../../library/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs"><?php echo "Welcome ".$_SESSION['MM_Username']; ?></span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../../library/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
-<div class="ui-layout-west">
-			<table class="menuTable">
-					
-				<?php do { ?>    
-                	<tr>
-                    <td class="Menu">
-                    <a href="../../<?php echo $row_Menu['link']; ?>">
-                    <button type="button" class="button">
-					<?php echo $row_Menu['nama']; ?></button></a></td>
-                    </tr>
-                    
-                <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
-                    <tr>
-                    <td class="Menu">&nbsp;</td>
-                    </tr>
-                    
-			</table>
-		</div>
+                <p>
+                  <?php echo $_SESSION['MM_Username']; ?> - <?php echo $row_User['Name']; ?>
+                  <small>Super Profile</small>
+                </p>
+              </li>
+              
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-right">
+                  <a href="<?php echo $logoutAction ?>" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MENU</li>
+        <?php do { ?>
+        <li><a href="../../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
+        <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Invoice Claim
+        <small>View</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a href="InvoiceClaim.php">Invoice Claim</a></li>
+        <li class="active">View Invoice Claim</li>
+      </ol>
+    </section>
 
-<div class="ui-layout-north">
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Invoice Detail</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form action="<?php echo $editFormAction; ?>" id="fm_viewinvoiceclaim_form1" name="fm_viewinvoiceclaim_form1" method="POST" class="form-horizontal">
 
+            <div class="box-body with-border">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">No. Invoice</label>
+                  <div class="col-sm-6">
+                    <input id="tx_viewinvoiceclaim_Invoice" name="tx_viewinvoiceclaim_Invoice" type="text" class="form-control" value="<?php echo $row_View['Invoice']; ?>"  readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Project</label>
+                  <div class="col-sm-6">
+                    <input id="tx_viewinvoiceclaim_Project" name="tx_viewinvoiceclaim_Project" type="text" class="form-control" value="<?php echo $row_View['Project']; ?>"  readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Company</label>
+                  <div class="col-sm-6">
+                    <input id="tx_viewinvoiceclaim_Company" name="tx_viewinvoiceclaim_Company" type="text" class="form-control" value="<?php echo $row_View['Company']; ?>"  readonly>
+                  </div>
+                </div>
+            <div>
 
-      <h2 align="center"><?php echo $row_View['Reference']; ?></h2>
-    </div>
-<div class="ui-layout-center">
+  <table id="tb_viewinvoicejual_example1" name="tb_viewinvoicejual_example1" class="table table-bordered table-striped table-responsive">
 
-<form action="<?php echo $editFormAction; ?>" id="fm_viewinvoiceclaim_form1" name="fm_viewinvoiceclaim_form1" method="POST">
-  <table width="1000" border="0">
-    <tbody>
-      <tr>
-        <th width="162">&nbsp;</th>
-        <th width="87" align="right">No. Invoice</th>
-        <th width="128" align="right">&nbsp;</th>
-        <td width="605"><input name="tx_viewinvoiceclaim_Invoice" type="text" class="textview" id="tx_viewinvoiceclaim_Invoice" value="<?php echo $row_View['Invoice']; ?>" readonly></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Project</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="tx_viewinvoiceclaim_TglStart" type="text" class="textview" id="tx_viewinvoiceclaim_TglStart" value="<?php echo $row_View['Project']; ?>" readonly></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Company</th>
-        <th align="right">&nbsp;</th>
-        <td><input name="tx_viewinvoiceclaim_TglEnd" type="text" class="textview" id="tx_viewinvoiceclaim_TglEnd" value="<?php echo $row_View['Company']; ?>" readonly></td>
-      </tr>
-    </tbody>
-  </table>
-  <table width="1000" border="0">
-    <tbody>
+	<thead>
       <tr>
         <th align="center">SJ Kirim</th>
         <th align="center">No. Purchase</th>
@@ -211,66 +329,110 @@ body {
         <th>Claim Amount</th>
         <th>Total</th>
         </tr>
-      <?php 
+      </thead>
+      <tbody>
+	  <?php 
 	  $total = 0;
 	  do { ?>
       
         <tr>
-          <td align="center"><input name="tx_viewinvoiceclaim_SJKir" type="text" class="textview" id="tx_viewinvoiceclaim_SJKir" value="" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Purchase" type="text" class="textview" id="tx_viewinvoiceclaim_Purchase" value="<?php echo $row_View2['Purchase']; ?>" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Barang" type="text" class="textview" id="tx_viewinvoiceclaim_Barang" value="<?php echo $row_View2['Barang']; ?>" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Tgl" type="text" class="textview" id="tx_viewinvoiceclaim_Tgl" value="<?php echo $row_View2['Tgl']; ?>" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Quantity" type="text" class="textview" id="tx_viewinvoiceclaim_Quantity" value="<?php echo $row_View2['QClaim']; ?>" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Amount" type="text" class="textview" id="tx_viewinvoiceclaim_Amount" value="<?php echo $row_View2['Amount']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_SJKir" type="text" class="form-control" id="tx_viewinvoiceclaim_SJKir" value="" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Purchase" type="text" class="form-control" id="tx_viewinvoiceclaim_Purchase" value="<?php echo $row_View2['Purchase']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Barang" type="text" class="form-control" id="tx_viewinvoiceclaim_Barang" value="<?php echo $row_View2['Barang']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Tgl" type="text" class="form-control" id="tx_viewinvoiceclaim_Tgl" value="<?php echo $row_View2['Tgl']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Quantity" type="text" class="form-control" id="tx_viewinvoiceclaim_Quantity" value="<?php echo $row_View2['QClaim']; ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Amount" type="text" class="form-control" id="tx_viewinvoiceclaim_Amount" value="<?php echo $row_View2['Amount']; ?>" readonly></td>
           <?php $test = $row_View2['QClaim']* $row_View2['Amount']; $total += $test ?>
-          <td align="center"><input name="tx_viewinvoiceclaim_Total" type="text" class="textview" id="tx_viewinvoiceclaim_Total" value="<?php echo round($test, 2) ?>" readonly></td>
+          <td align="center"><input name="tx_viewinvoiceclaim_Total" type="text" class="form-control" id="tx_viewinvoiceclaim_Total" value="<?php echo round($test, 2) ?>" readonly></td>
         </tr>
-      <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
+	  <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
     </tbody>
 </table>
-  <table width="1000" border="0">
-    <tbody>
-      <tr>
-        <th width="160">&nbsp;</th>
-        <th width="90" align="right">Pajak</th>
-        <th width="129" align="right">&nbsp;</th>
-        <td colspan="2"><input name="tx_viewinvoiceclaim_PPN" type="text" class="textbox" id="tx_viewinvoiceclaim_PPN" autocomplete="off" value="<?php echo $row_View['PPN']; ?>" onKeyUp="ppn()"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Transport</th>
-        <th align="right">&nbsp;</th>
-        <td colspan="2"><input name="tx_viewinvoiceclaim_Transport" type="text" class="textbox" id="tx_viewinvoiceclaim_Transport" autocomplete="off" value="<?php echo $row_View['Transport']; ?>" onKeyUp="transport()"></td>
-      </tr>
-      <tr>
-        <th>&nbsp;</th>
-        <th align="right">Total</th>
-        <th align="right">&nbsp;</th>
-        <input name="hd_viewinvoiceclaim_Totals2" type="hidden" id="hd_viewinvoiceclaim_Totals2" value="<?php echo round($total, 2); ?>" >
-        <td colspan="2"><input name="tx_viewinvoiceclaim_Totals" type="text" class="textview" id="tx_viewinvoiceclaim_Totals" value="<?php echo round($total, 2); ?>" readonly></td>
-      </tr>
-      <tr>
-        <td align="center">&nbsp;</td>
-        <td colspan="2" align="center">&nbsp;</td>
-        <td width="153">&nbsp;</td>
-        <td width="446">&nbsp;</td>
-      </tr>
-      <tr>
-        <td align="center">&nbsp;</td>
-        <td colspan="2" align="right"><a>
-          <button type="button" class="button2">Print</button>
-        </a></td>
-        <td align="center"><input type="submit" name="bt_viewinvoiceclaim_submit" id="bt_viewinvoiceclaim_submit" class="button2" value="Update"></td>
-        <td><a href="InvoiceClaim.php">
-          <button type="button" class="button2">Cancel</button>
-        </a></td>
-      </tr>
-    </tbody>
-</table>
-  <p>&nbsp;</p>
-  <input type="hidden" name="MM_update" value="form1">
-</form>
+    </div>
+
+    <div class="form-group">
+                  <label class="col-sm-2 control-label">Pajak</label>
+                  <div class="col-sm-6">
+                    <input id="tx_viewinvoiceclaim_PPN" name="tx_viewinvoiceclaim_PPN" type="text" class="form-control" value="<?php echo $row_View['PPN']; ?>" onKeyUp="tot()">
+                    <input id="hd_viewinvoiceclaim_PPN2" name="hd_viewinvoiceclaim_PPN2" type="hidden" autocomplete="off" value="<?php echo $row_View['PPN']; ?>">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Transport</label>
+                  <div class="col-sm-6">
+                    <input id="tx_viewinvoiceclaim_Transport" name="tx_viewinvoiceclaim_Transport" type="text" class="form-control" value="<?php echo $row_View['Transport']; ?>" onKeyUp="tot()">
+                    <input id="hd_viewinvoiceclaim_Transport2" name="hd_viewinvoiceclaim_Transport2" type="hidden" autocomplete="off" value="<?php echo $row_View['Transport']; ?>">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Total</label>
+                  <div class="col-sm-6">
+                    <input name="tx_viewinvoiceclaim_Totals" type="text" class="form-control" id="tx_viewinvoiceclaim_Totals" value="<?php echo round(($total*$row_View['PPN']*0.1)+$total+$row_View['Transport'], 2); ?>" readonly>
+                    <input name="hd_viewinvoiceclaim_Totals2" type="hidden" id="hd_viewinvoiceclaim_Totals2" value="<?php echo round($total, 2); ?>" >
+                  </div>
+                </div>
+                
+                <div class="box-footer">
+                <button type="submit" name="bt_viewinvoiceclaim_submit" id="bt_viewinvoiceclaim_submit" class="btn btn-info pull-right">Update</button>
+                <div class="btn-group"><a href="InvoiceClaim.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
+                <div class="btn-group" ><a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a></div>
+              </div>
+              <input type="hidden" name="MM_update" value="form1">
+<!-- /.box-footer -->
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  <!-- Footer Wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> `1.0.0
+    </div>
+    <strong>Copyright &copy; 2015 <a href="http://apera.id">Apera Indonesia</a>.</strong> All rights
+    reserved.
+  </footer>
+  <!-- /.footer-wrapper -->
+  
+  <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
 </div>
+
+<!-- jQuery 2.1.4 -->
+<script src="../../library/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="../../library/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="../../library/datatables/jquery.dataTables.min.js"></script>
+<script src="../../library/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../library/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../library/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../library/dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../library/dist/js/demo.js"></script>
+<!-- page script -->
+
+<script language="javascript">
+  function tot() {
+    var txtFirstNumberValue = document.getElementById('hd_viewinvoiceclaim_Totals2').value;
+    var txtSecondNumberValue = document.getElementById('tx_viewinvoiceclaim_PPN').value;
+	var txtThirdNumberValue = document.getElementById('tx_viewinvoiceclaim_Transport').value;
+	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue) + parseFloat(txtThirdNumberValue);
+	  if (!isNaN(result)) {
+		document.getElementById('tx_viewinvoiceclaim_Totals').value = result;
+      }
+   }
+</script>
 </body>
 </html>
 <?php

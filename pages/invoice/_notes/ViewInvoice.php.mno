@@ -9,4 +9,5 @@
 	<infoitem key="UD_SJKem" value="name:Tgl;datatype:string" />
 	<infoitem key="UD_SJKir" value="name:Tgl;datatype:string" />
 	<infoitem key="UD_Bulan" value="name:SJKem;datatype:string" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>

@@ -254,11 +254,11 @@ $totalRows_User = mysql_num_rows($User);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Insert Project
-        <small>New</small>
+        Project
+        <small>Insert</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li><a href="project.php">Project</a></li>
         <li class="active">Insert Project</li>
       </ol>
@@ -271,40 +271,40 @@ $totalRows_User = mysql_num_rows($User);
           <!-- Horizontal Form -->
           <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Company Detail</h3>
+              <h3 class="box-title">Project Detail</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form action="<?php echo $editFormAction; ?>" id="fm_insertproject_form1" name="form1" method="post" class="form-horizontal">
+            <form action="<?php echo $editFormAction; ?>" id="fm_insertproject_form1" name="fm_insertproject_form1" method="post" class="form-horizontal">
               <div class="box-body with-border">
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="tx_insertproject_PCode" name="PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code">
+                    <input id="tx_insertproject_PCode" name="tx_insertproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Name</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertproject_Project" name="Project" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project">
+                    <input id="tx_insertproject_Project" name="tx_insertproject_Project" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat Project</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertproject_Alamat" name="Alamat" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota">
+                    <input id="tx_insertproject_Alamat" name="tx_insertproject_Alamat" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertproject_CCode" name="CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code">
+                    <input id="tx_insertproject_CCode" name="tx_insertproject_CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code">
                   </div>
                 </div>
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button type="submit" name="submit" id="bt_insertproject_submit" class="btn btn-info pull-right">Insert</button>
+                <button type="submit" name="bt_insertproject_submit" id="bt_insertproject_submit" class="btn btn-info pull-right">Insert</button>
                 <div class="btn-group"><a href="Project.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
               </div>
               <input type="hidden" name="MM_insert" value="form1">

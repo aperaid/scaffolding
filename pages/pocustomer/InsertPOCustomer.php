@@ -254,11 +254,11 @@ $totalRows_User = mysql_num_rows($User);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Insert PO
-        <small>New</small>
+        Purchase Order
+        <small>Insert</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
         <li class="active">Insert PO</li>
       </ol>

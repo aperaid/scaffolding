@@ -245,7 +245,7 @@ $totalRows_User = mysql_num_rows($User);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | Insert PO</title>
+  <title>BDN ERP | Insert Transaksi Claim Barang</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
@@ -345,13 +345,13 @@ $totalRows_User = mysql_num_rows($User);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Insert Claim Barang
+        Transaksi Claim
         <small>Item</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li><a href="../TransaksiClaim/TransaksiClaim.php">Transaksi Claim</a></li>
-        <li class="active">Insert Claim Barang</li>
+        <li class="active">Insert Transaksi Claim Barang</li>
       </ol>
     </section>
 

@@ -112,11 +112,11 @@ if (isset($_POST['Username'])) {
 
     <form ACTION="<?php echo $loginFormAction; ?>" id="fm_login_form1" name="fm_login_form1" method="POST">
       <div class="form-group has-feedback">
-        <input name="tx_login_Username" id="tx_login_Username" type="text" class="form-control" placeholder="Username">
+        <input name="Username" id="Username" type="text" class="form-control" placeholder="Username">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input name="pw_login_Password" id="pw_login_Password" type="password" class="form-control" placeholder="Password">
+        <input name="Password" id="Password" type="password" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">

@@ -132,7 +132,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | Customer</title>
+  <title>BDN ERP | Project</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
@@ -229,11 +229,11 @@ $totalRows_Menu = mysql_num_rows($Menu);
     <section class="content-header">
       <h1>
         Project
-        <small> View </small>
+        <small>All</small>
         <large><a href="InsertProject.php"><button type="button" class="btn btn-success btn-sm">New Project</button></a></large>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li class="active">Project</li>
       </ol>
     </section>
@@ -245,7 +245,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 
           <div class="box">
             <div class="box-body">
-              <table id="tb_project_example1" name="tb_project" class="table table-bordered table-striped table-responsive">
+              <table id="tb_project_example1" name="tb_project_example1" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
                   <th>Project Code</th>

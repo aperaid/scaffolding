@@ -192,7 +192,7 @@ $totalRows_User = mysql_num_rows($User);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | Insert PO</title>
+  <title>BDN ERP | Insert PO Item</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
@@ -292,13 +292,12 @@ $totalRows_User = mysql_num_rows($User);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Insert PO
+        Purchase Order
         <small>Item</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
-        <li><a href="../POCustomer/InsertPOCustomer.php">New PO</a></li>
         <li class="active">Insert PO Item</li>
       </ol>
     </section>

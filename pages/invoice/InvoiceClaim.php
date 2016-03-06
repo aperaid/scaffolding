@@ -255,11 +255,11 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content-header">
       <h1>
         Invoice Claim
-        <small>View</small>
-        <large><a href="InvoiceJual.php"><button id="bt_invoiceclaim_invoicejual" name="bt_invoiceclaim_invoicejual" type="button" class="btn btn-success btn-sm">Invoice Jual</button></a><a href="Invoice.php"><button id="bt_invoiceclaim_invoicesewa" name="bt_invoiceclaim_invoicesewa" type="button" class="btn btn-success btn-sm">Invoice Claim</button></a><a href="InvoiceClaim.php"><button id="bt_invoiceclaim_invoiceclaim" name="bt_invoiceclaim_invoiceclaim" type="button" class="btn btn-success btn-sm">Invoice Claim</button></a></large>
+        <small>All</small>
+        <large><a href="InvoiceJual.php"><button id="bt_invoiceclaim_invoicejual" name="bt_invoiceclaim_invoicejual" type="button" class="btn btn-success btn-sm">Invoice Jual</button></a><a href="Invoice.php"><button id="bt_invoiceclaim_invoicesewa" name="bt_invoiceclaim_invoicesewa" type="button" class="btn btn-success btn-sm">Invoice Sewa</button></a><a href="InvoiceClaim.php"><button id="bt_invoiceclaim_invoiceclaim" name="bt_invoiceclaim_invoiceclaim" type="button" class="btn btn-success btn-sm">Invoice Claim</button></a></large>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li class="active">Invoice Claim</li>
       </ol>
     </section>

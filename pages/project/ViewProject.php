@@ -72,6 +72,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
+
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -232,11 +233,11 @@ $totalRows_User = mysql_num_rows($User);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        View Project
+        Project
         <small>View</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li><a href="project.php">Project</a></li>
         <li class="active">View Project</li>
       </ol>
@@ -249,40 +250,40 @@ $totalRows_User = mysql_num_rows($User);
           <!-- Horizontal Form -->
           <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Company Detail</h3>
+              <h3 class="box-title">Project Detail</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form id="fm_viewproject_form1" name="form1" method="post" class="form-horizontal">
+            <form id="fm_viewproject_form1" name="fm_viewproject_form1" method="post" class="form-horizontal">
               <div class="box-body with-border">
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewproject_PCode" name="PCode" type="text" class="form-control" value="<?php echo $row_View['PCode']; ?>"  readonly>
+                    <input id="tx_viewproject_PCode" name="tx_viewproject_PCode" type="text" class="form-control" value="<?php echo $row_View['PCode']; ?>"  readonly>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Name</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewproject_Project" name="Project" type="text" class="form-control" value="<?php echo $row_View['Project']; ?>"  readonly>
+                    <input id="tx_viewproject_Project" name="tx_viewproject_Project" type="text" class="form-control" value="<?php echo $row_View['Project']; ?>"  readonly>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat Project</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewproject_Alamat" name="Alamat" type="text" class="form-control" value="<?php echo $row_View['Alamat']; ?>"  readonly>
+                    <input id="tx_viewproject_Alamat" name="tx_viewproject_Alamat" type="text" class="form-control" value="<?php echo $row_View['Alamat']; ?>"  readonly>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewproject_CCode" name="Ccode" type="text" class="form-control" value="<?php echo $row_View['CCode']; ?>"  readonly>
+                    <input id="tx_viewproject_CCode" name="tx_viewproject_CCode" type="text" class="form-control" value="<?php echo $row_View['CCode']; ?>"  readonly>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Name</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewproject_Company" name="Company" type="text" class="form-control" value="<?php echo $row_View['Company']; ?>"  readonly>
+                    <input id="tx_viewproject_Company" name="tx_viewproject_Company" type="text" class="form-control" value="<?php echo $row_View['Company']; ?>"  readonly>
                   </div>
                   <label class="col-sm-1 control-label">Telp</label>
                   <div class="col-sm-3">
@@ -290,7 +291,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_viewproject_CompPhone" name="CompPhone" type="text" class="form-control" value="<?php echo $row_View['CompPhone']; ?>"  readonly>
+                      <input id="tx_viewproject_CompPhone" name="tx_viewproject_CompPhone" type="text" class="form-control" value="<?php echo $row_View['CompPhone']; ?>"  readonly>
                     </div>
                   </div>
                 </div>
@@ -302,7 +303,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-user"></i>
                       </div>
-                      <input id="tx_viewproject_Customer" name="Customer" type="text" class="form-control" value="<?php echo $row_View['Customer']; ?>"  readonly>
+                      <input id="tx_viewproject_Customer" name="tx_viewproject_Customer" type="text" class="form-control" value="<?php echo $row_View['Customer']; ?>"  readonly>
                     </div>
                   </div>
                   <label class="col-sm-1 control-label">Telp</label>
@@ -311,7 +312,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
                       </div>
-                      <input id="tx_viewproject_CustPhone" name="CustPhone" type="text" class="form-control" value="<?php echo $row_View['CustPhone']; ?>"  readonly>
+                      <input id="tx_viewproject_CustPhone" name="tx_viewproject_CustPhone" type="text" class="form-control" value="<?php echo $row_View['CustPhone']; ?>"  readonly>
                     </div>
                   </div>
                 </div>
