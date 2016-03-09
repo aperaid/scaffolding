@@ -27,6 +27,7 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
+
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -72,6 +73,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
+
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -349,7 +351,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					</tr>
 					</thead>
 					<tbody>
-						  <?php $x=1; ?>
+						<?php $x=1; ?>
 						<?php do { ?>
 						  <tr>
 							<input name="hd_editsjkirimquantity_Id[]" type="hidden" id="hd_editsjkirimquantity_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">

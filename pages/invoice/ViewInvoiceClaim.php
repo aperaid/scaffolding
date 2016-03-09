@@ -336,14 +336,14 @@ $totalRows_User = mysql_num_rows($User);
 	  do { ?>
       
         <tr>
-          <td align="center"><input name="tx_viewinvoiceclaim_SJKir" type="text" class="form-control" id="tx_viewinvoiceclaim_SJKir" value="" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Purchase" type="text" class="form-control" id="tx_viewinvoiceclaim_Purchase" value="<?php echo $row_View2['Purchase']; ?>" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Barang" type="text" class="form-control" id="tx_viewinvoiceclaim_Barang" value="<?php echo $row_View2['Barang']; ?>" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Tgl" type="text" class="form-control" id="tx_viewinvoiceclaim_Tgl" value="<?php echo $row_View2['Tgl']; ?>" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Quantity" type="text" class="form-control" id="tx_viewinvoiceclaim_Quantity" value="<?php echo $row_View2['QClaim']; ?>" readonly></td>
-          <td align="center"><input name="tx_viewinvoiceclaim_Amount" type="text" class="form-control" id="tx_viewinvoiceclaim_Amount" value="<?php echo $row_View2['Amount']; ?>" readonly></td>
+          <td></td>
+          <td><?php echo $row_View2['Purchase']; ?></td>
+          <td><?php echo $row_View2['Barang']; ?></td>
+          <td><?php echo $row_View2['Tgl']; ?></td>
+          <td><?php echo $row_View2['QClaim']; ?></td>
+          <td><?php echo $row_View2['Amount']; ?></td>
           <?php $test = $row_View2['QClaim']* $row_View2['Amount']; $total += $test ?>
-          <td align="center"><input name="tx_viewinvoiceclaim_Total" type="text" class="form-control" id="tx_viewinvoiceclaim_Total" value="<?php echo round($test, 2) ?>" readonly></td>
+          <td><?php echo round($test, 2) ?></td>
         </tr>
 	  <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
     </tbody>
