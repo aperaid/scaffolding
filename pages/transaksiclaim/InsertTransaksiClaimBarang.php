@@ -272,7 +272,7 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content-header">
       <h1>
         Transaksi Claim
-        <small>Choose</small>
+        <small>Select</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -291,7 +291,7 @@ $totalRows_User = mysql_num_rows($User);
                 <table id="tb_inserttransaksiclaimbarang_example1" class="table table-bordered table-striped table-responsive">
     <thead>
       <tr>
-		<th>Pilih Claim</th>
+		<th>Pilih</th>
 		<th>J/S</th>
 		<th>Barang</th>
 		<th>Quantity Ditempat</th>

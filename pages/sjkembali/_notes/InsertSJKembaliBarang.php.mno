@@ -10,5 +10,6 @@
 	<infoitem key="UD_LastReference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_LastId" value="name:Id;datatype:int" />
 	<infoitem key="UD_LastIsiSJKembali" value="name:IsiSJKem;datatype:string" />
-	<infoitem key="UD_InsertSJKembali" value="name:IsiSJKir;datatype:string,name:QSisaKem;datatype:int,name:SJKir;datatype:string,name:Tgl;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int" />
+	<infoitem key="UD_InsertSJKembali" value="name:IsiSJKir;datatype:string,name:QSisaKemInsert;datatype:int,name:SJKir;datatype:string,name:Tgl;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>

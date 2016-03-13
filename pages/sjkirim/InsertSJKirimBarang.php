@@ -276,7 +276,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     <section class="content-header">
       <h1>
         Surat Jalan Kirim
-        <small>Item</small>
+        <small>Select</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -292,10 +292,10 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
           <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkirimbarang_form1" name="fm_insertsjkirimbarang_form1" method="POST">
             <div class="box box-primary">
               <div class="box-body">
-                <table id="tb_insertsjkirimbarang_example1" class="table table-bordered table-striped table-responsive">
+                <table id="tb_insertsjkirimbarang_example1" name="tb_insertsjkirimbarang_example1" class="table table-bordered table-striped table-responsive">
                   <thead>
                   <tr>
-                    <th>Select</th>
+                    <th>Pilih</th>
                     <th>J/S</th>
                     <th>Barang</th>
                     <th>Quantity Sisa Kirim</th>
@@ -309,7 +309,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                         <td><input type="checkbox" name="cb_insertsjkirimbarang_checkbox[]" id="cb_insertsjkirimbarang_checkbox" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"></td>
                         <td><input name="tx_insertsjkirimbarang_JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
                         <td><input name="tx_insertsjkirimbarang_Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
-                        <td><input name="tx_insertsjkirimbarang_QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkirimbarang_QSisaKirInsert" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
+                        <td><input name="tx_insertsjkirimbarang_QSisaKir[]" type="text" class="form-control" id="tx_insertsjkirimbarang_QSisaKir" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
                         <td><input name="tx_insertsjkirimbarang_Purchase[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>" readonly></td>
                         </tr>
                       <?php $increment++; ?>
@@ -324,7 +324,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
               </div>
             </div>
             <!-- /.box -->
-            <input type="hidden" name="MM_update" value="form1">
             <input type="hidden" name="MM_insert" value="form1">
           </form>
           <!-- /.col -->

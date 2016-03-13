@@ -298,7 +298,7 @@ $totalRows_User = mysql_num_rows($User);
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
         <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
-        <li class="active">Insert PO Item</li>
+        <li class="active">Insert PO Barang</li>
       </ol>
     </section>
 

@@ -27,6 +27,7 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
+
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -72,6 +73,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
+
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -171,7 +173,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | View Edit SJ Kirim</title>
+  <title>BDN ERP | Edit SJ Kirim</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
@@ -288,7 +290,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					<thead>
 					<tr>
 						<th>#</th>
-						<th>Pur #</th>
+						<th>#Pur</th>
 						<th>J/S</th>
 						<th>Barang</th>
 						<th>Warehouse</th>
@@ -308,7 +310,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<td><input name="tx_editsjkirim_Warehouse[]" type="text" class="form-control" id="tx_editsjkirim_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>"></td>
 							<td><input name="tx_editsjkirim_QSisaKir[]" type="text" class="form-control" id="tx_editsjkirim_QSisaKir" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
 							<td><input name="tx_editsjkirim_QKirim[]" type="text" class="form-control" id="tx_editsjkirim_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>"></td>
-							<td><input name="tx_editsjkirim_QTertanda" type="text" class="form-control" id="tx_editsjkirim_QTertanda" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
+							<td><input name="tx_editsjkirim_QTertanda" type="text" class="form-control" id="tx_editsjkirim_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
 						</tr>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
 					</tbody>

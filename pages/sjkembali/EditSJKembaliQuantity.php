@@ -308,7 +308,7 @@ $totalRows_User = mysql_num_rows($User);
 
           <div class="box box-primary">
             <div class="box-body no-padding">
-				  <table id="tb_editsjkembaliquantity_example1" class="table table-bordered">
+				  <table id="tb_editsjkembaliquantity_example1" name="tb_editsjkembaliquantity_example1" class="table table-bordered">
 					<thead>
 					<tr>
 					  <th>#</th>
@@ -335,8 +335,8 @@ $totalRows_User = mysql_num_rows($User);
 							<td><input name="tx_editsjkembaliquantity_Barang" type="text" class="form-control" id="tx_editsjkembaliquantity_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_Warehouse[]" type="text" class="form-control" id="tx_editsjkembaliquantity_Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_QSisaKem[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
-							<td><input name="tx_editsjkembaliquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"></td>
-                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly></td>
+							<td><input name="tx_editsjkembaliquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
+                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
