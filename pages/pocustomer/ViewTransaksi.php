@@ -310,7 +310,7 @@ $totalRows_User = mysql_num_rows($User);
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Request Date</th>
-                <th>Price</th>
+                <th>Amount</th>
             </tr>
             </thead>
             <tbody>
@@ -336,6 +336,7 @@ $totalRows_User = mysql_num_rows($User);
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+          <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left" style="margin-right: 5px;">Back</button></a> 
           <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Process
           </button>
           <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>" type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">

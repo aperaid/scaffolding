@@ -310,7 +310,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_View['E']; ?></td>
 						<td><?php echo $row_View['Customer']; ?></td>
 						<td><?php echo $row_View['Project']; ?></td>
-						<td><a href="ViewTransaksiSewa2.php?Reference=<?php echo $row_View['Reference']; ?>&&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+						<td><a href="ViewTransaksiSewa2.php?Reference=<?php echo $row_View['Reference']; ?>&&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Detail</button></a></td>
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
@@ -327,6 +327,9 @@ $totalRows_User = mysql_num_rows($User);
               </table>
             </div>
             <!-- /.box-body -->
+            <div class="box-footer">
+                  <a href="TransaksiSewa.php"><button type="button" class="btn btn-default pull-left">Back</button></a>
+			</div>
           </div>
           <!-- /.box -->
         </div>

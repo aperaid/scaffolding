@@ -177,7 +177,7 @@ for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKirInsert=QSisaKirInsert-%s WHERE Purchase=%s",
                        GetSQLValueString($_POST['tx_insertsjkiribarang2_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['tx_insertsjkiribarang2_Purchase'][$i], "int"));
+                       GetSQLValueString($_POST['hd_insertsjkiribarang2_Purchase'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -187,10 +187,10 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO isisjkirim (IsiSJKir, Warehouse, QKirim, Purchase, SJKir) VALUES (%s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['tx_insertsjkiribarang2_IsiSJKir'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkiribarang2_IsiSJKir'][$i], "text"),
                        GetSQLValueString($_POST['tx_insertsjkiribarang2_Warehouse'][$i], "text"),
                        GetSQLValueString($_POST['tx_insertsjkiribarang2_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['tx_insertsjkiribarang2_Purchase'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkiribarang2_Purchase'][$i], "text"),
                        GetSQLValueString($_POST['hd_insertsjkiribarang2_SJKir'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -200,9 +200,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['hd_insertsjkiribarang2_S'][$i], "text"),
                        GetSQLValueString($_POST['hd_insertsjkiribarang2_E'][$i], "text"),
                        GetSQLValueString($_POST['tx_insertsjkiribarang2_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['tx_insertsjkiribarang2_IsiSJKir'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkiribarang2_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkiribarang2_Reference'][$i], "text"),
-					   GetSQLValueString($_POST['tx_insertsjkiribarang2_Purchase'][$i], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkiribarang2_Purchase'][$i], "text"),
 					   GetSQLValueString($_POST['tx_insertsjkiribarang2_JS'][$i], "text"));
 					   
 	$deleteSQL = sprintf("DELETE FROM periode WHERE Deletes='Jual'");
@@ -429,8 +429,8 @@ $totalRows_User = mysql_num_rows($User);
 	      <input name="hd_insertsjkiribarang2_S[]" type="hidden" id="hd_insertsjkiribarang2_S" value="<?php echo $row_LastTgl['Tgl']; ?>">
 	      <input name="hd_insertsjkiribarang2_E[]" type="hidden" id="hd_insertsjkiribarang2_E" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>">
 	      <input name="hd_insertsjkiribarang2_Reference[]" type="hidden" id="hd_insertsjkiribarang2_Reference" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
-	    <td><?php echo $row_LastIsiSJKirim['Id'] + $increment; ?></td>
-        <td><?php echo $row_InsertSJKirim['Purchase']; ?></td>
+	    <td><input name="hd_insertsjkiribarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkiribarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>"><?php echo $row_LastIsiSJKirim['Id'] + $increment; ?></td>
+        <td><input name="hd_insertsjkiribarang2_Purchase[]" type="hidden" id="hd_insertsjkiribarang2_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"><?php echo $row_InsertSJKirim['Purchase']; ?></td>
 	    <td><input name="tx_insertsjkiribarang2_JS[]" type="text" class="form-control" id="tx_insertsjkiribarang2_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkiribarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkiribarang2_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkiribarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkiribarang2_Warehouse" autocomplete="off"></td>

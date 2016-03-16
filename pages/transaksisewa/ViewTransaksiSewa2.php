@@ -156,6 +156,12 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
+mysql_select_db($database_Connection, $Connection);
+$query_View2 = sprintf("SELECT Reference FROM transaksi WHERE Reference = %s", GetSQLValueString($colname_View, "text"));
+$View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
+$row_View2 = mysql_fetch_assoc($View2);
+$totalRows_View2 = mysql_num_rows($View2);
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -327,6 +333,9 @@ $totalRows_User = mysql_num_rows($User);
               </table>
             </div>
             <!-- /.box-body -->
+            <div class="box-footer">
+                  <a href="ViewTransaksiSewa.php?Reference=<?php echo $row_View2['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Back</button></a>
+			</div>
           </div>
           <!-- /.box -->
         </div>

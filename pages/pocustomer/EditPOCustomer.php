@@ -111,10 +111,10 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE pocustomer SET Reference=%s, Tgl=%s, PCode=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['Reference'], "text"),
-                       GetSQLValueString($_POST['Tgl'], "text"),
-                       GetSQLValueString($_POST['PCode'], "text"),
-                       GetSQLValueString($_POST['Id'], "int"));
+                       GetSQLValueString($_POST['tx_editpocustomer_Reference'], "text"),
+                       GetSQLValueString($_POST['tx_editpocustomer_Tgl'], "text"),
+                       GetSQLValueString($_POST['tx_editpocustomer_PCode'], "text"),
+                       GetSQLValueString($_POST['hd_editpocustomer_Id'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -285,7 +285,7 @@ $totalRows_User = mysql_num_rows($User);
                 <input name="hd_editpocustomer_Id" type="hidden" id="hd_editpocustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <div class="form-group">
                     <label>Reference</label>
-                    <input name="tx_editpocustomer_Reference" type="text" class="form-control" id="tx_editpocustomer_Reference" onKeyUp="capital()" value="<?php echo $row_Edit['Reference']; ?>" readonly>
+                    <input name="tx_editpocustomer_Reference" type="text" class="form-control" id="tx_editpocustomer_Reference" value="<?php echo $row_Edit['Reference']; ?>" readonly>
                   </div>
                   <div class="form-group">
                     <label>Date</label>
@@ -304,7 +304,7 @@ $totalRows_User = mysql_num_rows($User);
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                  <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Back</button></a> 
+                  <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Cancel</button></a> 
                   <button name="bt_editpocustomer_submit" type="submit" id="bt_editpocustomer_submit" class="btn btn-primary pull-right">Update</button>
                 </div>
               <input type="hidden" name="MM_update" value="form1">

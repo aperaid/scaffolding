@@ -387,7 +387,7 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <a href="ViewCustomer.php?Id=<?php echo $row_Edit['Id']; ?>"><button type="button" class="btn btn-default pull-left">Back</button></a>
+                <a href="ViewCustomer.php?Id=<?php echo $row_Edit['Id']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
                 <button type="submit" name="bt_editcustomer_submit" id="bt_editcustomer_submit" class="btn btn-info pull-right">Update</button>
               </div>
               <input type="hidden" name="MM_update" value="form1">

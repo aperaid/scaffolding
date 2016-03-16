@@ -340,7 +340,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Request Date</th>
-                <th>Price</th>
+                <th>Amount</th>
             </tr>
             </thead>
             <tbody>
@@ -367,7 +367,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
       <div class="row no-print">
         <div class="col-xs-12">
             <button type="submit" name="bt_edittransaksi_submit" id="bt_edittransaksi_submit" class="btn btn-success pull-right">Update</button> 
-            <a href="ViewTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Back</button></a>
+            <a href="ViewTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
         </div>
       </div>
 	  </form>

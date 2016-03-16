@@ -6,6 +6,6 @@
 	<infoitem key="UD_LastId" value="name:Id;datatype:int" />
 	<infoitem key="UD_Reference" value="name:Reference;datatype:string" />
 	<infoitem key="UD_LastTgl" value="name:Tgl;datatype:string" />
-	<infoitem key="UD_InsertSJKirim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QSisaKirInsert;datatype:int,name:Reference;datatype:string,name:Project;datatype:string" />
+	<infoitem key="UD_InsertSJKirim" value="name:Id;datatype:int,name:Purchase;datatype:string,name:Barang;datatype:string,name:JS;datatype:string,name:QSisaKirInsert;datatype:int,name:Reference;datatype:string,name:Project;datatype:string" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
 </info>

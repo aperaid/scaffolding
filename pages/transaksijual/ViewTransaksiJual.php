@@ -317,6 +317,9 @@ $totalRows_User = mysql_num_rows($User);
               </table>
             </div>
             <!-- /.box-body -->
+            <div class="box-footer">
+                  <a href="TransaksiJual.php"><button type="button" class="btn btn-default pull-left">Back</button></a>
+			</div>
           </div>
           <!-- /.box -->
         </div>

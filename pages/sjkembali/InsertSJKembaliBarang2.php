@@ -206,7 +206,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, Periode, IsiSJKir, SJKem) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_IsiSJKem'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKem'][$i], "text"),
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"),
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
@@ -384,7 +384,7 @@ $totalRows_User = mysql_num_rows($User);
 	        <input name="hd_insertsjkembalibarang2_Periode[]" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_GetPeriode['MAX(periode.Periode)']; ?>">
 	        <input name="hd_insertsjkembalibarang2_S[]" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo '01', $FirstDate; ?>">
 	        <input name="hd_insertsjkembalibarang2_E[]" type="hidden" id="hd_insertsjkembalibarang2_E" value="<?php echo $row_LastTgl['Tgl']; ?>">
-	    <td><?php echo $row_LastIsiSJKembali['Id'] + $increment; ?></td>
+	    <td><input name="hd_insertsjkembalibarang2_IsiSJKem[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>"><?php echo $row_LastIsiSJKembali['Id'] + $increment; ?></td>
         <td><?php echo $row_InsertSJKembali['Purchase']; ?></td>
 	    <td><input name="tx_insertsjkembalibarang2_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Tgl" value="<?php echo $row_InsertSJKembali['Tgl']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>

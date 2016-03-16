@@ -305,7 +305,7 @@ $totalRows_User = mysql_num_rows($User);
               <!-- /.box-body -->
               <div class="box-footer">
                 <button type="submit" name="bt_insertproject_submit" id="bt_insertproject_submit" class="btn btn-info pull-right">Insert</button>
-                <div class="btn-group"><a href="Project.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
+                <div class="btn-group"><a href="Project.php"><button type="button" class="btn btn-default pull-left">Cancel</button></a></div>
               </div>
               <input type="hidden" name="MM_insert" value="form1">
               <!-- /.box-footer -->

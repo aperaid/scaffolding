@@ -139,9 +139,18 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkembali SET Warehouse=%s, QTerima=%s WHERE Id=%s",
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert-%s WHERE Purchase=%s",
+                       GetSQLValueString($_POST['tx_editsjkembali_QTertanda2'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkembali_Purchase'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+	
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkembali SET Warehouse=%s, QTertanda=QTertanda+%s WHERE Id=%s",
                        GetSQLValueString($_POST['tx_editsjkembali_Warehouse'][$i], "text"),
-                       GetSQLValueString($_POST['tx_editsjkembali_QTerima'][$i], "int"),
+					   GetSQLValueString($_POST['tx_editsjkembali_QTertanda2'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkembali_Id'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -296,6 +305,7 @@ $totalRows_User = mysql_num_rows($User);
 						<th>Warehouse</th>
 						<th>Q Sisa Kembali</th>
 						<th>Q Tertanda</th>
+                        <th>+/- Q Tertanda</th>
 						<th>Q Terima</th>
 					</tr>
 					</thead>
@@ -304,13 +314,14 @@ $totalRows_User = mysql_num_rows($User);
                         <tr>
 							<input name="hd_editsjkembali_Id[]" type="hidden" id="hd_editsjkembali_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
 							<td><?php echo $row_EditIsiSJKembali['IsiSJKem']; ?></td>
-							<td><?php echo $row_EditIsiSJKembali['Purchase']; ?></td>
+							<td><input name="hd_editsjkembali_Purchase[]" type="hidden" id="hd_editsjkembali_Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>"><?php echo $row_EditIsiSJKembali['Purchase']; ?></td>
 							<td><input name="tx_editsjkembali_Tgl" type="text" class="form-control" id="tx_editsjkembali_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
 							<td><input name="tx_editsjkembali_Barang" type="text" class="form-control" id="tx_editsjkembali_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkembali_Warehouse[]" type="text" class="form-control" id="tx_editsjkembali_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>"></td>
 							<td><input name="tx_editsjkembali_QSisaKem[]" type="text" class="form-control" id="tx_editsjkembali_QSisaKem" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
-							<td><input name="tx_editsjkembali_QTertanda[]" type="text" class="form-control" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"></td>
-							<td><input name="tx_editsjkembali_QTerima" type="text" class="form-control" id="tx_editsjkembali_QTerima" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
+							<td><input name="tx_editsjkembali_QTertanda[]" type="text" class="form-control" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
+                            <td><input name="tx_editsjkembali_QTertanda2[]" type="number" class="form-control" id="tx_editsjkembali_QTertanda2" autocomplete="off" value="0" onKeyDown="return false"></td>
+							<td><input name="tx_editsjkembali_QTerima" type="text" class="form-control" id="tx_editsjkembali_QTerima" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly></td>
 						</tr>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
 					</tbody>

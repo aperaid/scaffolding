@@ -299,7 +299,7 @@ $totalRows_User = mysql_num_rows($User);
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                  <a href="SJKirim.php"><button type="button" class="btn btn-default pull-left">Back</button></a> 
+                  <a href="SJKirim.php"><button type="button" class="btn btn-default pull-left">Cancel</button></a> 
                   <button type="submit" name="bt_insertsjkirim_submit" id="bt_insertsjkirim_submit" class="btn btn-primary pull-right">Insert</button>
                 </div>
               <input type="hidden" name="MM_insert" value="form1">
