@@ -201,6 +201,16 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE periode SET S=%s, E=%s WHERE IsiSJKir=%s",
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_S'][$i], "text"),
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_E'][$i], "text"),
+					   GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
@@ -358,6 +368,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<input name="hd_editsjkirimquantity_QSisaKir2" type="hidden" id="hd_editsjkirimquantity_QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>">
                             <input name="hd_editsjkirimquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkirimquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
                             <input name="hd_editsjkirimquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkirimquantity_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
+                            <input name="hd_editsjkirimquantity_S[]" type="hidden" id="hd_editsjkirimquantity_S" value="<?php echo date("d/m/Y"); ?>">
+	      					<input name="hd_editsjkirimquantity_E[]" type="hidden" id="hd_editsjkirimquantity_E" value="<?php echo date("d/m/Y", strtotime("-1 day +1 month")); ?>">
 							<td><?php echo $row_EditIsiSJKirim['IsiSJKir']; ?></td>
 							<td><?php echo $row_EditIsiSJKirim['Purchase']; ?></td>
 							<td><input name="tx_editsjkirimquantity_JS" type="text" class="form-control" id="tx_editsjkirimquantity_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>

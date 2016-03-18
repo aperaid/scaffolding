@@ -283,6 +283,7 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Project</th>
                   <th>Amount</th>
                   <th>Opsi</th>
+                  <th>Opsi</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -293,8 +294,8 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_POCustomer['Company']; ?></td>
                     <td><?php echo $row_POCustomer['Project']; ?></td>
                     <td></td>
-                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a>
-                    <a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
+                    <td><a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>
                   <?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
                 </tbody>
@@ -305,6 +306,7 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Company Name</th>
                   <th>Project</th>
                   <th>Amount</th>
+                  <th>Opsi</th>
                   <th>Opsi</th>
                 </tr>
                 </tfoot>

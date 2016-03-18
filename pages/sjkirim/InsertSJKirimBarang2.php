@@ -196,9 +196,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
   
-    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (1, %s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['hd_insertsjkiribarang2_S'][$i], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkiribarang2_E'][$i], "text"),
+    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (1, 'Q Tertanda', 'Q Tertanda', %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertsjkiribarang2_QKirim'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkiribarang2_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkiribarang2_Reference'][$i], "text"),
@@ -368,66 +366,10 @@ $totalRows_User = mysql_num_rows($User);
 					  </tr>
                     </thead>
                 	<tbody>
-                        <?php $tgl = 0; $bln = substr($row_LastTgl['Tgl'], 3, -5); $thn = substr($row_LastTgl['Tgl'], 6);
-			if ($bln == 1){
-				$tgl = 31;
-				$bln = '01';
-				}
-			elseif ($bln == 2){
-				$tgl = 28;
-				$bln = '02';
-				if ($thn == 2016 || $thn == 2020 || $thn == 2024){
-				$tgl = 29;
-				$bln = '02';
-				}
-				}
-			elseif ($bln == 3){
-				$tgl = 31;
-				$bln = '03';
-				}
-			elseif ($bln == 4){
-				$tgl = 30;
-				$bln = '04';
-				}
-			elseif ($bln == 5){
-				$tgl = 31;
-				$bln = '05';
-				}
-			elseif ($bln == 6){
-				$tgl = 30;
-				$bln = '06';
-				}
-			elseif ($bln == 7){
-				$tgl = 31;
-				$bln = '07';
-				}
-			elseif ($bln == 8){
-				$tgl = 31;
-				$bln = '08';
-				}
-			elseif ($bln == 9){
-				$tgl = 30;
-				$bln = '09';
-				}
-			elseif ($bln == 10){
-				$tgl = 31;
-				$bln = '10';
-				}
-			elseif ($bln == 11){
-				$tgl = 30;
-				$bln = '11';
-				}
-			elseif ($bln == 12){
-				$tgl = 31;
-				$bln = '12';
-				}
-			?>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
 	      <input name="hd_insertsjkiribarang2_Id[]" type="hidden" id="hd_insertsjkiribarang2_Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
-	      <input name="hd_insertsjkiribarang2_S[]" type="hidden" id="hd_insertsjkiribarang2_S" value="<?php echo $row_LastTgl['Tgl']; ?>">
-	      <input name="hd_insertsjkiribarang2_E[]" type="hidden" id="hd_insertsjkiribarang2_E" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>">
 	      <input name="hd_insertsjkiribarang2_Reference[]" type="hidden" id="hd_insertsjkiribarang2_Reference" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
 	    <td><input name="hd_insertsjkiribarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkiribarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>"><?php echo $row_LastIsiSJKirim['Id'] + $increment; ?></td>
         <td><input name="hd_insertsjkiribarang2_Purchase[]" type="hidden" id="hd_insertsjkiribarang2_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"><?php echo $row_InsertSJKirim['Purchase']; ?></td>
