@@ -32,7 +32,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 if ((isset($_GET['CCode'])) && ($_GET['CCode'] != "")) {
-  $deleteSQL = sprintf("SELECT delete_customer('%s')",
+  $deleteSQL = sprintf("SELECT delete_POCustomer('%s')",
                        GetSQLValueString($_GET['CCode'], "Text"));
 					   
   $alterSQL = sprintf("ALTER TABLE customer AUTO_INCREMENT = 1");
@@ -41,7 +41,7 @@ if ((isset($_GET['CCode'])) && ($_GET['CCode'] != "")) {
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 
-  $deleteGoTo = "Customer.php";
+  $deleteGoTo = "POCustomer.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
     $deleteGoTo .= $_SERVER['QUERY_STRING'];
