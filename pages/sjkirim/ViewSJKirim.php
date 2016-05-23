@@ -151,6 +151,10 @@ $ViewIsiSJKirim = mysql_query($query_ViewIsiSJKirim, $Connection) or die(mysql_e
 $row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim);
 $totalRows_ViewIsiSJKirim = mysql_num_rows($ViewIsiSJKirim);
 
+$query_ViewSJKirim = sprintf("SELECT Tgl FROM SJKirim WHERE SJKIRIM=%s", GetSQLValueString($colname_ViewIsiSJKirim, "text"))
+$ViewSJKirim = mysql_query($query_ViewSJKirim, $Connection) or die(mysql_error());
+$row_ViewSJKirim = mysql_fetch_assoc($ViewSJKirim);
+
 $colname_View = "-1";
 if (isset($_GET['SJKir'])) {
   $colname_View = $_GET['SJKir'];
@@ -289,7 +293,7 @@ $totalRows_User = mysql_num_rows($User);
         <div class="col-xs-12">
           <h2 class="page-header">
             <i class="fa fa-globe"></i> SJ Kirim | <big><?php echo $row_ViewIsiSJKirim['SJKir']; ?></big>
-			<small class="pull-right">Date: <?php echo $row_ViewIsiSJKirim['Tgl']; ?></small>
+			<small class="pull-right">Date: <?php echo $row_ViewSJKirim['Tgl']; ?></small>
 		  </h2>
         </div>
         <!-- /.col -->
