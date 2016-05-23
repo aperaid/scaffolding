@@ -337,8 +337,8 @@ $totalRows_User = mysql_num_rows($User);
         <div class="col-xs-12">
           <a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
 		  <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left" style="margin-right: 5px;">Back</button></a>
-          <a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?><button type="button" class="btn btn-success pull-right">SJ Kirim</button>
-          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>" type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">Edit</a>
+          <a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?>"><button type="button" class="btn btn-success pull-right">SJ Kirim</button></a>
+          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>"><button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">Edit</button></a>
           <a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>"><button type="button" class="btn btn-danger pull-right" style="margin-right: 5px;">Delete</button></a>
         </div>
       </div>
