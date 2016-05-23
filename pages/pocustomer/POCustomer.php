@@ -299,17 +299,7 @@ $totalRows_User = mysql_num_rows($User);
                   </tr>
                   <?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>Reference</th>
-                  <th>Date</th>
-                  <th>Company Name</th>
-                  <th>Project</th>
-                  <th>Amount</th>
-                  <th>Opsi</th>
-                  <th>Opsi</th>
-                </tr>
-                </tfoot>
+                
               </table>
             </div>
             <!-- /.box-body -->

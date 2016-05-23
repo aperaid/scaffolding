@@ -294,18 +294,7 @@ $totalRows_User = mysql_num_rows($User);
 					</tr>
 					<?php } while ($row_Invoice = mysql_fetch_assoc($Invoice)); ?>
 				</tbody>
-                <tfoot>
-                <tr>
-                  <th>No. Invoice</th>
-                  <th>Project</th>
-                  <th>Periode</th>
-                  <th>J/S/C</th>
-                  <th>Perusahaan</th>
-                  <th>Amount</th>
-                  <th>Tanggal Invoice</th>
-                  <th>Opsi</th>
-                </tr>
-                </tfoot>
+                
 			</table>
             </div>
             <!-- /.box-body -->

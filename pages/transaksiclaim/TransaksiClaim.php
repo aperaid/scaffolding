@@ -299,17 +299,7 @@ $totalRows_User = mysql_num_rows($User);
 					</tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
 				</tbody>
-                <tfoot>
-                <tr>
-                  <th>No. Claim</th>
-				  <th>Tanggal Claim</th>
-				  <th>Project</th>
-				  <th>Amount</th>
-				  <th>Quantity Claim</th>
-                  <th>Opsi</th>
-				  <th>Opsi</th>
-                </tr>
-                </tfoot>
+                
 			</table>
             </div>
             <!-- /.box-body -->

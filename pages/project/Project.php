@@ -263,12 +263,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
                   </tr>
                   <?php } while ($row_Project = mysql_fetch_assoc($Project)); ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>Project Code</th>
-                  <th>Project Name</th>
-                </tr>
-                </tfoot>
+                
               </table>
             </div>
             <!-- /.box-body -->

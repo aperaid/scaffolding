@@ -299,15 +299,7 @@ $totalRows_User = mysql_num_rows($User);
 					</tr>
 				  <?php } while ($row_SJKirim = mysql_fetch_assoc($SJKirim)); ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>SJ Code</th>
-                  <th>Tgl Kirim</th>
-                  <th>Customer</th>
-                  <th>Project</th>
-                  <th>Opsi</th>
-                </tr>
-                </tfoot>
+                
               </table>
             </div>
             <!-- /.box-body -->

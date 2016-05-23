@@ -295,14 +295,7 @@ $totalRows_User = mysql_num_rows($User);
 					</tr>
 					<?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
 				</tbody>
-                <tfoot>
-                <tr>
-                  <th>Reference</th>
-                  <th>Project</th>
-                  <th>Customer</th>
-                  <th>Opsi</th>
-                </tr>
-                </tfoot>
+                
               </table>
             </div>
             <!-- /.box-body -->
