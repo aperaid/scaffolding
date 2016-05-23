@@ -267,8 +267,8 @@ $totalRows_User = mysql_num_rows($User);
 					<th>Tanggal Kirim</th>
 					<th>Barang</th>
 					<th>Warehouse</th>
-					<th>Q Sisa Kembali</th>
 					<th>Q Tertanda</th>
+					<th>Q Sisa Kembali</th>
 					<th>Q Terima</th>
                 </tr>
                 </thead>
@@ -281,8 +281,8 @@ $totalRows_User = mysql_num_rows($User);
 						<td><input name="tx_viewsjkembali_Tgl" type="text" class="form-control" id="tx_viewsjkembali_Tgl" value="<?php echo $row_ViewIsiSJKembali['Tgl']; ?>" readonly></td>
 						<td><input name="tx_viewsjkembali_Barang" type="text" class="form-control" id="tx_viewsjkembali_Barang" value="<?php echo $row_ViewIsiSJKembali['Barang']; ?>" readonly></td>
 						<td><input name="tx_viewsjkembali_Warehouse" type="text" class="form-control" id="tx_viewsjkembali_Warehouse" value="<?php echo $row_ViewIsiSJKembali['Warehouse']; ?>" readonly></td>
-						<td><input name="tx_viewsjkembali_QSisaKem" type="text" class="form-control" id="tx_viewsjkembali_QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
 						<td><input name="tx_viewsjkembali_QTertanda" type="text" class="form-control" id="tx_viewsjkembali_QTertanda" value="<?php echo $row_ViewIsiSJKembali['QTertanda']; ?>" readonly></td>
+                        <td><input name="tx_viewsjkembali_QSisaKem" type="text" class="form-control" id="tx_viewsjkembali_QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
 						<td><input name="tx_viewsjkembali_QTerima" type="text" class="form-control" id="tx_viewsjkembali_QTerima" value="<?php echo $row_ViewIsiSJKembali['QTerima']; ?>" readonly></td
 					></tr>
 					<?php } while ($row_ViewIsiSJKembali = mysql_fetch_assoc($ViewIsiSJKembali)); ?>

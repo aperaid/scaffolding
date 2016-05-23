@@ -146,10 +146,11 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-$QTertanda = $row_EditIsiSJKirim['QTertanda'];
+
 
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+	$QTertanda = GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda2'][$i], "int");
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=QSisaKir+$QTertanda-%s, QSisaKem=QSisaKem-$QTertanda+%s  WHERE Purchase=%s",
                        GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
 					   GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
@@ -346,6 +347,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                             <input name="hd_editsjkirimquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkirimquantity_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
                             <input name="hd_editsjkirimquantity_S[]" type="hidden" id="hd_editsjkirimquantity_S" value="<?php echo date("d/m/Y"); ?>">
 	      					<input name="hd_editsjkirimquantity_E[]" type="hidden" id="hd_editsjkirimquantity_E" value="<?php echo date("d/m/Y", strtotime("-1 day +1 month")); ?>">
+                            <input name="tx_editsjkirimquantity_QTertanda2[]" type="hidden" class="form-control" id="tx_editsjkirimquantity_QTertanda2" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>">
 							<td><?php echo $row_EditIsiSJKirim['IsiSJKir']; ?></td>
 							<td><?php echo $row_EditIsiSJKirim['Purchase']; ?></td>
 							<td><input name="tx_editsjkirimquantity_JS" type="text" class="form-control" id="tx_editsjkirimquantity_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>

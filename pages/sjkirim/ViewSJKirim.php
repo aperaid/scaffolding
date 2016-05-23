@@ -151,7 +151,7 @@ $ViewIsiSJKirim = mysql_query($query_ViewIsiSJKirim, $Connection) or die(mysql_e
 $row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim);
 $totalRows_ViewIsiSJKirim = mysql_num_rows($ViewIsiSJKirim);
 
-$query_ViewSJKirim = sprintf("SELECT Tgl FROM SJKirim WHERE SJKIRIM=%s", GetSQLValueString($colname_ViewIsiSJKirim, "text"))
+$query_ViewSJKirim = sprintf("SELECT Tgl FROM SJKirim WHERE SJKir=%s", GetSQLValueString($colname_ViewIsiSJKirim, "text"));
 $ViewSJKirim = mysql_query($query_ViewSJKirim, $Connection) or die(mysql_error());
 $row_ViewSJKirim = mysql_fetch_assoc($ViewSJKirim);
 
