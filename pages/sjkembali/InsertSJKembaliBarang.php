@@ -72,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -122,7 +121,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKemInsert, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Quantity FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKemInsert, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
@@ -139,20 +138,9 @@ $LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
 $row_LastId = mysql_fetch_assoc($LastId);
 $totalRows_LastId = mysql_num_rows($LastId);
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
-}
-
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (IsiSJKir) VALUES (%s)",
-                       GetSQLValueString($_POST['cb_insertsjkembalibarang_checkbox'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+  $_SESSION['CheckBox2'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_insertsjkembalibarang_checkbox'][$i], "int"));
   
   $insertGoTo = "InsertSJKembaliBarang2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -298,7 +286,6 @@ $totalRows_User = mysql_num_rows($User);
                     <th>Pilih</th>
                     <th>Tgl Kirim</th>
                     <th>Barang</th>
-                    <th>Quantity</th>
                     <th>Quantity Sisa Kembali</th>
                     <th>SJ Code</th>
                   </tr>
@@ -310,7 +297,6 @@ $totalRows_User = mysql_num_rows($User);
                         <td><input type="checkbox" name="cb_insertsjkembalibarang_checkbox[]" id="cb_insertsjkembalibarang_checkbox" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>"></td>
                         <td><input name="tx_insertsjkembalibarang_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Tgl" value="<?php echo $row_InsertSJKembali['Tgl']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
-                        <td><input name="tx_insertsjkembalibarang_Quantity[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Quantity" value="<?php echo $row_InsertSJKembali['Quantity']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_QSisaKemInsert[]" type="text" class="form-control" id="tx_insertsjkembalibarang_QSisaKemInsert" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_SJKir[]" type="text" class="form-control" id="tx_insertsjkembalibarang_SJKir" value="<?php echo $row_InsertSJKembali['SJKir']; ?>" readonly></td>
                         </tr>

@@ -27,7 +27,6 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -73,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -137,11 +135,13 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+$QTerima = $row_EditIsiSJKembali['QTerima'];
+
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem-%s WHERE Purchase=%s",
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+$QTerima-%s WHERE Purchase=%s",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
-                       GetSQLValueString($_POST['tx_editsjkembaliquantity_Purchase'][$i], "text"));
+                       GetSQLValueString($_POST['hd_editsjkembaliquantity_Purchase'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -150,8 +150,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=%s WHERE IsiSJKir=%s",
-                       GetSQLValueString($_POST['tx_editsjkembaliquantity_QSisaKem'][$i], "int"),
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=QSisaKem+$QTerima-%s WHERE IsiSJKir=%s",
+                       GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkembaliquantity_IsiSJKir'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -326,7 +326,7 @@ $totalRows_User = mysql_num_rows($User);
 					  <?php do { ?>
 						<tr>
 							<input name="hd_editsjkembaliquantity_Id[]" type="hidden" id="hd_editsjkembaliquantity_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
-							<input name="hd_editsjkembaliquantity_QSisaKem2" type="hidden" id="hd_editsjkembaliquantity_QSisaKem2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>">
+							<input name="hd_editsjkembaliquantity_QSisaKem2" type="hidden" id="hd_editsjkembaliquantity_QSisaKem2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>">
                             <input name="hd_editsjkembaliquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkembaliquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
                             <input name="hd_editsjkembaliquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkembaliquantity_Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>">
 							<td><?php echo $row_EditIsiSJKembali['IsiSJKem']; ?></td>
@@ -336,7 +336,7 @@ $totalRows_User = mysql_num_rows($User);
 							<td><input name="tx_editsjkembaliquantity_Warehouse[]" type="text" class="form-control" id="tx_editsjkembaliquantity_Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_QSisaKem[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
-                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
+                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTerima']; ?>)" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
@@ -402,6 +402,17 @@ $totalRows_User = mysql_num_rows($User);
       }
    }
    }
+</script>
+
+<script type="text/javascript">
+function minmax(value, min, max) 
+{
+	if(parseInt(value) < min || isNaN(value)) 
+        return 0; 
+    if(parseInt(value) > max) 
+        return parseInt(max); 
+    else return value;
+}
 </script>
 </body>
 </html>

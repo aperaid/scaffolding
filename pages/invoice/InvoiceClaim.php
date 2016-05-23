@@ -24,7 +24,6 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -69,7 +68,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("", $MM_authorizedUsers
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -290,7 +288,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_Invoice['Company']; ?></td>
 						<td>&nbsp;</td>
 						<td><?php echo $row_Invoice['Tgl']; ?></td>
-					  <td align="center"><a href="ViewInvoiceClaim.php?Reference=<?php echo $row_Invoice['Reference']; ?>&JS=<?php echo $row_Invoice['JSC']; ?>&Invoice=<?php echo $row_Invoice['Invoice']; ?>">
+					  <td align="center"><a href="ViewInvoiceClaim.php?Reference=<?php echo $row_Invoice['Reference']; ?>&JS=<?php echo $row_Invoice['JSC']; ?>&Invoice=<?php echo $row_Invoice['Invoice']; ?>&Periode=<?php echo $row_Invoice['Periode']; ?>">
 					  <button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
 					</tr>
 					<?php } while ($row_Invoice = mysql_fetch_assoc($Invoice)); ?>

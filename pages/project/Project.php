@@ -258,7 +258,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
                   <tr>
                     <td><?php echo $row_Project['PCode']; ?></td>
                     <td><?php echo $row_Project['Project']; ?></td>
-                    <td><a href="ViewProject.php?PCode=<?php echo $row_Project['PCode']; ?>">
+                    <td><a href="ViewProject.php?Id=<?php echo $row_Project['Id']; ?>">
                     <button type="button" id="bt_project_view" name="bt_project_view" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>
                   <?php } while ($row_Project = mysql_fetch_assoc($Project)); ?>

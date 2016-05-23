@@ -281,7 +281,7 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_insertcustomer_CCode" type="text" class="form-control" placeholder="Company Code">
+                    <input id="tx_insertcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_insertcustomer_CCode" type="text" class="form-control" placeholder="Company Code" maxlength="5">
                   </div>
                 </div>
                 <div class="form-group">

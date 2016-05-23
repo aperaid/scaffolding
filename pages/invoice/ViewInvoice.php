@@ -27,7 +27,6 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -73,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -137,7 +135,7 @@ if (isset($_GET['JS'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, periode.Quantity, periode.S, periode.E, periode.SJKem, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
+$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, periode.Quantity, periode.S, periode.E, periode.SJKem, periode.Deletes, transaksi.Amount, periode.Periode FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
 LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
 WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"),
@@ -357,67 +355,53 @@ $totalRows_User = mysql_num_rows($User);
           <td><?php echo $row_View2['SJKem']; ?></td>
           <td><?php echo $row_View2['Purchase']; ?></td>
           <td><?php echo $row_View2['Barang']; ?></td>
-          <td><?php echo $row_View2['S']; ?></td>
-          <td><?php echo $row_View2['E']; ?></td>
-          <td>
-            <?php 
+          
+          <?php 
 		  $date1 = $row_View2['S'];
 		  $date2 = $row_View2['E'];
 		  $date1 = str_replace('/', '-', $date1);
 		  $date2 = str_replace('/', '-', $date2);
-		  $sjkem = strtotime($date2); $sjkir = strtotime($date1); ?>
-            <?php echo round((($sjkem - $sjkir) / 86400),1)+1 ?></td>
-          <td>
-            <?php $bln = substr($row_View2['S'], 3, -5); $thn = substr($row_View2['S'], 6);
-			if ($bln == 1){
-				$bln = 31;
-				}
-			elseif ($bln == 2){
-				$bln = 28;
-				if ($thn == 2016 || $thn == 2020 || $thn == 2024){
-				$bln = 29;
-				}
-				}
-			elseif ($bln == 3){
-				$bln = 31;
-				}
-			elseif ($bln == 4){
-				$bln = 30;
-				}
-			elseif ($bln == 5){
-				$bln = 31;
-				}
-			elseif ($bln == 6){
-				$bln = 30;
-				}
-			elseif ($bln == 7){
-				$bln = 31;
-				}
-			elseif ($bln == 8){
-				$bln = 31;
-				}
-			elseif ($bln == 9){
-				$bln = 30;
-				}
-			elseif ($bln == 10){
-				$bln = 31;
-				}
-			elseif ($bln == 11){
-				$bln = 30;
-				}
-			elseif ($bln == 12){
-				$bln = 31;
-				}
-			else {
-				$bln = "ada kesalahan bulan";
-				}
-			?>
-            <?php echo $bln ?></td>
-          <td><?php echo round(((($sjkem - $sjkir) / 86400)+1)/$bln, 4) ?></td>
+		  $FirstDate = date('01/m/Y', strtotime($date1));
+		  $LastDate = date('t/m/Y', strtotime($date1));
+		  $Proof = strtotime("-1 day +1 month", strtotime($date1));
+		  $Proof2 = date("d/m/Y", $Proof);
+		  
+		  if($row_View['Periode'] == 1){
+			  $FirstDate2 = $row_View2['S'];
+		  }
+		  else{
+			  $FirstDate2 = $FirstDate;
+		  }
+		  
+		  if($Proof2 == $row_View2['E'] || $row_View2['Deletes'] == 'Extend'){
+			  $LastDate2 = $LastDate;
+		  }
+		  else{
+			  $LastDate2 = $row_View2['E'];
+		  }
+		
+		  $Freplace = str_replace('/', '-', $FirstDate2);
+		  $Lreplace = str_replace('/', '-', $LastDate2);
+		  $sjkem = strtotime($Lreplace); $sjkir = strtotime($Freplace); 
+		  
+		  $SE = round((($sjkem - $sjkir) / 86400),1)+1;
+		  
+		  $Days = str_replace('/', ',', $FirstDate2);
+		  $M = substr($Days, 3, -5);
+		  $Y = substr($Days, 6);
+		  $Days2 = cal_days_in_month(CAL_GREGORIAN, $M, $Y);
+		  
+		  ?>
+          
+          <td><?php echo $FirstDate2 ?></td>
+          <td><?php echo $LastDate2; ?></td>
+          <td><?php echo $SE; ?></td>
+          <td><?php echo $Days2 ?></td>
+          <td><?php echo round(((($sjkem - $sjkir) / 86400)+1)/$Days2, 4) ?></td>
           <td><?php echo $row_View2['Quantity']; ?></td>
           <td><?php echo $row_View2['Amount']; ?></td>
-          <?php $test = ((($sjkem - $sjkir) / 86400)+1)/$bln*$row_View2['Quantity']* $row_View2['Amount']; $total += $test ?>
-          <td><?php echo round($test, 2) ?></td>
+          <?php $total2 = ((($sjkem - $sjkir) / 86400)+1)/$Days2*$row_View2['Quantity']* $row_View2['Amount']; $total += $total2 ?>
+          <td><?php echo round($total2, 2) ?></td>
         </tr>
       <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
     </tbody>
@@ -434,14 +418,16 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Transport</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php echo $row_View['Transport']; ?>" onKeyUp="tot()">
-                    <input id="hd_viewinvoice_Transport2" name="hd_viewinvoice_Transport2" type="hidden" autocomplete="off" value="<?php echo $row_View['Transport']; ?>">
+                    <input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo $row_View['Transport']; }?>" onKeyUp="tot()">
+                    <input id="hd_viewinvoice_Transport2" name="hd_viewinvoice_Transport2" type="hidden" autocomplete="off" value="<?php if ($row_View['Periode'] == 1){ echo $row_View['Transport']; }?>">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="<?php echo round(($total*$row_View['PPN']*0.1)+$total+$row_View['Transport'], 2); ?>"  readonly>
+                    <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
+					else $toss = 0;
+					 echo round(($total*$row_View['PPN']*0.1)+$total+$toss, 2);?>"  readonly>
                     <input id="hd_viewinvoice_Totals2" name="hd_viewinvoice_Totals2" type="hidden" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>

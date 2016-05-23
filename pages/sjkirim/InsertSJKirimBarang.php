@@ -72,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -149,20 +148,9 @@ $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
-}
-
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (Purchase) VALUES (%s)",
-                       GetSQLValueString($_POST['cb_insertsjkirimbarang_checkbox'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+  $_SESSION['CheckBox'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_insertsjkirimbarang_checkbox'][$i], "int"));
   
   $insertGoTo = "InsertSJKirimBarang2.php";
   if (isset($_SERVER['QUERY_STRING'])) {

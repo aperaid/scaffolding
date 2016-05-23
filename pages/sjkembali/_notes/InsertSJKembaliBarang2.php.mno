@@ -11,4 +11,5 @@
 	<infoitem key="UD_GetPeriode" value="name:MAX(periode.Periode);datatype:int" />
 	<infoitem key="UD_LastTgl" value="name:Tgl;datatype:string" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
+	<infoitem key="UD_LastTglS" value="name:Tgl;datatype:string" />
 </info>

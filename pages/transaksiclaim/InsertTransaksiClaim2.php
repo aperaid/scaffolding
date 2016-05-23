@@ -31,10 +31,15 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$query_LastReference = "SELECT inserted.Reference, MAX(periode.Periode) FROM inserted LEFT JOIN periode ON inserted.Reference=periode.Reference";
-$LastReference = mysql_query($query_LastReference, $Connection) or die(mysql_error());
-$row_LastReference = mysql_fetch_assoc($LastReference);
-$totalRows_LastReference = mysql_num_rows($LastReference);
+session_start();
+$Reference = $_SESSION['Reference']; 
+$Strip = substr($Reference, 1, -1);
+
+mysql_select_db($database_Connection, $Connection);
+$query_LastPeriode = "SELECT MAX(Periode), Reference FROM periode WHERE Reference = '$Strip'";
+$LastPeriode = mysql_query($query_LastPeriode, $Connection) or die(mysql_error());
+$row_LastPeriode = mysql_fetch_assoc($LastPeriode);
+$totalRows_LastPeriode = mysql_num_rows($LastPeriode);
 ?>
 <!doctype html>
 <html>
@@ -42,12 +47,6 @@ $totalRows_LastReference = mysql_num_rows($LastReference);
 <meta charset="utf-8">
 <title>Untitled Document</title>
 <link href="../../Button.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	background-image: url(../../Image/Wood.png);
-	background-repeat: no-repeat;
-}
-</style>
 
 <script type="text/javascript">
     function submit()
@@ -60,11 +59,11 @@ body {
 </head>
 
 <body onLoad="submit()">
-<form id="fm_inserttransaksiclaim2_form1" name="fm_inserttransaksiclaim2_form1" method="post" action="InsertTransaksiClaimBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>&Periode=<?php echo $row_LastReference['MAX(periode.Periode)']; ?>">
+<form id="fm_inserttransaksiclaim2_form1" name="fm_inserttransaksiclaim2_form1" method="post" action="InsertTransaksiClaimBarang.php?Reference=<?php echo $Strip; ?>&&Periode=<?php echo $row_LastPeriode['MAX(Periode)']; ?>">
   <input type="submit" name="bt_inserttransaksiclaim2_submit" id="bt_inserttransaksiclaim2_submit" value="">
 </form>
 </body>
 </html>
 <?php
-  mysql_free_result($LastReference);
+  mysql_free_result($LastPeriode);
 ?>

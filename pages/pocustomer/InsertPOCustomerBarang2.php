@@ -78,12 +78,6 @@ $row_Reference = mysql_fetch_assoc($Reference);
 $totalRows_Reference = mysql_num_rows($Reference);
 
 mysql_select_db($database_Connection, $Connection);
-$query_inserted = "SELECT * FROM inserted";
-$inserted = mysql_query($query_inserted, $Connection) or die(mysql_error());
-$row_inserted = mysql_fetch_assoc($inserted);
-$totalRows_inserted = mysql_num_rows($inserted);
-
-mysql_select_db($database_Connection, $Connection);
 $query_LastTgl = "SELECT Tgl FROM pocustomer ORDER BY Id DESC";
 $LastTgl = mysql_query($query_LastTgl, $Connection) or die(mysql_error());
 $row_LastTgl = mysql_fetch_assoc($LastTgl);
@@ -110,6 +104,11 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   header(sprintf("Location: %s", $insertGoTo));
 }
 }
+
+
+
+session_start();
+
 ?>
 <!doctype html>
 <html>
@@ -197,8 +196,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
           <td>&nbsp;</td>
           <td><input name="hd_insertpocustomerbarang2_Invoice[]" type="hidden" id="hd_insertpocustomerbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
           <input name="hd_insertpocustomerbarang2_JS[]" type="hidden" id="hd_insertpocustomerbarang2_JS" value="<?php echo $row_JS['JS']; ?>">
-          <input name="hd_insertpocustomerbarang2_PPN[]" type="hidden" id="hd_insertpocustomerbarang2_PPN" value="<?php echo $row_inserted['PPN']; ?>">
-          <input name="hd_insertpocustomerbarang2_Transport[]" type="hidden" id="hd_insertpocustomerbarang2_Transport" value="<?php echo $row_inserted['Transport']; ?>">
+          <input name="hd_insertpocustomerbarang2_PPN[]" type="hidden" id="hd_insertpocustomerbarang2_PPN" value="<?php echo $_SESSION["PPN"]; ?>">
+          <input name="hd_insertpocustomerbarang2_Transport[]" type="hidden" id="hd_insertpocustomerbarang2_Transport" value="<?php echo $_SESSION["Transport"]; ?>">
           <input name="hd_insertpocustomerbarang2_Reference[]" type="hidden" id="hd_insertpocustomerbarang2_Reference" value="<?php echo $row_Reference['Reference']; ?>">
           <input name="hd_insertpocustomerbarang2_Tgl[]" type="hidden" id="hd_insertpocustomerbarang2_Tgl" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>"></td>
           <td>&nbsp;</td>
@@ -223,6 +222,5 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_free_result($JS);
   mysql_free_result($LastId);
   mysql_free_result($Reference);
-  mysql_free_result($inserted);
   mysql_free_result($LastTgl);
 ?>

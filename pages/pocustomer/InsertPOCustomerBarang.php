@@ -1,4 +1,5 @@
 <?php require_once('../../connections/Connection.php'); ?>
+<?php date_default_timezone_set("Asia/Krasnoyarsk"); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -72,7 +73,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -111,20 +111,13 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
+  $_SESSION['PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (PPN, Transport) VALUES (%s, %s)",
-                       GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"),
-                       GetSQLValueString($_POST['tx_insertpocustomerbarang_Transport'], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+  $_SESSION['Transport'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Transport'], "int"));
 }
+
 for($i=0;$i<10;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
@@ -317,11 +310,11 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="box-body">
                   <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
                     <thead>
+                      <th><a href="javascript:void(0);" id="hf_insertpocustomerbarang_addCF" class=" glyphicon glyphicon-plus"></a></th>
                       <th>Barang</th>
                       <th>J/S</th>
                       <th>Amount</th>
                       <th>Quantity</th>
-                      <th><a href="javascript:void(0);" id="hf_insertpocustomerbarang_addCF" class=" glyphicon glyphicon-plus"></a></th>
                     </thead>
                   </table>
                 </div>
@@ -334,7 +327,9 @@ $totalRows_User = mysql_num_rows($User);
                     </thead>
                     <tbody>
                       <tr>
-                        <td><input name="tx_insertpocustomerbarang_PPN" type="text" id="tx_insertpocustomerbarang_PPN" class="form-control" value="0" autocomplete="off"></td>
+                        <td>
+                        <input name="tx_insertpocustomerbarang_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
+                        <input name="tx_insertpocustomerbarang_PPN" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1"></td>
                         <td><input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" value="0" autocomplete="off"></td>
                       </tr>
     				</tbody>
@@ -401,7 +396,7 @@ $totalRows_User = mysql_num_rows($User);
 		if(x < max_fields){ //max input box allowed
             x++; //text box count increment
 			z++;
-		$("#tb_insertpocustomerbarang_customFields").append('<tr><td class="hidden"><input type="hidden" name="hd_insertpocustomerbarang_Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="tx_inputpocustomerbarang_Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control"></td><td><select name="db_insertpocustomerbarang_JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="tx_insertpocustomerbarang_Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control"></td><td><input type="text" name="tx_insertpocustomerbarang_Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control"></td><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td></tr>');
+		$("#tb_insertpocustomerbarang_customFields").append('<tr><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td><td class="hidden"><input type="hidden" name="hd_insertpocustomerbarang_Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="tx_inputpocustomerbarang_Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control"></td><td><select name="db_insertpocustomerbarang_JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="tx_insertpocustomerbarang_Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control"></td><td><input type="text" name="tx_insertpocustomerbarang_Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control"></td></tr>');
 		}
 	});
     $("#tb_insertpocustomerbarang_customFields").on('click','.remCF',function(){
@@ -414,5 +409,8 @@ $totalRows_User = mysql_num_rows($User);
 </html>
 <?php
   mysql_free_result($Menu);
+  mysql_free_result($Reference);
+  mysql_free_result($Purchase);
+  mysql_free_result($LastReference);
   mysql_free_result($User);
 ?>

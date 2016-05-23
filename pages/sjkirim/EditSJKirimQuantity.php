@@ -1,4 +1,5 @@
 <?php require_once('../../connections/Connection.php'); ?>
+<?php date_default_timezone_set("Asia/Krasnoyarsk"); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -27,7 +28,6 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -73,7 +73,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -147,10 +146,13 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+$QTertanda = $row_EditIsiSJKirim['QTertanda'];
+
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=%s WHERE Purchase=%s",
-                       GetSQLValueString($_POST['tx_editsjkirimquantity_QSisaKir'][$i], "int"),
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=QSisaKir+$QTertanda-%s, QSisaKem=QSisaKem-$QTertanda+%s  WHERE Purchase=%s",
+                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
+					   GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkirimquantity_Purchase'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -158,18 +160,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=%s WHERE IsiSJKir=%s",
+  $updateSQL = sprintf("UPDATE isisjkirim SET QTertanda=%s, QSisaKemInsert=%s, QSisaKem=%s WHERE Id=%s",
                        GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+%s WHERE Purchase=%s",
-                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkirimquantity_Purchase'][$i], "int"));
+					   GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
+					   GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_Id'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -182,25 +177,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
 
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+%s WHERE IsiSJKir=%s",
-                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-}
-
-for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QTertanda=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkirimquantity_Id'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE periode SET S=%s, E=%s WHERE IsiSJKir=%s",
@@ -351,20 +327,20 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					<thead>
 					<tr>
 						<th>#</th>
-						<th>Pur #</th>
+						<th>#Pur</th>
 						<th>J/S</th>
 						<th>Barang</th>
 						<th>Warehouse</th>
-						<th>Q Sisa Kirim</th>
 						<th>Q Kirim</th>
+						<th>Q Sisa Kirim</th>
 						<th>Q Tertanda</th>
 					</tr>
 					</thead>
 					<tbody>
-						<?php $x=1; ?>
+                    	<?php $x=1; ?>
 						<?php do { ?>
 						  <tr>
-							<input name="hd_editsjkirimquantity_Id[]" type="hidden" id="hd_editsjkirimquantity_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
+                          	<input name="hd_editsjkirimquantity_Id[]" type="hidden" id="hd_editsjkirimquantity_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
 							<input name="hd_editsjkirimquantity_QSisaKir2" type="hidden" id="hd_editsjkirimquantity_QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>">
                             <input name="hd_editsjkirimquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkirimquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
                             <input name="hd_editsjkirimquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkirimquantity_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
@@ -375,11 +351,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<td><input name="tx_editsjkirimquantity_JS" type="text" class="form-control" id="tx_editsjkirimquantity_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
 							<td><input name="tx_editsjkirimquantity_Barang" type="text" class="form-control" id="tx_editsjkirimquantity_Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
 							<td><input name="hd_editsjkirimquantity_Warehouse[]" type="text" class="form-control" id="hd_editsjkirimquantity_Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
-							<td><input name="tx_editsjkirimquantity_QSisaKir[]" type="text" class="form-control" id="tx_editsjkirimquantity_QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
 							<td><input name="tx_editsjkirimquantity_QKirim[]" type="text" class="form-control" id="tx_editsjkirimquantity_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
-							<td><input name="tx_editsjkirimquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkirimquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
+                            <td><input name="tx_editsjkirimquantity_QSisaKir[]" type="text" class="form-control" id="tx_editsjkirimquantity_QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
+                            <td><input name="tx_editsjkirimquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkirimquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKirim['QKirim']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
                           </tr>
-						<?php $x++; ?>
+                          <?php $x++; ?>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
 					</tbody>
 				  </table>
@@ -444,6 +420,18 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
    }
    }
 </script>
+
+<script type="text/javascript">
+function minmax(value, min, max) 
+{
+	if(parseInt(value) < min || isNaN(value)) 
+        return 0; 
+    if(parseInt(value) > max) 
+        return parseInt(max); 
+    else return value;
+}
+</script>
+
 </body>
 </html>
 <?php

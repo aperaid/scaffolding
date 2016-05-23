@@ -72,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -106,11 +105,11 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 $colname_View = "-1";
-if (isset($_GET['PCode'])) {
-  $colname_View = $_GET['PCode'];
+if (isset($_GET['Id'])) {
+  $colname_View = $_GET['Id'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT project.PCode, project.Project, project.Alamat, customer.Company, customer.CompPhone, customer.Customer, customer.CustPhone, customer.CCode FROM project INNER JOIN customer ON project.CCode=customer.CCode WHERE PCode = %s", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT project.Id, project.PCode, project.Project, project.Alamat, customer.Company, customer.CompPhone, customer.Customer, customer.CustPhone, customer.CCode FROM project INNER JOIN customer ON project.CCode=customer.CCode WHERE project.Id = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -319,9 +318,9 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <a href="EditProject.php?PCode=<?php echo $row_View['PCode']; ?>"><button type="button" class="btn btn-info pull-right">Edit</button></a>
+                <a href="EditProject.php?Id=<?php echo $row_View['Id']; ?>"><button type="button" class="btn btn-info pull-right">Edit</button></a>
                 <div class="btn-group"><a href="Project.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
-                <div class="btn-group" ><a href="DeleteProject.php?PCode=<?php echo $row_View['PCode']; ?>" onclick="return confirm('Delete Project?')"><button type="button" class="btn btn-danger pull-left">Delete</button></a></div>
+                <div class="btn-group" ><a href="DeleteProject.php?Id=<?php echo $row_View['Id']; ?>" onclick="return confirm('Delete Project?')"><button type="button" class="btn btn-danger pull-left">Delete</button></a></div>
               </div>
               <input type="hidden" name="MM_update" value="form1">
               <!-- /.box-footer -->

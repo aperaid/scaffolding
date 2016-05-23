@@ -109,12 +109,13 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE project SET PCode=%s, Project=%s, CCode=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['PCode'], "text"),
-                       GetSQLValueString($_POST['Project'], "text"),
-                       GetSQLValueString($_POST['CCode'], "text"),
-                       GetSQLValueString($_POST['Id'], "int"));
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "fm_editproject_form1")) {
+  $updateSQL = sprintf("UPDATE project SET PCode=%s, Project=%s, Alamat=%s, CCode=%s WHERE Id=%s",
+                       GetSQLValueString($_POST['tx_editproject_PCode'], "text"),
+                       GetSQLValueString($_POST['tx_editproject_Project'], "text"),
+                       GetSQLValueString($_POST['tx_editproject_Alamat'], "text"),
+                       GetSQLValueString($_POST['tx_editproject_CCode'], "text"),
+                       GetSQLValueString($_POST['hd_editproject_Id'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -128,11 +129,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 $colname_Edit = "-1";
-if (isset($_GET['PCode'])) {
-  $colname_Edit = $_GET['PCode'];
+if (isset($_GET['Id'])) {
+  $colname_Edit = $_GET['Id'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_Edit = sprintf("SELECT * FROM project WHERE PCode = %s", GetSQLValueString($colname_Edit, "text"));
+$query_Edit = sprintf("SELECT * FROM project WHERE Id = %s", GetSQLValueString($colname_Edit, "text"));
 $Edit = mysql_query($query_Edit, $Connection) or die(mysql_error());
 $row_Edit = mysql_fetch_assoc($Edit);
 $totalRows_Edit = mysql_num_rows($Edit);
@@ -286,7 +287,7 @@ $totalRows_User = mysql_num_rows($User);
                   <input name="hd_editproject_Id" type="hidden" id="hd_editproject_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="tx_editproject_PCode" name="tx_editproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" value="<?php echo $row_Edit['PCode']; ?>">
+                    <input id="tx_editproject_PCode" name="tx_editproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" value="<?php echo $row_Edit['PCode']; ?>" maxlength="5">
                   </div>
                 </div>
                 <div class="form-group">
@@ -311,9 +312,9 @@ $totalRows_User = mysql_num_rows($User);
               <!-- /.box-body -->
               <div class="box-footer">
                 <button type="submit" name="bt_editproject_submit" id="bt_editproject_submit" class="btn btn-info pull-right">Update</button>
-                <div class="btn-group"><a href="ViewProject.php?PCode=<?php echo $row_Edit['PCode']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a></div>
+                <div class="btn-group"><a href="ViewProject.php?Id=<?php echo $row_Edit['Id']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a></div>
               </div>
-              <input type="hidden" name="MM_update" value="form1">
+              <input type="hidden" name="MM_update" value="fm_editproject_form1">
               <!-- /.box-footer -->
             </form>
           </div>
@@ -374,18 +375,18 @@ $totalRows_User = mysql_num_rows($User);
 </script>
 <script>
 function capital() {
-    var x = document.getElementById("PCode");
+    var x = document.getElementById("tx_editproject_PCode");
     x.value = x.value.toUpperCase();
-	var x = document.getElementById("Project");
+	var x = document.getElementById("tx_editproject_Project");
     x.value = x.value.toUpperCase();
-	var x = document.getElementById("CCode");
+	var x = document.getElementById("tx_editproject_CCode");
     x.value = x.value.toUpperCase();
 }
 </script>
 <script>
 $(function() {
     var availableTags = <?php include ("../autocomplete2.php");?>;
-    $( "#CCode" ).autocomplete({
+    $( "#tx_editproject_CCode" ).autocomplete({
       source: availableTags
     });
   });

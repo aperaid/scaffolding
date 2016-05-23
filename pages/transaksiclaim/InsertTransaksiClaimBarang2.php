@@ -72,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -122,8 +121,25 @@ if (isset($_GET['Reference'])) {
   $colname_Periode = $_GET['Periode'];
 }
 
+$checkbox = $_SESSION['CheckBox3'];
+$remove = preg_replace("/[^0-9,.]/", "", $checkbox);
+
+error_reporting(E_ERROR); // bagian di ilangin error
+$array = array();
+    for ($i = 0; $i < 10; ++$i) { // krn bagian sini ga ngerti untuk count sesuai byk array
+        $array[$i] = $remove[$i];
+}
+$count = count(array_filter($array));
+
+$arrayaftercount = array();
+    for ($i = 0; $i < $count; ++$i) {
+        $arrayaftercount[$i] = $remove[$i];
+}
+	
+$IsiSJKir = join(',',$arrayaftercount);  
+
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.QSisaKem, periode.Periode, periode.IsiSJKir FROM periode LEFT JOIN inserted ON periode.IsiSJKir=inserted.IsiSJKir LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND inserted.IsiSJKir ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.QSisaKem, periode.Periode, periode.IsiSJKir, periode.S FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND Deletes != 'Claim' AND Deletes != '' AND IsiSJKir IN ($IsiSJKir) ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
@@ -138,11 +154,6 @@ $colname_Reference = "-1";
 if (isset($_GET['Reference'])) {
   $colname_Reference = $_GET['Reference'];
 }
-mysql_select_db($database_Connection, $Connection);
-$query_Reference = sprintf("SELECT Reference FROM inserted WHERE Reference = %s", GetSQLValueString($colname_Reference, "text"));
-$Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
-$row_Reference = mysql_fetch_assoc($Reference);
-$totalRows_Reference = mysql_num_rows($Reference);
 
 $colname_Periode = "-1";
 if (isset($_GET['Reference'])) {
@@ -186,13 +197,27 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Periode=%s AND SJKem IS NULL",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Periode=%s AND SJKem IS NULL AND Deletes != 'Claim'",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, 'Claim')",
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S'][$i], "text"),
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Tgl'], "text"),
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
+					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
 }
 
@@ -210,13 +235,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode) VALUES (%s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode, IsiSJKir) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Tgl'], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"));
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -381,11 +407,18 @@ $totalRows_User = mysql_num_rows($User);
       </tr>
     </thead>
     <tbody>
+    <?php 
+
+	$Reference = $_SESSION['Reference']; 
+	$Strip = substr($Reference, 1, -1);
+
+	?>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
+      <input name="hd_inserttransaksiclaimbarang2_S[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
 	    <input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
-	      <input name="hd_inserttransaksiclaimbarang2_Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $row_Reference['Reference']; ?>">
+	      <input name="hd_inserttransaksiclaimbarang2_Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $Strip; ?>">
 <input name="hd_inserttransaksiclaimbarang2_Periode[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
 	      <input name="hd_inserttransaksiclaimbarang2_Invoice[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $increment, 5, "0", STR_PAD_LEFT); ?>">
 	    <td><input name="tx_inserttransaksiclaimbarang2_Claim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Claim" value="<?php echo $row_LastClaim['Id'] + $increment; ?>" readonly></td>
@@ -410,16 +443,18 @@ $totalRows_User = mysql_num_rows($User);
                       <tr>
 
           <td><input name="tx_inserttransaksiclaimbarang2_Tgl" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Tgl" autocomplete="off"></td>
-          <td><input name="tx_inserttransaksiclaimbarang2_PPN" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_PPN" autocomplete="off" value="0"></td>
+          <td>
+          <input name="tx_inserttransaksiclaimbarang2_PPN" type="hidden" id="tx_inserttransaksiclaimbarang2_PPN" value="0">
+          <input name="tx_inserttransaksiclaimbarang2_PPN" type="checkbox" id="tx_inserttransaksiclaimbarang2_PPN" value="1"></td>
                       </tr>
     				</tbody>
                 </table>
-                <a href="InsertTransaksiClaimBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>&Periode=<?php echo $row_Periode['MAX(Periode)']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+                <a href="InsertTransaksiClaimBarang.php?Reference=<?php echo $Strip; ?>&Periode=<?php echo $row_Periode['MAX(Periode)']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
 		   <button type="submit" name="bt_inserttransaksiclaimbarang2_submit" id="bt_inserttransaksiclaimbarang2_submit" class="btn btn-success pull-right">Insert</button>
                 </div>
                 
                 <input name="hd_inserttransaksiclaimbarang2_Invoice2" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice2" value="<?php echo str_pad($row_LastId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
-            <input name="hd_inserttransaksiclaimbarang2_Reference2" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference2" value="<?php echo $row_Reference['Reference']; ?>">
+            <input name="hd_inserttransaksiclaimbarang2_Reference2" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference2" value="<?php echo $Strip; ?>">
           <input name="hd_inserttransaksiclaimbarang2_Periode2" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode2" value="<?php echo $row_Periode['MAX(Periode)']; ?>">
   <input type="hidden" name="MM_insert" value="form1">
   <input type="hidden" name="MM_update" value="form1">
@@ -482,9 +517,9 @@ $totalRows_User = mysql_num_rows($User);
 </html>
 <?php
   mysql_free_result($Menu);
+  mysql_free_result($InsertTransaksiClaim);
   mysql_free_result($LastClaim);
-  mysql_free_result($Reference);
   mysql_free_result($Periode);
   mysql_free_result($LastId);
-  mysql_free_result($InsertTransaksiClaim);
+  mysql_free_result($User);
 ?>

@@ -27,7 +27,6 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -73,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 

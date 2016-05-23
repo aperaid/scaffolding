@@ -291,9 +291,9 @@ $totalRows_User = mysql_num_rows($User);
                     </div>
                   </div>
                   <div class="form-group">
-                    <label>PO Code</label>
-                    <input name="tx_insertsjkembali_Reference" type="text" class="form-control" id="tx_insertsjkembali_Reference" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
-                    <p class="help-block">Enter the beginning of the PO Code, then pick from the dropdown</p>
+                    <label>Reference Code</label>
+                    <input name="tx_insertsjkembali_Reference" type="text" class="form-control" id="tx_insertsjkembali_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116">
+                    <p class="help-block">Enter the beginning of the Reference Code, then pick from the dropdown</p>
                   </div>
                 </div>
                 <!-- /.box-body -->

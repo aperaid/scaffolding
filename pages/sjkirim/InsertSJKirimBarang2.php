@@ -27,7 +27,6 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -73,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -122,8 +120,27 @@ if (isset($_GET['Reference'])) {
   $colname_InsertSJKirim = $_GET['Reference'];
 }
 
+$checkbox = $_SESSION['CheckBox'];
+$remove = preg_replace("/[^0-9,.]/", "", $checkbox);
+
+error_reporting(E_ERROR); // bagian di ilangin error
+$array = array();
+    for ($i = 0; $i < 10; ++$i) { // krn bagian sini ga ngerti untuk count sesuai byk array
+        $array[$i] = $remove[$i];
+}
+$count = count(array_filter($array));
+
+$arrayaftercount = array();
+    for ($i = 0; $i < $count; ++$i) {
+        $arrayaftercount[$i] = $remove[$i];
+}
+	
+$Purchase = join(',',$arrayaftercount);  
+
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKirim = sprintf("SELECT transaksi.Id, transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKirInsert, transaksi.Reference, project.Project FROM transaksi RIGHT JOIN inserted ON transaksi.Purchase=inserted.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND inserted.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertSJKirim, "text"));
+$query_InsertSJKirim = sprintf("SELECT transaksi.Id, transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKirInsert, transaksi.Reference, project.Project FROM transaksi LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode WHERE transaksi.Reference = %s AND Purchase IN ($Purchase) ORDER BY transaksi.Id ASC",
+						GetSQLValueString($colname_InsertSJKirim, "text"));
+						
 $InsertSJKirim = mysql_query($query_InsertSJKirim, $Connection) or die(mysql_error());
 $row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim);
 $totalRows_InsertSJKirim = mysql_num_rows($InsertSJKirim);
@@ -155,23 +172,6 @@ $query_LastTgl = "SELECT Tgl FROM sjkirim ORDER BY Id DESC";
 $LastTgl = mysql_query($query_LastTgl, $Connection) or die(mysql_error());
 $row_LastTgl = mysql_fetch_assoc($LastTgl);
 $totalRows_LastTgl = mysql_num_rows($LastTgl);
-
-/*if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
-}
-
-for($i=0;$i<$totalRows_InsertSJKirim;$i++){
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (Purchase) VALUES (%s)",
-                       GetSQLValueString($_POST['Purchase'][$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-}
-}*/
 
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
@@ -376,8 +376,8 @@ $totalRows_User = mysql_num_rows($User);
 	    <td><input name="tx_insertsjkiribarang2_JS[]" type="text" class="form-control" id="tx_insertsjkiribarang2_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkiribarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkiribarang2_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkiribarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkiribarang2_Warehouse" autocomplete="off"></td>
-	    <td><input name="tx_insertsjkiribarang2_QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkiribarang2_QSisaKirInsert" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
-	    <td><input name="tx_insertsjkiribarang2_QKirim[]" type="text" class="form-control" id="tx_insertsjkiribarang2_QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>"></td>
+	    <td><input name="tx_insertsjkiribarang2_QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkiribarang2_QSisaKirInsert<?php echo $increment; ?>" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkiribarang2_QKirim[]" type="text" class="form-control" id="tx_insertsjkiribarang2_QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>)"></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim)); ?>
@@ -438,6 +438,16 @@ $totalRows_User = mysql_num_rows($User);
 <!-- datepicker -->
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
+<script type="text/javascript">
+function minmax(value, min, max) 
+{
+	if(parseInt(value) < min || isNaN(value)) 
+        return 0; 
+    if(parseInt(value) > max) 
+        return parseInt(max); 
+    else return value;
+}
+</script>
 
 </body>
 </html>

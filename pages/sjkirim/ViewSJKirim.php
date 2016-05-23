@@ -294,12 +294,12 @@ $totalRows_User = mysql_num_rows($User);
                 <thead>
                 <tr>
 					<th>#</th>
-					<th>Pur #</th>
+					<th>#Pur</th>
 					<th>J/S</th>
 					<th>Barang</th>
 					<th>Warehouse</th>
+                    <th>Q Kirim</th>
 					<th>Q Sisa Kirim</th>
-					<th>Q Kirim</th>
 					<th>Q Tertanda</th>
                 </tr>
                 </thead>
@@ -312,8 +312,8 @@ $totalRows_User = mysql_num_rows($User);
 							<td><input name="tx_viewsjkirim_JS" type="text" class="form-control" id="tx_viewsjkirim_JS" value="<?php echo $row_ViewIsiSJKirim['JS']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_Barang" type="text" class="form-control" id="tx_viewsjkirim_Barang" value="<?php echo $row_ViewIsiSJKirim['Barang']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_Warehouse" type="text" class="form-control" id="tx_viewsjkirim_Warehouse" value="<?php echo $row_ViewIsiSJKirim['Warehouse']; ?>" readonly></td>
-							<td><input name="tx_viewsjkirim_QSisaKir" type="text" class="form-control" id="tx_viewsjkirim_QSisaKir" value="<?php echo $row_ViewIsiSJKirim['QSisaKir']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_QKirim" type="text" class="form-control" id="tx_viewsjkirim_QKirim" value="<?php echo $row_ViewIsiSJKirim['QKirim']; ?>" readonly></td>
+                            <td><input name="tx_viewsjkirim_QSisaKir" type="text" class="form-control" id="tx_viewsjkirim_QSisaKir" value="<?php echo $row_ViewIsiSJKirim['QSisaKir']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_QTertanda" type="text" class="form-control" id="tx_viewsjkirim_QTertanda" value="<?php echo $row_ViewIsiSJKirim['QTertanda']; ?>" readonly></td>
 						</tr>
 					<?php } while ($row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim)); ?>

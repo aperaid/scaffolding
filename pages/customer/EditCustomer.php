@@ -295,7 +295,7 @@ $totalRows_User = mysql_num_rows($User);
                   <input name="hd_editcustomer_Id" type="hidden" id="hd_editcustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code">
+                    <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code" maxlength="5">
                   </div>
                 </div>
                 <div class="form-group">

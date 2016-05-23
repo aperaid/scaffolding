@@ -24,7 +24,6 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -69,7 +68,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("", $MM_authorizedUsers
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -275,6 +273,7 @@ $totalRows_User = mysql_num_rows($User);
 					<tr>
 					<th>No. Invoice</th>
 					<th>Project</th>
+                    <th>Periode</th>
 					<th>J/S/C</th>
 					<th>Perusahaan</th>
 					<th>Amount</th>
@@ -286,6 +285,7 @@ $totalRows_User = mysql_num_rows($User);
 					<tr>
 						<td><?php echo $row_Invoice['Invoice']; ?></td>
 						<td><?php echo $row_Invoice['Project']; ?></td>
+                        <td><?php echo $row_Invoice['Periode']; ?></td>
 						<td><?php echo $row_Invoice['JSC']; ?></td>
 						<td><?php echo $row_Invoice['Company']; ?></td>
 						<td>&nbsp;</td>
@@ -296,11 +296,13 @@ $totalRows_User = mysql_num_rows($User);
 				</tbody>
                 <tfoot>
                 <tr>
-                  <th>Reference</th>
-                  <th>Date</th>
-                  <th>Company Name</th>
+                  <th>No. Invoice</th>
                   <th>Project</th>
+                  <th>Periode</th>
+                  <th>J/S/C</th>
+                  <th>Perusahaan</th>
                   <th>Amount</th>
+                  <th>Tanggal Invoice</th>
                   <th>Opsi</th>
                 </tr>
                 </tfoot>

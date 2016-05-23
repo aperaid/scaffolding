@@ -72,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -123,7 +122,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, periode.Quantity, periode.IsiSJKir FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase WHERE periode.SJKem IS NULL AND periode.Reference=%s AND periode.Periode=%s ORDER BY periode.Id ASC
+$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, periode.Quantity, periode.IsiSJKir FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase WHERE periode.Reference=%s AND periode.Periode=%s AND Deletes != 'Claim' AND Deletes != '' ORDER BY periode.Id ASC
 ", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
@@ -135,20 +134,9 @@ $LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
 $row_LastId = mysql_fetch_assoc($LastId);
 $totalRows_LastId = mysql_num_rows($LastId);
 
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE inserted SET IsiSJKir=''");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (IsiSJKir) VALUES (%s)",
-                       GetSQLValueString($_POST['cb_inserttransaksiclaimbarang_checkbox'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+  $_SESSION['CheckBox3'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_inserttransaksiclaimbarang_checkbox'][$i], "int"));
   
   $insertGoTo = "InsertTransaksiClaimBarang2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -305,7 +293,7 @@ $totalRows_User = mysql_num_rows($User);
 	    <td align="center"><input type="checkbox" name="cb_inserttransaksiclaimbarang_checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>"></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_JS[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_JS" value="<?php echo $row_InsertTransaksiClaim['JS']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_Barang[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang_Quantity[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Quantity" value="<?php echo $row_InsertTransaksiClaim['Quantity']; ?>" readonly></td>
+	    <td><input name="tx_inserttransaksiclaimbarang_Quantity[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Quantity" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_Purchase[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Purchase" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
@@ -369,4 +357,5 @@ $totalRows_User = mysql_num_rows($User);
   mysql_free_result($Menu);
   mysql_free_result($LastId);
   mysql_free_result($InsertTransaksiClaim);
+  mysql_free_result($User);
 ?>

@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <info>
-	<infoitem key="UD_Edit" value="name:Id;datatype:int,name:No;datatype:string,name:TglStart;datatype:string,name:TglEnd;datatype:string,name:Customer;datatype:string,name:JSC;datatype:string,name:Project;datatype:string,name:Amount;datatype:int,name:Status;datatype:string" />
-	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:icon;datatype:string,name:nama;datatype:string,name:link;datatype:string" />
+	<infoitem key="UD_InsertTransaksiClaim" value="name:Purchase;datatype:string,name:Barang;datatype:string,name:QSisaKem;datatype:int,name:Periode;datatype:int,name:IsiSJKir;datatype:string,name:S;datatype:string" />
+	<infoitem key="UD_LastClaim" value="name:Id;datatype:int" />
+	<infoitem key="UD_Periode" value="name:MAX(Periode);datatype:int" />
+	<infoitem key="UD_User" value="name:Name;datatype:string" />
+	<infoitem key="UD_Edit" value="name:Id;datatype:int,name:Claim;datatype:string,name:QClaim;datatype:int,name:Amount;datatype:string,name:Purchase;datatype:string,name:Periode;datatype:int,name:IsiSJKir;datatype:string,name:Barang;datatype:string,name:QSisaKem;datatype:int,name:Reference;datatype:string" />
 </info>

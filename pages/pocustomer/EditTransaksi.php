@@ -27,7 +27,6 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -73,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -149,8 +147,10 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_Purchase;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET Quantity=%s, Amount=%s WHERE Id=%s",
+  $updateSQL = sprintf("UPDATE transaksi SET Quantity=%s, QSisaKirInsert=%s, QSisaKir=%s, Amount=%s WHERE Id=%s",
                        GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
+					   GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
+					   GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
                        GetSQLValueString($_POST['tx_edittransaksi_Amount'][$i], "text"),
                        GetSQLValueString($_POST['hd_edittransaksi_Id'][$i], "int"));
 
@@ -350,9 +350,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                       <td><?php echo $row_Purchase['Purchase']; ?></td>
                       <td><?php echo $row_Purchase['JS']; ?></td>
                       <td><?php echo $row_Purchase['Barang']; ?></td>
-                      <td><input name="tx_edittransaksi_Quantity[]" type="text" class="form-control" id="tx_edittransaksi_Quantity" value="<?php echo $row_Purchase['Quantity']; ?>"></td>
+                      <td><input name="tx_edittransaksi_Quantity[]" type="text" class="form-control" id="tx_edittransaksi_Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" autocomplete="off"></td>
                       <td><?php echo $row_Purchase['Tgl']; ?></td>
-                      <td><input name="tx_edittransaksi_Amount[]" type="text" class="form-control" id="tx_edittransaksi_Amount" value="<?php echo $row_Purchase['Amount']; ?>"></td>
+                      <td><input name="tx_edittransaksi_Amount[]" type="text" class="form-control" id="tx_edittransaksi_Amount" value="<?php echo $row_Purchase['Amount']; ?>" autocomplete="off"></td>
                     </tr>
                   <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
             </tbody>

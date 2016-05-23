@@ -46,7 +46,7 @@ if (isset($_POST['Username'])) {
   $loginUsername=$_POST['Username'];
   $password=$_POST['Password'];
   $MM_fldUserAuthorization = "Access";
-  $MM_redirectLoginSuccess = "../../../../index.php";
+  $MM_redirectLoginSuccess = "../../index.php";
   $MM_redirectLoginFailed = "Login.php";
   $MM_redirecttoReferrer = false;
   mysql_select_db($database_Connection, $Connection);
@@ -84,7 +84,7 @@ if (isset($_POST['Username'])) {
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
-  <link rel="stylesheet" href="../../library/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../library/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../library/font-awesome-4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -144,9 +144,9 @@ if (isset($_POST['Username'])) {
 <!-- /.login-box -->
 
 <!-- jQuery 2.1.4 -->
-<script src="../../library/jQuery/jquery-1.12.0.js"></script>
+<script src="../../library/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.5 -->
-<script src="../../library/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+<script src="../../library/bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="../../library/iCheck/icheck.min.js"></script>
 <script>

@@ -111,10 +111,10 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO project (PCode, Project, Alamat, CCode) VALUES (%s, %s, %s, %s)",
-                       GetSQLValueString($_POST['PCode'], "text"),
-                       GetSQLValueString($_POST['Project'], "text"),
-					   GetSQLValueString($_POST['Alamat'], "text"),
-                       GetSQLValueString($_POST['CCode'], "text"));
+                       GetSQLValueString($_POST['tx_insertproject_PCode'], "text"),
+                       GetSQLValueString($_POST['tx_insertproject_Project'], "text"),
+					   GetSQLValueString($_POST['tx_insertproject_Alamat'], "text"),
+                       GetSQLValueString($_POST['tx_insertproject_CCode'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -280,7 +280,7 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="tx_insertproject_PCode" name="tx_insertproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code">
+                    <input id="tx_insertproject_PCode" name="tx_insertproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" maxlength="5">
                   </div>
                 </div>
                 <div class="form-group">
@@ -292,7 +292,7 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat Project</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertproject_Alamat" name="tx_insertproject_Alamat" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota">
+                    <input id="tx_insertproject_Alamat" name="tx_insertproject_Alamat" type="text" autocomplete="off" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota">
                   </div>
                 </div>
                 <div class="form-group">
@@ -368,18 +368,18 @@ $totalRows_User = mysql_num_rows($User);
 </script>
 <script>
 function capital() {
-    var x = document.getElementById("PCode");
+    var x = document.getElementById("tx_insertproject_PCode");
     x.value = x.value.toUpperCase();
-	var x = document.getElementById("Project");
+	var x = document.getElementById("tx_insertproject_Project");
     x.value = x.value.toUpperCase();
-	var x = document.getElementById("CCode");
+	var x = document.getElementById("tx_insertproject_CCode");
     x.value = x.value.toUpperCase();
 }
 </script>
 <script>
 $(function() {
     var availableTags = <?php include ("../autocomplete2.php");?>;
-    $( "#CCode" ).autocomplete({
+    $( "#tx_insertproject_CCode" ).autocomplete({
       source: availableTags
     });
   });

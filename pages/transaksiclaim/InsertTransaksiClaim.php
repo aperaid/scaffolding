@@ -72,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -111,18 +110,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $truncateSQL = sprintf("TRUNCATE TABLE inserted");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($truncateSQL, $Connection) or die(mysql_error());
-}
-
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO inserted (Reference) VALUES (%s)",
-                       GetSQLValueString($_POST['tx_inserttransaksiclaim_Reference'], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+  $_SESSION['Reference'] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaim_Reference'], "text"));
 
   $insertGoTo = "InsertTransaksiClaim2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -278,9 +266,9 @@ $totalRows_User = mysql_num_rows($User);
               <form action="<?php echo $editFormAction; ?>" id="fm_inserttransaksiclaim_form1" name="fm_inserttransaksiclaim_form1" method="POST">
                 <div class="box-body">
                   <div class="form-group">
-                  <label>PO Code</label>
-                    <input name="tx_inserttransaksiclaim_Reference" type="text" class="form-control" id="tx_inserttransaksiclaim_Reference" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
-                    <p class="help-block">Enter the beginning of the PO Code, then pick from the dropdown</p>
+                  <label>Reference Code</label>
+                    <input name="tx_inserttransaksiclaim_Reference" type="text" class="form-control" id="tx_inserttransaksiclaim_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116">
+                    <p class="help-block">Enter the beginning of the Reference Code, then pick from the dropdown</p>
                   </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
@@ -354,4 +342,5 @@ $(function() {
 </html>
 <?php
   mysql_free_result($Menu);
+  mysql_free_result($User);
 ?>

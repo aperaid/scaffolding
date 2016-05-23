@@ -24,7 +24,6 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -69,7 +68,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("", $MM_authorizedUsers
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -284,6 +282,7 @@ $totalRows_User = mysql_num_rows($User);
 					<th>Project</th>
 					<th>Amount</th>
 					<th>Quantity Claim</th>
+                    <th>Opsi</th>
 					<th>Opsi</th>
                     </tr>
 				</thead>
@@ -295,6 +294,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Amount']; ?></td>
 						<td><?php echo $row_TransaksiClaim['QClaim']; ?></td>
+                        <td><a href="EditTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
 					  <td><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Batal</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
@@ -306,6 +306,7 @@ $totalRows_User = mysql_num_rows($User);
 				  <th>Project</th>
 				  <th>Amount</th>
 				  <th>Quantity Claim</th>
+                  <th>Opsi</th>
 				  <th>Opsi</th>
                 </tr>
                 </tfoot>

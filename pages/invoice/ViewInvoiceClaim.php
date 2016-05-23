@@ -27,7 +27,6 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
   }
 }
 ?>
-
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -73,7 +72,6 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
-
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -125,9 +123,10 @@ $totalRows_View = mysql_num_rows($View);
 $colname_View2 = "-1";
 if (isset($_GET['JS'])) {
   $colname_View2 = $_GET['Reference'];
+  $colname_ViewPeriode = $_GET['Periode'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount FROM transaksiclaim LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s", GetSQLValueString($colname_View2, "text"));
+$query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount FROM transaksiclaim LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s AND transaksiclaim.Periode = %s", GetSQLValueString($colname_View2, "text"), GetSQLValueString($colname_ViewPeriode, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
 
