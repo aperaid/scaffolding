@@ -261,7 +261,6 @@ $totalRows_User = mysql_num_rows($User);
       <h1>
         Surat Jalan Kirim
         <small>All</small>
-        <large><a href="InsertSJKirim.php"><button type="button" class="btn btn-success btn-sm">New SJ Kirim</button></a></large>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
