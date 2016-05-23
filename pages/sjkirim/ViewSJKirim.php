@@ -146,7 +146,7 @@ if (isset($_GET['SJKir'])) {
   $colname_ViewIsiSJKirim = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_ViewIsiSJKirim, "text"));
+$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.*, customer.* FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_ViewIsiSJKirim, "text"));
 $ViewIsiSJKirim = mysql_query($query_ViewIsiSJKirim, $Connection) or die(mysql_error());
 $row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim);
 $totalRows_ViewIsiSJKirim = mysql_num_rows($ViewIsiSJKirim);
@@ -284,13 +284,53 @@ $totalRows_User = mysql_num_rows($User);
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="invoice">
       <div class="row">
         <div class="col-xs-12">
-
-          <div class="box box-primary">
-            <div class="box-body no-padding">
-              <table id="tb_viewsjkirim_example1" class="table table-bordered">
+          <h2 class="page-header">
+            <i class="fa fa-globe"></i> SJ Kirim | <big><?php echo $row_ViewIsiSJKirim['SJKir']; ?></big>
+			<small class="pull-right">Date: <?php echo $row_ViewIsiSJKirim['Tgl']; ?></small>
+		  </h2>
+        </div>
+        <!-- /.col -->
+      </div>
+	  
+	  <!-- info row -->
+      <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+          Company
+          <address>
+            <strong><?php echo $row_ViewIsiSJKirim['Company']; ?></strong><br>
+            <?php echo $row_ViewIsiSJKirim['Alamat']; ?><br>
+            <?php echo $row_ViewIsiSJKirim['Kota']; ?>,  <?php echo $row_ViewIsiSJKirim['Zip']; ?><br>
+            Phone: <?php echo $row_ViewIsiSJKirim['CompPhone']; ?><br>
+            Email: <?php echo $row_ViewIsiSJKirim['CompEmail']; ?>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Project
+          <address>
+            <strong><?php echo $row_ViewIsiSJKirim['Project']; ?></strong><br>
+            <?php echo $row_ViewIsiSJKirim['Alamat']; ?><br>
+            <?php echo $row_ViewIsiSJKirim['Kota']; ?>,  <?php echo $row_ViewIsiSJKirim['Zip']; ?><br>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Contact Person
+          <address>
+            <strong><?php echo $row_ViewIsiSJKirim['Customer']; ?></strong><br>
+            Phone: <?php echo $row_ViewIsiSJKirim['CustPhone']; ?><br>
+            Email: <?php echo $row_ViewIsiSJKirim['CustEmail']; ?>
+          </address>
+        </div>
+        <!-- /.col -->
+      </div>
+	  
+	  <div class="row">
+        <div class="col-xs-12 table-responsive">
+              <table id="tb_viewsjkirim_example1" class="table table-striped">
                 <thead>
                 <tr>
 					<th>#</th>
@@ -319,8 +359,7 @@ $totalRows_User = mysql_num_rows($User);
 					<?php } while ($row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim)); ?>
                 </tbody>
               </table>
-            </div>
-            <!-- /.box-body -->
+            
             <div class="box-footer">
 				<a href="SJKirim.php"><button type="button" class="btn btn-default">Back</button></a>
 				<div class="btn-group pull-right">
@@ -328,8 +367,7 @@ $totalRows_User = mysql_num_rows($User);
 					<a href="EditSJKirimQuantity.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-success">Q Tertanda</button></a>
 				</div>
 			</div>
-          </div>
-          <!-- /.box -->
+          
         </div>
         <!-- /.col -->
       </div>
