@@ -130,6 +130,14 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
+$check_customer = $row_Purchase['CCode'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_Check = sprintf("SELECT check_customer('$check_customer') AS check_customer");
+$Check = mysql_query($query_Check, $Connection) or die(mysql_error());
+$row_Check = mysql_fetch_assoc($Check);
+$totalRows_Check = mysql_num_rows($Check);
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -243,7 +251,7 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content-header">
       <h1>
         Purchase Order
-        <small>View</small>
+        <small>View<?php echo $row_Check['check_customer'] ?></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
