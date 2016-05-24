@@ -292,7 +292,7 @@ $totalRows_User = mysql_num_rows($User);
                   </div>
                   <div class="form-group">
                     <label>Reference Code</label>
-                    <input name="tx_insertsjkembali_Reference" type="text" class="form-control" id="tx_insertsjkembali_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116">
+                    <input name="tx_insertsjkembali_Reference" type="text" class="form-control" id="tx_insertsjkembali_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116" readonly>
                     <p class="help-block">Enter the beginning of the Reference Code, then pick from the dropdown</p>
                   </div>
                 </div>
