@@ -260,7 +260,6 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content-header">
       <h1>
         Surat Jalan Kirim
-        <small>All</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>

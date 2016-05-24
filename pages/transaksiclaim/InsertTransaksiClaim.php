@@ -267,8 +267,7 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="box-body">
                   <div class="form-group">
                   <label>Reference Code</label>
-                    <input name="tx_inserttransaksiclaim_Reference" type="text" class="form-control" id="tx_inserttransaksiclaim_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116">
-                    <p class="help-block">Enter the beginning of the Reference Code, then pick from the dropdown</p>
+                    <input name="tx_inserttransaksiclaim_Reference" type="text" class="form-control" id="tx_inserttransaksiclaim_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116" value="<?php echo $_GET['Reference'] ?>" readonly>
                   </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
