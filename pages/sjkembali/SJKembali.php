@@ -260,8 +260,6 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content-header">
       <h1>
         Surat Jalan Kembali
-        <small>All</small>
-        <large><a href="InsertSJKembali.php"><button type="button" class="btn btn-success btn-sm">New SJ Kembali</button></a></large>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
