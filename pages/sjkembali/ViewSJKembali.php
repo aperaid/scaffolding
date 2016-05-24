@@ -253,13 +253,57 @@ $totalRows_User = mysql_num_rows($User);
     </section>
 
     <!-- Main content -->
-    <section class="content">
-      <div class="row">
+    <section class="invoice">
+		
+		<div class="row">
         <div class="col-xs-12">
+          <h2 class="page-header">
+            <i class="fa fa-globe"></i> SJ Kembali | <big><?php echo $row_ViewIsiSJKembali['SJKem']; ?></big>
+			<small class="pull-right">Date: <?php echo $row_ViewIsiSJKembali['Tgl']; ?></small>
+		  </h2>
+        </div>
+        <!-- /.col -->
+		</div>
+		
+		<!-- info row -->
+      <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+          Company
+          <address>
+            <strong><?php echo $row_ViewIsiSJKembali['Company']; ?></strong><br>
+            <?php echo $row_ViewIsiSJKembali['Alamat']; ?><br>
+            <?php echo $row_ViewIsiSJKembali['Kota']; ?>,  <?php echo $row_ViewIsiSJKembali['Zip']; ?><br>
+            Phone: <?php echo $row_ViewIsiSJKembali['CompPhone']; ?><br>
+            Email: <?php echo $row_ViewIsiSJKembali['CompEmail']; ?>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Project
+          <address>
+            <strong><?php echo $row_ViewIsiSJKembali['Project']; ?></strong><br>
+            <?php echo $row_ViewIsiSJKembali['Alamat']; ?><br>
+            <?php echo $row_ViewIsiSJKembali['Kota']; ?>,  <?php echo $row_ViewIsiSJKembali['Zip']; ?><br>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Contact Person
+          <address>
+            <strong><?php echo $row_ViewIsiSJKembali['Customer']; ?></strong><br>
+            Phone: <?php echo $row_ViewIsiSJKembali['CustPhone']; ?><br>
+            Email: <?php echo $row_ViewIsiSJKembali['CustEmail']; ?>
+          </address>
+        </div>
+        <!-- /.col -->
+      </div>
+	  
+		
+     
 
-          <div class="box box-primary">
-            <div class="box-body no-padding">
-              <table id="tb_viewsjkembali_example1" class="table table-bordered">
+          <div class="row">
+            <div class="col-xs-12 table-responsive">
+              <table id="tb_viewsjkembali_example1" class="table table-striped">
                 <thead>
                 <tr>
 					<th>#</th>
@@ -299,10 +343,7 @@ $totalRows_User = mysql_num_rows($User);
 			</div>
           </div>
           <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+       
     </section>
     <!-- /.content -->
   </div>
