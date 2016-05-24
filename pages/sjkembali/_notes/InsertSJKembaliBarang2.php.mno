@@ -12,4 +12,6 @@
 	<infoitem key="UD_LastTgl" value="name:Tgl;datatype:string" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
 	<infoitem key="UD_LastTglS" value="name:Tgl;datatype:string" />
+	<infoitem key="UD_LastInvoiceId" value="name:Id;datatype:int" />
+	<infoitem key="UD_Invoice" value="name:PPN;datatype:int,name:Transport;datatype:string" />
 </info>
