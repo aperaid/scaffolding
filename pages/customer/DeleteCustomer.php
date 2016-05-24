@@ -32,15 +32,14 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 if ((isset($_GET['CCode'])) && ($_GET['CCode'] != "")) {
-  $deleteSQL = sprintf("SELECT delete_customer('%s')",
-                       GetSQLValueString($_GET['CCode'], "Text"));
-					   
+  $deleteSQL = sprintf("SELECT delete_customer('%s')", GetSQLValueString($_GET['CCode'], "Text"));
   $alterSQL = sprintf("ALTER TABLE customer AUTO_INCREMENT = 1");
-
+  
+  //Check Connection
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-
+  
   $deleteGoTo = "Customer.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
@@ -49,13 +48,12 @@ if ((isset($_GET['CCode'])) && ($_GET['CCode'] != "")) {
   header(sprintf("Location: %s", $deleteGoTo));
 }
 ?>
+
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Untitled Document</title>
 </head>
-
 <body>
 </body>
 </html>
+
