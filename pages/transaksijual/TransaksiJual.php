@@ -136,7 +136,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	
 	mysql_select_db($database_Connection, $Connection);
-$query_TransaksiJual = "SELECT pocustomer.Reference, project.Project, customer.Company, project.Project, customer.Customer FROM pocustomer LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode ORDER BY pocustomer.Id";
+$query_TransaksiJual = "SELECT pocustomer.Reference, project.Project, customer.Company, project.Project, customer.Customer FROM pocustomer LEFT JOIN transaksi ON pocustomer.Reference=transaksi.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE transaksi.JS='Jual' GROUP BY pocustomer.Reference ORDER BY pocustomer.Id";
 $TransaksiJual = mysql_query($query_TransaksiJual, $Connection) or die(mysql_error());
 $row_TransaksiJual = mysql_fetch_assoc($TransaksiJual);
 $totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
