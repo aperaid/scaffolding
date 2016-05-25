@@ -150,8 +150,13 @@ $colname_View2 = "-1";
 if (isset($_GET['Periode'])) {
   $colname_View2 = $_GET['Periode'];
 }
+
+$colname_View3 = "-1";
+if (isset($_GET['SJKir'])) {
+  $colname_View3 = $_GET['SJKir'];
+}
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, transaksi.Barang, periode.S, periode.E, customer.Company, project.Project, periode.Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"));
+$query_View = sprintf("SELECT periode.Id, periode.Periode, transaksi.Barang, periode.S, periode.E, customer.Company, project.Project, periode.Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s AND isisjkirim.SJKir=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"),GetSQLValueString($colname_View3, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);

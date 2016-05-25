@@ -64,7 +64,7 @@ $row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
 $totalRows_LastInvoiceId = mysql_num_rows($LastInvoiceId);
 
 mysql_select_db($database_Connection, $Connection);
-$query_Extend = sprintf("SELECT periode.* FROM periode WHERE periode.Reference=%s AND periode.Periode=%s AND SJKem IS NULL AND Deletes != 'Claim' ORDER BY periode.Id ASC", GetSQLValueString($colname_Extend, "text"),GetSQLValueString($colname_Extend2, "text"));
+$query_Extend = sprintf("SELECT periode.* FROM periode WHERE periode.Reference=%s AND periode.Periode=%s AND SJKem IS NULL AND Deletes != 'Claim'", GetSQLValueString($colname_Extend, "text"),GetSQLValueString($colname_Extend2, "text"));
 $Extend = mysql_query($query_Extend, $Connection) or die(mysql_error());
 $row_Extend = mysql_fetch_assoc($Extend);
 $totalRows_Extend = mysql_num_rows($Extend);
@@ -86,8 +86,8 @@ for($i=0;$i<$totalRows_Extend;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, 'Extend')",
                        GetSQLValueString($_POST['hd_extendtransaksisewa_Periode'][$i], "int"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_S2'][$i], "text"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_E2'][$i], "text"),
+                       GetSQLValueString($_POST['hd_extendtransaksisewa_S'][$i], "text"),
+                       GetSQLValueString($_POST['hd_extendtransaksisewa_E'][$i], "text"),
                        GetSQLValueString($_POST['hd_extendtransaksisewa_Quantity'][$i], "int"),
                        GetSQLValueString($_POST['hd_extendtransaksisewa_IsiSJKir'][$i], "text"),
                        GetSQLValueString($_POST['hd_extendtransaksisewa_Reference'][$i], "text"),
@@ -115,7 +115,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <title>Untitled Document</title>
 </head>
 
-<body onLoad="submit()">
+<body onLoad="submits()">
 <form action="<?php echo $editFormAction; ?>" id="fm_extendtransaksisewa_form1" name="fm_extendtransaksisewa_form1" method="POST">
   <table width="1350" border="0">
     <tbody>
@@ -124,87 +124,24 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
-          <?php $stgl = 0; $etgl = 0; $tgl = substr($row_Extend['S'], 0, -8); $bln = substr($row_Extend['S'], 3, -5); $bln2 = substr($row_Extend['S'], 3, -5); $thn = substr($row_Extend['S'], 6);
-			if ($bln == 1){
-				$stgl = '01';
-				$etgl = 28;
-				$bln = '02';
-				if ($thn == 2016 || $thn == 2020 || $thn == 2024){
-				$stgl = '01';
-				$etgl = 29;
-				$bln = '02';
-				}
-				}
-			elseif ($bln == 2){
-				$stgl = '01';
-				$etgl = 31;
-				$bln = '03';
-				}
-			elseif ($bln == 3){
-				$stgl = '01';
-				$etgl = 30;
-				$bln = '04';
-				}
-			elseif ($bln == 4){
-				$stgl = '01';
-				$etgl = 31;
-				$bln = '05';
-				}
-			elseif ($bln == 5){
-				$stgl = '01';
-				$etgl = 30;
-				$bln = '06';
-				}
-			elseif ($bln == 6){
-				$stgl = '01';
-				$etgl = 31;
-				$bln = '07';
-				}
-			elseif ($bln == 7){
-				$stgl = '01';
-				$etgl = 31;
-				$bln = '08';
-				}
-			elseif ($bln == 8){
-				$stgl = '01';
-				$etgl = 30;
-				$bln = '09';
-				}
-			elseif ($bln == 9){
-				$stgl = '01';
-				$etgl = 31;
-				$bln = '10';
-				}
-			elseif ($bln == 10){
-				$stgl = '01';
-				$etgl = 30;
-				$bln = '11';
-				}
-			elseif ($bln == 11){
-				$stgl = '01';
-				$etgl = 31;
-				$bln = '12';
-				}
-			elseif ($bln == 12){
-				$stgl = '01';
-				$etgl = 31;
-				$bln = '01';
-				$thn = $thn + 1;
-				}
-				
-				$S = $bln2. "/". $tgl. "/". $thn;
-				$S2 = strtotime("+1 month", strtotime($S));
-				$E = $bln2. "/". $tgl. "/". $thn;
-				$E2 = strtotime("-1 day +2 month", strtotime($E));
-			?>
+          
             <?php $Reference = $row_Extend['Reference']; $Periode = $row_Extend['Periode']; ?>
       <?php do { ?>
+      <?php 
+		  
+		  $date = $row_Extend['S'];
+		  $date2 = str_replace('/', '-', $date);
+		  $FirstDate = strtotime("+1 month", strtotime($date2));
+		  $FirstDate2 = date("d/m/Y", $FirstDate);
+		  $LastDate = strtotime("-1 day +2 month", strtotime($date2));
+		  $LastDate2 = date("d/m/Y", $LastDate);
+		  $TglInvoice = date("t/m/Y", $FirstDate)
+		
+		  ?>
         <tr>
           <td><input name="hd_extendtransaksisewa_Periode[]" type="hidden" id="hd_extendtransaksisewa_Periode" value="<?php echo $Periode+1; ?>">
-            <input name="hd_extendtransaksisewa_S[]" type="hidden" id="hd_extendtransaksisewa_S" value="<?php echo $stgl, '/', $bln, '/', $thn; ?>">
-            <input name="hd_extendtransaksisewa_E[]" type="hidden" id="hd_extendtransaksisewa_E" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
-            <input name="hd_extendtransaksisewa_S2[]" type="hidden" id="hd_extendtransaksisewa_S2" value="<?php echo date("d/m/Y", $S2); ?>">
-            <input name="hd_extendtransaksisewa_E2[]" type="hidden" id="hd_extendtransaksisewa_E2" value="<?php echo date("d/m/Y", $E2); ?>">
+            <input name="hd_extendtransaksisewa_S[]" type="text" id="hd_extendtransaksisewa_S2" value="<?php echo $FirstDate2; ?>">
+            <input name="hd_extendtransaksisewa_E[]" type="text" id="hd_extendtransaksisewa_E2" value="<?php echo $LastDate2; ?>">
             <input name="hd_extendtransaksisewa_Quantity[]" type="hidden" id="hd_extendtransaksisewa_Quantity" value="<?php echo $row_Extend['Quantity']; ?>">
             <input name="hd_extendtransaksisewa_IsiSJKir[]" type="hidden" id="hd_extendtransaksisewa_IsiSJKir" value="<?php echo $row_Extend['IsiSJKir']; ?>">
             <input name="hd_extendtransaksisewa_Reference[]" type="hidden" id="hd_extendtransaksisewa_Reference" value="<?php echo $Reference; ?>">
@@ -215,7 +152,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
       <?php } while ($row_Extend = mysql_fetch_assoc($Extend)); ?>
       <tr>
         <td><input name="hd_extendtransaksisewa_Invoice" type="hidden" id="hd_extendtransaksisewa_Invoice" value="<?php echo str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
-          <input name="hd_extendtransaksisewa_Tgl" type="hidden" id="hd_extendtransaksisewa_Tgl" value="<?php echo $etgl, '/', $bln, '/', $thn; ?>">
+          <input name="hd_extendtransaksisewa_Tgl" type="hidden" id="hd_extendtransaksisewa_Tgl" value="<?php echo $TglInvoice; ?>">
           <input name="hd_extendtransaksisewa_PPN" type="hidden" id="hd_extendtransaksisewa_PPN" value="<?php echo $row_Invoice['PPN']; ?>">
           <input name="hd_extendtransaksisewa_Transport" type="hidden" id="hd_extendtransaksisewa_Transport" value="<?php echo $row_Invoice['Transport']; ?>">
 <input name="hd_extendtransaksisewa_Reference2" type="hidden" id="hd_extendtransaksisewa_Reference2" value="<?php echo $Reference; ?>">
