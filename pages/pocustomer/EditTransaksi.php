@@ -335,7 +335,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
           <table class="table table-striped">
             <thead>
             <tr>
-                <th>PurCode</th>
                 <th>J/S</th>
                 <th>Item Name</th>
                 <th>Quantity</th>
@@ -347,7 +346,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 				<?php do { ?>
                     <tr>
                       <td class="hidden"><input name="hd_edittransaksi_Id[]" id="hd_edittransaksi_Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
-                      <td><?php echo $row_Purchase['Purchase']; ?></td>
                       <td><?php echo $row_Purchase['JS']; ?></td>
                       <td><?php echo $row_Purchase['Barang']; ?></td>
                       <td><input name="tx_edittransaksi_Quantity[]" type="text" class="form-control" id="tx_edittransaksi_Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" autocomplete="off"></td>
