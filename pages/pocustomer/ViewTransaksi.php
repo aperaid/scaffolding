@@ -395,12 +395,12 @@ if(x == 1){
     //delete button
 	document.getElementById("delete_button").disabled = true;
 	document.getElementById("delete_button").className = "btn btn-default pull-right";
-    //sjkembali button
-	document.getElementById("SJKembali_button").disabled = false;
-	document.getElementById("SJKembali_button").className = "btn btn-warning pull-right";
 	//edit button
     document.getElementById("edit_button").disabled = true;
 	document.getElementById("edit_button").className = "btn btn-default pull-right";
+    //sjkembali button
+	document.getElementById("SJKembali_button").disabled = false;
+	document.getElementById("SJKembali_button").className = "btn btn-warning pull-right";
 	//claim button
 	document.getElementByID("claim_button").disabled = false;
 	document.getElementByID("claim_button").className = "btn btn-info pull-right";
@@ -408,15 +408,15 @@ if(x == 1){
 	//delete button
 	document.getElementById("delete_button").disabled = false;
 	document.getElementById("delete_button").className = "btn btn-danger pull-right";
-    //sjkembali button
-	document.getElementById("SJKembali_button").disabled = true;
-    document.getElementById("SJKembali_button").className = "btn btn-default pull-right";
 	//edit button
 	document.getElementById("edit_button").disabled = false;
 	document.getElementById("edit_button").className = "btn btn-primary pull-right";
-	//claim button
-	document.getElementByID("claim_button").disabled = true;
-	document.getElementByID("claim_button").className = "btn btn-default pull-right";
+    //sjkembali button
+	document.getElementById("SJKembali_button").disabled = true;
+    document.getElementById("SJKembali_button").className = "btn btn-default pull-right";
+    //sjkembali button
+	document.getElementById("claim_button").disabled = true;
+    document.getElementById("claim_button").className = "btn btn-default pull-right";
 }	
 }
 </script>
