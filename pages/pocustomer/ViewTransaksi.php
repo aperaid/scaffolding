@@ -314,7 +314,6 @@ $totalRows_User = mysql_num_rows($User);
           <table class="table table-striped">
             <thead>
             <tr>
-                <th>PurCode</th>
                 <th>J/S</th>
                 <th>Item Name</th>
                 <th>Quantity</th>
@@ -326,7 +325,6 @@ $totalRows_User = mysql_num_rows($User);
 				<?php do { ?>
                   <tr>
                     <td class="hidden"><input name="hd_viewtransaksi_Id" id="hd_viewtransaksi_Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
-                    <td><?php echo $row_Purchase['Purchase']; ?></td>
                     <td><?php echo $row_Purchase['JS']; ?></td>
                     <td><?php echo $row_Purchase['Barang']; ?></td>
                     <td><?php echo $row_Purchase['Quantity']; ?></td>
