@@ -336,6 +336,7 @@ $totalRows_User = mysql_num_rows($User);
             <!-- /.box-body -->
             <div class="box-footer">
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Back</button></a>
+				<a href="SJKembali.php"><button type="button" class="btn btn-default">Print</button></a>
 				<div class="btn-group pull-right">
 					<a href="EditSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-primary">Edit Pengembalian</button></a>
 					<a href="EditSJKembaliQuantity.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-success">Quantity Terima</button></a>
