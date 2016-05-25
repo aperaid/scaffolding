@@ -115,7 +115,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <title>Untitled Document</title>
 </head>
 
-<body onLoad="submits()">
+<body onLoad="submit()">
 <form action="<?php echo $editFormAction; ?>" id="fm_extendtransaksisewa_form1" name="fm_extendtransaksisewa_form1" method="POST">
   <table width="1350" border="0">
     <tbody>
