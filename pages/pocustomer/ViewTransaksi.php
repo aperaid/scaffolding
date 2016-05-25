@@ -345,12 +345,12 @@ $totalRows_User = mysql_num_rows($User);
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-		  <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left" style="margin-right: 5px;">Back</button></a>
-          <a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?>"><button id=SJKirim_button type="button" class="btn btn-success pull-right" style="margin-right: 5px;">SJ Kirim</button></a>
-		  <a href="../sjkembali/InsertSJKembali.php?Reference=<?php echo $row_View['Reference']; ?>"><button id=SJKembali_button type="button" class="btn btn-warning pull-right" style="margin-right: 5px;">SJ Kembali</button></a>
-		  <a href="../transaksiclaim/inserttransaksiclaim.php?Reference=<?php echo $row_View['Reference']; ?>"><button id=claim_but type="button" class="btn btn-info pull-right" style="margin-right: 5px;">Claim</button></a>
-          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>"><button id=edit_button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">Edit</button></a>
-          <a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>"><button id=delete_button type="button" class="btn btn-danger pull-right" style="margin-right: 5px;">Delete</button></a>
+		  <a href="POCustomer.php">																				<button type="button" class="btn btn-default pull-left" style="margin-right: 5px;">Back</button></a>
+          <a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?>">				<button id="SJKirim_button" 	type="button" class="btn btn-success pull-right" 	style="margin-right: 5px;">SJ Kirim</button></a>
+		  <a href="../sjkembali/InsertSJKembali.php?Reference=<?php echo $row_View['Reference']; ?>">			<button id="SJKembali_button" type="button" class="btn btn-warning pull-right" 	style="margin-right: 5px;">SJ Kembali</button></a>
+		  <a href="../transaksiclaim/inserttransaksiclaim.php?Reference=<?php echo $row_View['Reference']; ?>">	<button id="claim_button" 	type="button" class="btn btn-info pull-right" 		style="margin-right: 5px;">Claim</button></a>
+          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">							<button id="edit_button"		type="button" class="btn btn-primary pull-right" 	style="margin-right: 5px;">Edit</button></a>
+          <a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>">						<button id="delete_button" 	type="button" class="btn btn-danger pull-right" 	style="margin-right: 5px;">Delete</button></a>
         </div>
       </div>
     </section>
@@ -402,8 +402,8 @@ if(x == 1){
     document.getElementById("edit_button").disabled = true;
 	document.getElementById("edit_button").className = "btn btn-default pull-right";
 	//claim button
-	document.getElementByID("claim_but").disabled = false;
-	document.getElementByID("claim_but").className = "btn btn-info pull-right";
+	document.getElementByID("claim_button").disabled = false;
+	document.getElementByID("claim_button").className = "btn btn-info pull-right";
 }else{
 	//delete button
 	document.getElementById("delete_button").disabled = false;
@@ -415,8 +415,8 @@ if(x == 1){
 	document.getElementById("edit_button").disabled = false;
 	document.getElementById("edit_button").className = "btn btn-primary pull-right";
 	//claim button
-	document.getElementByID("claim_but").disabled = true;
-	document.getElementByID("claim_but").className = "btn btn-default pull-right";
+	document.getElementByID("claim_button").disabled = true;
+	document.getElementByID("claim_button").className = "btn btn-default pull-right";
 }	
 }
 </script>
