@@ -120,6 +120,16 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
+
+//FUNCTION BUTTON DISABLE
+$check_pcode = $row_View['PCode'];
+mysql_select_db($database_Connection, $Connection);
+$query_check = sprintf("SELECT check_project('$check_pcode') AS result");
+$check = mysql_query($query_check, $Connection) or die(mysql_error());
+$row_check = mysql_fetch_assoc($check);
+$totalRows_check = mysql_num_rows($check);
+//FUNCTION BUTTON DISABLE END
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -160,7 +170,7 @@ $totalRows_User = mysql_num_rows($User);
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition skin-blue fixed sidebar-mini">
+<body onload="check_project_function(<?php echo $row_check['result'] ?>)" class="hold-transition skin-blue fixed sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -320,7 +330,7 @@ $totalRows_User = mysql_num_rows($User);
               <div class="box-footer">
                 <a href="EditProject.php?Id=<?php echo $row_View['Id']; ?>"><button type="button" class="btn btn-info pull-right">Edit</button></a>
                 <div class="btn-group"><a href="Project.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
-                <div class="btn-group" ><a href="DeleteProject.php?PCode=<?php echo $row_View['Id']; ?>" onclick="return confirm('Delete Project?')"><button type="button" class="btn btn-danger pull-left">Delete</button></a></div>
+                <div class="btn-group" ><a href="DeleteProject.php?PCode=<?php echo $row_View['Id']; ?>" onclick="return confirm('Delete Project?')"><button id="delete_button" type="button" class="btn btn-danger pull-left">Delete</button></a></div>
               </div>
               <input type="hidden" name="MM_update" value="form1">
               <!-- /.box-footer -->
@@ -412,6 +422,19 @@ function capital() {
 
     $("#dialog").dialog("open");
   });
+</script>
+<script>
+function check_project_function(x) {
+if(x == 1){
+    //delete button
+	document.getElementById("delete_button").disabled = true;
+	document.getElementById("delete_button").className = "btn btn-default pull-left";
+}else{
+	//delete button
+	document.getElementById("delete_button").disabled = false;
+	document.getElementById("delete_button").className = "btn btn-danger pull-left";
+}	
+}
 </script>
 </body>
 </html>

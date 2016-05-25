@@ -131,7 +131,7 @@ $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
 
-//DELETE FUNCTION BUTTON DISABLE
+//FUNCTION BUTTON DISABLE
 $check_reference = $row_Purchase['Reference'];
 mysql_select_db($database_Connection, $Connection);
 $query_check = sprintf("SELECT check_POCustomer('$check_reference') AS result");
