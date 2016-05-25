@@ -146,7 +146,7 @@ if (isset($_GET['Reference'])) {
   $colname_View = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference = %s GROUP BY isisjkirim.SJKir, periode.Periode ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference = %s AND periode.Deletes != 'KembaliE' GROUP BY isisjkirim.SJKir, periode.Periode, periode,Deletes ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -156,7 +156,7 @@ if (isset($_GET['Reference'])) {
   $colname_LastPeriode = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_LastPeriode = sprintf("SELECT Periode FROM periode WHERE Reference = %s ORDER BY Periode DESC", GetSQLValueString($colname_LastPeriode, "text"));
+$query_LastPeriode = sprintf("SELECT Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliS'  AND Deletes != 'KembaliE' ORDER BY Periode DESC", GetSQLValueString($colname_LastPeriode, "text"));
 $LastPeriode = mysql_query($query_LastPeriode, $Connection) or die(mysql_error());
 $row_LastPeriode = mysql_fetch_assoc($LastPeriode);
 $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
@@ -275,7 +275,7 @@ $totalRows_User = mysql_num_rows($User);
       <h1>
         Transaksi Sewa
         <small>View</small>
-        <large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&&Periode=<?php echo $row_LastPeriode['Periode']; ?>"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>
+        <large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_LastPeriode['Periode']; ?>"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -310,7 +310,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_View['E']; ?></td>
 						<td><?php echo $row_View['Customer']; ?></td>
 						<td><?php echo $row_View['Project']; ?></td>
-						<td><a href="ViewTransaksiSewa2.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Detail</button></a></td>
+						<td><a href="ViewTransaksiSewa2.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>&Deletes=<?php echo $row_View['Deletes'] ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Detail</button></a></td>
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>

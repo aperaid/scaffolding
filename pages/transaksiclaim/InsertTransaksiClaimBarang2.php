@@ -139,7 +139,7 @@ $arrayaftercount = array();
 $IsiSJKir = join(',',$arrayaftercount);  
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.QSisaKem, periode.Periode, periode.IsiSJKir, periode.S FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND Deletes != 'Claim' AND Deletes != '' AND IsiSJKir IN ($IsiSJKir) ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.QSisaKem, periode.Periode, periode.IsiSJKir, periode.S FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND Deletes != 'Claim' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND IsiSJKir IN ($IsiSJKir) ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);

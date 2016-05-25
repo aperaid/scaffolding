@@ -140,8 +140,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 		  ?>
         <tr>
           <td><input name="hd_extendtransaksisewa_Periode[]" type="hidden" id="hd_extendtransaksisewa_Periode" value="<?php echo $Periode+1; ?>">
-            <input name="hd_extendtransaksisewa_S[]" type="text" id="hd_extendtransaksisewa_S2" value="<?php echo $FirstDate2; ?>">
-            <input name="hd_extendtransaksisewa_E[]" type="text" id="hd_extendtransaksisewa_E2" value="<?php echo $LastDate2; ?>">
+            <input name="hd_extendtransaksisewa_S[]" type="hidden" id="hd_extendtransaksisewa_S2" value="<?php echo $FirstDate2; ?>">
+            <input name="hd_extendtransaksisewa_E[]" type="hidden" id="hd_extendtransaksisewa_E2" value="<?php echo $LastDate2; ?>">
             <input name="hd_extendtransaksisewa_Quantity[]" type="hidden" id="hd_extendtransaksisewa_Quantity" value="<?php echo $row_Extend['Quantity']; ?>">
             <input name="hd_extendtransaksisewa_IsiSJKir[]" type="hidden" id="hd_extendtransaksisewa_IsiSJKir" value="<?php echo $row_Extend['IsiSJKir']; ?>">
             <input name="hd_extendtransaksisewa_Reference[]" type="hidden" id="hd_extendtransaksisewa_Reference" value="<?php echo $Reference; ?>">

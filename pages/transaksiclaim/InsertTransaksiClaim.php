@@ -271,7 +271,7 @@ $totalRows_User = mysql_num_rows($User);
                   </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                  <a href="TransaksiClaim.php"><button type="button" class="btn btn-default pull-left">Back</button></a> 
+                  <a href="../POCustomer/ViewTransaksi.php?Reference=<?php echo $_GET['Reference'] ?>"><button type="button" class="btn btn-default pull-left">Back</button></a> 
                   <button type="submit" name="bt_inserttransaksiclaim_submit" id="bt_inserttransaksiclaim_submit" class="btn btn-primary pull-right">Insert</button>
                 </div>
               <input type="hidden" name="MM_insert" value="form1">

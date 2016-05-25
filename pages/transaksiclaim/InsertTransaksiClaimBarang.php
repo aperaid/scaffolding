@@ -122,7 +122,7 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, periode.Quantity, periode.IsiSJKir FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase WHERE periode.Reference=%s AND periode.Periode=%s AND Deletes != 'Claim' AND Deletes != '' ORDER BY periode.Id ASC
+$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.JS, transaksi.QSisaKem, periode.Quantity, periode.IsiSJKir FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase WHERE periode.Reference=%s AND periode.Periode=%s AND Deletes != 'Claim' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' ORDER BY periode.Id ASC
 ", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
