@@ -369,11 +369,11 @@ $totalRows_User = mysql_num_rows($User);
 		  if($row_View['Periode'] == 1){
 			  $FirstDate2 = $row_View2['S'];
 		  }
-		  elseif($row_View2['Deletes'] == 'Extend' || $row_View2['Deletes'] == 'KembaliS' || $row_View2['Deletes'] == 'KembaliE'){
+		  elseif($row_View2['Deletes'] == 'Extend' || $row_View2['Deletes'] == 'KembaliS' || $row_View2['Deletes'] == 'KembaliE' || $row_View2['Deletes'] == 'ClaimS' || $row_View2['Deletes'] == 'ClaimE'){
 			  $FirstDate2 = $FirstDate;
 		  }
 		  
-		  if(/*$Proof2 == $row_View2['E'] || */$row_View2['Deletes'] == 'Extend'){
+		  if(/*$Proof2 == $row_View2['E'] || */$row_View2['Deletes'] == 'Extend' || $row_View2['Deletes'] == 'KembaliS' || $row_View2['Deletes'] == 'ClaimS'){
 			  $LastDate2 = $LastDate;
 		  }
 		  else{
