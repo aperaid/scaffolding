@@ -160,7 +160,7 @@ if (isset($_GET['Reference'])) {
   $colname_Periode = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_Periode = sprintf("SELECT MAX(Periode) FROM periode WHERE Reference = %s", GetSQLValueString($colname_Periode, "text"));
+$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliE' AND Deletes != 'Claim'", GetSQLValueString($colname_Periode, "text"));
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
@@ -197,9 +197,10 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Periode=%s AND SJKem IS NULL AND Deletes != 'Claim'",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Reference=%s AND Periode=%s AND SJKem IS NULL AND Deletes != 'Claim'",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
 					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -207,9 +208,23 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, 'Claim')",
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, 'ClaimS')",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S'][$i], "text"),
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Tgl'], "text"),
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
+					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s+1, %s, %s, %s, %s, %s, %s, 'ClaimE')",
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S2'][$i], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Tgl'], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
@@ -224,6 +239,18 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Claim', %s, %s, %s, %s)",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice2'], "text"),
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Tgl'], "text"),
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference2'], "text"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode2'], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+
+  if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s+1)",
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice3'], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Tgl'], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference2'], "text"),
@@ -412,11 +439,16 @@ $totalRows_User = mysql_num_rows($User);
 	$Reference = $_SESSION['Reference']; 
 	$Strip = substr($Reference, 1, -1);
 
+	$tgl = $row_InsertTransaksiClaim['E'];
+	$convert = str_replace('/', '-', $tgl);
+	$S2 = date('01/m/Y', strtotime($convert));
+
 	?>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
       <input name="hd_inserttransaksiclaimbarang2_S[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
+      <input name="hd_inserttransaksiclaimbarang2_S2[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S2" value="<?php echo $S2; ?>">
 	    <input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
 	      <input name="hd_inserttransaksiclaimbarang2_Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $Strip; ?>">
 <input name="hd_inserttransaksiclaimbarang2_Periode[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
@@ -454,8 +486,9 @@ $totalRows_User = mysql_num_rows($User);
                 </div>
                 
                 <input name="hd_inserttransaksiclaimbarang2_Invoice2" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice2" value="<?php echo str_pad($row_LastId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
+                <input name="hd_inserttransaksiclaimbarang2_Invoice3" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice3" value="<?php echo str_pad($row_LastId['Id'] + 2, 5, "0", STR_PAD_LEFT); ?>">
             <input name="hd_inserttransaksiclaimbarang2_Reference2" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference2" value="<?php echo $Strip; ?>">
-          <input name="hd_inserttransaksiclaimbarang2_Periode2" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode2" value="<?php echo $row_Periode['MAX(Periode)']; ?>">
+          <input name="hd_inserttransaksiclaimbarang2_Periode2" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode2" value="<?php echo $row_Periode['Periode']; ?>">
   <input type="hidden" name="MM_insert" value="form1">
   <input type="hidden" name="MM_update" value="form1">
 </form>

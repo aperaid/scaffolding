@@ -276,6 +276,8 @@ $totalRows_User = mysql_num_rows($User);
 				<thead>
 					<tr>
 					<th>No. Claim</th>
+                    <th>Periode</th>
+                    <th>Barang</th>
 					<th>Tanggal Claim</th>
 					<th>Project</th>
 					<th>Amount</th>
@@ -288,6 +290,8 @@ $totalRows_User = mysql_num_rows($User);
 					<?php do { ?>
 					<tr>
 						<td><?php echo $row_TransaksiClaim['Claim']; ?></td>
+                        <td><?php echo $row_TransaksiClaim['Periode']; ?></td>
+                        <td><?php echo $row_TransaksiClaim['Barang']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Amount']; ?></td>

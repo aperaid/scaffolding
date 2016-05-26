@@ -170,7 +170,7 @@ if (isset($_GET['Reference'])) {
   $colname_GetPeriode = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_GetPeriode = sprintf("SELECT MAX(periode.Periode) FROM isisjkirim RIGHT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference WHERE transaksi.Reference = %s", GetSQLValueString($colname_GetPeriode, "text"));
+$query_GetPeriode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliE' AND Deletes != 'Claim'", GetSQLValueString($colname_GetPeriode, "text"));
 $GetPeriode = mysql_query($query_GetPeriode, $Connection) or die(mysql_error());
 $row_GetPeriode = mysql_fetch_assoc($GetPeriode);
 $totalRows_GetPeriode = mysql_num_rows($GetPeriode);
@@ -458,7 +458,7 @@ $totalRows_User = mysql_num_rows($User);
 	      <input name="hd_insertsjkembalibarang2_Reference[]" type="hidden" id="hd_insertsjkembalibarang2_Reference" value="<?php echo $row_InsertSJKembali['Reference']; ?>">
           <input name="hd_insertsjkembalibarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKir" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>">
 	      <input name="hd_insertsjkembalibarang2_Purchase[]" type="hidden" id="hd_insertsjkembalibarang2_Purchase" value="<?php echo $row_InsertSJKembali['Purchase']; ?>">
-	        <input name="hd_insertsjkembalibarang2_Periode[]" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_GetPeriode['MAX(periode.Periode)']; ?>">
+	        <input name="hd_insertsjkembalibarang2_Periode[]" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_GetPeriode['Periode']; ?>">
 	        <input name="hd_insertsjkembalibarang2_S[]" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo $row_LastTglS['S']; ?>">
             <input name="hd_insertsjkembalibarang2_E2[]" type="hidden" id="hd_insertsjkembalibarang2_E2" value="<?php $row_LastTgl['Tgl']; ?>">
             <input name="hd_insertsjkembalibarang2_S2[]" type="hidden" id="hd_insertsjkembalibarang2_S2" value="<?php echo $S2; ?>">

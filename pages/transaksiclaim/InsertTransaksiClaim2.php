@@ -36,7 +36,7 @@ $Reference = $_SESSION['Reference'];
 $Strip = substr($Reference, 1, -1);
 
 mysql_select_db($database_Connection, $Connection);
-$query_LastPeriode = "SELECT MAX(Periode), Reference FROM periode WHERE Reference = '$Strip'";
+$query_LastPeriode = "SELECT MAX(Periode), Reference FROM periode WHERE Reference = '$Strip' AND Deletes != 'Claim'";
 $LastPeriode = mysql_query($query_LastPeriode, $Connection) or die(mysql_error());
 $row_LastPeriode = mysql_fetch_assoc($LastPeriode);
 $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
