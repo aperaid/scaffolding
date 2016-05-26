@@ -132,9 +132,16 @@ $totalRows_View = mysql_num_rows($View);
 
 //SJKirim Tab
 mysql_select_db($database_Connection, $Connection);
-$query_sjkirim = sprintf("SELECT sjkirim.SJKir AS sjkirim_id, sjkirim.Tgl AS tgl, (sum(isisjkirim.QKirim)-sum(isisjkirim.QSisaKem)) AS status, isisjkirim.QSisaKem as qsisakembali FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir WHERE sjkirim.Reference=%s GROUP BY sjkirim.SJKir", GetSQLValueString($colname_View, "text"));
+$query_sjkirim = sprintf("SELECT sjkirim.SJKir AS sjkirim_id, sjkirim.Tgl AS tgl, sum(isisjkirim.QTertanda) AS qtertanda FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir WHERE sjkirim.Reference=%s GROUP BY sjkirim.SJKir", GetSQLValueString($colname_View, "text"));
 $view_sjkirim = mysql_query ($query_sjkirim, $Connection) or die(mysql_error());
 $row_sjkirim = mysql_fetch_assoc($view_sjkirim);
+//SJKirim TAB End
+
+//SJKembali Tab
+mysql_select_db($database_Connection, $Connection);
+$query_sjkembali = sprintf("SELECT sjkembali.SJKem AS sjkembali_id, sjkembali.Tgl AS tgl, sum(isisjkembali.QTerima) AS qterima FROM isisjkembali LEFT JOIN sjkembali ON isisjkembali.SJKem=sjkembali.SJKem WHERE sjkembali.Reference=%s GROUP BY sjkembali.SJKem", GetSQLValueString($colname_View, "text"));
+$view_sjkembali = mysql_query ($query_sjkembali, $Connection) or die(mysql_error());
+$row_sjkembali = mysql_fetch_assoc($view_sjkembali);
 //SJKirim TAB End
 
 //FUNCTION BUTTON DISABLE
@@ -339,6 +346,8 @@ $totalRows_User = mysql_num_rows($User);
                 <th>Quantity</th>
                 <th>Request Date</th>
                 <th>Amount</th>
+				<th>Progress</th>
+				<th>Status</th>
             </tr>
             </thead>
             <tbody>
@@ -350,6 +359,7 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_Purchase['Quantity']; ?></td>
                     <td><?php echo $row_Purchase['Tgl']; ?></td>
                     <td><?php echo $row_Purchase['Amount']; ?></td>
+					
                   </tr>
                 <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
             </tbody>
@@ -390,7 +400,7 @@ $totalRows_User = mysql_num_rows($User);
                   <tr>
 				    <td><?php echo $row_sjkirim['sjkirim_id']; ?></td>
                     <td><?php echo $row_sjkirim['tgl']; ?></td>
-                    <?php if($row_sjkirim['status'] == 0 ){ ?>
+                    <?php if($row_sjkirim['qtertanda'] != 0 ){ ?>
 					<td>
                     <div class="progress progress-xs">
                       <div class="progress-bar progress-bar-success" style="width: 100%"></div>
@@ -398,22 +408,15 @@ $totalRows_User = mysql_num_rows($User);
                     </td>                    
 					<td><span class="badge bg-green">Selesai Dikirim</span></td>
 				    <?php }
-					elseif ($row_sjkirim['status'] != 0) { ?>
+					else { ?>
 						<td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-yellow" style="width: 66%"></div>
+                      <div class="progress-bar progress-bar-yellow" style="width: 50%"></div>
                     </div>
                     </td>                    
-					<td><span class="badge bg-yellow">Separuh Dikirim</span></td>
-					<?php } elseif ($row_sjkirim['qsisakembali'] == 0) {  ?>
-						<td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: 33%"></div>
-                    </div>
-                    </td>                    
-					<td><span class="badge bg-red">Belum Dikirim</span></td>
+					<td><span class="badge bg-yellow">Dalam Pengiriman</span></td>
 					<?php } ?>
-					<td><button class="btn btn-primary">View</button></td>
+					<td><a href="../sjkirim/ViewSJKirim.php?SJKir=<?php echo $row_sjkirim['sjkirim_id']; ?>"><button class="btn btn-primary">View</button></a></td>
                   </tr>
                 <?php } while ($row_sjkirim = mysql_fetch_assoc($view_sjkirim)); ?>
             </table>
@@ -422,6 +425,47 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.tab-pane -->
 			  
+			  <!-- /.tab-pane -->
+			  <div class="tab-pane" id="sjkembali_tab">
+                
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table class="table table-condensed">
+                <tr>
+                  <th>SJKem</th>
+                  <th>Tanggal</th>
+                  <th>Progress</th>
+                  <th>Status</th>
+				  <th>Opsi</th>
+                </tr>
+                <?php do { ?>
+                  <tr>
+				    <td><?php echo $row_sjkembali['sjkembali_id']; ?></td>
+                    <td><?php echo $row_sjkembali['tgl']; ?></td>
+                    <?php if($row_sjkembali['qterima'] != 0 ){ ?>
+					<td>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-success" style="width: 100%"></div>
+                    </div>
+                    </td>                    
+					<td><span class="badge bg-green">Selesai Dikembalikan</span></td>
+				    <?php }
+					else { ?>
+						<td>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-yellow" style="width: 50%"></div>
+                    </div>
+                    </td>                    
+					<td><span class="badge bg-yellow">Dalam Pengambilan</span></td>
+					<?php } ?>
+					<td><a href="../sjKembali/ViewSJKembali.php?SJKir=<?php echo $row_sjkembali['sjkembali_id']; ?>"><button class="btn btn-primary">View</button></a></td>
+                  </tr>
+                <?php } while ($row_sjkembali = mysql_fetch_assoc($view_sjkembali)); ?>
+            </table>
+            </div>
+            <!-- /.box-body -->
+              </div>
+              <!-- /.tab-pane -->
               
             </div>
 			<!-- /.tab-content -->
