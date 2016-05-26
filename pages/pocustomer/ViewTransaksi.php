@@ -130,6 +130,19 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
+//SJKirim Tab
+mysql_select_db($database_Connection, $Connection);
+$query_sjkirim = sprintf("SELECT sjkirim.SJKir AS sjkirim_id, sjkirim.Tgl AS tgl FROM sjkirim WHERE sjkirim.Reference=%s", GetSQLValueString($colname_View, "text"));
+$view_sjkirim = mysql_query ($query_sjkirim, $Connection) or die(mysql_error());
+$row_sjkirim = mysql_fetch_assoc($view_sjkirim);
+//SJKirim TAB End
+
+//SJKirim Tab Status
+//mysql_select_db($database_Connectoin, $Connection);
+//$query_isisjkirim = sprintf("SELECT sjkirim.SJKir AS sjkirim_id, sjkirim.Tgl AS tgl FROM sjkirim WHERE sjkirim.Reference=%s", GetSQLValueString($colname_View, "text"));
+//$view_isisjkirim = mysql_query ($query_sjkirim, $Connection) or die(mysql_error());
+//$row_isisjkirim = mysql_fetch_assoc($view_sjkirim);
+//SJKirim Tab Status End
 
 //FUNCTION BUTTON DISABLE
 $check_reference = $row_Purchase['Reference'];
@@ -269,13 +282,13 @@ $totalRows_User = mysql_num_rows($User);
 	<div class="col-md-12">
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#po_tab" data-toggle="tab">Purchase Order</a></li>
+              <li class="active"><a href="#overall_tab" data-toggle="tab">Overall</a></li>
               <li><a href="#sjkirim_tab" data-toggle="tab">SJKirim</a></li>
               <li><a href="#sjkembali_tab" data-toggle="tab">SJKembali</a></li>
               <li><a href="#sjkembali_tab" data-toggle="tab">Claim</a></li>
             </ul>
             <div class="tab-content">
-              <div class="active tab-pane" id="po_tab">
+              <div class="active tab-pane" id="overall_tab">
                 <section class="invoice">
       <!-- title row -->
       <div class="row">
@@ -368,21 +381,40 @@ $totalRows_User = mysql_num_rows($User);
     </section>
               </div>
               <!-- /.tab-pane -->
-			  <div class="active tab-pane" id="sjkirim_tab">
+			  <div class="tab-pane" id="sjkirim_tab">
                 
-              </div>
-              <!-- /.tab-pane -->
-			  <div class="active tab-pane" id="sjkembali_tab">
-                
-              </div>
-              <!-- /.tab-pane -->
-			  <!-- /.tab-pane -->
-			  <div class="active tab-pane" id="claim_tab">
-                
-              </div>
-              <!-- /.tab-pane -->
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table class="table table-condensed">
+                <tr>
+                  <th>SJKir</th>
+                  <th>Tanggal</th>
+                  <th>Progress</th>
+                  <th>Status</th>
+				  <th>Opsi</th>
+                </tr>
+                <?php do { ?>
+                  <tr>
+				    <td><?php echo $row_sjkirim['sjkirim_id']; ?></td>
+                    <td><?php echo $row_sjkirim['tgl']; ?></td>
+                    <td>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-danger" style="width: 30%"></div>
+                    </div>
+                    </td>
+                    <td><span class="badge bg-red">Belum Dikirim</span></td>
+				    <td></td>
+                  </tr>
+                <?php } while ($row_sjkirim = mysql_fetch_assoc($view_sjkirim)); ?>
+            </table>
             </div>
-            <!-- /.tab-content -->
+            <!-- /.box-body -->
+              </div>
+              <!-- /.tab-pane -->
+			  
+              
+            </div>
+			<!-- /.tab-content -->
           </div>
           <!-- /.nav-tabs-custom -->
         </div>
