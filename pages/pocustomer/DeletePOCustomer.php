@@ -52,10 +52,7 @@ if ((isset($_GET['CCode'])) && ($_GET['CCode'] != "")) {
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Untitled Document</title>
 </head>
-
 <body>
 </body>
 </html>

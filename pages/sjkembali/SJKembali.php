@@ -293,7 +293,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_SJKembali['Customer']; ?></td>
 						<td><?php echo $row_SJKembali['Project']; ?></td>
 						<td><a href="ViewSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>"><button type="button" class="btn btn-primary btn-sm btn-block">View</button></a></td>
-						<td><a href="DeleteSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>" onclick="return confirm('Delete Pengembalian?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Cancel</button></a></td>
+						<td><a href="DeleteSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>" onclick="return confirm('Delete Pengembalian?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Delete</button></a></td>
 					</tr>
 					<?php } while ($row_SJKembali = mysql_fetch_assoc($SJKembali)); ?>
 				</tbody>

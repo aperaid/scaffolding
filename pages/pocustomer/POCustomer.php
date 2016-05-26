@@ -136,7 +136,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	
 mysql_select_db($database_Connection, $Connection);
-$query_POCustomer = "SELECT pocustomer.*, project.Project, customer.Company FROM pocustomer INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode";
+$query_POCustomer = "SELECT pocustomer.*, project.Project, customer.Company, sum(Amount) AS Amount FROM pocustomer INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode INNER JOIN transaksi on pocustomer.Reference=transaksi.reference GROUP BY pocustomer.Reference";
 $POCustomer = mysql_query($query_POCustomer, $Connection) or die(mysql_error());
 $row_POCustomer = mysql_fetch_assoc($POCustomer);
 $totalRows_POCustomer = mysql_num_rows($POCustomer);
@@ -293,7 +293,7 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_POCustomer['Tgl']; ?></td>
                     <td><?php echo $row_POCustomer['Company']; ?></td>
                     <td><?php echo $row_POCustomer['Project']; ?></td>
-                    <td></td>
+                    <td><?php echo $row_POCustomer['Amount']; ?></td>
                     <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
                     <td><a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>

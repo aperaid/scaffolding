@@ -252,7 +252,6 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content-header">
       <h1>
         Purchase Order
-        <small>View</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -262,10 +261,25 @@ $totalRows_User = mysql_num_rows($User);
     </section>
 
 	<!-- Main content -->
-    <section class="invoice">
+    
+    <!-- /.content -->
+	
+	<!-- Tab Part -->
+	<section class="content">
+	<div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#po_tab" data-toggle="tab">Purchase Order</a></li>
+              <li><a href="#sjkirim_tab" data-toggle="tab">SJKirim</a></li>
+              <li><a href="#sjkembali_tab" data-toggle="tab">SJKembali</a></li>
+              <li><a href="#sjkembali_tab" data-toggle="tab">Claim</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="active tab-pane" id="po_tab">
+                <section class="invoice">
       <!-- title row -->
       <div class="row">
-        <div class="col-xs-12">
+        <div class="">
           <h2 class="page-header">
             <i class="fa fa-globe"></i> PT. BDN | 
 			<big><?php echo $row_Purchase['Reference']; ?></big>
@@ -352,10 +366,34 @@ $totalRows_User = mysql_num_rows($User);
         </div>
       </div>
     </section>
-    <!-- /.content -->
+              </div>
+              <!-- /.tab-pane -->
+			  <div class="active tab-pane" id="sjkirim_tab">
+                
+              </div>
+              <!-- /.tab-pane -->
+			  <div class="active tab-pane" id="sjkembali_tab">
+                
+              </div>
+              <!-- /.tab-pane -->
+			  <!-- /.tab-pane -->
+			  <div class="active tab-pane" id="claim_tab">
+                
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+    
+	<!-- /.col -->
+	<!-- Tab Part End -->
+	
 	<div class="clearfix"></div>
 	
   </div>
+    </section>
   <!-- /.content-wrapper -->
   
   <!-- Footer Wrapper -->
