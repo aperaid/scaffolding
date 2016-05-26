@@ -159,7 +159,18 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE Periode=%s AND Purchase=%s AND Claim=%s AND Deletes='Claim'",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE Periode=%s AND Purchase=%s AND Claim=%s AND Deletes='ClaimS'",
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
+					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"),
+					   GetSQLValueString($_POST['tx_edittransaksiclaim_Claim'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE Periode=%s+1 AND Purchase=%s AND Claim=%s AND Deletes='ClaimE'",
                        GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
 					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"),
                        GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"),
@@ -347,7 +358,7 @@ $totalRows_User = mysql_num_rows($User);
 	    <td><input name="tx_edittransaksiclaim_Claim" type="text" class="form-control" id="tx_edittransaksiclaim_Claim" value="<?php echo $row_Edit['Claim']; ?>" readonly></td>
 	    <td><input name="tx_edittransaksiclaim_Barang" type="text" class="form-control" id="tx_edittransaksiclaim_Barang" value="<?php echo $row_Edit['Barang']; ?>" readonly></td>
 	    <td><input name="tx_edittransaksiclaim_QSisaKem" type="text" class="form-control" id="tx_edittransaksiclaim_QSisaKem" value="<?php echo $row_Edit['QSisaKem']; ?>" readonly></td>
-	    <td><input name="tx_edittransaksiclaim_QClaim" type="text" class="form-control" id="tx_edittransaksiclaim_QClaim" autocomplete="off" value="<?php echo $row_Edit['QClaim']; ?>"></td>
+	    <td><input name="tx_edittransaksiclaim_QClaim" type="text" class="form-control" id="tx_edittransaksiclaim_QClaim" autocomplete="off" value="<?php echo $row_Edit['QClaim']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_Edit['QSisaKem']; ?>)"></td>
 	    <td><input name="tx_edittransaksiclaim_Amount" type="text" class="form-control" id="tx_edittransaksiclaim_Amount" autocomplete="off" value="<?php echo $row_Edit['Amount']; ?>"></td>
 	    <td><input name="tx_edittransaksiclaim_Purchase" type="text" class="form-control" id="tx_edittransaksiclaim_Purchase[]" value="<?php echo $row_Edit['Purchase']; ?>" readonly></td>
 	    </tr>
@@ -406,6 +417,16 @@ $totalRows_User = mysql_num_rows($User);
 <!-- datepicker -->
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
+<script type="text/javascript">
+function minmax(value, min, max) 
+{
+	if(parseInt(value) < min || isNaN(value)) 
+        return 0; 
+    if(parseInt(value) > max) 
+        return parseInt(max); 
+    else return value;
+}
+</script>
 
 </body>
 </html>
