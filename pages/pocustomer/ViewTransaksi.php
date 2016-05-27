@@ -125,7 +125,7 @@ $totalRows_detail = mysql_num_rows($detail);
 
 //Overview table Tab
 mysql_select_db($database_Connection, $Connection);
-$query_Purchase = sprintf("SELECT transaksi.JS AS js, transaksi.Barang AS barang, transaksi.Quantity AS quantity, transaksi.Amount as price FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s ORDER BY transaksi.Id", GetSQLValueString($colname_Purchase, "text"));
+$query_Purchase = sprintf("SELECT transaksi.JS AS js, transaksi.Barang AS barang, transaksi.Quantity AS quantity, transaksi.Amount AS price, transaksi.QSisaKir AS qsisakirim, transaksi.QSisaKem AS qsisakembali FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s ORDER BY transaksi.Id", GetSQLValueString($colname_Purchase, "text"));
 $Purchase = mysql_query($query_Purchase, $Connection) or die(mysql_error());
 $row_Purchase = mysql_fetch_assoc($Purchase);
 $totalRows_Purchase = mysql_num_rows($Purchase);
@@ -370,7 +370,7 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_Purchase['quantity']; ?></td>
                     <td><?php echo $row_Purchase['price']; ?></td>
 					<?php /* Kalau SEWA */ if ($row_Purchase['js'] == "Sewa") { ?>
-						<?php /* belum dikirim */ if (0){ ?>
+						<?php /* belum dikirim */ if ($row_Purchase['qsisakirim'] == $row_Purchase['quantity'] && $row_Purchase['qsisakembali'] == 0){ ?>
 						<td>
 						<div class="progress progress-xs">
 						  <div class="progress-bar progress-bar-red" style="width:10%"></div>
@@ -378,7 +378,7 @@ $totalRows_User = mysql_num_rows($User);
 						</td>
 						<td><span class="badge bg-red">Belum Dikirim</span></td>
 						
-						<?php } /* setengah dikirim */ elseif (0){ ?>
+						<?php } /* setengah dikirim */ elseif (($row_Purchase['qsisakirim'] < $row_Purchase['quantity']) && $row_Purchase['qsisakirim'] != 0){ ?>
 						<td>
 						<div class="progress progress-xs">
 						  <div class="progress-bar progress-bar-yellow" style="width:25%"></div>
@@ -386,15 +386,15 @@ $totalRows_User = mysql_num_rows($User);
 						</td>
 						<td><span class="badge bg-yellow">Separuh Terkirim</span></td>
 						
-						<?php } /* pengiriman selesai, dalam proses penyewaan */elseif (1){ ?>
+						<?php } /* pengiriman selesai, dalam proses penyewaan */elseif ($row_Purchase['qsisakirim'] == 0 && $row_Purchase['qsisakembali'] == $row_Purchase['quantity']){ ?>
 						<td>
 						<div class="progress progress-xs">
-						  <div class="progress-bar progress-bar-yellow" style="width:50%"></div>
+						  <div class="progress-bar progress-bar-blue" style="width:50%"></div>
 						</div>
 						</td>
-						<td><span class="badge bg-yellow">Pengiriman Selesai, dalam penyewaan</span></td>
+						<td><span class="badge bg-blue">Pengiriman Selesai, dalam penyewaan</span></td>
 						
-						<?php } /* setengah dikembalikan */ elseif (1){ ?>
+						<?php } /* setengah dikembalikan */ elseif (($row_Purchase['qsisakembali'] < $row_Purchase['quantity']) && $row_Purchase['qsisakembali'] != 0){ ?>
 						<td>
 						<div class="progress progress-xs">
 						  <div class="progress-bar progress-bar-yellow" style="width:75%"></div>
@@ -402,16 +402,16 @@ $totalRows_User = mysql_num_rows($User);
 						</td>
 						<td><span class="badge bg-yellow">Separuh Kembali</span></td>
 						
-						<?php } /* selesai dikembalikan */ elseif (1){ ?>
+						<?php } /* selesai dikembalikan */ elseif ($row_Purchase['qsisakembali'] == 0 && $row_Purchase['qsisakirim'] == 0){ ?>
 						<td>
 						<div class="progress progress-xs">
 						  <div class="progress-bar progress-bar-yellow" style="width:100%"></div>
 						</div>
 						</td>
-						<td><span class="badge bg-yellow">Semua Kembali/Claim, Transaksi Selesai</span></td>
+						<td><span class="badge bg-yellow">Semua Kembali/Claimed, Transaksi Selesai</span></td>
 						<?php } ?>
                     <?php } /* kalau JUAL */ elseif($row_Purchase['js'] == "Jual") { ?>
-						<?php /* belum dikirim */ if (0){ ?>
+						<?php /* belum dikirim */ if ($row_Purchase['qsisakirim'] == $row_Purchase['quantity']){ ?>
 						<td>
 						<div class="progress progress-xs">
 						  <div class="progress-bar progress-bar-red" style="width:10%"></div>
@@ -419,15 +419,15 @@ $totalRows_User = mysql_num_rows($User);
 						</td>
 						<td><span class="badge bg-red">Belum Dikirim</span></td>
 						
-						<?php } /* setengah dikirim */ elseif (0){ ?>
+						<?php } /* setengah dikirim */ elseif ($row_Purchase['qsisakirim'] < $row_Purchase['quantity']){ ?>
 						<td>
 						<div class="progress progress-xs">
-						  <div class="progress-bar progress-bar-yellow" style="width:25%"></div>
+						  <div class="progress-bar progress-bar-yellow" style="width:50%"></div>
 						</div>
 						</td>
 						<td><span class="badge bg-yellow">Separuh Terkirim</span></td>
 						
-						<?php } /* pengiriman selesai, dalam proses penyewaan */elseif (1){ ?>
+						<?php } /* pengiriman selesai, dalam proses penyewaan */elseif ($row_Purchase['qsisakirim'] == 0){ ?>
 						<td>
 						<div class="progress progress-xs">
 						  <div class="progress-bar progress-bar-green" style="width:100%"></div>
