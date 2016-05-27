@@ -115,23 +115,34 @@ if (isset($_GET['Reference'])) {
   $colname_Purchase = $_GET['Reference'];
 }
 
-//Overview Tab
+//Company Details TAB
 mysql_select_db($database_Connection, $Connection);
-$query_Purchase = sprintf("SELECT transaksi.*, pocustomer.Tgl, project.*, customer.* FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_Purchase, "text"));
+$query_detail = sprintf("SELECT project.*, customer.*, pocustomer.Tgl as tgl FROM project INNER JOIN customer ON project.CCode=customer.CCode INNER JOIN pocustomer ON pocustomer.PCode=project.PCode WHERE pocustomer.Reference = %s", GetSQLValueString($colname_Purchase, "text"));
+$detail = mysql_query($query_detail, $Connection) or die(mysql_error());
+$row_detail = mysql_fetch_assoc($detail);
+$totalRows_detail = mysql_num_rows($detail);
+//Company Details End
+
+//Overview table Tab
+mysql_select_db($database_Connection, $Connection);
+$query_Purchase = sprintf("SELECT transaksi.JS AS js, transaksi.Barang AS barang, transaksi.Quantity AS quantity, transaksi.Amount as price FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s ORDER BY transaksi.Id", GetSQLValueString($colname_Purchase, "text"));
 $Purchase = mysql_query($query_Purchase, $Connection) or die(mysql_error());
 $row_Purchase = mysql_fetch_assoc($Purchase);
 $totalRows_Purchase = mysql_num_rows($Purchase);
-//Overview Tab End
+//Overview table Tab End
 
 $colname_View = "-1";
 if (isset($_GET['Reference'])) {
   $colname_View = $_GET['Reference'];
 }
+
+//Untuk Ambil reference doang
 mysql_select_db($database_Connection, $Connection);
 $query_View = sprintf("SELECT Reference FROM transaksi WHERE Reference = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
+//Untuk ambil reference doang
 
 //SJKirim Tab
 mysql_select_db($database_Connection, $Connection);
@@ -148,9 +159,8 @@ $row_sjkembali = mysql_fetch_assoc($view_sjkembali);
 //SJKirim TAB End
 
 //FUNCTION BUTTON DISABLE
-$check_reference = $row_Purchase['Reference'];
 mysql_select_db($database_Connection, $Connection);
-$query_check = sprintf("SELECT check_POCustomer('$check_reference') AS result");
+$query_check = sprintf("SELECT check_POCustomer('$colname_View') AS result");
 $check = mysql_query($query_check, $Connection) or die(mysql_error());
 $row_check = mysql_fetch_assoc($check);
 $totalRows_check = mysql_num_rows($check);
@@ -298,8 +308,8 @@ $totalRows_User = mysql_num_rows($User);
         <div class="">
           <h2 class="page-header">
             <i class="fa fa-globe"></i> PT. BDN | 
-			<big><?php echo $row_Purchase['Reference']; ?></big>
-			<small class="pull-right">Date: <?php echo $row_Purchase['Tgl']; ?></small>
+			<?php echo $colname_View; ?>
+			<small class="pull-right">Date: <?php echo $row_detail['tgl']; ?></small>
 		  </h2>
         </div>
         <!-- /.col -->
@@ -309,29 +319,29 @@ $totalRows_User = mysql_num_rows($User);
         <div class="col-sm-4 invoice-col">
           Company
           <address>
-            <strong><?php echo $row_Purchase['Company']; ?></strong><br>
-            <?php echo $row_Purchase['Alamat']; ?><br>
-            <?php echo $row_Purchase['Kota']; ?>,  <?php echo $row_Purchase['Zip']; ?><br>
-            Phone: <?php echo $row_Purchase['CompPhone']; ?><br>
-            Email: <?php echo $row_Purchase['CompEmail']; ?>
+            <strong><?php echo $row_detail['Company']; ?></strong><br>
+            <?php echo $row_detail['Alamat']; ?><br>
+            <?php echo $row_detail['Kota']; ?>,  <?php echo $row_detail['Zip']; ?><br>
+            Phone: <?php echo $row_detail['CompPhone']; ?><br>
+            Email: <?php echo $row_detail['CompEmail']; ?>
           </address>
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
           Project
           <address>
-            <strong><?php echo $row_Purchase['Project']; ?></strong><br>
-            <?php echo $row_Purchase['Alamat']; ?><br>
-            <?php echo $row_Purchase['Kota']; ?>,  <?php echo $row_Purchase['Zip']; ?><br>
+            <strong><?php echo $row_detail['Project']; ?></strong><br>
+            <?php echo $row_detail['Alamat']; ?><br>
+            <?php echo $row_detail['Kota']; ?>,  <?php echo $row_detail['Zip']; ?><br>
           </address>
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
           Contact Person
           <address>
-            <strong><?php echo $row_Purchase['Customer']; ?></strong><br>
-            Phone: <?php echo $row_Purchase['CustPhone']; ?><br>
-            Email: <?php echo $row_Purchase['CustEmail']; ?>
+            <strong><?php echo $row_detail['Customer']; ?></strong><br>
+            Phone: <?php echo $row_detail['CustPhone']; ?><br>
+            Email: <?php echo $row_detail['CustEmail']; ?>
           </address>
         </div>
         <!-- /.col -->
@@ -347,7 +357,6 @@ $totalRows_User = mysql_num_rows($User);
                 <th>J/S</th>
                 <th>Item Name</th>
                 <th>Quantity</th>
-                <th>Request Date</th>
                 <th>Amount</th>
 				<th>Progress</th>
 				<th>Status</th>
@@ -356,13 +365,11 @@ $totalRows_User = mysql_num_rows($User);
             <tbody>
 				<?php do { ?>
                   <tr>
-                    <td class="hidden"><input name="hd_viewtransaksi_Id" id="hd_viewtransaksi_Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
-                    <td><?php echo $row_Purchase['JS']; ?></td>
-                    <td><?php echo $row_Purchase['Barang']; ?></td>
-                    <td><?php echo $row_Purchase['Quantity']; ?></td>
-                    <td><?php echo $row_Purchase['Tgl']; ?></td>
-                    <td><?php echo $row_Purchase['Amount']; ?></td>
-					<?php /* Kalau SEWA */ if (0) { ?>
+                    <td><?php echo $row_Purchase['js']; ?></td>
+                    <td><?php echo $row_Purchase['barang']; ?></td>
+                    <td><?php echo $row_Purchase['quantity']; ?></td>
+                    <td><?php echo $row_Purchase['price']; ?></td>
+					<?php /* Kalau SEWA */ if ($row_Purchase['js'] == "Sewa") { ?>
 						<?php /* belum dikirim */ if (0){ ?>
 						<td>
 						<div class="progress progress-xs">
@@ -403,7 +410,7 @@ $totalRows_User = mysql_num_rows($User);
 						</td>
 						<td><span class="badge bg-blue">Semua Kembali/Claim, Transaksi Selesai</span></td>
 						<?php } ?>
-                    <?php } /* kalau JUAL */ elseif(1) { ?>
+                    <?php } /* kalau JUAL */ elseif($row_Purchase['js'] == "Jual") { ?>
 						<?php /* belum dikirim */ if (0){ ?>
 						<td>
 						<div class="progress progress-xs">
