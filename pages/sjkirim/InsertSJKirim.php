@@ -110,15 +110,11 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO sjkirim (SJKir, Tgl, Reference) VALUES (%s, %s, %s)",
-                       GetSQLValueString($_POST['tx_insertsjkirim_SJKir'], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkirim_Tgl'], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkirim_Reference'], "text"));
+	$_SESSION['tx_insertsjkirim_SJKir'] = sprintf("%s", GetSQLValueString($_POST['tx_insertsjkirim_SJKir'], "text"));
+	$_SESSION['tx_insertsjkirim_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_insertsjkirim_Tgl'], "text"));
+	$_SESSION['tx_insertsjkirim_Reference'] = sprintf("%s", GetSQLValueString($_POST['tx_insertsjkirim_Reference'], "text"));
 
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-
-  $insertGoTo = "InsertSJKirim2.php";
+  $insertGoTo = "InsertSJKirimBarang.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];

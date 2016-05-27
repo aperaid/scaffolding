@@ -120,7 +120,7 @@ if (isset($_GET['Reference'])) {
   $colname_InsertSJKirim = $_GET['Reference'];
 }
 
-$checkbox = $_SESSION['CheckBox'];
+$checkbox = $_SESSION['cb_insertsjkirimbarang_checkbox'];
 $remove = preg_replace("/[^0-9,.]/", "", $checkbox);
 
 error_reporting(E_ERROR); // bagian di ilangin error
@@ -172,6 +172,16 @@ $query_LastTgl = "SELECT Tgl FROM sjkirim ORDER BY Id DESC";
 $LastTgl = mysql_query($query_LastTgl, $Connection) or die(mysql_error());
 $row_LastTgl = mysql_fetch_assoc($LastTgl);
 $totalRows_LastTgl = mysql_num_rows($LastTgl);
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO sjkirim (SJKir, Tgl, Reference) VALUES (%s, %s, %s)",
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_SJKir'], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_Tgl'], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_Reference'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
 
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
@@ -366,9 +376,17 @@ $totalRows_User = mysql_num_rows($User);
 					  </tr>
                     </thead>
                 	<tbody>
+	<?php 
+	$tx_insertsjkirimbarang2_SJKir = substr($_SESSION['tx_insertsjkirim_SJKir'], 1, -1);
+	$tx_insertsjkirimbarang2_Tgl = substr($_SESSION['tx_insertsjkirim_Tgl'], 1, -1);
+	$tx_insertsjkirimbarang2_Reference = substr($_SESSION['tx_insertsjkirim_Reference'], 1, -1);
+ 	?>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
+      	  <input name="hd_insertsjkirimbarang2_SJKir" type="hidden" id="hd_insertsjkirimbarang2_SJKir" value="<?php echo $tx_insertsjkirimbarang2_SJKir; ?>">
+          <input name="hd_insertsjkirimbarang2_Tgl" type="hidden" id="hd_insertsjkirimbarang2_Tgl" value="<?php echo $tx_insertsjkirimbarang2_Tgl; ?>">
+          <input name="hd_insertsjkirimbarang2_Reference" type="hidden" id="hd_insertsjkirimbarang2_Reference" value="<?php echo $tx_insertsjkirimbarang2_Reference; ?>">
 	      <input name="hd_insertsjkiribarang2_Id[]" type="hidden" id="hd_insertsjkiribarang2_Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
 	      <input name="hd_insertsjkiribarang2_Reference[]" type="hidden" id="hd_insertsjkiribarang2_Reference" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
 	    <td><input name="hd_insertsjkiribarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkiribarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>"><?php echo $row_LastIsiSJKirim['Id'] + $increment; ?></td>

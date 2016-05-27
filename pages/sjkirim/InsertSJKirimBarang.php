@@ -150,7 +150,7 @@ $totalRows_User = mysql_num_rows($User);
 
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $_SESSION['CheckBox'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_insertsjkirimbarang_checkbox'][$i], "int"));
+  $_SESSION['cb_insertsjkirimbarang_checkbox'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_insertsjkirimbarang_checkbox'][$i], "int"));
   
   $insertGoTo = "InsertSJKirimBarang2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -308,7 +308,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
               <!-- /.box-body -->
               <div class="box-footer">
                 <button type="submit" name="bt_insertsjkirimbarang_submit" id="bt_insertsjkirimbarang_submit" class="btn btn-primary pull-right">Choose</button> 
-                <a href="CancelKirim.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
+                <a href="InsertSJKirim.php?Reference=<?php echo $_GET['Reference']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
               </div>
             </div>
             <!-- /.box -->
