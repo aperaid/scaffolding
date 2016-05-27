@@ -389,10 +389,10 @@ $totalRows_User = mysql_num_rows($User);
 						<?php } /* pengiriman selesai, dalam proses penyewaan */elseif (1){ ?>
 						<td>
 						<div class="progress progress-xs">
-						  <div class="progress-bar progress-bar-green" style="width:50%"></div>
+						  <div class="progress-bar progress-bar-yellow" style="width:50%"></div>
 						</div>
 						</td>
-						<td><span class="badge bg-green">Pengiriman Selesai, dalam penyewaan</span></td>
+						<td><span class="badge bg-yellow">Pengiriman Selesai, dalam penyewaan</span></td>
 						
 						<?php } /* setengah dikembalikan */ elseif (1){ ?>
 						<td>
@@ -405,10 +405,10 @@ $totalRows_User = mysql_num_rows($User);
 						<?php } /* selesai dikembalikan */ elseif (1){ ?>
 						<td>
 						<div class="progress progress-xs">
-						  <div class="progress-bar progress-bar-blue" style="width:100%"></div>
+						  <div class="progress-bar progress-bar-yellow" style="width:100%"></div>
 						</div>
 						</td>
-						<td><span class="badge bg-blue">Semua Kembali/Claim, Transaksi Selesai</span></td>
+						<td><span class="badge bg-yellow">Semua Kembali/Claim, Transaksi Selesai</span></td>
 						<?php } ?>
                     <?php } /* kalau JUAL */ elseif($row_Purchase['js'] == "Jual") { ?>
 						<?php /* belum dikirim */ if (0){ ?>
@@ -430,10 +430,10 @@ $totalRows_User = mysql_num_rows($User);
 						<?php } /* pengiriman selesai, dalam proses penyewaan */elseif (1){ ?>
 						<td>
 						<div class="progress progress-xs">
-						  <div class="progress-bar progress-bar-blue" style="width:100%"></div>
+						  <div class="progress-bar progress-bar-green" style="width:100%"></div>
 						</div>
 						</td>
-						<td><span class="badge bg-blue">Selesai Dikirim, Penjualan Selesai</span></td>
+						<td><span class="badge bg-green">Selesai Dikirim, Penjualan Selesai</span></td>
 					<?php } } ?>
 				  </tr>
                 <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
