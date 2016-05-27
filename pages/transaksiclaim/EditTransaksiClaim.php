@@ -149,7 +149,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+$QClaim-%s WHERE Periode=%s AND Purchase=%s AND Deletes!='Claim'",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+$QClaim-%s WHERE Periode=%s AND Purchase=%s AND Deletes != 'ClaimS' AND Deletes != 'ClaimE'",
                        GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
 					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"),
                        GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"));

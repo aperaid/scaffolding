@@ -139,7 +139,7 @@ $arrayaftercount = array();
 $IsiSJKir = join(',',$arrayaftercount);  
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.QSisaKem, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND Deletes != 'Claim' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND IsiSJKir IN ($IsiSJKir) ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_InsertTransaksiClaim = sprintf("SELECT transaksi.Purchase, transaksi.Barang, transaksi.QSisaKem, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM periode LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND IsiSJKir IN ($IsiSJKir) ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
@@ -160,7 +160,7 @@ if (isset($_GET['Reference'])) {
   $colname_Periode = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliE' AND Deletes != 'Claim'", GetSQLValueString($colname_Periode, "text"));
+$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE'", GetSQLValueString($colname_Periode, "text"));
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
@@ -197,7 +197,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Reference=%s AND Periode=%s AND SJKem IS NULL AND Deletes != 'Claim'",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Reference=%s AND Periode=%s AND SJKem IS NULL AND Deletes != 'ClaimS' AND Deletes != 'ClaimE'",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
@@ -456,7 +456,7 @@ $totalRows_User = mysql_num_rows($User);
 	  <tr>
       <input name="hd_inserttransaksiclaimbarang2_S[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
       <input name="hd_inserttransaksiclaimbarang2_S2[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S2" value="<?php echo $S2; ?>">
-      <input name="hd_inserttransaksiclaimbarang2_E[]" type="hidden" id="hd_inserttransaksiclaimbarang2_E" value="<?php echo $E; ?>">
+      <input name="hd_inserttransaksiclaimbarang2_E" type="hidden" id="hd_inserttransaksiclaimbarang2_E" value="<?php echo $E; ?>">
 	    <input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
 	      <input name="hd_inserttransaksiclaimbarang2_Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $Strip; ?>">
 <input name="hd_inserttransaksiclaimbarang2_Periode[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">

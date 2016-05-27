@@ -156,7 +156,7 @@ if (isset($_GET['Reference'])) {
   $colname_LastPeriode = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_LastPeriode = sprintf("SELECT Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliS'  AND Deletes != 'KembaliE' ORDER BY Periode DESC", GetSQLValueString($colname_LastPeriode, "text"));
+$query_LastPeriode = sprintf("SELECT Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliS'  AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' ORDER BY Periode DESC", GetSQLValueString($colname_LastPeriode, "text"));
 $LastPeriode = mysql_query($query_LastPeriode, $Connection) or die(mysql_error());
 $row_LastPeriode = mysql_fetch_assoc($LastPeriode);
 $totalRows_LastPeriode = mysql_num_rows($LastPeriode);

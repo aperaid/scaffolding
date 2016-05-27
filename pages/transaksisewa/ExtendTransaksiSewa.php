@@ -64,17 +64,16 @@ $row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
 $totalRows_LastInvoiceId = mysql_num_rows($LastInvoiceId);
 
 mysql_select_db($database_Connection, $Connection);
-$query_Extend = sprintf("SELECT periode.* FROM periode WHERE periode.Reference=%s AND periode.Periode=%s AND SJKem IS NULL AND Deletes != 'Claim'", GetSQLValueString($colname_Extend, "text"),GetSQLValueString($colname_Extend2, "text"));
+$query_Extend = sprintf("SELECT periode.* FROM periode WHERE periode.Reference=%s AND periode.Periode=%s AND SJKem IS NULL AND Deletes != 'ClaimS' AND Deletes != 'ClaimE'", GetSQLValueString($colname_Extend, "text"),GetSQLValueString($colname_Extend2, "text"));
 $Extend = mysql_query($query_Extend, $Connection) or die(mysql_error());
 $row_Extend = mysql_fetch_assoc($Extend);
 $totalRows_Extend = mysql_num_rows($Extend);
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Transport, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s)",
                        GetSQLValueString($_POST['hd_extendtransaksisewa_Invoice'], "text"),
                        GetSQLValueString($_POST['hd_extendtransaksisewa_Tgl'], "text"),
                        GetSQLValueString($_POST['hd_extendtransaksisewa_PPN'], "int"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_Transport'], "text"),
                        GetSQLValueString($_POST['hd_extendtransaksisewa_Reference2'], "text"),
                        GetSQLValueString($_POST['hd_extendtransaksisewa_Periode2'], "int"));
 

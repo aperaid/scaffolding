@@ -526,7 +526,7 @@ $totalRows_User = mysql_num_rows($User);
                     </td>                    
 					<td><span class="badge bg-yellow">Dalam Pengambilan</span></td>
 					<?php } ?>
-					<td><a href="../sjKembali/ViewSJKembali.php?SJKir=<?php echo $row_sjkembali['sjkembali_id']; ?>"><button class="btn btn-primary">View</button></a></td>
+					<td><a href="../sjKembali/ViewSJKembali.php?SJKem=<?php echo $row_sjkembali['sjkembali_id']; ?>"><button class="btn btn-primary">View</button></a></td>
                   </tr>
                 <?php } while ($row_sjkembali = mysql_fetch_assoc($view_sjkembali)); ?>
             </table>
