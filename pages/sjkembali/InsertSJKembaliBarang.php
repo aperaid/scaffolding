@@ -140,7 +140,7 @@ $totalRows_LastId = mysql_num_rows($LastId);
 
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $_SESSION['CheckBox2'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_insertsjkembalibarang_checkbox'][$i], "int"));
+  $_SESSION['cb_insertsjkembalibarang_checkbox'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_insertsjkembalibarang_checkbox'][$i], "int"));
   
   $insertGoTo = "InsertSJKembaliBarang2.php";
   if (isset($_SERVER['QUERY_STRING'])) {

@@ -120,7 +120,7 @@ if (isset($_GET['Reference'])) {
   $colname_InsertSJKembali = $_GET['Reference'];
 }
 
-$checkbox = $_SESSION['CheckBox2'];
+$checkbox = $_SESSION['cb_insertsjkembalibarang_checkbox'];
 $remove = preg_replace("/[^0-9,.]/", "", $checkbox);
 
 error_reporting(E_ERROR); // bagian di ilangin error
@@ -138,7 +138,7 @@ $arrayaftercount = array();
 $IsiSJKir = join(',',$arrayaftercount); 
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE IsiSJKir IN ($IsiSJKir) ORDER BY isisjkirim.Id ASC");
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE IsiSJKir IN ($IsiSJKir) AND transaksi.Reference=%s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
