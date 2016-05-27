@@ -308,7 +308,7 @@ $totalRows_User = mysql_num_rows($User);
               <!-- /.box-body -->
                <div class="box-footer">
                 <button type="submit" name="bt_insertsjkembalibarang_submit" id="bt_insertsjkembalibarang_submit" class="btn btn-primary pull-right">Choose</button> 
-                <a href="CancelKembali.php?Id=<?php echo $row_LastId['Id']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
+                <a href="InsertSJKembali.php?Reference=<?php echo $_GET['Reference'] ?>"><button type="button" class="btn btn-default">Cancel</button></a>
               </div>
             </div>
             <!-- /.box -->
