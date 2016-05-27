@@ -146,12 +146,6 @@ $row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim);
 $totalRows_InsertSJKirim = mysql_num_rows($InsertSJKirim);
 
 mysql_select_db($database_Connection, $Connection);
-$query_Select = "SELECT SJKir FROM sjkirim ORDER BY Id DESC";
-$Select = mysql_query($query_Select, $Connection) or die(mysql_error());
-$row_Select = mysql_fetch_assoc($Select);
-$totalRows_Select = mysql_num_rows($Select);
-
-mysql_select_db($database_Connection, $Connection);
 $query_LastIsiSJKirim = "SELECT Id FROM isisjkirim ORDER BY Id DESC";
 $LastIsiSJKirim = mysql_query($query_LastIsiSJKirim, $Connection) or die(mysql_error());
 $row_LastIsiSJKirim = mysql_fetch_assoc($LastIsiSJKirim);
@@ -167,12 +161,6 @@ $Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
 $row_Reference = mysql_fetch_assoc($Reference);
 $totalRows_Reference = mysql_num_rows($Reference);
 
-mysql_select_db($database_Connection, $Connection);
-$query_LastTgl = "SELECT Tgl FROM sjkirim ORDER BY Id DESC";
-$LastTgl = mysql_query($query_LastTgl, $Connection) or die(mysql_error());
-$row_LastTgl = mysql_fetch_assoc($LastTgl);
-$totalRows_LastTgl = mysql_num_rows($LastTgl);
-
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO sjkirim (SJKir, Tgl, Reference) VALUES (%s, %s, %s)",
                        GetSQLValueString($_POST['hd_insertsjkirimbarang2_SJKir'], "text"),
@@ -186,8 +174,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKirInsert=QSisaKirInsert-%s WHERE Purchase=%s",
-                       GetSQLValueString($_POST['tx_insertsjkiribarang2_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkiribarang2_Purchase'][$i], "int"));
+                       GetSQLValueString($_POST['tx_insertsjkirimbarang2_QKirim'][$i], "int"),
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_Purchase'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -197,21 +185,21 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 for($i=0;$i<$totalRows_InsertSJKirim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO isisjkirim (IsiSJKir, Warehouse, QKirim, Purchase, SJKir) VALUES (%s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['hd_insertsjkiribarang2_IsiSJKir'][$i], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkiribarang2_Warehouse'][$i], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkiribarang2_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkiribarang2_Purchase'][$i], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkiribarang2_SJKir'], "text"));
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_IsiSJKir'][$i], "text"),
+                       GetSQLValueString($_POST['tx_insertsjkirimbarang2_Warehouse'][$i], "text"),
+                       GetSQLValueString($_POST['tx_insertsjkirimbarang2_QKirim'][$i], "int"),
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_Purchase'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_SJKir'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
   
     $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (1, 'Q Tertanda', 'Q Tertanda', %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['tx_insertsjkiribarang2_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkiribarang2_IsiSJKir'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkiribarang2_Reference'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkiribarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['tx_insertsjkiribarang2_JS'][$i], "text"));
+                       GetSQLValueString($_POST['tx_insertsjkirimbarang2_QKirim'][$i], "int"),
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_IsiSJKir'][$i], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_Reference2'][$i], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_Purchase'][$i], "text"),
+					   GetSQLValueString($_POST['tx_insertsjkirimbarang2_JS'][$i], "text"));
 					   
 	$deleteSQL = sprintf("DELETE FROM periode WHERE Deletes='Jual'");
 	$alterSQL = sprintf("ALTER TABLE sjkembali AUTO_INCREMENT = 1");
@@ -360,10 +348,10 @@ $totalRows_User = mysql_num_rows($User);
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
-              <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkiribarang2_form1" name="fm_insertsjkiribarang2_form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkirimbarang2_form1" name="fm_insertsjkirimbarang2_form1" method="POST">
               <div class="box box-primary">
             	<div class="box-body">
-                  <table id="tb_insertsjkiribarang2_example1" name="tb_insertsjkiribarang2_example1" class="table table-bordered table-striped table-responsive">
+                  <table id="tb_insertsjkirimbarang2_example1" name="tb_insertsjkirimbarang2_example1" class="table table-bordered table-striped table-responsive">
                     <thead>
 					  <tr>
                         <th>#</th>
@@ -387,19 +375,18 @@ $totalRows_User = mysql_num_rows($User);
       	  <input name="hd_insertsjkirimbarang2_SJKir" type="hidden" id="hd_insertsjkirimbarang2_SJKir" value="<?php echo $tx_insertsjkirimbarang2_SJKir; ?>">
           <input name="hd_insertsjkirimbarang2_Tgl" type="hidden" id="hd_insertsjkirimbarang2_Tgl" value="<?php echo $tx_insertsjkirimbarang2_Tgl; ?>">
           <input name="hd_insertsjkirimbarang2_Reference" type="hidden" id="hd_insertsjkirimbarang2_Reference" value="<?php echo $tx_insertsjkirimbarang2_Reference; ?>">
-	      <input name="hd_insertsjkiribarang2_Id[]" type="hidden" id="hd_insertsjkiribarang2_Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
-	      <input name="hd_insertsjkiribarang2_Reference[]" type="hidden" id="hd_insertsjkiribarang2_Reference" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
-	    <td><input name="hd_insertsjkiribarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkiribarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>"><?php echo $row_LastIsiSJKirim['Id'] + $increment; ?></td>
-        <td><input name="hd_insertsjkiribarang2_Purchase[]" type="hidden" id="hd_insertsjkiribarang2_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"><?php echo $row_InsertSJKirim['Purchase']; ?></td>
-	    <td><input name="tx_insertsjkiribarang2_JS[]" type="text" class="form-control" id="tx_insertsjkiribarang2_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
-	    <td><input name="tx_insertsjkiribarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkiribarang2_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
-	    <td><input name="tx_insertsjkiribarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkiribarang2_Warehouse" autocomplete="off"></td>
-	    <td><input name="tx_insertsjkiribarang2_QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkiribarang2_QSisaKirInsert<?php echo $increment; ?>" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
-	    <td><input name="tx_insertsjkiribarang2_QKirim[]" type="text" class="form-control" id="tx_insertsjkiribarang2_QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>)"></td>
+	      <input name="hd_insertsjkirimbarang2_Id[]" type="hidden" id="hd_insertsjkirimbarang2_Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
+	      <input name="hd_insertsjkirimbarang2_Reference2[]" type="hidden" id="hd_insertsjkirimbarang2_Reference2" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
+	    <td><input name="hd_insertsjkirimbarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkirimbarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>"><?php echo $row_LastIsiSJKirim['Id'] + $increment; ?></td>
+        <td><input name="hd_insertsjkirimbarang2_Purchase[]" type="hidden" id="hd_insertsjkirimbarang2_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"><?php echo $row_InsertSJKirim['Purchase']; ?></td>
+	    <td><input name="tx_insertsjkirimbarang2_JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkirimbarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkirimbarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_Warehouse" autocomplete="off"></td>
+	    <td><input name="tx_insertsjkirimbarang2_QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_QSisaKirInsert<?php echo $increment; ?>" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkirimbarang2_QKirim[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>)"></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim)); ?>
-      <input name="hd_insertsjkiribarang2_SJKir" type="hidden" class="textbox" id="hd_insertsjkiribarang2_SJKir" value="<?php echo $row_Select['SJKir']; ?>" readonly>
     				</tbody>
                 </table>
                 <input type="hidden" name="MM_insert" value="form1">
@@ -408,7 +395,7 @@ $totalRows_User = mysql_num_rows($User);
             <!-- /.box-body -->
             <div class="box-footer">
                   <a href="InsertSJKirimBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
-                  <button type="submit" id="bt_insertsjkiribarang2_submit" name="bt_insertsjkiribarang2_submit" class="btn btn-success pull-right">Insert</button>
+                  <button type="submit" id="bt_insertsjkirimbarang2_submit" name="bt_insertsjkirimbarang2_submit" class="btn btn-success pull-right">Insert</button>
 			</div>
           </div>
           <!-- /.box -->
@@ -474,6 +461,5 @@ function minmax(value, min, max)
   mysql_free_result($Select);
   mysql_free_result($LastIsiSJKirim);
   mysql_free_result($Reference);
-  mysql_free_result($LastTgl);
   mysql_free_result($InsertSJKirim);
 ?>
