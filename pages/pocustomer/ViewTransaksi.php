@@ -114,11 +114,14 @@ $colname_Purchase = "-1";
 if (isset($_GET['Reference'])) {
   $colname_Purchase = $_GET['Reference'];
 }
+
+//Overview Tab
 mysql_select_db($database_Connection, $Connection);
 $query_Purchase = sprintf("SELECT transaksi.*, pocustomer.Tgl, project.*, customer.* FROM transaksi INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE transaksi.Reference = %s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_Purchase, "text"));
 $Purchase = mysql_query($query_Purchase, $Connection) or die(mysql_error());
 $row_Purchase = mysql_fetch_assoc($Purchase);
 $totalRows_Purchase = mysql_num_rows($Purchase);
+//Overview Tab End
 
 $colname_View = "-1";
 if (isset($_GET['Reference'])) {
@@ -285,7 +288,7 @@ $totalRows_User = mysql_num_rows($User);
               <li class="active"><a href="#overall_tab" data-toggle="tab">Overall</a></li>
               <li><a href="#sjkirim_tab" data-toggle="tab">SJKirim</a></li>
               <li><a href="#sjkembali_tab" data-toggle="tab">SJKembali</a></li>
-              <li><a href="#sjkembali_tab" data-toggle="tab">Claim</a></li>
+              <li><a href="#sjclaim_tab" data-toggle="tab">Claim</a></li>
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="overall_tab">
@@ -359,8 +362,73 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_Purchase['Quantity']; ?></td>
                     <td><?php echo $row_Purchase['Tgl']; ?></td>
                     <td><?php echo $row_Purchase['Amount']; ?></td>
-					
-                  </tr>
+					<?php /* Kalau SEWA */ if (0) { ?>
+						<?php /* belum dikirim */ if (0){ ?>
+						<td>
+						<div class="progress progress-xs">
+						  <div class="progress-bar progress-bar-red" style="width:10%"></div>
+						</div>
+						</td>
+						<td><span class="badge bg-red">Belum Dikirim</span></td>
+						
+						<?php } /* setengah dikirim */ elseif (0){ ?>
+						<td>
+						<div class="progress progress-xs">
+						  <div class="progress-bar progress-bar-yellow" style="width:25%"></div>
+						</div>
+						</td>
+						<td><span class="badge bg-yellow">Separuh Terkirim</span></td>
+						
+						<?php } /* pengiriman selesai, dalam proses penyewaan */elseif (1){ ?>
+						<td>
+						<div class="progress progress-xs">
+						  <div class="progress-bar progress-bar-green" style="width:50%"></div>
+						</div>
+						</td>
+						<td><span class="badge bg-green">Pengiriman Selesai, dalam penyewaan</span></td>
+						
+						<?php } /* setengah dikembalikan */ elseif (1){ ?>
+						<td>
+						<div class="progress progress-xs">
+						  <div class="progress-bar progress-bar-yellow" style="width:75%"></div>
+						</div>
+						</td>
+						<td><span class="badge bg-yellow">Separuh Kembali</span></td>
+						
+						<?php } /* selesai dikembalikan */ elseif (1){ ?>
+						<td>
+						<div class="progress progress-xs">
+						  <div class="progress-bar progress-bar-blue" style="width:100%"></div>
+						</div>
+						</td>
+						<td><span class="badge bg-blue">Semua Kembali/Claim, Transaksi Selesai</span></td>
+						<?php } ?>
+                    <?php } /* kalau JUAL */ elseif(1) { ?>
+						<?php /* belum dikirim */ if (0){ ?>
+						<td>
+						<div class="progress progress-xs">
+						  <div class="progress-bar progress-bar-red" style="width:10%"></div>
+						</div>
+						</td>
+						<td><span class="badge bg-red">Belum Dikirim</span></td>
+						
+						<?php } /* setengah dikirim */ elseif (0){ ?>
+						<td>
+						<div class="progress progress-xs">
+						  <div class="progress-bar progress-bar-yellow" style="width:25%"></div>
+						</div>
+						</td>
+						<td><span class="badge bg-yellow">Separuh Terkirim</span></td>
+						
+						<?php } /* pengiriman selesai, dalam proses penyewaan */elseif (1){ ?>
+						<td>
+						<div class="progress progress-xs">
+						  <div class="progress-bar progress-bar-blue" style="width:100%"></div>
+						</div>
+						</td>
+						<td><span class="badge bg-blue">Selesai Dikirim, Penjualan Selesai</span></td>
+					<?php } } ?>
+				  </tr>
                 <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
             </tbody>
           </table>
