@@ -115,11 +115,6 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
-$colname_InsertSJKembali = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_InsertSJKembali = $_GET['Reference'];
-}
-
 $checkbox = $_SESSION['cb_insertsjkembalibarang_checkbox'];
 $remove = preg_replace("/[^0-9,.]/", "", $checkbox);
 
@@ -138,26 +133,10 @@ $arrayaftercount = array();
 $IsiSJKir = join(',',$arrayaftercount); 
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE IsiSJKir IN ($IsiSJKir) AND transaksi.Reference=%s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
-$InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
-$row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
-$totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
-
-mysql_select_db($database_Connection, $Connection);
 $query_LastIsiSJKembali = "SELECT Id FROM isisjkembali ORDER BY Id DESC";
 $LastIsiSJKembali = mysql_query($query_LastIsiSJKembali, $Connection) or die(mysql_error());
 $row_LastIsiSJKembali = mysql_fetch_assoc($LastIsiSJKembali);
 $totalRows_LastIsiSJKembali = mysql_num_rows($LastIsiSJKembali);
-
-$colname_Reference = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_Reference = $_GET['Reference'];
-}
-mysql_select_db($database_Connection, $Connection);
-$query_Reference = sprintf("SELECT Reference FROM transaksi WHERE Reference = %s ORDER BY Id DESC", GetSQLValueString($colname_Reference, "text"));
-$Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
-$row_Reference = mysql_fetch_assoc($Reference);
-$totalRows_Reference = mysql_num_rows($Reference);
 
 $colname_GetPeriode = "-1";
 if (isset($_GET['Reference'])) {
@@ -169,11 +148,13 @@ $GetPeriode = mysql_query($query_GetPeriode, $Connection) or die(mysql_error());
 $row_GetPeriode = mysql_fetch_assoc($GetPeriode);
 $totalRows_GetPeriode = mysql_num_rows($GetPeriode);
 
+$Periode = $row_GetPeriode['Periode'];
+
 mysql_select_db($database_Connection, $Connection);
-$query_LastTglS = sprintf("SELECT S, Id FROM periode WHERE Reference = %s ORDER BY Id DESC", GetSQLValueString($colname_GetPeriode, "text"));
-$LastTglS = mysql_query($query_LastTglS, $Connection) or die(mysql_error());
-$row_LastTglS = mysql_fetch_assoc($LastTglS);
-$totalRows_LastTglS = mysql_num_rows($LastTglS);
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.IsiSJKir IN ($IsiSJKir) AND transaksi.Reference=%s AND periode.Periode IN ($Periode) GROUP BY isisjkirim.IsiSJKir ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_GetPeriode, "text"));
+$InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
+$row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
+$totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
 
 mysql_select_db($database_Connection, $Connection);
 $query_LastInvoiceId = "SELECT Id FROM invoice ORDER BY Id DESC";
@@ -182,7 +163,7 @@ $row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
 $totalRows_LastInvoiceId = mysql_num_rows($LastInvoiceId);
 
 mysql_select_db($database_Connection, $Connection);
-$query_Invoice = sprintf("SELECT * FROM invoice WHERE Reference = %s ORDER BY Id DESC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_Invoice = sprintf("SELECT * FROM invoice WHERE Reference = %s ORDER BY Id DESC", GetSQLValueString($colname_GetPeriode, "text"));
 $Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
 $row_Invoice = mysql_fetch_assoc($Invoice);
 $totalRows_Invoice = mysql_num_rows($Invoice);
@@ -221,7 +202,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'KembaliS')",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_S'][$i], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E2'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'][$i], "text"),
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
@@ -237,11 +218,16 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference2'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"));
+  $deleteSQL2 = sprintf("DELETE FROM periode WHERE S=E");
+  $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
+
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($insertSQL2, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($deleteSQL2, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 }
 }
 
@@ -253,9 +239,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Transport'], "text"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference'], "text"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode2'], "int"));
+  $deleteSQL = "DELETE FROM invoice WHERE invoice.Periode NOT IN (SELECT periode.Periode FROM periode)";
+  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 }
 
 for($i=0;$i<$totalRows_InsertSJKembali;$i++){
@@ -439,14 +429,27 @@ $totalRows_User = mysql_num_rows($User);
 	
 	$tgl = $tx_insertsjkembalibarang2_Tgl;
 	$convert = str_replace('/', '-', $tgl);
-	$invoice = date('t/m/Y', strtotime($convert));
+	$tgl2 = $row_InsertSJKembali['S'];
+	$convert2 = str_replace('/', '-', $tgl2);
 	
-	$tgl = $tx_insertsjkembalibarang2_Tgl;
-	$convert = str_replace('/', '-', $tgl);
 	$S2 = date('01/m/Y', strtotime($convert));
+	$E2 = date('t/m/Y', strtotime($convert));
+	
+	$last = date('t-m-Y', strtotime($convert2));
+	$E = strtotime($last);
+	$check = strtotime($convert);
+	
+	if($check <= $E)
+	{
+		$S = $tx_insertsjkembalibarang2_Tgl;
+	}
+	else
+	{
+		$S = $S2;			
+	}
 	
 	?>
-                    
+     
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
@@ -464,11 +467,11 @@ $totalRows_User = mysql_num_rows($User);
           <input name="hd_insertsjkembalibarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKir" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>">
 	      <input name="hd_insertsjkembalibarang2_Purchase[]" type="hidden" id="hd_insertsjkembalibarang2_Purchase" value="<?php echo $row_InsertSJKembali['Purchase']; ?>">
 	        <input name="hd_insertsjkembalibarang2_Periode[]" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_GetPeriode['Periode']; ?>">
-	        <input name="hd_insertsjkembalibarang2_S[]" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo $row_LastTglS['S']; ?>">
-            <input name="hd_insertsjkembalibarang2_E2[]" type="hidden" id="hd_insertsjkembalibarang2_E2" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
-            <input name="hd_insertsjkembalibarang2_S2[]" type="hidden" id="hd_insertsjkembalibarang2_S2" value="<?php echo $S2; ?>">
+	        <input name="hd_insertsjkembalibarang2_S[]" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo $row_InsertSJKembali['S']; ?>">
+            <input name="hd_insertsjkembalibarang2_E[]" type="hidden" id="hd_insertsjkembalibarang2_E2" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
+            <input name="hd_insertsjkembalibarang2_S2[]" type="hidden" id="hd_insertsjkembalibarang2_S2" value="<?php echo $S; ?>">
 	        <input name="hd_insertsjkembalibarang2_E[]" type="hidden" id="hd_insertsjkembalibarang2_E" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
-            <input name="hd_insertsjkembalibarang2_LastTgl" type="hidden" id="hd_insertsjkembalibarang2_LastTgl" value="<?php echo $invoice; ?>">
+            <input name="hd_insertsjkembalibarang2_LastTgl" type="hidden" id="hd_insertsjkembalibarang2_LastTgl" value="<?php echo $E2; ?>">
 	    <td><input name="hd_insertsjkembalibarang2_IsiSJKem[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>"><?php echo $row_LastIsiSJKembali['Id'] + $increment; ?></td>
         <td><?php echo $row_InsertSJKembali['Purchase']; ?></td>
 	    <td><input name="tx_insertsjkembalibarang2_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Tgl" value="<?php echo $row_InsertSJKembali['Tgl']; ?>" readonly></td>
@@ -486,7 +489,7 @@ $totalRows_User = mysql_num_rows($User);
                 </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                  <a href="InsertSJKembaliBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+                  <a href="InsertSJKembaliBarang.php?Reference=<?php echo $_GET['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
                   <button type="submit" id="bt_insertsjkembalibarang2_submit" name="bt_insertsjkembalibarang2_submit" class="btn btn-success pull-right">Insert</button>
 			</div>
           </div>
@@ -556,5 +559,5 @@ function minmax(value, min, max)
   mysql_free_result($Reference);
   mysql_free_result($GetPeriode);
   mysql_free_result($InsertSJKembali);
-  mysql_free_result($LastTgl);
+  mysql_free_result($LastTglS);
 ?>

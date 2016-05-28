@@ -363,17 +363,17 @@ $totalRows_User = mysql_num_rows($User);
 		  $date2 = str_replace('/', '-', $date2);
 		  $FirstDate = date('01/m/Y', strtotime($date1));
 		  $LastDate = date('t/m/Y', strtotime($date1));
-		  /*$Proof = strtotime("-1 day +1 month", strtotime($date1));
-		  $Proof2 = date("d/m/Y", $Proof);*/
+		  $Proof = strtotime(str_replace('/', '-', $LastDate));
+		  $Check = strtotime(str_replace('/', '-', $row_View2['E']));
 		  
-		  if($row_View['Periode'] == 1){
+		  if($row_View['Periode'] == 1 || $date1==$date2){
 			  $FirstDate2 = $row_View2['S'];
 		  }
 		  elseif($row_View2['Deletes'] == 'Extend' || $row_View2['Deletes'] == 'KembaliS' || $row_View2['Deletes'] == 'KembaliE' || $row_View2['Deletes'] == 'ClaimS' || $row_View2['Deletes'] == 'ClaimE'){
 			  $FirstDate2 = $FirstDate;
 		  }
 		  
-		  if(/*$Proof2 == $row_View2['E'] || */$row_View2['Deletes'] == 'Extend' || $row_View2['Deletes'] == 'KembaliS' || $row_View2['Deletes'] == 'ClaimS'){
+		  if($Proof < $Check){
 			  $LastDate2 = $LastDate;
 		  }
 		  else{
