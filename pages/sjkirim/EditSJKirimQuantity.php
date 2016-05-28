@@ -180,9 +180,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET S=%s, E=%s WHERE IsiSJKir=%s",
-                       GetSQLValueString($_POST['hd_editsjkirimquantity_S'][$i], "text"),
-                       GetSQLValueString($_POST['hd_editsjkirimquantity_E'][$i], "text"),
+  $updateSQL = sprintf("UPDATE periode SET S=%s, E=%s WHERE IsiSJKir=%s AND Deletes='Sewa'",
+                       GetSQLValueString($_POST['tx_editsjkirimquantity_S'], "text"),
+                       GetSQLValueString($_POST['hd_editsjkirimquantity_E'], "text"),
 					   GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -216,12 +216,16 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="../../library/bootstrap/css/bootstrap.min.css">
+  <!-- jQueryUI -->
+  <link rel="stylesheet" href="../../library/jQueryUI/jquery-ui.css" >
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../library/font-awesome-4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../../library/ionicons-2.0.1/css/ionicons.min.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../../library/datatables/dataTables.bootstrap.css">
+  <!-- datepicker -->
+  <link rel="stylesheet" href="../../library/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -345,8 +349,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<input name="hd_editsjkirimquantity_QSisaKir2" type="hidden" id="hd_editsjkirimquantity_QSisaKir2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>">
                             <input name="hd_editsjkirimquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkirimquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
                             <input name="hd_editsjkirimquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkirimquantity_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
-                            <input name="hd_editsjkirimquantity_S[]" type="hidden" id="hd_editsjkirimquantity_S" value="<?php echo date("d/m/Y"); ?>">
-	      					<input name="hd_editsjkirimquantity_E[]" type="hidden" id="hd_editsjkirimquantity_E" value="<?php echo date("d/m/Y", strtotime("-1 day +1 month")); ?>">
                             <input name="tx_editsjkirimquantity_QTertanda2[]" type="hidden" class="form-control" id="tx_editsjkirimquantity_QTertanda2" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>">
 							<td><?php echo $row_EditIsiSJKirim['IsiSJKir']; ?></td>
 							<td><?php echo $row_EditIsiSJKirim['Purchase']; ?></td>
@@ -364,6 +366,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 			</div>
             <!-- /.box-body -->
             <div class="box-footer">
+            <span>Q Tanggal</span><input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" onchange="tgl(this);">
+            <input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E">
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
 				<button type="submit" name="bt_editsjkirimquantity_submit" id="bt_editsjkirimquantity_submit" class="btn btn-success pull-right">Update</button>
 			</div>
@@ -396,6 +400,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 <!-- jQuery 2.1.4 -->
 <script src="../../library/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- jQuery UI -->
+<script src="../../library/jQueryUI/jquery-ui.js"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="../../library/bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
@@ -409,7 +415,10 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
-<!-- Custome Script -->
+<!-- datepicker -->
+<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<!-- page script -->
+
 <script language="javascript">
   function sisa() {
   for(x = 1; x < 11; x++){
@@ -431,6 +440,31 @@ function minmax(value, min, max)
     if(parseInt(value) > max) 
         return parseInt(max); 
     else return value;
+}
+</script>
+
+<script>
+  $('#tx_editsjkirimquantity_S').datepicker({
+	  format: "dd/mm/yyyy",
+	  orientation: "bottom left",
+	  todayHighlight: true,
+	  autoclose: true
+  }); 
+</script>
+
+<script>
+
+function tgl(text){
+
+	var date = text.value.substr(0, 2);
+	var month = text.value.substr(3, 2)-1;
+	var year = text.value.substr(6, 5);
+	
+	var test = new Date(year, month, date);
+	var test2 = new Date(new Date(test).setMonth(test.getMonth()+1));
+	var test3 = new Date(new Date(test2).setDate(test2.getDate()-1));
+	document.getElementById('hd_editsjkirimquantity_E').value = ('0' + test3.getDate()).slice(-2) + "/" + ('0' + (test3.getMonth()+1)).slice(-2) + "/" + test3.getFullYear();
+	
 }
 </script>
 
