@@ -368,7 +368,7 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_Purchase['js']; ?></td>
                     <td><?php echo $row_Purchase['barang']; ?></td>
                     <td><?php echo $row_Purchase['quantity']; ?></td>
-                    <td><?php echo $row_Purchase['price']; ?></td>
+                    <td><?php echo number_format($row_Purchase['price'], 2); ?></td>
 					<?php /* Kalau SEWA */ if ($row_Purchase['js'] == "Sewa") { ?>
 						<?php /* belum dikirim */ if ($row_Purchase['qsisakirim'] == $row_Purchase['quantity'] && $row_Purchase['qsisakembali'] == 0){ ?>
 						<td>

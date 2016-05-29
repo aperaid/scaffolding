@@ -293,7 +293,7 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_POCustomer['Tgl']; ?></td>
                     <td><?php echo $row_POCustomer['Company']; ?></td>
                     <td><?php echo $row_POCustomer['Project']; ?></td>
-                    <td><?php echo $row_POCustomer['Amount']; ?></td>
+                    <td><?php echo number_format($row_POCustomer['Amount'], 2); ?></td>
                     <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
                     <td><a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>

@@ -399,9 +399,9 @@ $totalRows_User = mysql_num_rows($User);
           <td><?php echo $Days2 ?></td>
           <td><?php echo round(((($sjkem - $sjkir) / 86400)+1)/$Days2, 4) ?></td>
           <td><?php echo $row_View2['Quantity']; ?></td>
-          <td><?php echo $row_View2['Amount']; ?></td>
+          <td><?php echo number_format($row_View2['Amount'], 2); ?></td>
           <?php $total2 = ((($sjkem - $sjkir) / 86400)+1)/$Days2*$row_View2['Quantity']* $row_View2['Amount']; $total += $total2 ?>
-          <td><?php echo round($total2, 2) ?></td>
+          <td><?php echo number_format($total2, 2); ?></td>
         </tr>
       <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
     </tbody>
@@ -418,7 +418,7 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Transport</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo $row_View['Transport']; }?>" onKeyUp="tot()">
+                    <input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo number_format($row_View['Transport'], 2); }?>" onKeyUp="tot()">
                     <input id="hd_viewinvoice_Transport2" name="hd_viewinvoice_Transport2" type="hidden" autocomplete="off" value="<?php if ($row_View['Periode'] == 1){ echo $row_View['Transport']; }?>">
                   </div>
                 </div>
@@ -427,7 +427,7 @@ $totalRows_User = mysql_num_rows($User);
                   <div class="col-sm-6">
                     <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
 					else $toss = 0;
-					 echo round(($total*$row_View['PPN']*0.1)+$total+$toss, 2);?>"  readonly>
+					 echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss, 2);?>"  readonly>
                     <input id="hd_viewinvoice_Totals2" name="hd_viewinvoice_Totals2" type="hidden" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>
