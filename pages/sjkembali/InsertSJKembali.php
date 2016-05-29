@@ -134,6 +134,14 @@ $NoSJ = mysql_query($query_NoSJ, $Connection) or die(mysql_error());
 $row_NoSJ = mysql_fetch_assoc($NoSJ);
 $totalRows_NoSJ = mysql_num_rows($NoSJ);
 
+$Reference = $_GET['Reference'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalLimit = "SELECT S FROM periode WHERE Id = $Reference AND Deletes = 'Sewa' OR Deletes = 'Extend'";
+$TanggalLimit = mysql_query($query_TanggalLimit, $Connection) or die(mysql_error());
+$row_TanggalLimit = mysql_fetch_assoc($TanggalLimit);
+$totalRows_TanggalLimit = mysql_num_rows($TanggalLimit);
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -274,6 +282,16 @@ $totalRows_User = mysql_num_rows($User);
               <form action="<?php echo $editFormAction; ?>" id="fm_insertsjkembali_form1" name="fm_insertsjkembali_form1" method="POST">
                 <div class="box-body">
                   <div class="form-group">
+                  
+                  <?php
+					$TanggalS = $row_TanggalLimit['S'];
+					$Convert = str_replace('/', '-', $TanggalS);
+					$date = new DateTime($Convert);
+					$Today = new DateTime();
+					$diff=date_diff($Today,$date);
+					$Max = $diff->format("%a");
+				  ?>
+                  
                     <label>No. Surat Jalan</label>
                     <input name="tx_insertsjkembali_SJKem" type="text" class="form-control" id="tx_insertsjkembali_SJKem" onKeyUp="capital()" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY") ?>" readonly>
                   </div>
@@ -288,7 +306,7 @@ $totalRows_User = mysql_num_rows($User);
                   </div>
                   <div class="form-group">
                     <label>Reference Code</label>
-                    <input name="tx_insertsjkembali_Reference" type="text" class="form-control" id="tx_insertsjkembali_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116" value="<?php echo $_GET['Reference'] ?>" readonly>
+                    <input name="tx_insertsjkembali_Reference" type="text" class="form-control" id="tx_insertsjkembali_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116" value="<?php echo $_GET['Reference']; ?>" readonly>
                     <p class="help-block">Enter the beginning of the Reference Code, then pick from the dropdown</p>
                   </div>
                 </div>
@@ -345,8 +363,11 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 <script>
+var Max = <?php echo $Max ?>;
   $('#tx_insertsjkembali_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
+	  startDate: '0',
+	  endDate: '+'+Max+'d',
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true

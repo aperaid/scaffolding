@@ -348,6 +348,7 @@ $totalRows_User = mysql_num_rows($User);
 <script>
   $('#tx_insertsjkirim_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
+	  startDate: '0',
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true

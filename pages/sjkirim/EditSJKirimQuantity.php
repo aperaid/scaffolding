@@ -366,7 +366,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 			</div>
             <!-- /.box-body -->
             <div class="box-footer">
-            <span>Q Tanggal</span><input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" onchange="tgl(this);">
+            <label>Q Tanggal</label><input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" onchange="tgl(this);">
             <input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E">
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
 				<button type="submit" name="bt_editsjkirimquantity_submit" id="bt_editsjkirimquantity_submit" class="btn btn-success pull-right">Update</button>
@@ -416,7 +416,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
 <!-- datepicker -->
-<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<!--<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 
 <script language="javascript">
