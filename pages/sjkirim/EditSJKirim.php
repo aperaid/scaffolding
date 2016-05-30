@@ -313,7 +313,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 						<th>Barang</th>
 						<th>Warehouse</th>
                         <th>Q Kirim</th>
-						<th>Q Sisa Kirim</th>
 						<th>Q Tertanda</th>
 					</tr>
 					</thead>
@@ -329,7 +328,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<td><input name="tx_editsjkirim_Barang" type="text" class="form-control" id="tx_editsjkirim_Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkirim_Warehouse[]" type="text" class="form-control" id="tx_editsjkirim_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>"></td>
 							<td><input name="tx_editsjkirim_QKirim[]" type="number" class="form-control" id="tx_editsjkirim_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>"></td>
-                            <td><input name="tx_editsjkirim_QSisaKir[]" type="text" class="form-control" id="tx_editsjkirim_QSisaKir" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
 							<td><input name="tx_editsjkirim_QTertanda[]" type="text" class="form-control" id="tx_editsjkirim_QTertanda[]" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>" readonly></td>
 						</tr>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>

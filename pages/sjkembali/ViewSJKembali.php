@@ -253,12 +253,13 @@ $totalRows_User = mysql_num_rows($User);
     </section>
 
     <!-- Main content -->
+	<section class="content">
     <section class="invoice">
 		
 		<div class="row">
         <div class="col-xs-12">
           <h2 class="page-header">
-            <i class="fa fa-globe"></i> SJ Kembali | <big><?php echo $row_ViewIsiSJKembali['SJKem']; ?></big>
+            <i class="fa fa-globe"></i> SJ Kembali | <?php echo $row_ViewIsiSJKembali['SJKem']; ?>
 			<small class="pull-right">Date: <?php echo $row_ViewIsiSJKembali['Tgl']; ?></small>
 		  </h2>
         </div>
@@ -306,13 +307,10 @@ $totalRows_User = mysql_num_rows($User);
               <table id="tb_viewsjkembali_example1" class="table table-striped">
                 <thead>
                 <tr>
-					<th>#</th>
-					<th>#Pur</th>
 					<th>Tanggal Kirim</th>
 					<th>Barang</th>
 					<th>Warehouse</th>
-					<th>Q Tertanda</th>
-					<th>Q Sisa Kembali</th>
+					<th>Q Pengambilan</th>
 					<th>Q Terima</th>
                 </tr>
                 </thead>
@@ -320,13 +318,11 @@ $totalRows_User = mysql_num_rows($User);
 					<?php do { ?>
 					<tr>
 						<input name="hd_viewsjkembali_Id" type="hidden" id="hd_viewsjkembali_Id">
-						<td><?php echo $row_ViewIsiSJKembali['IsiSJKem']; ?></td>
-						<td><?php echo $row_ViewIsiSJKembali['Purchase']; ?></td>
-						<td><input name="tx_viewsjkembali_Tgl" type="text" class="form-control" id="tx_viewsjkembali_Tgl" value="<?php echo $row_ViewIsiSJKembali['Tgl']; ?>" readonly></td>
+						<td><input	 name="tx_viewsjkembali_Tgl" type="text" class="form-control" id="tx_viewsjkembali_Tgl" value="<?php echo $row_ViewIsiSJKembali['Tgl']; ?>" readonly></td>
 						<td><input name="tx_viewsjkembali_Barang" type="text" class="form-control" id="tx_viewsjkembali_Barang" value="<?php echo $row_ViewIsiSJKembali['Barang']; ?>" readonly></td>
 						<td><input name="tx_viewsjkembali_Warehouse" type="text" class="form-control" id="tx_viewsjkembali_Warehouse" value="<?php echo $row_ViewIsiSJKembali['Warehouse']; ?>" readonly></td>
 						<td><input name="tx_viewsjkembali_QTertanda" type="text" class="form-control" id="tx_viewsjkembali_QTertanda" value="<?php echo $row_ViewIsiSJKembali['QTertanda']; ?>" readonly></td>
-                        <td><input name="tx_viewsjkembali_QSisaKem" type="text" class="form-control" id="tx_viewsjkembali_QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly></td>
+                        <input name="tx_viewsjkembali_QSisaKem" type="hidden" class="form-control" id="tx_viewsjkembali_QSisaKem" value="<?php echo $row_ViewIsiSJKembali['QSisaKem']; ?>" readonly>
 						<td><input name="tx_viewsjkembali_QTerima" type="text" class="form-control" id="tx_viewsjkembali_QTerima" value="<?php echo $row_ViewIsiSJKembali['QTerima']; ?>" readonly></td
 					></tr>
 					<?php } while ($row_ViewIsiSJKembali = mysql_fetch_assoc($ViewIsiSJKembali)); ?>
@@ -346,7 +342,9 @@ $totalRows_User = mysql_num_rows($User);
           <!-- /.box -->
        
     </section>
-    <!-- /.content -->
+    </section>
+	<!-- /.content -->
+    
   </div>
   <!-- /.content-wrapper -->
   

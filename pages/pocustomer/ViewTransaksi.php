@@ -164,6 +164,7 @@ $query_check = sprintf("SELECT check_POCustomer('$colname_View') AS result");
 $check = mysql_query($query_check, $Connection) or die(mysql_error());
 $row_check = mysql_fetch_assoc($check);
 $totalRows_check = mysql_num_rows($check);
+//Function button disable end
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {

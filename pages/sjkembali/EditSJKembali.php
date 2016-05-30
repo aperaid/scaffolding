@@ -298,14 +298,11 @@ $totalRows_User = mysql_num_rows($User);
 				  <table id="tb_editsjkembali_example1" name="tb_editsjkembali_example1" class="table table-bordered">
 					<thead>
 					<tr>
-						<th>#</th>
-						<th>#Pur</th>
 						<th>Tanggal Kirim</th>
 						<th>Barang</th>
 						<th>Warehouse</th>
-                        <th>Q Tertanda</th>
-						<th>Q Sisa Kembali</th>
-						<th>Q Terima</th>
+						<th>Q di Proyek</th>
+                        <th>Q Pengambilan</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -313,14 +310,12 @@ $totalRows_User = mysql_num_rows($User);
                         <tr>
 							<input name="hd_editsjkembali_Id[]" type="hidden" id="hd_editsjkembali_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
                             <input name="hd_editsjkembali_IsiSJKir[]" type="hidden" id="hd_editsjkembali_IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
-							<td><?php echo $row_EditIsiSJKembali['IsiSJKem']; ?></td>
-							<td><?php echo $row_EditIsiSJKembali['Purchase']; ?></td>
 							<td><input name="tx_editsjkembali_Tgl" type="text" class="form-control" id="tx_editsjkembali_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
 							<td><input name="tx_editsjkembali_Barang" type="text" class="form-control" id="tx_editsjkembali_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkembali_Warehouse[]" type="text" class="form-control" id="tx_editsjkembali_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>"></td>
-							<td><input name="tx_editsjkembali_QTertanda[]" type="text" class="form-control" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"></td>
                             <td><input name="tx_editsjkembali_QSisaKem[]" type="text" class="form-control" id="tx_editsjkembali_QSisaKem" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
-							<td><input name="tx_editsjkembali_QTerima" type="text" class="form-control" id="tx_editsjkembali_QTerima" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly></td>
+							<td><input name="tx_editsjkembali_QTertanda[]" type="text" class="form-control" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"></td>
+							<input name="tx_editsjkembali_QTerima" type="hidden" class="form-control" id="tx_editsjkembali_QTerima" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly>
 						</tr>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
 					</tbody>
