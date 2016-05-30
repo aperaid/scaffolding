@@ -275,7 +275,7 @@ $totalRows_User = mysql_num_rows($User);
       <h1>
         Transaksi Sewa
         <small>View</small>
-        <large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_LastPeriode['Periode']; ?>"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>
+        <large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_LastPeriode['Periode']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
