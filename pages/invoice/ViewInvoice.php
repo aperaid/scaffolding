@@ -333,7 +333,6 @@ $totalRows_User = mysql_num_rows($User);
       <tr>
         <th align="center">SJ Kirim</th>
         <th align="center">SJ Kembali</th>
-        <th align="center">No. Purchase</th>
         <th align="center">Item</th>
         <th>S</th>
         <th>E</th>
@@ -353,7 +352,6 @@ $totalRows_User = mysql_num_rows($User);
         <tr>
           <td><?php echo $row_View2['SJKir']; ?></td>
           <td><?php echo $row_View2['SJKem']; ?></td>
-          <td><?php echo $row_View2['Purchase']; ?></td>
           <td><?php echo $row_View2['Barang']; ?></td>
           
           <?php 
@@ -399,9 +397,9 @@ $totalRows_User = mysql_num_rows($User);
           <td><?php echo $Days2 ?></td>
           <td><?php echo round(((($sjkem - $sjkir) / 86400)+1)/$Days2, 4) ?></td>
           <td><?php echo $row_View2['Quantity']; ?></td>
-          <td><?php echo number_format($row_View2['Amount'], 2); ?></td>
+          <td>Rp <?php echo number_format($row_View2['Amount'], 2, ',', '.'); ?></td>
           <?php $total2 = ((($sjkem - $sjkir) / 86400)+1)/$Days2*$row_View2['Quantity']* $row_View2['Amount']; $total += $total2 ?>
-          <td><?php echo number_format($total2, 2); ?></td>
+          <td>Rp <?php echo number_format($total2, 2, ',', '.'); ?></td>
         </tr>
       <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
     </tbody>
