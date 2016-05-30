@@ -419,7 +419,7 @@ $totalRows_User = mysql_num_rows($User);
 						</td>
 						<td><span class="badge bg-red">Belum Dikirim</span></td>
 						
-						<?php } /* setengah dikirim */ elseif ($row_Purchase['qsisakirim'] < $row_Purchase['quantity']){ ?>
+						<?php } /* setengah dikirim */ elseif ($row_Purchase['qsisakirim'] < $row_Purchase['quantity'] && $row_Purchase['qsisakirim'] != 0){ ?>
 						<td>
 						<div class="progress progress-xs">
 						  <div class="progress-bar progress-bar-yellow" style="width:50%"></div>
