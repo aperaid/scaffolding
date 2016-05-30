@@ -137,7 +137,7 @@ $totalRows_NoSJ = mysql_num_rows($NoSJ);
 $Reference = $_GET['Reference'];
 
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalLimit = "SELECT S FROM periode WHERE Id = $Reference AND Deletes = 'Sewa' OR Deletes = 'Extend'";
+$query_TanggalLimit = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' ORDER BY Id DESC";
 $TanggalLimit = mysql_query($query_TanggalLimit, $Connection) or die(mysql_error());
 $row_TanggalLimit = mysql_fetch_assoc($TanggalLimit);
 $totalRows_TanggalLimit = mysql_num_rows($TanggalLimit);
@@ -284,8 +284,8 @@ $totalRows_User = mysql_num_rows($User);
                   <div class="form-group">
                   
                   <?php
-					$TanggalS = $row_TanggalLimit['S'];
-					$Convert = str_replace('/', '-', $TanggalS);
+					$TanggalE = $row_TanggalLimit['E'];
+					$Convert = str_replace('/', '-', $TanggalE);
 					$date = new DateTime($Convert);
 					$Today = new DateTime();
 					$diff=date_diff($Today,$date);
@@ -293,7 +293,7 @@ $totalRows_User = mysql_num_rows($User);
 				  ?>
                   
                     <label>No. Surat Jalan</label>
-                    <input name="tx_insertsjkembali_SJKem" type="text" class="form-control" id="tx_insertsjkembali_SJKem" onKeyUp="capital()" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY") ?>" readonly>
+                    <input name="tx_insertsjkembali_SJKem" type="text" class="form-control" id="tx_insertsjkembali_SJKem" onKeyUp="capital()" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY"); ?>" readonly>
                   </div>
                   <div class="form-group">
                     <label>Send Date</label>
@@ -363,7 +363,7 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 <script>
-var Max = <?php echo $Max ?>;
+var Max = <?php echo $Max+1 ?>;
   $('#tx_insertsjkembali_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
 	  startDate: '0',

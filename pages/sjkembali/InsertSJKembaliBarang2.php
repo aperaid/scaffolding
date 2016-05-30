@@ -259,10 +259,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"));
  $deleteSQL = sprintf("DELETE FROM isisjkembali WHERE QTertanda=0");
+ $alterSQL = sprintf("ALTER TABLE isisjkembali AUTO_INCREMENT = 1");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 
   $insertGoTo = "SJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {

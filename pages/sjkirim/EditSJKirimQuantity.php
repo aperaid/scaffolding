@@ -416,7 +416,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
 <!-- datepicker -->
-<!--<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 
 <script language="javascript">
