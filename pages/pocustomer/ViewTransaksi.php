@@ -405,10 +405,10 @@ $totalRows_User = mysql_num_rows($User);
 						<?php } /* selesai dikembalikan */ elseif ($row_Purchase['qsisakembali'] == 0 && $row_Purchase['qsisakirim'] == 0){ ?>
 						<td>
 						<div class="progress progress-xs">
-						  <div class="progress-bar progress-bar-yellow" style="width:100%"></div>
+						  <div class="progress-bar progress-bar-green" style="width:100%"></div>
 						</div>
 						</td>
-						<td><span class="badge bg-yellow">Semua Kembali/Claimed, Transaksi Selesai</span></td>
+						<td><span class="badge bg-green">Semua Kembali/Claimed, Transaksi Selesai</span></td>
 						<?php } ?>
                     <?php } /* kalau JUAL */ elseif($row_Purchase['js'] == "Jual") { ?>
 						<?php /* belum dikirim */ if ($row_Purchase['qsisakirim'] == $row_Purchase['quantity']){ ?>
