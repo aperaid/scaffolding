@@ -416,16 +416,16 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Transport</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo number_format($row_View['Transport'], 2); }?>" onKeyUp="tot()">
+                    <input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){ echo number_format($row_View['Transport'], 2); }?>" onKeyUp="tot()">
                     <input id="hd_viewinvoice_Transport2" name="hd_viewinvoice_Transport2" type="hidden" autocomplete="off" value="<?php if ($row_View['Periode'] == 1){ echo $row_View['Transport']; }?>">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
+                    <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
 					else $toss = 0;
-					 echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss, 2);?>"  readonly>
+					 echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss, 2, '.','.');?>"  readonly>
                     <input id="hd_viewinvoice_Totals2" name="hd_viewinvoice_Totals2" type="hidden" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>

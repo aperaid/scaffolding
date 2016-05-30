@@ -136,7 +136,7 @@ $query_Invoice = "SELECT invoice.*, project.Project, customer.Company FROM invoi
 $Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
 $row_Invoice = mysql_fetch_assoc($Invoice);
 $totalRows_Invoice = mysql_num_rows($Invoice);
-	
+
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
@@ -276,7 +276,7 @@ $totalRows_User = mysql_num_rows($User);
                     <th>Periode</th>
 					<th>J/S/C</th>
 					<th>Perusahaan</th>
-					<th>Amount</th>
+					<th>Total</th>
 					<th>Tanggal Invoice</th>
 					<th>Opsi</th>
 				</thead>
