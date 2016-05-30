@@ -348,9 +348,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                       <td class="hidden"><input name="hd_edittransaksi_Id[]" id="hd_edittransaksi_Id" value="<?php echo $row_Purchase['Id']; ?>"></td>
                       <td><?php echo $row_Purchase['JS']; ?></td>
                       <td><?php echo $row_Purchase['Barang']; ?></td>
-                      <td><input name="tx_edittransaksi_Quantity[]" type="text" class="form-control" id="tx_edittransaksi_Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" autocomplete="off"></td>
+                      <td><input name="tx_edittransaksi_Quantity[]" type="text" class="form-control" id="tx_edittransaksi_Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" autocomplete="off" required></td>
                       <td><?php echo $row_Purchase['Tgl']; ?></td>
-                      <td><input name="tx_edittransaksi_Amount[]" type="text" class="form-control" id="tx_edittransaksi_Amount" value="<?php echo $row_Purchase['Amount']; ?>" autocomplete="off"></td>
+                      <td><input name="tx_edittransaksi_Amount[]" type="text" class="form-control" id="tx_edittransaksi_Amount" value="<?php echo $row_Purchase['Amount']; ?>" autocomplete="off" required></td>
                     </tr>
                   <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
             </tbody>

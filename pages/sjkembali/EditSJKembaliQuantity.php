@@ -337,7 +337,7 @@ $totalRows_User = mysql_num_rows($User);
 							<td><input name="tx_editsjkembaliquantity_Warehouse[]" type="text" class="form-control" id="tx_editsjkembaliquantity_Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
                             <td><input name="tx_editsjkembaliquantity_QSisaKem[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
-                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
+                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" required></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>

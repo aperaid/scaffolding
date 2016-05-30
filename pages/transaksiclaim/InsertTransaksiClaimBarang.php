@@ -136,7 +136,7 @@ $totalRows_LastId = mysql_num_rows($LastId);
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $_SESSION['CheckBox3'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_inserttransaksiclaimbarang_checkbox'][$i], "int"));
+  $_SESSION['cb_inserttransaksiclaimbarang_checkbox'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_inserttransaksiclaimbarang_checkbox'][$i], "int"));
   
   $insertGoTo = "InsertTransaksiClaimBarang2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -303,7 +303,7 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button type="submit" name="bt_inserttransaksiclaimbarang_submit" id="bt_inserttransaksiclaimbarang_submit" class="btn btn-primary pull-right">Choose</button> 
+                <input type="submit" name="bt_inserttransaksiclaimbarang_submit" id="bt_inserttransaksiclaimbarang_submit" class="btn btn-primary pull-right" value="Choose" disabled>
                 <a href="../POCustomer/ViewTransaksi.php?Reference=<?php echo $_GET['Reference'] ?>"><button type="button" class="btn btn-default">Cancel</button></a>
               </div>
             </div>
@@ -350,6 +350,14 @@ $totalRows_User = mysql_num_rows($User);
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
 <!-- page script -->
+<script>
+var checkboxes = $("input[type='checkbox']"),
+    submitButt = $("input[type='submit']");
+
+checkboxes.click(function() {
+    submitButt.attr("disabled", !checkboxes.is(":checked"));
+});
+</script>
 
 </body>
 </html>

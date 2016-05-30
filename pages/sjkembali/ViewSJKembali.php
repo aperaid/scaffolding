@@ -330,11 +330,20 @@ $totalRows_User = mysql_num_rows($User);
               </table>
             </div>
             <!-- /.box-body -->
+            
+            <?php 
+			$query = mysql_query($query_ViewIsiSJKembali);
+			$angka = array();
+			while($row = mysql_fetch_assoc($query)){
+			$angka[] = $row['QTerima'];
+			}
+			$jumlah = array_sum($angka) ;
+			?>
             <div class="box-footer">
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Back</button></a>
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Print</button></a>
 				<div class="btn-group pull-right">
-					<a href="EditSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-primary">Edit Pengembalian</button></a>
+					<a href="EditSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-primary" <?php if ($jumlah > '0'){ ?> disabled <?php   } ?>>Edit Pengembalian</button></a>
 					<a href="EditSJKembaliQuantity.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-success">Quantity Terima</button></a>
 				</div>
 			</div>

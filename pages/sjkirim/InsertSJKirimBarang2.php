@@ -218,6 +218,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   }
 }
 
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+	unset($_SESSION['cb_insertsjkirimbarang_checkbox']);
+	unset($_SESSION['tx_insertsjkirim_SJKir']);
+	unset($_SESSION['tx_insertsjkirim_Tgl']);
+	unset($_SESSION['tx_insertsjkirim_Reference']);
+}
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -381,7 +388,7 @@ $totalRows_User = mysql_num_rows($User);
 	    <td><input name="tx_insertsjkirimbarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkirimbarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_Warehouse" autocomplete="off"></td>
 	    <td><input name="tx_insertsjkirimbarang2_QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_QSisaKirInsert<?php echo $increment; ?>" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
-	    <td><input name="tx_insertsjkirimbarang2_QKirim[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>)"></td>
+	    <td><input name="tx_insertsjkirimbarang2_QKirim[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_QKirim" autocomplete="off" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>)" required></td>
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim)); ?>

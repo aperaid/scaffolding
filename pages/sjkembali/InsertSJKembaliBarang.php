@@ -307,7 +307,7 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-body -->
                <div class="box-footer">
-                <button type="submit" name="bt_insertsjkembalibarang_submit" id="bt_insertsjkembalibarang_submit" class="btn btn-primary pull-right">Choose</button> 
+                <input type="submit" name="bt_insertsjkembalibarang_submit" id="bt_insertsjkembalibarang_submit" class="btn btn-primary pull-right" value="Choose" disabled>
                 <a href="InsertSJKembali.php?Reference=<?php echo $_GET['Reference'] ?>"><button type="button" class="btn btn-default">Cancel</button></a>
               </div>
             </div>
@@ -353,6 +353,14 @@ $totalRows_User = mysql_num_rows($User);
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
 <!-- page script -->
+<script>
+var checkboxes = $("input[type='checkbox']"),
+    submitButt = $("input[type='submit']");
+
+checkboxes.click(function() {
+    submitButt.attr("disabled", !checkboxes.is(":checked"));
+});
+</script>
 
 </body>
 </html>

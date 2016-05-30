@@ -352,7 +352,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<td><input name="hd_editsjkirimquantity_Warehouse[]" type="text" class="form-control" id="hd_editsjkirimquantity_Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
 							<td><input name="tx_editsjkirimquantity_QKirim[]" type="text" class="form-control" id="tx_editsjkirimquantity_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
                             <input name="tx_editsjkirimquantity_QSisaKir[]" type="hidden" class="form-control" id="tx_editsjkirimquantity_QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly>
-                            <td><input name="tx_editsjkirimquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkirimquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKirim['QKirim']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
+                            <td><input name="tx_editsjkirimquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkirimquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKirim['QKirim']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>" required></td>
                           </tr>
                           <?php $x++; ?>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
@@ -368,7 +368,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					<div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                     </div>
-					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" onchange="tgl(this);">
+					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" onchange="tgl(this);" required>
 					</div>
 					<input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E">
 				<br>

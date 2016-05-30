@@ -358,6 +358,9 @@ $totalRows_User = mysql_num_rows($User);
 					<?php } while ($row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim)); ?>
                 </tbody>
               </table>
+              </div>
+            <!-- /.box-body -->
+            
             <?php 
 			$query = mysql_query($query_ViewIsiSJKirim);
 			$angka = array();

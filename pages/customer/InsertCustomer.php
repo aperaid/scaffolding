@@ -281,13 +281,13 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_insertcustomer_CCode" type="text" class="form-control" placeholder="Company Code" maxlength="5">
+                    <input id="tx_insertcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_insertcustomer_CCode" type="text" class="form-control" placeholder="Company Code" maxlength="5" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
-                    <input id="tx_insertcustomer_Company" autocomplete="off" onKeyUp="capital()" name="tx_insertcustomer_Company" type="text" class="form-control" placeholder="Nama Perusahaan">
+                    <input id="tx_insertcustomer_Company" autocomplete="off" onKeyUp="capital()" name="tx_insertcustomer_Company" type="text" class="form-control" placeholder="Nama Perusahaan" required>
                   </div>
                   <label class="col-sm-1 control-label">NPWP</label>
                   <div class="col-sm-2">

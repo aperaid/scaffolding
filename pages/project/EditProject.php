@@ -287,25 +287,25 @@ $totalRows_User = mysql_num_rows($User);
                   <input name="hd_editproject_Id" type="hidden" id="hd_editproject_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="tx_editproject_PCode" name="tx_editproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" value="<?php echo $row_Edit['PCode']; ?>" maxlength="5">
+                    <input id="tx_editproject_PCode" name="tx_editproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" value="<?php echo $row_Edit['PCode']; ?>" maxlength="5" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Name</label>
                   <div class="col-sm-4">
-                    <input id="tx_editproject_Project" name="tx_editproject_Project" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project" value="<?php echo $row_Edit['Project']; ?>">
+                    <input id="tx_editproject_Project" name="tx_editproject_Project" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project" value="<?php echo $row_Edit['Project']; ?>" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat Project</label>
                   <div class="col-sm-4">
-                    <input id="tx_editproject_Alamat" name="tx_editproject_Alamat" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota" value="<?php echo $row_Edit['Alamat']; ?>">
+                    <input id="tx_editproject_Alamat" name="tx_editproject_Alamat" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota" value="<?php echo $row_Edit['Alamat']; ?>" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_editproject_CCode" name="tx_editproject_CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code" value="<?php echo $row_Edit['CCode']; ?>">
+                    <input id="tx_editproject_CCode" name="tx_editproject_CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code" value="<?php echo $row_Edit['CCode']; ?>" maxlength="5" required>
                   </div>
                 </div>
               </div>
