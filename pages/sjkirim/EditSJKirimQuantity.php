@@ -331,13 +331,10 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 				  <table id="tb_editsjkirimquantity_example1" class="table table-bordered">
 					<thead>
 					<tr>
-						<th>#</th>
-						<th>#Pur</th>
 						<th>J/S</th>
 						<th>Barang</th>
 						<th>Warehouse</th>
 						<th>Q Kirim</th>
-						<th>Q Sisa Kirim</th>
 						<th>Q Tertanda</th>
 					</tr>
 					</thead>
@@ -350,26 +347,34 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                             <input name="hd_editsjkirimquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkirimquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
                             <input name="hd_editsjkirimquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkirimquantity_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
                             <input name="tx_editsjkirimquantity_QTertanda2[]" type="hidden" class="form-control" id="tx_editsjkirimquantity_QTertanda2" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>">
-							<td><?php echo $row_EditIsiSJKirim['IsiSJKir']; ?></td>
-							<td><?php echo $row_EditIsiSJKirim['Purchase']; ?></td>
 							<td><input name="tx_editsjkirimquantity_JS" type="text" class="form-control" id="tx_editsjkirimquantity_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
 							<td><input name="tx_editsjkirimquantity_Barang" type="text" class="form-control" id="tx_editsjkirimquantity_Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
 							<td><input name="hd_editsjkirimquantity_Warehouse[]" type="text" class="form-control" id="hd_editsjkirimquantity_Warehouse" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>" readonly></td>
 							<td><input name="tx_editsjkirimquantity_QKirim[]" type="text" class="form-control" id="tx_editsjkirimquantity_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" readonly></td>
-                            <td><input name="tx_editsjkirimquantity_QSisaKir[]" type="text" class="form-control" id="tx_editsjkirimquantity_QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly></td>
+                            <input name="tx_editsjkirimquantity_QSisaKir[]" type="hidden" class="form-control" id="tx_editsjkirimquantity_QSisaKir<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKirim['QSisaKir']; ?>" readonly>
                             <td><input name="tx_editsjkirimquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkirimquantity_QTertanda<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKirim['QKirim']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>"></td>
                           </tr>
                           <?php $x++; ?>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
 					</tbody>
 				  </table>
+					
 			</div>
+			
             <!-- /.box-body -->
             <div class="box-footer">
-            <label>Q Tanggal</label><input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" onchange="tgl(this);">
-            <input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E">
-				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
+					<label>Tanggal Barang Sampai Tujuan/Tanggal Mulai Penghitungan</label>
+					<div class="input-group">
+					<div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                    </div>
+					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" onchange="tgl(this);">
+					</div>
+					<input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E">
+				<br>
+				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
 				<button type="submit" name="bt_editsjkirimquantity_submit" id="bt_editsjkirimquantity_submit" class="btn btn-success pull-right">Update</button>
+				
 			</div>
           </div>
           <!-- /.box -->

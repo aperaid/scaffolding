@@ -287,7 +287,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                     <th>J/S</th>
                     <th>Barang</th>
                     <th>Quantity Sisa Kirim</th>
-                    <th>No. Purchase</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -298,7 +297,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                         <td><input name="tx_insertsjkirimbarang_JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
                         <td><input name="tx_insertsjkirimbarang_Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
                         <td><input name="tx_insertsjkirimbarang_QSisaKir[]" type="text" class="form-control" id="tx_insertsjkirimbarang_QSisaKir" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
-                        <td><input name="tx_insertsjkirimbarang_Purchase[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>" readonly></td>
                         </tr>
                       <?php $increment++; ?>
                       <?php } while ($row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim)); ?>

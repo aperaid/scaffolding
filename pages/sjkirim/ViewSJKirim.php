@@ -288,11 +288,12 @@ $totalRows_User = mysql_num_rows($User);
     </section>
 
     <!-- Main content -->
+	<section class="content">
     <section class="invoice">
       <div class="row">
         <div class="col-xs-12">
           <h2 class="page-header">
-            <i class="fa fa-globe"></i> SJ Kirim | <big><?php echo $row_ViewIsiSJKirim['SJKir']; ?></big>
+            <i class="fa fa-globe"></i> SJ Kirim | <?php echo $row_ViewIsiSJKirim['SJKir']; ?>
 			<small class="pull-right">Date: <?php echo $row_ViewSJKirim['Tgl']; ?></small>
 		  </h2>
         </div>
@@ -337,13 +338,10 @@ $totalRows_User = mysql_num_rows($User);
               <table id="tb_viewsjkirim_example1" class="table table-striped">
                 <thead>
                 <tr>
-					<th>#</th>
-					<th>#Pur</th>
 					<th>J/S</th>
 					<th>Barang</th>
 					<th>Warehouse</th>
                     <th>Q Kirim</th>
-					<th>Q Sisa Kirim</th>
 					<th>Q Tertanda</th>
                 </tr>
                 </thead>
@@ -351,13 +349,10 @@ $totalRows_User = mysql_num_rows($User);
 					<?php do { ?>
 						<tr>
 							<input name="hd_viewsjkirim_Id" type="hidden" id="hd_viewsjkirim_Id">
-							<td><?php echo $row_ViewIsiSJKirim['IsiSJKir']; ?></td>
-							<td><?php echo $row_ViewIsiSJKirim['Purchase']; ?></td>
 							<td><input name="tx_viewsjkirim_JS" type="text" class="form-control" id="tx_viewsjkirim_JS" value="<?php echo $row_ViewIsiSJKirim['JS']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_Barang" type="text" class="form-control" id="tx_viewsjkirim_Barang" value="<?php echo $row_ViewIsiSJKirim['Barang']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_Warehouse" type="text" class="form-control" id="tx_viewsjkirim_Warehouse" value="<?php echo $row_ViewIsiSJKirim['Warehouse']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_QKirim" type="text" class="form-control" id="tx_viewsjkirim_QKirim" value="<?php echo $row_ViewIsiSJKirim['QKirim']; ?>" readonly></td>
-                            <td><input name="tx_viewsjkirim_QSisaKir" type="text" class="form-control" id="tx_viewsjkirim_QSisaKir" value="<?php echo $row_ViewIsiSJKirim['QSisaKir']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_QTertanda" type="text" class="form-control" id="tx_viewsjkirim_QTertanda" value="<?php echo $row_ViewIsiSJKirim['QTertanda']; ?>" readonly></td>
 						</tr>
 					<?php } while ($row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim)); ?>
@@ -374,9 +369,15 @@ $totalRows_User = mysql_num_rows($User);
             <div class="box-footer">
 				<a href="SJKirim.php"><button type="button" class="btn btn-default">Back</button></a>
 				<a href="#"><button type="button" class="btn btn-default">Print</button></a>
+				
 				<div class="btn-group pull-right">
+<<<<<<< HEAD
 					<a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-primary" <?php if ($jumlah > '0'){ ?> disabled <?php   } ?>>Edit Pengiriman</button></a>
 					<a href="EditSJKirimQuantity.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-success">Q Tertanda</button></a>
+=======
+				<a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-primary">Edit SJ Kirim</button></a>
+				<a href="EditSJKirimQuantity.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-success">Q Tertanda</button></a>
+>>>>>>> origin/master
 				</div>
 			</div>
           
@@ -385,7 +386,8 @@ $totalRows_User = mysql_num_rows($User);
       </div>
       <!-- /.row -->
     </section>
-    <!-- /.content -->
+    </section>
+	<!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   

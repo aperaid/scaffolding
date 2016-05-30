@@ -313,7 +313,7 @@ $totalRows_User = mysql_num_rows($User);
                       <th><a href="javascript:void(0);" id="hf_insertpocustomerbarang_addCF" class=" glyphicon glyphicon-plus"></a></th>
                       <th>Barang</th>
                       <th>J/S</th>
-                      <th>Amount</th>
+                      <th>Price</th>
                       <th>Quantity</th>
                     </thead>
                   </table>

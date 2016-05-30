@@ -354,8 +354,6 @@ $totalRows_User = mysql_num_rows($User);
                   <table id="tb_insertsjkirimbarang2_example1" name="tb_insertsjkirimbarang2_example1" class="table table-bordered table-striped table-responsive">
                     <thead>
 					  <tr>
-                        <th>#</th>
-                        <th>#Pur</th>
 					    <th>J/S</th>
 					    <th>Barang</th>
 					    <th>Warehouse</th>
@@ -377,8 +375,8 @@ $totalRows_User = mysql_num_rows($User);
           <input name="hd_insertsjkirimbarang2_Reference" type="hidden" id="hd_insertsjkirimbarang2_Reference" value="<?php echo $tx_insertsjkirimbarang2_Reference; ?>">
 	      <input name="hd_insertsjkirimbarang2_Id[]" type="hidden" id="hd_insertsjkirimbarang2_Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
 	      <input name="hd_insertsjkirimbarang2_Reference2[]" type="hidden" id="hd_insertsjkirimbarang2_Reference2" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
-	    <td><input name="hd_insertsjkirimbarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkirimbarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>"><?php echo $row_LastIsiSJKirim['Id'] + $increment; ?></td>
-        <td><input name="hd_insertsjkirimbarang2_Purchase[]" type="hidden" id="hd_insertsjkirimbarang2_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"><?php echo $row_InsertSJKirim['Purchase']; ?></td>
+	      <input name="hd_insertsjkirimbarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkirimbarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>">
+          <input name="hd_insertsjkirimbarang2_Purchase[]" type="hidden" id="hd_insertsjkirimbarang2_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>">
 	    <td><input name="tx_insertsjkirimbarang2_JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkirimbarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkirimbarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_Warehouse" autocomplete="off"></td>
