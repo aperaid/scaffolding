@@ -289,7 +289,7 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Company</th>
                   <th>Project</th>
                   <th>Quantity</th>
-                  <th>Amount</th>
+                  <th>Price</th>
                 </tr>
                 </thead>
 				<tbody>
@@ -300,7 +300,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_View['Company']; ?></td>
                         <td><?php echo $row_View['Project']; ?></td>
                         <td><?php echo $row_View['Quantity']; ?></td>
-						<td><?php echo number_format($row_View['Amount'], 2); ?></td>
+						<td>Rp <?php echo number_format($row_View['Amount'], 2,',', '.'); ?></td>
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
