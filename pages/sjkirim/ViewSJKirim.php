@@ -371,13 +371,9 @@ $totalRows_User = mysql_num_rows($User);
 				<a href="#"><button type="button" class="btn btn-default">Print</button></a>
 				
 				<div class="btn-group pull-right">
-<<<<<<< HEAD
 					<a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-primary" <?php if ($jumlah > '0'){ ?> disabled <?php   } ?>>Edit Pengiriman</button></a>
 					<a href="EditSJKirimQuantity.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-success">Q Tertanda</button></a>
-=======
-				<a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-primary">Edit SJ Kirim</button></a>
-				<a href="EditSJKirimQuantity.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-success">Q Tertanda</button></a>
->>>>>>> origin/master
+
 				</div>
 			</div>
           
