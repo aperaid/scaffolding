@@ -169,7 +169,7 @@ $totalRows_User = mysql_num_rows($User);
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body onload="check_customer_function(<?php echo $row_check['result'] ?>)" class="hold-transition skin-blue fixed sidebar-mini">
+<body class="hold-transition skin-blue fixed sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -358,9 +358,9 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <a href="EditCustomer.php?Id=<?php echo $row_View['Id']; ?>"><button id="edit_button" type="button" class="btn btn-info pull-right">Edit</button></a>
+                <a href="EditCustomer.php?Id=<?php echo $row_View['Id']; ?>"><button id="edit_button" type="button" class="btn btn-primary pull-right" >Edit</button></a>
                 <div class="btn-group"><a href="Customer.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
-                <div class="btn-group" ><a href="DeleteCustomer.php?CCode=<?php echo $row_View['CCode']; ?>" onclick="return confirm('Delete Customer?')"><button id="delete_button" type="button" class="btn btn-danger pull-left">Delete</button></a></div>
+                <div class="btn-group" ><a href="DeleteCustomer.php?CCode=<?php echo $row_View['CCode']; ?>" onclick="return confirm('Delete Customer?')"><button id="delete_button" type="button" <?php if ($row_check['result'] == 1) { ?> class="btn btn-default pull-left" disabled <?php } else { ?> class="btn btn-danger pull-left" <?php }?>>Delete</button></a></div>
               </div>
               <input type="hidden" name="MM_update" value="form1">
               <!-- /.box-footer -->
@@ -452,19 +452,6 @@ function capital() {
 
     $("#dialog").dialog("open");
   });
-</script>
-<script>
-function check_customer_function(x) {
-if(x == 1){
-    //delete button
-	document.getElementById("delete_button").disabled = true;
-	document.getElementById("delete_button").className = "btn btn-default pull-left";
-}else{
-	//delete button
-	document.getElementById("delete_button").disabled = false;
-	document.getElementById("delete_button").className = "btn btn-danger pull-left";
-}	
-}
 </script>
 </body>
 </html>
