@@ -110,7 +110,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE customer SET CCode=%s, Company=%s, Customer=%s, Alamat=%s, Zip=%s, Kota=%s, CompPhone=%s, CustPhone=%s, Fax=%s, NPWP=%s, CompEmail=%s, CustEmail=%s WHERE Id=%s",
+  $updateSQL = sprintf("SELECT edit_customer(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
                        GetSQLValueString($_POST['tx_editcustomer_CCode'], "text"),
                        GetSQLValueString($_POST['tx_editcustomer_Company'], "text"),
                        GetSQLValueString($_POST['tx_editcustomer_Customer'], "text"),
@@ -162,6 +162,13 @@ $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueS
 $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
+
+//check project exist to disable ccode editFormAction
+mysql_select_db($database_Connection, $Connection);
+$query_check = sprintf("SELECT check_customer(%s) AS result", GetSQLValueString($row_Edit['CCode'], "text"));
+$check = mysql_query($query_check, $Connection) or die(mysql_error());
+$row_check = mysql_fetch_assoc($check);
+//check end
 
 ?>
 
@@ -295,7 +302,7 @@ $totalRows_User = mysql_num_rows($User);
                   <input name="hd_editcustomer_Id" type="hidden" id="hd_editcustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code" maxlength="5" required>
+                    <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code" maxlength="5" required <?php if ($row_check['result']==1) { ?> readonly <?php } ?>>
                   </div>
                 </div>
                 <div class="form-group">
@@ -448,4 +455,5 @@ function capital() {
   mysql_free_result($Menu);
   mysql_free_result($User);
   mysql_free_result($Edit);
+  mysql_free_result($check);
 ?>

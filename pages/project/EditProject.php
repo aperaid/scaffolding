@@ -110,7 +110,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "fm_editproject_form1")) {
-  $updateSQL = sprintf("UPDATE project SET PCode=%s, Project=%s, Alamat=%s, CCode=%s WHERE Id=%s",
+  $updateSQL = sprintf("select edit_project(%s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_editproject_PCode'], "text"),
                        GetSQLValueString($_POST['tx_editproject_Project'], "text"),
                        GetSQLValueString($_POST['tx_editproject_Alamat'], "text"),
@@ -153,6 +153,16 @@ $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueS
 $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
+
+//FUNCTION BUTTON DISABLE
+$check_pcode = $row_Edit['PCode'];
+mysql_select_db($database_Connection, $Connection);
+$query_check = sprintf("SELECT check_project('$check_pcode') AS result");
+$check = mysql_query($query_check, $Connection) or die(mysql_error());
+$row_check = mysql_fetch_assoc($check);
+$totalRows_check = mysql_num_rows($check);
+//FUNCTION BUTTON DISABLE END
+
 ?>
 
 <!DOCTYPE html>
@@ -287,7 +297,7 @@ $totalRows_User = mysql_num_rows($User);
                   <input name="hd_editproject_Id" type="hidden" id="hd_editproject_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="tx_editproject_PCode" name="tx_editproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" value="<?php echo $row_Edit['PCode']; ?>" maxlength="5" required>
+                    <input id="tx_editproject_PCode" name="tx_editproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" value="<?php echo $row_Edit['PCode']; ?>" maxlength="5" required <?php if ($row_check['result'] == 1) { ?> readonly <?php } ?>>
                   </div>
                 </div>
                 <div class="form-group">

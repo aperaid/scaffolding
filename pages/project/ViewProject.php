@@ -427,7 +427,7 @@ function capital() {
 </html>
 <?php
 mysql_free_result($Menu);
-
+mysql_free_result($check);
 mysql_free_result($User);
 mysql_free_result($View);
 ?>

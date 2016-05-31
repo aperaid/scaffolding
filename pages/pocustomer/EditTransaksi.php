@@ -147,12 +147,13 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_Purchase;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET Quantity=%s, QSisaKirInsert=%s, QSisaKir=%s, Amount=%s WHERE Id=%s",
+  $updateSQL = sprintf("SELECT edit_transaksi(%s,%s,%s,%s,%s,%s)",
                        GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
 					   GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
 					   GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
                        GetSQLValueString($_POST['tx_edittransaksi_Amount'][$i], "text"),
-                       GetSQLValueString($_POST['hd_edittransaksi_Id'][$i], "int"));
+                       GetSQLValueString($_POST['hd_edittransaksi_Id'][$i], "int"),
+					   GetSQLValueString($colname_View, "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -289,7 +290,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
         <div class="col-xs-12">
           <h2 class="page-header">
             <i class="fa fa-globe"></i> PT. BDN | 
-			<big><?php echo $row_Purchase['Reference']; ?></big>
+			<?php echo $row_Purchase['Reference']; ?>
 			<small class="pull-right">Date: <?php echo $row_Purchase['Tgl']; ?></small>
 		  </h2>
         </div>
@@ -338,8 +339,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                 <th>J/S</th>
                 <th>Item Name</th>
                 <th>Quantity</th>
-                <th>Request Date</th>
-                <th>Amount</th>
+                <th>Price</th>
             </tr>
             </thead>
             <tbody>
@@ -349,7 +349,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                       <td><?php echo $row_Purchase['JS']; ?></td>
                       <td><?php echo $row_Purchase['Barang']; ?></td>
                       <td><input name="tx_edittransaksi_Quantity[]" type="text" class="form-control" id="tx_edittransaksi_Quantity" value="<?php echo $row_Purchase['Quantity']; ?>" autocomplete="off" required></td>
-                      <td><?php echo $row_Purchase['Tgl']; ?></td>
                       <td><input name="tx_edittransaksi_Amount[]" type="text" class="form-control" id="tx_edittransaksi_Amount" value="<?php echo $row_Purchase['Amount']; ?>" autocomplete="off" required></td>
                     </tr>
                   <?php } while ($row_Purchase = mysql_fetch_assoc($Purchase)); ?>
