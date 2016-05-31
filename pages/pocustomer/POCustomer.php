@@ -142,12 +142,6 @@ $row_POCustomer = mysql_fetch_assoc($POCustomer);
 $totalRows_POCustomer = mysql_num_rows($POCustomer);
 
 mysql_select_db($database_Connection, $Connection);
-$query_CheckReference = "SELECT Reference FROM pocustomer WHERE pocustomer.Reference NOT IN (SELECT sjkirim.Reference FROM sjkirim)";
-$CheckReference = mysql_query($query_CheckReference, $Connection) or die(mysql_error());
-$row_CheckReference = mysql_fetch_assoc($CheckReference);
-$totalRows_CheckReference = mysql_num_rows($CheckReference);
-
-mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);

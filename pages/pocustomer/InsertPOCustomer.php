@@ -110,13 +110,9 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO pocustomer (Reference, Tgl, PCode) VALUES (%s, %s, %s)",
-                       GetSQLValueString($_POST['tx_insertpocustomer_Reference'], "text"),
-                       GetSQLValueString($_POST['tx_insertpocustomer_Tgl'], "text"),
-                       GetSQLValueString($_POST['tx_insertpocustomer_PCode'], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+	$_SESSION['tx_insertpocustomer_Reference'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomer_Reference'], "text"));
+	$_SESSION['tx_insertpocustomer_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomer_Tgl'], "text"));
+	$_SESSION['tx_insertpocustomer_PCode'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomer_PCode'], "text"));
 
   $insertGoTo = "InsertPOCustomerBarang.php";
   if (isset($_SERVER['QUERY_STRING'])) {

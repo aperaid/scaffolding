@@ -31,6 +31,8 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
+session_start();
+
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
@@ -77,21 +79,25 @@ $Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
 $row_Reference = mysql_fetch_assoc($Reference);
 $totalRows_Reference = mysql_num_rows($Reference);
 
-mysql_select_db($database_Connection, $Connection);
-$query_LastTgl = "SELECT Tgl FROM pocustomer ORDER BY Id DESC";
-$LastTgl = mysql_query($query_LastTgl, $Connection) or die(mysql_error());
-$row_LastTgl = mysql_fetch_assoc($LastTgl);
-$totalRows_LastTgl = mysql_num_rows($LastTgl);
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO pocustomer (Reference, Tgl, PCode) VALUES (%s, %s, %s)",
+                       GetSQLValueString($_POST['hd_insertpocustomerbarang2_Reference'], "text"),
+                       GetSQLValueString($_POST['hd_insertpocustomerbarang2_Tgl'], "text"),
+					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_PCode'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
 
 for($i=0;$i<$totalRows_JS;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, PPN, Transport, Reference, Tgl, Periode) VALUES (%s, %s, %s, %s, %s, %s, 1)",
                        GetSQLValueString($_POST['hd_insertpocustomerbarang2_Invoice'][$i], "text"),
                        GetSQLValueString($_POST['hd_insertpocustomerbarang2_JS'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_PPN'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_Transport'][$i], "text"),
-                       GetSQLValueString($_POST['hd_insertpocustomerbarang2_Reference'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_Tgl'][$i], "text"));
+					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_PPN'], "text"),
+					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_Transport'], "text"),
+                       GetSQLValueString($_POST['hd_insertpocustomerbarang2_Reference'], "text"),
+					   GetSQLValueString($_POST['hd_insertpocustomerbarang2_Tgl2'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -105,9 +111,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 }
 
-
-
-session_start();
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+	unset($_SESSION['tx_insertpocustomer_Reference']);
+	unset($_SESSION['tx_insertpocustomer_Tgl']);
+	unset($_SESSION['tx_insertpocustomer_PCode']);
+	unset($_SESSION['tx_insertpocustomer_PPN']);
+	unset($_SESSION['tx_insertpocustomer_Transport']);
+}
 
 ?>
 <!doctype html>
@@ -136,7 +146,14 @@ session_start();
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
-      <?php $tgl = 0; $bln = substr($row_LastTgl['Tgl'], 3, -5); $thn = substr($row_LastTgl['Tgl'], 6);
+	  <?php
+	  $tx_insertpocustomerbarang2_Reference = substr($_SESSION['tx_insertpocustomer_Reference'], 1, -1);
+	  $tx_insertpocustomerbarang2_Tgl = substr($_SESSION['tx_insertpocustomer_Tgl'], 1, -1);
+	  $tx_insertpocustomerbarang2_PCode = substr($_SESSION['tx_insertpocustomer_PCode'], 1, -1);
+	  $tx_insertpocustomerbarang2_PPN = $_SESSION['tx_insertpocustomerbarang_PPN'];
+	  $tx_insertpocustomerbarang2_Transport = $_SESSION['tx_insertpocustomerbarang_Transport'];
+ 	  ?>
+      <?php $tgl = 0; $bln = substr($tx_insertpocustomerbarang2_Tgl, 3, -5); $thn = substr($tx_insertpocustomerbarang2_Tgl, 6);
 			if ($bln == 1){
 				$tgl = 31;
 				$bln = '01';
@@ -196,10 +213,12 @@ session_start();
           <td>&nbsp;</td>
           <td><input name="hd_insertpocustomerbarang2_Invoice[]" type="hidden" id="hd_insertpocustomerbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $x, 5, "0", STR_PAD_LEFT); ?>">
           <input name="hd_insertpocustomerbarang2_JS[]" type="hidden" id="hd_insertpocustomerbarang2_JS" value="<?php echo $row_JS['JS']; ?>">
-          <input name="hd_insertpocustomerbarang2_PPN[]" type="hidden" id="hd_insertpocustomerbarang2_PPN" value="<?php echo $_SESSION["PPN"]; ?>">
-          <input name="hd_insertpocustomerbarang2_Transport[]" type="hidden" id="hd_insertpocustomerbarang2_Transport" value="<?php echo $_SESSION["Transport"]; ?>">
-          <input name="hd_insertpocustomerbarang2_Reference[]" type="hidden" id="hd_insertpocustomerbarang2_Reference" value="<?php echo $row_Reference['Reference']; ?>">
-          <input name="hd_insertpocustomerbarang2_Tgl[]" type="hidden" id="hd_insertpocustomerbarang2_Tgl" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>"></td>
+          <input name="hd_insertpocustomerbarang2_PPN" type="hidden" id="hd_insertpocustomerbarang2_PPN" value="<?php echo $tx_insertpocustomerbarang2_PPN; ?>">
+          <input name="hd_insertpocustomerbarang2_Transport" type="hidden" id="hd_insertpocustomerbarang2_Transport" value="<?php echo $tx_insertpocustomerbarang2_Transport; ?>">
+          <input name="hd_insertpocustomerbarang2_Reference" type="hidden" id="tx_insertpocustomerbarang2_Reference" value="<?php echo $tx_insertpocustomerbarang2_Reference; ?>"></td>
+          <input name="hd_insertpocustomerbarang2_Tgl" type="hidden" id="hd_insertpocustomerbarang2_Tgl" value="<?php echo $tx_insertpocustomerbarang2_Tgl; ?>"></td>
+          <input name="hd_insertpocustomerbarang2_PCode" type="hidden" id="hd_insertpocustomerbarang2_PCode" value="<?php echo $tx_insertpocustomerbarang2_PCode; ?>"></td>
+          <input name="hd_insertpocustomerbarang2_Tgl2" type="hidden" id="hd_insertpocustomerbarang2_Tgl2" value="<?php echo $tgl, '/', $bln, '/', $thn; ?>"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
@@ -222,5 +241,4 @@ session_start();
   mysql_free_result($JS);
   mysql_free_result($LastId);
   mysql_free_result($Reference);
-  mysql_free_result($LastTgl);
 ?>

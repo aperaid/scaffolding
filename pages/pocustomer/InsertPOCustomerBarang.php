@@ -110,12 +110,14 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+$References = substr($_SESSION['tx_insertpocustomer_Reference'], 1, -1);
+
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $_SESSION['PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
+  $_SESSION['tx_insertpocustomerbarang_PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $_SESSION['Transport'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Transport'], "int"));
+  $_SESSION['tx_insertpocustomerbarang_Transport'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Transport'], "int"));
 }
 
 for($i=0;$i<10;$i++){
@@ -147,27 +149,11 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
-$colname_Reference = "-1";
-if (isset($_GET['Id'])) {
-  $colname_Reference = $_GET['Id'];
-}
-mysql_select_db($database_Connection, $Connection);
-$query_Reference = sprintf("SELECT Reference FROM pocustomer WHERE Id = %s", GetSQLValueString($colname_Reference, "int"));
-$Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
-$row_Reference = mysql_fetch_assoc($Reference);
-$totalRows_Reference = mysql_num_rows($Reference);
-
 mysql_select_db($database_Connection, $Connection);
 $query_Purchase = "SELECT Id FROM transaksi ORDER BY Id DESC";
 $Purchase = mysql_query($query_Purchase, $Connection) or die(mysql_error());
 $row_Purchase = mysql_fetch_assoc($Purchase);
 $totalRows_Purchase = mysql_num_rows($Purchase);
-
-mysql_select_db($database_Connection, $Connection);
-$query_LastReference = "SELECT Reference FROM pocustomer ORDER BY Id DESC";
-$LastReference = mysql_query($query_LastReference, $Connection) or die(mysql_error());
-$row_LastReference = mysql_fetch_assoc($LastReference);
-$totalRows_LastReference = mysql_num_rows($LastReference);
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -306,7 +292,7 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>Reference=<?php echo $row_LastReference['Reference']; ?>" id="fm_insertpocustomerbarang_form1" name="fm_insertpocustomerbarang_form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>Reference=<?php echo $References; ?>" id="fm_insertpocustomerbarang_form1" name="fm_insertpocustomerbarang_form1" method="POST">
                 <div class="box-body">
                   <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
                     <thead>
@@ -334,10 +320,10 @@ $totalRows_User = mysql_num_rows($User);
                       </tr>
     				</tbody>
                 </table>
-                  <a href="CancelBarang.php?Reference=<?php echo $row_LastReference['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+                  <a href="CancelBarang.php?Reference=<?php echo $References; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
                   <button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
                 </div>
-              <input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $row_LastReference['Reference']; ?>">
+              <input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $References; ?>">
               <input type="hidden" name="MM_insert" value="form1">
               </form>
             </div>
