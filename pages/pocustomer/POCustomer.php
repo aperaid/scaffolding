@@ -142,6 +142,12 @@ $row_POCustomer = mysql_fetch_assoc($POCustomer);
 $totalRows_POCustomer = mysql_num_rows($POCustomer);
 
 mysql_select_db($database_Connection, $Connection);
+$query_CheckReference = "SELECT Reference FROM pocustomer WHERE pocustomer.Reference NOT IN (SELECT sjkirim.Reference FROM sjkirim)";
+$CheckReference = mysql_query($query_CheckReference, $Connection) or die(mysql_error());
+$row_CheckReference = mysql_fetch_assoc($CheckReference);
+$totalRows_CheckReference = mysql_num_rows($CheckReference);
+
+mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
@@ -288,13 +294,20 @@ $totalRows_User = mysql_num_rows($User);
                 </thead>
                 <tbody>
 				  <?php do { ?>
+                  <?php
+				  $Reference = $row_POCustomer['Reference'];
+				  mysql_select_db($database_Connection, $Connection);
+				  $query_check = sprintf("SELECT check_POCustomer('$Reference') AS result");
+				  $check = mysql_query($query_check, $Connection) or die(mysql_error());
+				  $row_check = mysql_fetch_assoc($check); 
+				  ?>
                   <tr>
                     <td><?php echo $row_POCustomer['Reference']; ?></td>
                     <td><?php echo $row_POCustomer['Tgl']; ?></td>
                     <td><?php echo $row_POCustomer['Company']; ?></td>
                     <td><?php echo $row_POCustomer['Project']; ?></td>
                     <td>Rp <?php echo number_format($row_POCustomer['Amount'], 2,',', '.'); ?></td>
-                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
+                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm" <?php if ($row_check['result'] == 1){ ?> disabled <?php   } ?>>Edit</button></a></td>
                     <td><a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>
                   <?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
