@@ -359,7 +359,7 @@ $totalRows_User = mysql_num_rows($User);
                 </tbody>
               </table>
             <?php 
-			$query = mysql_query($query_ViewIsiSJKirim);
+			$query = mysql_query($query_ViewIsiSJKirim) or die(mysql_error());
 			$angka = array();
 			while($row = mysql_fetch_assoc($query)){
 			$angka[] = $row['QTertanda'];
@@ -371,7 +371,7 @@ $totalRows_User = mysql_num_rows($User);
 				<a href="#"><button type="button" class="btn btn-default">Print</button></a>
 				
 				<div class="btn-group pull-right">
-					<a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-primary" <?php if ($jumlah > '0'){ ?> disabled <?php   } ?>>Edit Pengiriman</button></a>
+					<a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" <?php if ($jumlah > '0'){ ?> class="btn btn-default" disabled <?php   } else { ?> class="btn btn-primary" <?php } ?>>Edit Pengiriman</button></a>
 					<a href="EditSJKirimQuantity.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-success">Q Tertanda</button></a>
 
 				</div>

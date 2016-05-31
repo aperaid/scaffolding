@@ -206,7 +206,7 @@ $totalRows_User = mysql_num_rows($User);
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body onload="check_po_function(<?php echo $row_check['result'] ?>)" class="hold-transition skin-blue fixed sidebar-mini">
+<body class="hold-transition skin-blue fixed sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -449,12 +449,12 @@ $totalRows_User = mysql_num_rows($User);
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-		  <a href="POCustomer.php">																				<button type="button" class="btn btn-default pull-left" style="margin-right: 5px;">Back</button></a>
-          <a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?>">				<button id="SJKirim_button" 	type="button" class="btn btn-success pull-right" 	style="margin-right: 5px;">SJ Kirim</button></a>
-		  <a href="../sjkembali/InsertSJKembali.php?Reference=<?php echo $row_View['Reference']; ?>">			<button id="SJKembali_button" type="button" class="btn btn-warning pull-right" 	style="margin-right: 5px;">SJ Kembali</button></a>
-		  <a href="../transaksiclaim/inserttransaksiclaim.php?Reference=<?php echo $row_View['Reference']; ?>">	<button id="claim_button" 	type="button" class="btn btn-info pull-right" 		style="margin-right: 5px;">Claim</button></a>
-          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">							<button id="edit_button"		type="button" class="btn btn-primary pull-right" 	style="margin-right: 5px;">Edit</button></a>
-          <a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>">						<button id="delete_button" 	type="button" class="btn btn-danger pull-right" 	style="margin-right: 5px;">Delete</button></a>
+		  <a href="POCustomer.php">																				<button 						type="button" 	class="btn btn-default pull-left" style="margin-right: 5px;">Back</button></a>
+          <a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?>">				<button id="SJKirim_button" 	type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 0) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-success pull-right"	<?php }?>>SJ Kirim</button></a>
+		  <a href="../sjkembali/InsertSJKembali.php?Reference=<?php echo $row_View['Reference']; ?>">			<button id="SJKembali_button" 	type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 0) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-warning pull-right"	<?php }?>>SJ Kembali</button></a>
+		  <a href="../transaksiclaim/inserttransaksiclaim.php?Reference=<?php echo $row_View['Reference']; ?>">	<button id="claim_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 0) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-info pull-right"		<?php }?>>Claim</button></a>
+          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">							<button id="edit_button"		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-primary pull-right"	<?php }?>>Edit</button></a>
+          <a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>">						<button id="delete_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-danger pull-right"	<?php }?>>Delete</button></a>
         </div>
       </div>
     </section>
@@ -587,37 +587,6 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
-<script>
-function check_po_function(x) {
-if(x == 1){
-    //delete button
-	document.getElementById("delete_button").disabled = true;
-	document.getElementById("delete_button").className = "btn btn-default pull-right";
-	//edit button
-    document.getElementById("edit_button").disabled = true;
-	document.getElementById("edit_button").className = "btn btn-default pull-right";
-    //sjkembali button
-	document.getElementById("SJKembali_button").disabled = false;
-	document.getElementById("SJKembali_button").className = "btn btn-warning pull-right";
-	//claim button
-	document.getElementByID("claim_button").disabled = false;
-	document.getElementByID("claim_button").className = "btn btn-info pull-right";
-}else{
-	//delete button
-	document.getElementById("delete_button").disabled = false;
-	document.getElementById("delete_button").className = "btn btn-danger pull-right";
-	//edit button
-	document.getElementById("edit_button").disabled = false;
-	document.getElementById("edit_button").className = "btn btn-primary pull-right";
-    //sjkembali button
-	document.getElementById("SJKembali_button").disabled = true;
-    document.getElementById("SJKembali_button").className = "btn btn-default pull-right";
-    //sjkembali button
-	document.getElementById("claim_button").disabled = true;
-    document.getElementById("claim_button").className = "btn btn-default pull-right";
-}	
-}
-</script>
 </body>
 </html>
 <?php

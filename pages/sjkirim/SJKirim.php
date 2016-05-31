@@ -135,12 +135,12 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	}
 	
-	mysql_select_db($database_Connection, $Connection);
+mysql_select_db($database_Connection, $Connection);
 $query_SJKirim = "SELECT sjkirim.*, project.Project, customer.Customer FROM sjkirim INNER JOIN pocustomer ON sjkirim.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode ORDER BY sjkirim.Id ASC";
 $SJKirim = mysql_query($query_SJKirim, $Connection) or die(mysql_error());
 $row_SJKirim = mysql_fetch_assoc($SJKirim);
 $totalRows_SJKirim = mysql_num_rows($SJKirim);
-	
+
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
@@ -293,7 +293,17 @@ $totalRows_User = mysql_num_rows($User);
 						<td class="customer"><?php echo $row_SJKirim['Customer']; ?></td>
 						<td class="noinvoice"><?php echo $row_SJKirim['Project']; ?></td>
 						<td><a href="ViewSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-                        <td><a href="DeleteSJKirim.php?SJKem=<?php echo $row_SJKirim['SJKir']; ?>" onclick="return confirm('Delete Pengiriman?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Delete</button></a></td>
+                        <?php						
+						mysql_select_db($database_Connection, $Connection);
+						$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.*, customer.* FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($row_SJKirim['SJKir'], "text"));
+						$query = mysql_query($query_ViewIsiSJKirim) or die(mysql_error());
+						$angka = array();
+						while($row = mysql_fetch_assoc($query)){
+						$angka[] = $row['QTertanda'];
+						}
+						$jumlah = array_sum($angka) ;
+						?>
+						<td><a href="DeleteSJKirim.php?SJKem=<?php echo $row_SJKirim['SJKir']; ?>" onclick="return confirm('Delete Pengiriman?')"><button type="button" <?php if ($jumlah > '0'){ ?>  class="btn btn-block btn-sm btn-default" disabled <?php   } else { ?> class="btn btn-block btn-sm btn-danger"<?php } ?>>Delete</button></a></td>
 					</tr>
 				  <?php } while ($row_SJKirim = mysql_fetch_assoc($SJKirim)); ?>
                 </tbody>
