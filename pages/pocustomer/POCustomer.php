@@ -307,7 +307,7 @@ $totalRows_User = mysql_num_rows($User);
                     <td><?php echo $row_POCustomer['Company']; ?></td>
                     <td><?php echo $row_POCustomer['Project']; ?></td>
                     <td>Rp <?php echo number_format($row_POCustomer['Amount'], 2,',', '.'); ?></td>
-                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm" <?php if ($row_check['result'] == 1){ ?> disabled <?php   } ?>>Edit</button></a></td>
+                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" <?php if ($row_check['result'] == 1){ ?> class="btn btn-block btn-default btn-sm"  disabled <?php   } else { ?>class="btn btn-block btn-primary btn-sm" <?php } ?>>Edit</button></a></td>
                     <td><a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                   </tr>
                   <?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
@@ -368,4 +368,5 @@ $totalRows_User = mysql_num_rows($User);
   mysql_free_result($POCustomer);
   mysql_free_result($Menu);
   mysql_free_result($User);
+  mysql_free_result($check);
 ?>
