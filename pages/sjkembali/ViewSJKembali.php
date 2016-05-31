@@ -130,6 +130,13 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
+//disabled edit button if qterima exists
+mysql_select_db($database_Connection, $Connection);
+$query_check = sprintf("SELECT check_sjkem(%s) AS result", GetSQLValueString($colname_ViewIsiSJKembali, "text"));
+$check = mysql_query($query_check, $Connection) or die(mysql_error());
+$row_check = mysql_fetch_assoc($check);
+//disabled end
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -334,7 +341,7 @@ $totalRows_User = mysql_num_rows($User);
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Back</button></a>
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Print</button></a>
 				<div class="btn-group pull-right">
-					<a href="EditSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-primary">Edit Pengembalian</button></a>
+					<a href="EditSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" <?php if($row_check['result'] == 0) { ?> class="btn btn-primary" <?php } else { ?> class="btn btn-default" disabled <?php } ?>>Edit Pengembalian</button></a>
 					<a href="EditSJKembaliQuantity.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-success">Quantity Terima</button></a>
 				</div>
 			</div>
@@ -384,4 +391,5 @@ $totalRows_User = mysql_num_rows($User);
   mysql_free_result($ViewIsiSJKembali);
   mysql_free_result($View);
   mysql_free_result($User);
+  mysql_free_result($check);
 ?>

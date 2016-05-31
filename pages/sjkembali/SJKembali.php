@@ -293,7 +293,13 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_SJKembali['Customer']; ?></td>
 						<td><?php echo $row_SJKembali['Project']; ?></td>
 						<td><a href="ViewSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>"><button type="button" class="btn btn-primary btn-sm btn-block">View</button></a></td>
-						<td><a href="DeleteSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>" onclick="return confirm('Delete Pengembalian?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Delete</button></a></td>
+						<?php
+						mysql_select_db($database_Connection, $Connection);
+						$query_check = sprintf("SELECT check_sjkem(%s) AS result", GetSQLValueString($row_SJKembali['SJKem'], "text"));
+						$check = mysql_query($query_check, $Connection) or die(mysql_error());
+						$row_check = mysql_fetch_assoc($check);
+						?>
+						<td><a href="DeleteSJKembali.php?SJKem=<?php echo $row_SJKembali['SJKem']; ?>" onclick="return confirm('Delete Pengembalian?')"><button type="button" <?php if ($row_check['result'] == 0) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Delete</button></a></td>
 					</tr>
 					<?php } while ($row_SJKembali = mysql_fetch_assoc($SJKembali)); ?>
 				</tbody>
@@ -353,4 +359,5 @@ $totalRows_User = mysql_num_rows($User);
   mysql_free_result($Menu);
   mysql_free_result($User);
   mysql_free_result($SJKembali);
+  mysql_free_result($check)
 ?>
