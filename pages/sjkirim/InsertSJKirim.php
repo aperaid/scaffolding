@@ -283,7 +283,7 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="tx_insertsjkirim_Tgl" type="text" autocomplete="off" class="form-control pull-right date" id="tx_insertsjkirim_Tgl">
+                      <input name="tx_insertsjkirim_Tgl" type="text" autocomplete="off" class="form-control pull-right date" id="tx_insertsjkirim_Tgl" required>
                     </div>
                   </div>
                   <div class="form-group">

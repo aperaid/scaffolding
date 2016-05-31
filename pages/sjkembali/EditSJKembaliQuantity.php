@@ -311,10 +311,13 @@ $totalRows_User = mysql_num_rows($User);
 				  <table id="tb_editsjkembaliquantity_example1" name="tb_editsjkembaliquantity_example1" class="table table-bordered">
 					<thead>
 					<tr>
+					  <th>#</th>
+					  <th>#Pur</th>
 					  <th>Tanggal Kirim</th>
 					  <th>Barang</th>
 					  <th>Warehouse</th>
-                      <th>Q Pengambilan</th>
+                      <th>Q Tertanda</th>
+					  <th>Q Sisa Kembali</th>
 					  <th>Q Terima</th>
                 	</tr>
 					</thead>
@@ -327,12 +330,14 @@ $totalRows_User = mysql_num_rows($User);
                             <input name="hd_editsjkembaliquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkembaliquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
                             <input name="hd_editsjkembaliquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkembaliquantity_Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>">
                             <input name="tx_editsjkembaliquantity_QTerima2[]" type="hidden" class="form-control" id="tx_editsjkembaliquantity_QTerima2" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>">
+							<td><?php echo $row_EditIsiSJKembali['IsiSJKem']; ?></td>
+							<td><?php echo $row_EditIsiSJKembali['Purchase']; ?></td>
 							<td><input name="tx_editsjkembaliquantity_Tgl" type="text" class="form-control" id="tx_editsjkembaliquantity_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_Barang" type="text" class="form-control" id="tx_editsjkembaliquantity_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_Warehouse[]" type="text" class="form-control" id="tx_editsjkembaliquantity_Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
-                            <input name="tx_editsjkembaliquantity_QSisaKem[]" type="hidden" class="form-control" id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly>
-                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>"></td>
+                            <td><input name="tx_editsjkembaliquantity_QSisaKem[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
+                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" required></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>

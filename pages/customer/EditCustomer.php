@@ -295,13 +295,13 @@ $totalRows_User = mysql_num_rows($User);
                   <input name="hd_editcustomer_Id" type="hidden" id="hd_editcustomer_Id" value="<?php echo $row_Edit['Id']; ?>">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code" maxlength="5">
+                    <input id="tx_editcustomer_CCode" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_CCode" type="text" class="form-control" value="<?php echo $row_Edit['CCode']; ?>" placeholder="Company Code" maxlength="5" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Nama Perusahaan</label>
                   <div class="col-sm-7">
-                    <input id="tx_editcustomer_Company" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan">
+                    <input id="tx_editcustomer_Company" autocomplete="off" onKeyUp="capital()" name="tx_editcustomer_Company" type="text" class="form-control" value="<?php echo $row_Edit['Company']; ?>" placeholder="Nama Perusahaan" required>
                   </div>
                   <label class="col-sm-1 control-label">Telp</label>
                   <div class="col-sm-2">

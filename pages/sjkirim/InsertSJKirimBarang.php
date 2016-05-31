@@ -305,7 +305,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button type="submit" name="bt_insertsjkirimbarang_submit" id="bt_insertsjkirimbarang_submit" class="btn btn-primary pull-right">Choose</button> 
+                <input type="submit" name="bt_insertsjkirimbarang_submit" id="bt_insertsjkirimbarang_submit" class="btn btn-primary pull-right" value="Choose" disabled>
                 <a href="InsertSJKirim.php?Reference=<?php echo $_GET['Reference']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
               </div>
             </div>
@@ -351,6 +351,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
 <!-- page script -->
+<script>
+var checkboxes = $("input[type='checkbox']"),
+    submitButt = $("input[type='submit']");
+
+checkboxes.click(function() {
+    submitButt.attr("disabled", !checkboxes.is(":checked"));
+});
+</script>
 
 </body>
 </html>

@@ -280,25 +280,25 @@ $totalRows_User = mysql_num_rows($User);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Code</label>
                   <div class="col-sm-6">
-                    <input id="tx_insertproject_PCode" name="tx_insertproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" maxlength="5">
+                    <input id="tx_insertproject_PCode" name="tx_insertproject_PCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Project Code" maxlength="5" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Project Name</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertproject_Project" name="tx_insertproject_Project" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project">
+                    <input id="tx_insertproject_Project" name="tx_insertproject_Project" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Nama Project" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alamat Project</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertproject_Alamat" name="tx_insertproject_Alamat" type="text" autocomplete="off" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota">
+                    <input id="tx_insertproject_Alamat" name="tx_insertproject_Alamat" type="text" autocomplete="off" class="form-control" placeholder="Jl. Nama Jalan 1A No.10, Kelurahan, Kecamatan, Kota" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_insertproject_CCode" name="tx_insertproject_CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code">
+                    <input id="tx_insertproject_CCode" name="tx_insertproject_CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code" maxlength="5" required>
                   </div>
                 </div>
               </div>

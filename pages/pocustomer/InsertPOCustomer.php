@@ -287,12 +287,12 @@ $totalRows_User = mysql_num_rows($User);
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input name="tx_insertpocustomer_Tgl" type="text" class="form-control pull-right date" id="tx_insertpocustomer_Tgl" autocomplete="off">
+                      <input name="tx_insertpocustomer_Tgl" type="text" class="form-control pull-right date" id="tx_insertpocustomer_Tgl" autocomplete="off" required>
                     </div>
                   </div>
                   <div class="form-group">
                     <label>Project Code</label>
-                    <input name="tx_insertpocustomer_PCode" type="text" class="form-control" id="tx_insertpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01">
+                    <input name="tx_insertpocustomer_PCode" type="text" class="form-control" id="tx_insertpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01" maxlength="5" required>
                     <p class="help-block">Enter the beginning of the Project Code, then pick from the dropdown</p>
                   </div>
                 </div>

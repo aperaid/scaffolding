@@ -121,7 +121,7 @@ if (isset($_GET['Reference'])) {
   $colname_Periode = $_GET['Periode'];
 }
 
-$checkbox = $_SESSION['CheckBox3'];
+$checkbox = $_SESSION['cb_inserttransaksiclaimbarang_checkbox'];
 $remove = preg_replace("/[^0-9,.]/", "", $checkbox);
 
 error_reporting(E_ERROR); // bagian di ilangin error
@@ -298,6 +298,10 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   }
   header(sprintf("Location: %s", $insertGoTo));
 }
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+	unset($_SESSION['cb_inserttransaksiclaimbarang_checkbox']);
 }
 
 $colname_User = "-1";
@@ -513,8 +517,8 @@ $totalRows_User = mysql_num_rows($User);
 	    <td><input name="tx_inserttransaksiclaimbarang2_Claim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Claim" value="<?php echo $row_LastClaim['Id'] + $increment; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang2_Barang" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang2_QSisaKem" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_QSisaKem" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang2_QClaim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_QClaim" autocomplete="off" value="0" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>)"></td>
-	    <td><input name="tx_inserttransaksiclaimbarang2_Amount[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Amount" autocomplete="off" value="0"></td>
+	    <td><input name="tx_inserttransaksiclaimbarang2_QClaim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_QClaim" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>)" required></td>
+	    <td><input name="tx_inserttransaksiclaimbarang2_Amount[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Amount" autocomplete="off" required></td>
 	    <td><input name="tx_inserttransaksiclaimbarang2_Purchase[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Purchase[]" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>
@@ -531,7 +535,7 @@ $totalRows_User = mysql_num_rows($User);
                     <tbody>
                       <tr>
 
-          <td><input name="tx_inserttransaksiclaimbarang2_Tgl" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Tgl" autocomplete="off" onChange="limit(this);"></td>
+          <td><input name="tx_inserttransaksiclaimbarang2_Tgl" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Tgl" autocomplete="off" onChange="limit(this);" required></td>
           <td>
           <input name="tx_inserttransaksiclaimbarang2_PPN" type="hidden" id="tx_inserttransaksiclaimbarang2_PPN" value="0">
           <input name="tx_inserttransaksiclaimbarang2_PPN" type="checkbox" id="tx_inserttransaksiclaimbarang2_PPN" value="1"></td>
@@ -541,7 +545,7 @@ $totalRows_User = mysql_num_rows($User);
                 <a href="InsertTransaksiClaimBarang.php?Reference=<?php echo $Strip; ?>&Periode=<?php echo $row_Periode['Periode']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
 		   <button type="submit" name="bt_inserttransaksiclaimbarang2_submit" id="bt_inserttransaksiclaimbarang2_submit" class="btn btn-success pull-right">Insert</button>
                 </div>
-                <input name="hd_inserttransaksiclaimbarang2_S2" type="text" id="hd_inserttransaksiclaimbarang2_S2">
+                <input name="hd_inserttransaksiclaimbarang2_S2" type="hidden" id="hd_inserttransaksiclaimbarang2_S2">
                 <input name="hd_inserttransaksiclaimbarang2_Invoice2" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice2" value="<?php echo str_pad($row_LastId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
                 <input name="hd_inserttransaksiclaimbarang2_Invoice3" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice3" value="<?php echo str_pad($row_LastId['Id'] + 2, 5, "0", STR_PAD_LEFT); ?>">
             <input name="hd_inserttransaksiclaimbarang2_Reference2" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference2" value="<?php echo $Strip; ?>">

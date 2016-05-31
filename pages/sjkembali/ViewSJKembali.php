@@ -337,6 +337,7 @@ $totalRows_User = mysql_num_rows($User);
               </table>
             </div>
             <!-- /.box-body -->
+            
             <div class="box-footer">
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Back</button></a>
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Print</button></a>
