@@ -303,7 +303,7 @@ $totalRows_User = mysql_num_rows($User);
 						}
 						$jumlah = array_sum($angka) ;
 						?>
-						<td><a href="DeleteSJKirim.php?SJKem=<?php echo $row_SJKirim['SJKir']; ?>" onclick="return confirm('Delete Pengiriman?')"><button type="button" <?php if ($jumlah > '0'){ ?>  class="btn btn-block btn-sm btn-default" disabled <?php   } else { ?> class="btn btn-block btn-sm btn-danger"<?php } ?>>Delete</button></a></td>
+						<td><a href="DeleteSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>" onclick="return confirm('Delete Pengiriman?')"><button type="button" <?php if ($jumlah > '0'){ ?>  class="btn btn-block btn-sm btn-default" disabled <?php   } else { ?> class="btn btn-block btn-sm btn-danger"<?php } ?>>Delete</button></a></td>
 					</tr>
 				  <?php } while ($row_SJKirim = mysql_fetch_assoc($SJKirim)); ?>
                 </tbody>

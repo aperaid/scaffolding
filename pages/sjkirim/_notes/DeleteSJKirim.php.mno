@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <info>
 	<infoitem key="UD_DeleteIsi" value="name:SJKir;datatype:string" />
+	<infoitem key="UD_IsiSJKir" value="name:Id;datatype:int" />
+	<infoitem key="UD_Purchase" value="name:Purchase;datatype:string" />
 </info>
