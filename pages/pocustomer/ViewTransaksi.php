@@ -605,7 +605,13 @@ $totalRows_User = mysql_num_rows($User);
 </html>
 <?php
   mysql_free_result($Menu);
+  mysql_free_result($Detail);
   mysql_free_result($Purchase);
   mysql_free_result($View);
+  mysql_free_result($view_sjkirim);
+  mysql_free_result($view_sjkembali);
+  mysql_free_result($check);
+  mysql_free_result($sjkirimcheck);
+  mysql_free_result($sjkembalicheck);
   mysql_free_result($User);
 ?>
