@@ -166,6 +166,20 @@ $row_check = mysql_fetch_assoc($check);
 $totalRows_check = mysql_num_rows($check);
 //Function button disable end
 
+//SJkirim buttton disabled
+mysql_select_db($database_Connection, $Connection);
+$query_sjkirimcheck = sprintf("SELECT check_sjkirimbutton('$colname_View') AS result");
+$sjkirimcheck = mysql_query($query_sjkirimcheck, $Connection) or die(mysql_error());
+$row_sjkirimcheck = mysql_fetch_assoc($sjkirimcheck);
+//sjkirim button disabled end
+
+//SJkembali buttton disabled
+mysql_select_db($database_Connection, $Connection);
+$query_sjkembalicheck = sprintf("SELECT check_sjkembalibutton('$colname_View') AS result");
+$sjkembalicheck = mysql_query($query_sjkembalicheck, $Connection) or die(mysql_error());
+$row_sjkembalicheck = mysql_fetch_assoc($sjkembalicheck);
+//sjkembali button disabled end
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -450,11 +464,11 @@ $totalRows_User = mysql_num_rows($User);
         <div class="col-xs-12">
           <a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
 		  <a href="POCustomer.php">																				<button 						type="button" 	class="btn btn-default pull-left" style="margin-right: 5px;">Back</button></a>
-          <a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?>">				<button id="SJKirim_button" 	type="button"  	style="margin-right: 5px;"	<?php if (0) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-success pull-right"	<?php }?>>SJ Kirim</button></a>
-		  <a href="../sjkembali/InsertSJKembali.php?Reference=<?php echo $row_View['Reference']; ?>">			<button id="SJKembali_button" 	type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 0) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-warning pull-right"	<?php }?>>SJ Kembali</button></a>
-		  <a href="../transaksiclaim/inserttransaksiclaim.php?Reference=<?php echo $row_View['Reference']; ?>">	<button id="claim_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 0) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-info pull-right"		<?php }?>>Claim</button></a>
-          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">							<button id="edit_button"		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-primary pull-right"	<?php }?>>Edit</button></a>
-          <a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>">						<button id="delete_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) { ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-danger pull-right"	<?php }?>>Delete</button></a>
+          <a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?>">				<button id="SJKirim_button" 	type="button"  	style="margin-right: 5px;"	<?php if ($row_sjkirimcheck['result'] == 0)		{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-success pull-right"	<?php }?>>SJ Kirim</button></a>
+		  <a href="../sjkembali/InsertSJKembali.php?Reference=<?php echo $row_View['Reference']; ?>">			<button id="SJKembali_button" 	type="button"  	style="margin-right: 5px;"	<?php if ($row_sjkembalicheck['result'] == 0) 	{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-warning pull-right"	<?php }?>>SJ Kembali</button></a>
+		  <a href="../transaksiclaim/inserttransaksiclaim.php?Reference=<?php echo $row_View['Reference']; ?>">	<button id="claim_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 0) 			{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-info pull-right"		<?php }?>>Claim</button></a>
+          <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">							<button id="edit_button"		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) 			{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-primary pull-right"	<?php }?>>Edit</button></a>
+          <a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>">						<button id="delete_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) 			{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-danger pull-right"	<?php }?>>Delete</button></a>
         </div>
       </div>
     </section>
