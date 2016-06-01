@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_Purchase" value="name:Purchase;datatype:string" />
+	<infoitem key="UD_Periode" value="name:Periode;datatype:int" />
+	<infoitem key="UD_IsiSJKir" value="name:Periode;datatype:int" />
+	<infoitem key="UD_Quantity" value="name:Quantity;datatype:int" />
+</info>

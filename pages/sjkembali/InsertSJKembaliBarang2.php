@@ -208,7 +208,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference2'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"));
-  $deleteSQL = sprintf("DELETE FROM periode WHERE Quantity=0");
   $insertSQL2 = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'KembaliE')",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode3'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_S2'][$i], "text"),
@@ -218,15 +217,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference2'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"));
-  $deleteSQL2 = sprintf("DELETE FROM periode WHERE S=E");
+  $deleteSQL = sprintf("DELETE FROM periode WHERE S=E");
   $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
 
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($insertSQL2, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($deleteSQL2, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 }
 }
@@ -468,7 +466,7 @@ $totalRows_User = mysql_num_rows($User);
           <input name="hd_insertsjkembalibarang2_Reference" type="hidden" id="hd_insertsjkembalibarang2_Reference" value="<?php echo $tx_insertsjkembalibarang2_Reference; ?>">
       	  <input name="hd_insertsjkembalibarang2_Invoice" type="hidden" id="hd_insertsjkembalibarang2_Invoice" value="<?php echo str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
           <input name="hd_insertsjkembalibarang2_PPN" type="hidden" id="hd_insertsjkembalibarang2_PPN" value="<?php echo $row_Invoice['PPN']; ?>">
-          <input name="hd_insertsjkembalibarang2_Transport" type="hidden" id="hd_insertsjkembalibarang2_Transport" value="<?php echo $row_Invoice['Transport']; ?>">
+          <input name="hd_insertsjkembalibarang2_Transport" type="hidden" id="hd_insertsjkembalibarang2_Transport" value=0>
           <input name="hd_insertsjkembalibarang2_Periode2" type="hidden" id="hd_insertsjkembalibarang2_Periode2" value="<?php echo $row_Invoice['Periode'] + 1; ?>">
           <input name="hd_insertsjkembalibarang2_Periode3[]" type="hidden" id="hd_insertsjkembalibarang2_Periode3" value="<?php echo $row_Invoice['Periode'] + 1; ?>">
 	      <input name="hd_insertsjkembalibarang2_Id[]" type="hidden" id="hd_insertsjkembalibarang2_Id" value="<?php echo $row_InsertSJKembali['Id']; ?>">

@@ -50,9 +50,9 @@ $Purchases[] = $row['Purchase'];
 }
 $Purchases2 = join(',',$Purchases); 
 
-$query = mysql_query($query_IsiSJKir, $Connection) or die(mysql_error());
+$query2 = mysql_query($query_IsiSJKir, $Connection) or die(mysql_error());
 $IsiSJKirs = array();
-while($row = mysql_fetch_assoc($query)){
+while($row = mysql_fetch_assoc($query2)){
 $IsiSJKirs[] = $row['IsiSJKir'];
 }
 $IsiSJKirs2 = join(',',$IsiSJKirs); 
@@ -113,3 +113,9 @@ if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
 <body>
 </body>
 </html>
+<?php
+  mysql_free_result($Purchase);
+  mysql_free_result($IsiSJKir);
+  mysql_free_result($query);
+  mysql_free_result($query2);
+?>

@@ -142,6 +142,9 @@ $row_SJKirim = mysql_fetch_assoc($SJKirim);
 $totalRows_SJKirim = mysql_num_rows($SJKirim);
 
 mysql_select_db($database_Connection, $Connection);
+$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.*, customer.* FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($row_SJKirim['SJKir'], "text"));
+
+mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
@@ -293,9 +296,7 @@ $totalRows_User = mysql_num_rows($User);
 						<td class="customer"><?php echo $row_SJKirim['Customer']; ?></td>
 						<td class="noinvoice"><?php echo $row_SJKirim['Project']; ?></td>
 						<td><a href="ViewSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-                        <?php						
-						mysql_select_db($database_Connection, $Connection);
-						$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.*, customer.* FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($row_SJKirim['SJKir'], "text"));
+                        <?php
 						$query = mysql_query($query_ViewIsiSJKirim) or die(mysql_error());
 						$angka = array();
 						while($row = mysql_fetch_assoc($query)){

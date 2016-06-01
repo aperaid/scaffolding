@@ -164,9 +164,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE isisjkembali SET QTerima=%s WHERE Id=%s",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkembaliquantity_Id'][$i], "int"));
+  $deleteSQL = sprintf("DELETE FROM periode WHERE Quantity=0");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
 
   $updateGoTo = "ViewSJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {

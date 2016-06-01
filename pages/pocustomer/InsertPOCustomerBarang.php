@@ -320,7 +320,7 @@ $totalRows_User = mysql_num_rows($User);
                       </tr>
     				</tbody>
                 </table>
-                  <a href="CancelBarang.php?Reference=<?php echo $References; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+                  <a href="InsertPOCustomer.php?Reference=<?php echo $References; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
                   <button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
                 </div>
               <input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $References; ?>">
