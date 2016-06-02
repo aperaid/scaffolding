@@ -145,32 +145,12 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-$QKirim = $row_EditIsiSJKirim['QKirim'];
-
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET QSisaKirInsert=QSisaKirInsert+$QKirim-%s WHERE Purchase=%s",
+  $updateSQL = sprintf("SELECT edit_sjkirim(%s,%s,%s)",
+                       GetSQLValueString($_POST['hd_editsjkirim_IsiSJKir'][$i], "int"),
                        GetSQLValueString($_POST['tx_editsjkirim_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkirim_Purchase'][$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE IsiSJKir=%s",
-                       GetSQLValueString($_POST['tx_editsjkirim_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkirim_IsiSJKir'][$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET Warehouse=%s, QKirim=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['tx_editsjkirim_Warehouse'][$i], "text"),
-                       GetSQLValueString($_POST['tx_editsjkirim_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkirim_Id'][$i], "int"));
+                       GetSQLValueString($_POST['tx_editsjkirim_Warehouse'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -183,7 +163,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   
   header(sprintf("Location: %s", $updateGoTo));
 }
+
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -307,8 +289,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 				  <table id="tb_editsjkirim_example1" class="table table-bordered">
 					<thead>
 					<tr>
-						<th>#</th>
-						<th>#Pur</th>
 						<th>J/S</th>
 						<th>Barang</th>
 						<th>Warehouse</th>
@@ -322,8 +302,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<input name="hd_editsjkirim_Id[]" type="hidden" id="hd_editsjkirim_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
                             <input name="hd_editsjkirim_Purchase[]" type="hidden" id="hd_editsjkirim_Purchase" value="<?php echo $row_EditIsiSJKirim['Purchase']; ?>">
                             <input name="hd_editsjkirim_IsiSJKir[]" type="hidden" id="hd_editsjkirim_IsiSJKir" value="<?php echo $row_EditIsiSJKirim['IsiSJKir']; ?>">
-							<td><?php echo $row_EditIsiSJKirim['IsiSJKir']; ?></td>
-							<td><?php echo $row_EditIsiSJKirim['Purchase']; ?></td>
 							<td><input name="tx_editsjkirim_JS" type="text" class="form-control" id="tx_editsjkirim_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
 							<td><input name="tx_editsjkirim_Barang" type="text" class="form-control" id="tx_editsjkirim_Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkirim_Warehouse[]" type="text" class="form-control" id="tx_editsjkirim_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>"></td>

@@ -170,7 +170,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 	$QTertanda = GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda2'][$i], "int");
     $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=QSisaKir+$QTertanda-%s, QSisaKem=QSisaKem-$QTertanda+%s WHERE Purchase=%s",
                        GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
 					   GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkirimquantity_Purchase'][$i], "text"));
 
