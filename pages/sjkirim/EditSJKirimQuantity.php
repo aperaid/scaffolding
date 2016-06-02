@@ -146,12 +146,30 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+//Ngambil QTertanda Sebelumnya
+$array_isisjkir=array();
+$query_isisjkir = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_error());
+while($row_isisjkir = mysql_fetch_assoc($query_isisjkir)){
+	$array_isisjkir[] = $row_isisjkir['IsiSJKir'];
+}
+//Ngambil QTertanda Sebelumnya END
+
+//Code Update QTTD
+for ($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
+	if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+		$updateSQL = sprintf ("SELECT udpate_sjkirim(%s, %i)",
+						GetSQLValueString($array_isisjkir[$i], "int"), //id isisjkirim
+						GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int")); //qttd yang baru
+	}
+}
+//Code Update QTTD END
 
 
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 	$QTertanda = GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda2'][$i], "int");
-  $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=QSisaKir+$QTertanda-%s, QSisaKem=QSisaKem-$QTertanda+%s  WHERE Purchase=%s",
+    $updateSQL = sprintf("UPDATE transaksi SET QSisaKir=QSisaKir+$QTertanda-%s, QSisaKem=QSisaKem-$QTertanda+%s WHERE Purchase=%s",
+                       GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
 					   GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkirimquantity_Purchase'][$i], "text"));
@@ -328,7 +346,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 		<form action="<?php echo $editFormAction; ?>" id="fm_editsjkirimquantity_form1" name="fm_editsjkirimquantity_form1" method="POST">
           <div class="box box-primary">
             <div class="box-body no-padding">
-				  <table id="tb_editsjkirimquantity_example1" class="table table-bordered">
+				<table id="tb_editsjkirimquantity_example1" class="table table-bordered">
 					<thead>
 					<tr>
 						<th>J/S</th>
