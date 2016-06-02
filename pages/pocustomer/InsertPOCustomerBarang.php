@@ -395,8 +395,6 @@ $totalRows_User = mysql_num_rows($User);
 </html>
 <?php
   mysql_free_result($Menu);
-  mysql_free_result($Reference);
   mysql_free_result($Purchase);
-  mysql_free_result($LastReference);
   mysql_free_result($User);
 ?>

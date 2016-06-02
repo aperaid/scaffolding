@@ -294,7 +294,7 @@ $totalRows_User = mysql_num_rows($User);
                         <td><?php echo $row_TransaksiClaim['Barang']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
-						<td><?php echo $row_TransaksiClaim['Amount']; ?></td>
+						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
 						<td><?php echo $row_TransaksiClaim['QClaim']; ?></td>
                         <td><a href="EditTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
 					  <td><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Batal</button></a></td>

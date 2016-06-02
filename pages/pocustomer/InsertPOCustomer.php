@@ -370,5 +370,6 @@ function capital() {
 </html>
 <?php
   mysql_free_result($Menu);
+  mysql_free_result($Reference);
   mysql_free_result($User);
 ?>
