@@ -296,7 +296,7 @@ $totalRows_User = mysql_num_rows($User);
                     <input name="tx_insertsjkembali_SJKem" type="text" class="form-control" id="tx_insertsjkembali_SJKem" onKeyUp="capital()" value="<?php echo str_pad($row_NoSJ['Id']+1, 3, "0", STR_PAD_LEFT); ?>/SI/<?php echo date("mY"); ?>" readonly>
                   </div>
                   <div class="form-group">
-                    <label>Send Date</label>
+                    <label>Return Date</label>
                     <div class="input-group">
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>

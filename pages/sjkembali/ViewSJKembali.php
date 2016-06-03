@@ -115,7 +115,7 @@ if (isset($_GET['SJKem'])) {
   $colname_ViewIsiSJKembali = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_ViewIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project, customer.* FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_ViewIsiSJKembali, "text"));
+$query_ViewIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, sjkirim.Reference, project.Project, customer.* FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_ViewIsiSJKembali, "text"));
 $ViewIsiSJKembali = mysql_query($query_ViewIsiSJKembali, $Connection) or die(mysql_error());
 $row_ViewIsiSJKembali = mysql_fetch_assoc($ViewIsiSJKembali);
 $totalRows_ViewIsiSJKembali = mysql_num_rows($ViewIsiSJKembali);
@@ -322,6 +322,7 @@ $totalRows_User = mysql_num_rows($User);
                 </tr>
                 </thead>
                 <tbody>
+                <?php $Reference = $row_ViewIsiSJKembali['Reference']; ?>
 					<?php do { ?>
 					<tr>
 						<input name="hd_viewsjkembali_Id" type="hidden" id="hd_viewsjkembali_Id">
@@ -342,7 +343,7 @@ $totalRows_User = mysql_num_rows($User);
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Back</button></a>
 				<a href="SJKembali.php"><button type="button" class="btn btn-default">Print</button></a>
 				<div class="btn-group pull-right">
-					<a href="EditSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" <?php if($row_check['result'] == 0) { ?> class="btn btn-primary" <?php } else { ?> class="btn btn-default" disabled <?php } ?>>Edit Pengembalian</button></a>
+					<a href="EditSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>&Reference=<?php echo $Reference; ?>"><button type="button" <?php if($row_check['result'] == 0) { ?> class="btn btn-primary" <?php } else { ?> class="btn btn-default" disabled <?php } ?>>Edit Pengembalian</button></a>
 					<a href="EditSJKembaliQuantity.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-success">Quantity Terima</button></a>
 				</div>
 			</div>

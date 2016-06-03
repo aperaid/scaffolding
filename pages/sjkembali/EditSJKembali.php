@@ -110,12 +110,20 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
+$Reference = $_GET['Reference'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalLimit = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' ORDER BY Id DESC";
+$TanggalLimit = mysql_query($query_TanggalLimit, $Connection) or die(mysql_error());
+$row_TanggalLimit = mysql_fetch_assoc($TanggalLimit);
+$totalRows_TanggalLimit = mysql_num_rows($TanggalLimit);
+
 $colname_View = "-1";
 if (isset($_GET['SJKem'])) {
   $colname_View = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT SJKem FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT SJKem, Tgl FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -136,6 +144,16 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 $QTertanda = $row_EditIsiSJKembali['QTertanda'];
+
+$SJKem = $_GET['SJKem'];
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE sjkembali SET Tgl=%s WHERE SJKem = '$SJKem'",
+ 					   GetSQLValueString($_POST['tx_editsjkembali_Tgl2'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
 
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
@@ -187,12 +205,16 @@ $totalRows_User = mysql_num_rows($User);
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="../../library/bootstrap/css/bootstrap.min.css">
+  <!-- jQueryUI -->
+  <link rel="stylesheet" href="../../library/jQueryUI/jquery-ui.css" >
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../library/font-awesome-4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../../library/ionicons-2.0.1/css/ionicons.min.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../../library/datatables/dataTables.bootstrap.css">
+  <!-- datepicker -->
+  <link rel="stylesheet" href="../../library/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -306,6 +328,16 @@ $totalRows_User = mysql_num_rows($User);
 					</tr>
 					</thead>
 					<tbody>
+                    
+                    <?php
+					$TanggalE = $row_TanggalLimit['E'];
+					$Convert = str_replace('/', '-', $TanggalE);
+					$date = new DateTime($Convert);
+					$Today = new DateTime();
+					$diff=date_diff($Today,$date);
+					$Max = $diff->format("%a");
+				  ?>
+                    
 						<?php do { ?>
                         <tr>
 							<input name="hd_editsjkembali_Id[]" type="hidden" id="hd_editsjkembali_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
@@ -323,6 +355,15 @@ $totalRows_User = mysql_num_rows($User);
 				<input type="hidden" name="MM_update" value="form1">
 			</div>
             <!-- /.box-body -->
+            <div class="box-footer">
+            <label>Return Date</label>
+					<div class="input-group">
+					<div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                    </div>
+					<input name="tx_editsjkembali_Tgl2" type="text" class="form-control" id="tx_editsjkembali_Tgl2" autocomplete="off" value="<?php echo $row_View['Tgl'] ?>" required>
+					</div>
+				<br>
             <div class="box-footer">
 				<a href="ViewSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
 				<button type="submit" name="bt_editsjkembali_submit" id="bt_editsjkembali_submit" class="btn btn-success pull-right">Update</button>
@@ -368,6 +409,8 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
+<!-- datepicker -->
+<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 <script type="text/javascript">
 function minmax(value, min, max) 
@@ -379,11 +422,24 @@ function minmax(value, min, max)
     else return value;
 }
 </script>
+
+<script>
+var Max = <?php echo $Max+1 ?>;
+  $('#tx_editsjkembali_Tgl2').datepicker({
+	  format: "dd/mm/yyyy",
+	  endDate: '+'+Max+'d',
+	  orientation: "bottom left",
+	  todayHighlight: true,
+	  autoclose: true
+  }); 
+</script>
 </body>
 </html>
 
 <?php
   mysql_free_result($Menu);
   mysql_free_result($EditIsiSJKembali);
+  mysql_free_result($User);
   mysql_free_result($View);
+  mysql_free_result($TanggalLimit);
 ?>
