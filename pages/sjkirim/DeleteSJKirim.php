@@ -41,22 +41,25 @@ mysql_select_db($database_Connection, $Connection);
 $query_IsiSJKir = sprintf("SELECT isisjkirim.IsiSJKir FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir = sjkirim.SJKir WHERE isisjkirim.SJKir = %s", GetSQLValueString($_GET['SJKir'], "text"));
 $IsiSJKir = mysql_query($query_IsiSJKir, $Connection) or die(mysql_error());
 $row_IsiSJKir = mysql_fetch_assoc($IsiSJKir);
-$totalRows_IsiSJKir = mysql_num_rows($IsiSJKir);
+$totalRows_IsiSJKir = mysql_num_rows($IsiSJKir);  
 
-$query = mysql_query($query_Purchase, $Connection) or die(mysql_error());
-$Purchases = array();
-while($row = mysql_fetch_assoc($query)){
-$Purchases[] = $row['Purchase'];
+if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
+  $deleteSQL = sprintf("SELECT delete_sjkir(%s)",
+                       GetSQLValueString($_GET['SJKir'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
+
+  $deleteGoTo = "SJKirim.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
+    $deleteGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $deleteGoTo));
 }
-$Purchases2 = join(',',$Purchases); 
 
-$query2 = mysql_query($query_IsiSJKir, $Connection) or die(mysql_error());
-$IsiSJKirs = array();
-while($row = mysql_fetch_assoc($query2)){
-$IsiSJKirs[] = $row['IsiSJKir'];
-}
-$IsiSJKirs2 = join(',',$IsiSJKirs); 
-
+/*
 if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
   $updateSQL = "UPDATE transaksi SET QSisaKirInsert=QSisaKirInsert+QSisaKem, QSisaKem = 0 WHERE Purchase IN ($Purchases2)";
 
@@ -102,6 +105,7 @@ if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
   }
   header(sprintf("Location: %s", $deleteGoTo));
 }
+*/
 ?>
 <!doctype html>
 <html>
@@ -117,5 +121,4 @@ if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
   mysql_free_result($Purchase);
   mysql_free_result($IsiSJKir);
   mysql_free_result($query);
-  mysql_free_result($query2);
 ?>
