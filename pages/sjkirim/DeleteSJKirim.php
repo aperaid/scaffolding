@@ -46,11 +46,13 @@ $totalRows_IsiSJKir = mysql_num_rows($IsiSJKir);
 if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
   $deleteSQL = sprintf("SELECT delete_sjkir(%s)",
                        GetSQLValueString($_GET['SJKir'], "text"));
-
+  
+  $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-
+  
+  
   $deleteGoTo = "SJKirim.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
