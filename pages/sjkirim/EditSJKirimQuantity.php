@@ -126,6 +126,12 @@ if (isset($_GET['SJKir'])) {
   $colname_EditIsiSJKirim = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
+$query_Tgl = sprintf("SELECT Tgl FROM sjkirim WHERE SJKir = %s", GetSQLValueString($colname_EditIsiSJKirim, "text"));
+$Tgl = mysql_query($query_Tgl, $Connection) or die(mysql_error());
+$row_Tgl = mysql_fetch_assoc($Tgl);
+$totalRows_Tgl = mysql_num_rows($Tgl);
+
+mysql_select_db($database_Connection, $Connection);
 $query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
 $EditIsiSJKirim = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_error());
 $row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim);
@@ -358,6 +364,14 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					</tr>
 					</thead>
 					<tbody>
+                    <?php
+					$Tgl2 = $row_Tgl['Tgl'];
+					$Convert = str_replace('/', '-', $Tgl2);
+					$date = new DateTime($Convert);
+					$Today = new DateTime();
+					$diff=date_diff($Today,$date);
+					$Min = $diff->format("%a");
+				  ?>
                     	<?php $x=1; ?>
 						<?php do { ?>
 						  <tr>
@@ -467,8 +481,10 @@ function minmax(value, min, max)
 }
 </script>
 <script>
+var Min = <?php echo $Min ?>;
   $('#tx_editsjkirimquantity_S').datepicker({
 	  format: "dd/mm/yyyy",
+	  startDate: '+'+Min+'d',
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true
