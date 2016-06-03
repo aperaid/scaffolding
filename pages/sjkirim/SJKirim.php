@@ -297,14 +297,12 @@ $totalRows_User = mysql_num_rows($User);
 						<td class="noinvoice"><?php echo $row_SJKirim['Project']; ?></td>
 						<td><a href="ViewSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
                         <?php
-						$query = mysql_query($query_ViewIsiSJKirim) or die(mysql_error());
-						$angka = array();
-						while($row = mysql_fetch_assoc($query)){
-						$angka[] = $row['QTertanda'];
-						}
-						$jumlah = array_sum($angka) ;
+						mysql_select_db($database_Connection, $Connection);
+						$query_check = sprintf("SELECT check_sjkir(%s) AS result", GetSQLValueString($row_SJKirim['SJKir'], "text"));
+						$check = mysql_query($query_check, $Connection) or die(mysql_error());
+						$row_check = mysql_fetch_assoc($check);
 						?>
-						<td><a href="DeleteSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>" onclick="return confirm('Delete Pengiriman?')"><button type="button" <?php if ($jumlah > '0'){ ?>  class="btn btn-block btn-sm btn-default" disabled <?php   } else { ?> class="btn btn-block btn-sm btn-danger"<?php } ?>>Delete</button></a></td>
+						<td><a href="DeleteSJKirim.php?SJKir=<?php echo $row_SJKirim['SJKir']; ?>" onclick="return confirm('Delete Pengiriman?')"><button type="button" <?php if ($row_check['result'] == 0) { ?>  class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Delete</button></a></td>
 					</tr>
 				  <?php } while ($row_SJKirim = mysql_fetch_assoc($SJKirim)); ?>
                 </tbody>

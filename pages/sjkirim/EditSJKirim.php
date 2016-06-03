@@ -125,7 +125,7 @@ if (isset($_GET['SJKir'])) {
   $colname_EditIsiSJKirim = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
+$query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, sjkirim.Tgl, transaksi.Barang, transaksi.JS, transaksi.Quantity, transaksi.QSisaKir, project.Project FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
 $EditIsiSJKirim = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_error());
 $row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim);
 $totalRows_EditIsiSJKirim = mysql_num_rows($EditIsiSJKirim);
@@ -178,12 +178,16 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="../../library/bootstrap/css/bootstrap.min.css">
+  <!-- jQueryUI -->
+  <link rel="stylesheet" href="../../library/jQueryUI/jquery-ui.css" >
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../library/font-awesome-4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../../library/ionicons-2.0.1/css/ionicons.min.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../../library/datatables/dataTables.bootstrap.css">
+  <!-- datepicker -->
+  <link rel="stylesheet" href="../../library/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -297,6 +301,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					</tr>
 					</thead>
 					<tbody>
+                    <?php $Tgl = $row_EditIsiSJKirim['Tgl']; ?>
 						<?php do { ?>
 						<tr>
 							<input name="hd_editsjkirim_Id[]" type="hidden" id="hd_editsjkirim_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
@@ -305,7 +310,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 							<td><input name="tx_editsjkirim_JS" type="text" class="form-control" id="tx_editsjkirim_JS" value="<?php echo $row_EditIsiSJKirim['JS']; ?>" readonly></td>
 							<td><input name="tx_editsjkirim_Barang" type="text" class="form-control" id="tx_editsjkirim_Barang" value="<?php echo $row_EditIsiSJKirim['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkirim_Warehouse[]" type="text" class="form-control" id="tx_editsjkirim_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['Warehouse']; ?>"></td>
-							<td><input name="tx_editsjkirim_QKirim[]" type="number" class="form-control" id="tx_editsjkirim_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" required></td>
+							<td><input name="tx_editsjkirim_QKirim[]" type="number" class="form-control" id="tx_editsjkirim_QKirim" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QKirim']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKirim['Quantity']; ?>)" required></td>
 							<td><input name="tx_editsjkirim_QTertanda[]" type="text" class="form-control" id="tx_editsjkirim_QTertanda[]" autocomplete="off" value="<?php echo $row_EditIsiSJKirim['QTertanda']; ?>" readonly></td>
 						</tr>
 						<?php } while ($row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim)); ?>
@@ -315,6 +320,14 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 			</div>
             <!-- /.box-body -->
             <div class="box-footer">
+            <label>Send Date</label>
+					<div class="input-group">
+					<div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                    </div>
+					<input name="tx_editsjkirim_Tgl" type="text" class="form-control" id="tx_editsjkirim_Tgl" autocomplete="off" value="<?php echo $Tgl; ?>" required>
+					</div>
+				<br>
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
 				<button type="submit" name="bt_editsjkirim_submit" id="bt_editsjkirim_submit" class="btn btn-success pull-right">Update</button>
 			</div>
@@ -359,6 +372,28 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
+<!-- datepicker -->
+<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<!-- page script -->
+<script type="text/javascript">
+function minmax(value, min, max) 
+{
+	if(parseInt(value) < min || isNaN(value)) 
+        return 0; 
+    if(parseInt(value) > max) 
+        return parseInt(max); 
+    else return value;
+}
+</script>
+
+<script>
+  $('#tx_editsjkirim_Tgl').datepicker({
+	  format: "dd/mm/yyyy",
+	  orientation: "bottom left",
+	  todayHighlight: true,
+	  autoclose: true
+  }); 
+</script>
 </body>
 </html>
 <?php

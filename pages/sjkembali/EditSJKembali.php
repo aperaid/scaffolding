@@ -125,7 +125,7 @@ if (isset($_GET['SJKem'])) {
   $colname_EditIsiSJKembali = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.IsiSJKir, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.IsiSJKir, isisjkirim.QKirim, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
@@ -314,7 +314,7 @@ $totalRows_User = mysql_num_rows($User);
 							<td><input name="tx_editsjkembali_Barang" type="text" class="form-control" id="tx_editsjkembali_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkembali_Warehouse[]" type="text" class="form-control" id="tx_editsjkembali_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>"></td>
                             <td><input name="tx_editsjkembali_QSisaKem[]" type="text" class="form-control" id="tx_editsjkembali_QSisaKem" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
-							<td><input name="tx_editsjkembali_QTertanda[]" type="text" class="form-control" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" required></td>
+							<td><input name="tx_editsjkembali_QTertanda[]" type="text" class="form-control" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QKirim']; ?>)" required></td>
 							<input name="tx_editsjkembali_QTerima" type="hidden" class="form-control" id="tx_editsjkembali_QTerima" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly>
 						</tr>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
@@ -368,6 +368,17 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
+<!-- page script -->
+<script type="text/javascript">
+function minmax(value, min, max) 
+{
+	if(parseInt(value) < min || isNaN(value)) 
+        return 0; 
+    if(parseInt(value) > max) 
+        return parseInt(max); 
+    else return value;
+}
+</script>
 </body>
 </html>
 

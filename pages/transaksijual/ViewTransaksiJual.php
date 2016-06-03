@@ -144,10 +144,11 @@ $totalRows_Menu = mysql_num_rows($Menu);
 $colname_View = "-1";
 if (isset($_GET['Reference'])) {
   $colname_View = $_GET['Reference'];
+  $colname_SJKir = $_GET['SJKir'];
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT pocustomer.Tgl, transaksi.Id, transaksi.Barang, customer.Company, project.Project, transaksi.Quantity, transaksi.Amount FROM transaksi LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode = project.PCode LEFT JOIN customer ON project.CCode = customer.CCode WHERE transaksi.JS = 'Jual' AND transaksi.Reference=%s ORDER BY transaksi.Id ASC", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT sjkirim.Tgl, transaksi.Id, transaksi.Barang, customer.Company, project.Project, transaksi.Quantity, transaksi.Amount FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode = project.PCode LEFT JOIN customer ON project.CCode = customer.CCode WHERE transaksi.JS = 'Jual' AND isisjkirim.SJKir = %s GROUP BY transaksi.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_SJKir, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -307,7 +308,7 @@ $totalRows_User = mysql_num_rows($User);
                 <tfoot>
                 <tr>
                   <th>Barang</th>
-                  <th>Tanggal Jual</th>
+                  <th>Tanggal Kirim</th>
                   <th>Company</th>
                   <th>Project</th>
                   <th>Quantity</th>
