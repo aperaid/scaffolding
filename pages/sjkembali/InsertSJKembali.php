@@ -137,10 +137,16 @@ $totalRows_NoSJ = mysql_num_rows($NoSJ);
 $Reference = $_GET['Reference'];
 
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalLimit = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' ORDER BY Id DESC";
-$TanggalLimit = mysql_query($query_TanggalLimit, $Connection) or die(mysql_error());
-$row_TanggalLimit = mysql_fetch_assoc($TanggalLimit);
-$totalRows_TanggalLimit = mysql_num_rows($TanggalLimit);
+$query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Deletes = 'Sewa'";
+$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
+$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
+$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' ORDER BY Id DESC";
+$TanggalMax = mysql_query($query_TanggalMax, $Connection) or die(mysql_error());
+$row_TanggalMax = mysql_fetch_assoc($TanggalMax);
+$totalRows_TanggalMax = mysql_num_rows($TanggalMax);
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -284,7 +290,14 @@ $totalRows_User = mysql_num_rows($User);
                   <div class="form-group">
                   
                   <?php
-					$TanggalE = $row_TanggalLimit['E'];
+				    $TanggalS = $row_TanggalMin['S'];
+					$Convert = str_replace('/', '-', $TanggalS);
+					$date = new DateTime($Convert);
+					$Today = new DateTime();
+					$diff=date_diff($Today,$date);
+					$Min = $diff->format("%a");
+				  
+					$TanggalE = $row_TanggalMax['E'];
 					$Convert = str_replace('/', '-', $TanggalE);
 					$date = new DateTime($Convert);
 					$Today = new DateTime();
@@ -363,10 +376,11 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 <script>
+var Min = <?php echo $Min ?>;
 var Max = <?php echo $Max+1 ?>;
   $('#tx_insertsjkembali_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
-	  startDate: '0',
+	  startDate: '-'+Min+'d',
 	  endDate: '+'+Max+'d',
 	  orientation: "bottom left",
 	  todayHighlight: true,
@@ -385,6 +399,8 @@ $(function() {
 </html>
 <?php
   mysql_free_result($Menu);
+  mysql_free_result($TanggalMin);
+  mysql_free_result($TanggalMax);
   mysql_free_result($NoSJ);
   mysql_free_result($User);
 ?>

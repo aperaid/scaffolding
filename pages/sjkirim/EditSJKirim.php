@@ -115,10 +115,10 @@ if (isset($_GET['SJKir'])) {
   $colname_View = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT SJKir FROM sjkirim WHERE SJKir = %s", GetSQLValueString($colname_View, "text"));
-$View = mysql_query($query_View, $Connection) or die(mysql_error());
-$row_View = mysql_fetch_assoc($View);
-$totalRows_View = mysql_num_rows($View);
+$query_TanggalMin = sprintf("SELECT pocustomer.Tgl FROM pocustomer LEFT JOIN sjkirim ON pocustomer.Reference=sjkirim.Reference WHERE sjkirim.SJKir = %s", GetSQLValueString($colname_View, "text"));
+$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
+$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
+$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
 
 $colname_EditIsiSJKirim = "-1";
 if (isset($_GET['SJKir'])) {
@@ -312,6 +312,14 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					</thead>
 					<tbody>
                     <?php $Tgl = $row_EditIsiSJKirim['Tgl']; ?>
+                    <?php
+					$TanggalS = $row_TanggalMin['Tgl'];
+					$Convert = str_replace('/', '-', $TanggalS);
+					$date = new DateTime($Convert);
+					$Today = new DateTime();
+					$diff=date_diff($Today,$date);
+					$Min = $diff->format("%a");
+				  ?>
 						<?php do { ?>
 						<tr>
 							<input name="hd_editsjkirim_Id[]" type="hidden" id="hd_editsjkirim_Id" value="<?php echo $row_EditIsiSJKirim['Id']; ?>">
@@ -338,7 +346,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					<input name="tx_editsjkirim_Tgl" type="text" class="form-control" id="tx_editsjkirim_Tgl" autocomplete="off" value="<?php echo $Tgl; ?>" required>
 					</div>
 				<br>
-				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
+				<a href="ViewSJKirim.php?SJKir=<?php echo $_GET['SJKir']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
 				<button type="submit" name="bt_editsjkirim_submit" id="bt_editsjkirim_submit" class="btn btn-success pull-right">Update</button>
 			</div>
           </div>
@@ -397,8 +405,10 @@ function minmax(value, min, max)
 </script>
 
 <script>
+var Min = <?php echo $Min ?>;
   $('#tx_editsjkirim_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
+	  startDate: '-'+Min+'d',
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true
@@ -410,5 +420,5 @@ function minmax(value, min, max)
   mysql_free_result($Menu);
   mysql_free_result($EditIsiSJKirim);
   mysql_free_result($User);
-  mysql_free_result($View);
+  mysql_free_result($TanggalMin);
 ?>

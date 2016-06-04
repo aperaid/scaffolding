@@ -130,6 +130,12 @@ $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mys
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
 
+mysql_select_db($database_Connection, $Connection);
+$query_Tgl = sprintf("SELECT S FROM periode WHERE SJKem = %s AND Periode = '1' AND Deletes = 'Sewa'", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$Tgl = mysql_query($query_Tgl, $Connection) or die(mysql_error());
+$row_Tgl = mysql_fetch_assoc($Tgl);
+$totalRows_Tgl = mysql_num_rows($Tgl);
+
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
@@ -333,7 +339,7 @@ $totalRows_User = mysql_num_rows($User);
                             <input name="tx_editsjkembaliquantity_QTerima2[]" type="hidden" class="form-control" id="tx_editsjkembaliquantity_QTerima2" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>">
 							<td><?php echo $row_EditIsiSJKembali['IsiSJKem']; ?></td>
 							<td><?php echo $row_EditIsiSJKembali['Purchase']; ?></td>
-							<td><input name="tx_editsjkembaliquantity_Tgl" type="text" class="form-control" id="tx_editsjkembaliquantity_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
+							<td><input name="tx_editsjkembaliquantity_Tgl" type="text" class="form-control" id="tx_editsjkembaliquantity_Tgl" value="<?php echo $row_Tgl['S']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_Barang" type="text" class="form-control" id="tx_editsjkembaliquantity_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_Warehouse[]" type="text" class="form-control" id="tx_editsjkembaliquantity_Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
@@ -422,5 +428,6 @@ function minmax(value, min, max)
 <?php
   mysql_free_result($Menu);
   mysql_free_result($EditIsiSJKembali);
+  mysql_free_result($Tgl);
   mysql_free_result($View);
 ?>

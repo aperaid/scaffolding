@@ -4,4 +4,5 @@
 	<infoitem key="UD_NoSJ" value="name:Id;datatype:int" />
 	<infoitem key="UD_SelectNo" value="name:Id;datatype:int" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
+	<infoitem key="UD_TanggalMin" value="name:Tgl;datatype:string" />
 </info>

@@ -128,6 +128,14 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
+$Reference = $_GET['Reference'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalMin = "SELECT Tgl FROM pocustomer WHERE Reference = '$Reference'";
+$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
+$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
+$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
+
 mysql_select_db($database_Connection, $Connection);
 $query_NoSJ = "SELECT Id FROM sjkirim ORDER BY Id DESC";
 $NoSJ = mysql_query($query_NoSJ, $Connection) or die(mysql_error());
@@ -237,6 +245,14 @@ $totalRows_User = mysql_num_rows($User);
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MENU</li>
+        <?php
+					$TanggalS = $row_TanggalMin['Tgl'];
+					$Convert = str_replace('/', '-', $TanggalS);
+					$date = new DateTime($Convert);
+					$Today = new DateTime();
+					$diff=date_diff($Today,$date);
+					$Min = $diff->format("%a");
+		?>
         <?php do { ?>
         <li><a href="../../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
         <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
@@ -346,9 +362,10 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 
 <script>
+var Min = <?php echo $Min ?>;
   $('#tx_insertsjkirim_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
-	  startDate: '0',
+	  startDate: '-'+Min+'d',
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true
@@ -365,6 +382,7 @@ $(function() {
 </body>
 </html>
 <?php
+  mysql_free_result($TanggalMin);
   mysql_free_result($Menu);
   mysql_free_result($NoSJ);
   mysql_free_result($User);

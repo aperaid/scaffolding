@@ -5,4 +5,7 @@
 	<infoitem key="UD_SelectNo" value="name:Id;datatype:int" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
 	<infoitem key="UD_TanggalLimit" value="name:E;datatype:string" />
+	<infoitem key="UD_TanggalMin" value="name:S;datatype:string" />
+	<infoitem key="UD_TanggaMax" value="name:E;datatype:string" />
+	<infoitem key="UD_TanggalMax" value="name:E;datatype:string" />
 </info>

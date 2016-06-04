@@ -604,7 +604,7 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 
 <script>
-var Min = <?php echo $Min+1 ?>;
+var Min = <?php echo $Min ?>;
 var Max = <?php echo $Max+1 ?>;
   $('#tx_inserttransaksiclaimbarang2_Tgl').datepicker({
 	  format: "dd/mm/yyyy",

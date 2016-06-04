@@ -113,10 +113,16 @@ $totalRows_Menu = mysql_num_rows($Menu);
 $Reference = $_GET['Reference'];
 
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalLimit = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' ORDER BY Id DESC";
-$TanggalLimit = mysql_query($query_TanggalLimit, $Connection) or die(mysql_error());
-$row_TanggalLimit = mysql_fetch_assoc($TanggalLimit);
-$totalRows_TanggalLimit = mysql_num_rows($TanggalLimit);
+$query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Deletes = 'Sewa'";
+$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
+$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
+$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' ORDER BY Id DESC";
+$TanggalMax = mysql_query($query_TanggalMax, $Connection) or die(mysql_error());
+$row_TanggalMax = mysql_fetch_assoc($TanggalMax);
+$totalRows_TanggalMax = mysql_num_rows($TanggalMax);
 
 $colname_View = "-1";
 if (isset($_GET['SJKem'])) {
@@ -330,7 +336,14 @@ $totalRows_User = mysql_num_rows($User);
 					<tbody>
                     
                     <?php
-					$TanggalE = $row_TanggalLimit['E'];
+					$TanggalS = $row_TanggalMin['S'];
+					$Convert = str_replace('/', '-', $TanggalS);
+					$date = new DateTime($Convert);
+					$Today = new DateTime();
+					$diff=date_diff($Today,$date);
+					$Min = $diff->format("%a");
+					
+					$TanggalE = $row_TanggalMax['E'];
 					$Convert = str_replace('/', '-', $TanggalE);
 					$date = new DateTime($Convert);
 					$Today = new DateTime();
@@ -424,9 +437,11 @@ function minmax(value, min, max)
 </script>
 
 <script>
+var Min = <?php echo $Min ?>;
 var Max = <?php echo $Max+1 ?>;
   $('#tx_editsjkembali_Tgl2').datepicker({
 	  format: "dd/mm/yyyy",
+	  startDate: '-'+Min+'d',
 	  endDate: '+'+Max+'d',
 	  orientation: "bottom left",
 	  todayHighlight: true,
@@ -441,5 +456,6 @@ var Max = <?php echo $Max+1 ?>;
   mysql_free_result($EditIsiSJKembali);
   mysql_free_result($User);
   mysql_free_result($View);
-  mysql_free_result($TanggalLimit);
+  mysql_free_result($TanggalMin);
+  mysql_free_result($TanggalMax);
 ?>

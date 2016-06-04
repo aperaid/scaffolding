@@ -10,4 +10,6 @@
 	<infoitem key="UD_EditIsiSJKembali" value="name:Id;datatype:int,name:IsiSJKem;datatype:string,name:Warehouse;datatype:string,name:QTertanda;datatype:int,name:QTerima;datatype:int,name:Purchase;datatype:string,name:SJKem;datatype:string,name:Periode;datatype:int,name:IsiSJKir;datatype:string,name:IsiSJKir;datatype:string,name:QSisaKem;datatype:int,name:Tgl;datatype:string,name:Barang;datatype:string,name:Project;datatype:string" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
 	<infoitem key="UD_TanggalLimit" value="name:E;datatype:string" />
+	<infoitem key="UD_TanggalMin" value="name:S;datatype:string" />
+	<infoitem key="UD_TanggalMax" value="name:E;datatype:string" />
 </info>
