@@ -166,7 +166,7 @@ if (isset($_GET['Reference'])) {
   $colname_Periode = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE'", GetSQLValueString($colname_Periode, "text"));
+$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'", GetSQLValueString($colname_Periode, "text"));
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
@@ -204,7 +204,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Reference=%s AND Periode=%s AND Id=%s AND SJKem IS NULL AND Deletes != 'ClaimS' AND Deletes != 'ClaimE'",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Reference=%s AND Periode=%s AND Id=%s AND SJKem IS NULL AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'Jual'",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),

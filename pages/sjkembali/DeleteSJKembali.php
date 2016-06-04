@@ -87,7 +87,7 @@ if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
 
 for($i=0;$i<$totalRows_Quantity;$i++){
 if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Periode = %s AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE'",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Periode = %s AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'",
   					   GetSQLValueString($Quantity2[$i], "int"),
                        GetSQLValueString($IsiSJKir2[$i], "text"),
 					   GetSQLValueString($Periodess, "text"));

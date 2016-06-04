@@ -119,7 +119,7 @@ $row_TanggalMin = mysql_fetch_assoc($TanggalMin);
 $totalRows_TanggalMin = mysql_num_rows($TanggalMin);
 
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' ORDER BY Id DESC";
+$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual' ORDER BY Id DESC";
 $TanggalMax = mysql_query($query_TanggalMax, $Connection) or die(mysql_error());
 $row_TanggalMax = mysql_fetch_assoc($TanggalMax);
 $totalRows_TanggalMax = mysql_num_rows($TanggalMax);

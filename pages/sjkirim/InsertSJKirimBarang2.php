@@ -201,12 +201,10 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_Purchase'][$i], "text"),
 					   GetSQLValueString($_POST['tx_insertsjkirimbarang2_JS'][$i], "text"));
 					   
-	$deleteSQL = sprintf("DELETE FROM periode WHERE Deletes='Jual'");
 	$alterSQL = sprintf("ALTER TABLE sjkembali AUTO_INCREMENT = 1");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 
   $insertGoTo = "SJKirim.php";
