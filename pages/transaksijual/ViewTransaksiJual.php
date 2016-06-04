@@ -148,7 +148,15 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT sjkirim.Tgl, transaksi.Id, transaksi.Barang, customer.Company, project.Project, transaksi.Quantity, transaksi.Amount FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode = project.PCode LEFT JOIN customer ON project.CCode = customer.CCode WHERE transaksi.JS = 'Jual' AND isisjkirim.SJKir = %s GROUP BY transaksi.Purchase ORDER BY transaksi.Id ASC", GetSQLValueString($colname_SJKir, "text"));
+$query_IsiSJKir = sprintf("SELECT IsiSJKir FROM isisjkirim WHERE SJKir = %s", GetSQLValueString($colname_SJKir, "text"));
+$IsiSJKir = mysql_query($query_IsiSJKir, $Connection) or die(mysql_error());
+$row_IsiSJKir = mysql_fetch_assoc($IsiSJKir);
+$totalRows_IsiSJKir = mysql_num_rows($IsiSJKir);
+
+$IsiSJKir2 = $row_IsiSJKir['IsiSJKir'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_View = sprintf("SELECT periode.S, transaksi.Id, transaksi.Barang, customer.Company, project.Project, transaksi.Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode = project.PCode LEFT JOIN customer ON project.CCode = customer.CCode WHERE periode.Deletes = 'Jual' AND transaksi.JS = 'Jual' AND periode.IsiSJKir IN ($IsiSJKir2)");
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -297,7 +305,7 @@ $totalRows_User = mysql_num_rows($User);
 					<?php do { ?>
 					<tr>
                     	<td><?php echo $row_View['Barang']; ?></td>
-                        <td><?php echo $row_View['Tgl']; ?></td>
+                        <td><?php echo $row_View['S']; ?></td>
 						<td><?php echo $row_View['Company']; ?></td>
                         <td><?php echo $row_View['Project']; ?></td>
                         <td><?php echo $row_View['Quantity']; ?></td>

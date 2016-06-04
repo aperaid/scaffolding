@@ -3,4 +3,5 @@
 	<infoitem key="UD_View" value="name:Id;datatype:int,name:Purchase;datatype:string,name:JS;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:Amount;datatype:string,name:TglStart;datatype:string,name:Reference;datatype:string,name:Project;datatype:string,name:Customer;datatype:string" />
 	<infoitem key="UD_Menu" value="name:ID;datatype:int,name:nama;datatype:string,name:link;datatype:string" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
+	<infoitem key="UD_IsiSJKir" value="name:IsiSJKir;datatype:string" />
 </info>

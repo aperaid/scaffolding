@@ -136,7 +136,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	
 	mysql_select_db($database_Connection, $Connection);
-$query_TransaksiJual = "SELECT isisjkirim.SJKir, sjkirim.Tgl, pocustomer.Reference, project.Project, customer.Company, project.Project, customer.Customer FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE transaksi.JS = 'Jual' AND isisjkirim.QSisaKemInsert = 0 AND isisjkirim.QSisaKem = 0 GROUP BY isisjkirim.SJKir";
+$query_TransaksiJual = "SELECT periode.S, isisjkirim.SJKir, pocustomer.Reference, project.Project, customer.Company, project.Project, customer.Customer FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir = isisjkirim.IsiSJKir LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Deletes = 'Jual' GROUP BY sjkirim.SJKir";
 $TransaksiJual = mysql_query($query_TransaksiJual, $Connection) or die(mysql_error());
 $row_TransaksiJual = mysql_fetch_assoc($TransaksiJual);
 $totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
@@ -290,7 +290,7 @@ $totalRows_User = mysql_num_rows($User);
 					<?php do { ?>
 					<tr>
 						<td><?php echo $row_TransaksiJual['Reference']; ?></td>
-                        <td><?php echo $row_TransaksiJual['Tgl']; ?></td>
+                        <td><?php echo $row_TransaksiJual['S']; ?></td>
 						<td><?php echo $row_TransaksiJual['Project']; ?></td>
 						<td><?php echo $row_TransaksiJual['Customer']; ?></td>
 						<td><a href="ViewTransaksiJual.php?Reference=<?php echo $row_TransaksiJual['Reference'] ?>&SJKir=<?php echo $row_TransaksiJual['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
