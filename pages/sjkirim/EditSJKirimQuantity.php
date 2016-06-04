@@ -132,7 +132,7 @@ $row_Tgl = mysql_fetch_assoc($Tgl);
 $totalRows_Tgl = mysql_num_rows($Tgl);
 
 mysql_select_db($database_Connection, $Connection);
-$query_TglValue = sprintf("SELECT periode.S FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE isisjkirim.SJKir = %s AND Periode = '1'", GetSQLValueString($colname_EditIsiSJKirim, "text"));
+$query_TglValue = sprintf("SELECT periode.S, periode.E FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE isisjkirim.SJKir = %s AND Periode = '1'", GetSQLValueString($colname_EditIsiSJKirim, "text"));
 $TglValue = mysql_query($query_TglValue, $Connection) or die(mysql_error());
 $row_TglValue = mysql_fetch_assoc($TglValue);
 $totalRows_TglValue = mysql_num_rows($TglValue);
@@ -407,9 +407,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					<div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                     </div>
-					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_TglValue['S']; ?> " required>
+					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_TglValue['S']; ?>" required>
 					</div>
-					<input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E">
+					<input name="hd_editsjkirimquantity_E" type="text" id="hd_editsjkirimquantity_E" value="<?php echo $row_TglValue['E']; ?>">
 				<br>
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
 				<button type="submit" name="bt_editsjkirimquantity_submit" id="bt_editsjkirimquantity_submit" class="btn btn-success pull-right">Update</button>
