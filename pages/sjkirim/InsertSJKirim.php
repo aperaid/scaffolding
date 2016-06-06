@@ -246,12 +246,7 @@ $totalRows_User = mysql_num_rows($User);
       <ul class="sidebar-menu">
         <li class="header">MENU</li>
         <?php
-					$TanggalS = $row_TanggalMin['Tgl'];
-					$Convert = str_replace('/', '-', $TanggalS);
-					$date = new DateTime($Convert);
-					$Today = new DateTime();
-					$diff=date_diff($Today,$date);
-					$Min = $diff->format("%a");
+					$Min = $row_TanggalMin['Tgl'];
 		?>
         <?php do { ?>
         <li><a href="../../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
@@ -362,10 +357,10 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 
 <script>
-var Min = <?php echo $Min ?>;
+var Min = <?php echo json_encode($Min) ?>;
   $('#tx_insertsjkirim_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
-	  startDate: '-'+Min+'d',
+	  startDate: Min,
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true

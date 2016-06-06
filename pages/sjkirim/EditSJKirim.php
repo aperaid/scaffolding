@@ -313,12 +313,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					<tbody>
                     <?php $Tgl = $row_EditIsiSJKirim['Tgl']; ?>
                     <?php
-					$TanggalS = $row_TanggalMin['Tgl'];
-					$Convert = str_replace('/', '-', $TanggalS);
-					$date = new DateTime($Convert);
-					$Today = new DateTime();
-					$diff=date_diff($Today,$date);
-					$Min = $diff->format("%a");
+					$Min = $row_TanggalMin['Tgl'];
 				  ?>
 						<?php do { ?>
 						<tr>
@@ -405,10 +400,10 @@ function minmax(value, min, max)
 </script>
 
 <script>
-var Min = <?php echo $Min ?>;
+var Min = <?php echo json_encode($Min) ?>;
   $('#tx_editsjkirim_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
-	  startDate: '-'+Min+'d',
+	  startDate: Min,
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true

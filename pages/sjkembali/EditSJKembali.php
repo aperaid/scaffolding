@@ -366,19 +366,9 @@ $totalRows_User = mysql_num_rows($User);
 					<tbody>
                     
                     <?php
-					$TanggalS = $row_TanggalMin['S'];
-					$Convert = str_replace('/', '-', $TanggalS);
-					$date = new DateTime($Convert);
-					$Today = new DateTime();
-					$diff=date_diff($Today,$date);
-					$Min = $diff->format("%a");
+					$Min = $row_TanggalMin['S'];
 					
-					$TanggalE = $row_TanggalMax['E'];
-					$Convert = str_replace('/', '-', $TanggalE);
-					$date = new DateTime($Convert);
-					$Today = new DateTime();
-					$diff=date_diff($Today,$date);
-					$Max = $diff->format("%a");
+					$Max = $row_TanggalMax['E'];
 				  ?>
                     
 						<?php do { ?>
@@ -467,12 +457,12 @@ function minmax(value, min, max)
 </script>
 
 <script>
-var Min = <?php echo $Min ?>;
-var Max = <?php echo $Max+1 ?>;
+var Min = <?php echo json_encode($Min) ?>;
+var Max = <?php echo json_encode($Max) ?>;
   $('#tx_editsjkembali_Tgl2').datepicker({
 	  format: "dd/mm/yyyy",
-	  startDate: '-'+Min+'d',
-	  endDate: '+'+Max+'d',
+	  startDate: Min,
+	  endDate: Max,
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true

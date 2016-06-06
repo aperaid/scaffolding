@@ -454,23 +454,8 @@ $totalRows_User = mysql_num_rows($User);
     
     <?php
 	
-	$TanggalS = $row_InsertTransaksiClaim['S'];
-	$Convert = str_replace('/', '-', $TanggalS);
-	$date = new DateTime($Convert);
-	$Today = new DateTime();
-	$diff=date_diff($Today,$date);
-	$Min = $diff->format("%a");
-	
-	?>
-    
-    <?php
-	
-	$TanggalE = $row_InsertTransaksiClaim['E'];
-	$Convert = str_replace('/', '-', $TanggalE);
-	$date = new DateTime($Convert);
-	$Today = new DateTime();
-	$diff=date_diff($Today,$date);
-	$Max = $diff->format("%a");
+	$Min = $row_InsertTransaksiClaim['S'];
+	$Max = $row_InsertTransaksiClaim['E'];
 	
 	?>
     
@@ -598,12 +583,12 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 
 <script>
-var Min = <?php echo $Min ?>;
-var Max = <?php echo $Max+1 ?>;
+var Min = <?php echo json_encode($Min) ?>;
+var Max = <?php echo json_encode($Max) ?>;
   $('#tx_inserttransaksiclaimbarang2_Tgl').datepicker({
 	  format: "dd/mm/yyyy",
-	  startDate: '-'+Min+'d',
-	  endDate: '+'+Max+'d',
+	  startDate: Min,
+	  endDate: Max,
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true
