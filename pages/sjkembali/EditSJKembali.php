@@ -112,6 +112,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 
 $Reference = $_GET['Reference'];
 
+// Tanggal Start & End
 mysql_select_db($database_Connection, $Connection);
 $query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Deletes = 'Sewa'";
 $TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
@@ -123,11 +124,13 @@ $query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND De
 $TanggalMax = mysql_query($query_TanggalMax, $Connection) or die(mysql_error());
 $row_TanggalMax = mysql_fetch_assoc($TanggalMax);
 $totalRows_TanggalMax = mysql_num_rows($TanggalMax);
+// Tanggal Start & End
 
 $colname_View = "-1";
 if (isset($_GET['SJKem'])) {
   $colname_View = $_GET['SJKem'];
 }
+
 mysql_select_db($database_Connection, $Connection);
 $query_View = sprintf("SELECT SJKem, Tgl FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
@@ -138,20 +141,46 @@ $colname_EditIsiSJKembali = "-1";
 if (isset($_GET['SJKem'])) {
   $colname_EditIsiSJKembali = $_GET['SJKem'];
 }
+// Table MYSQL Fetch
 mysql_select_db($database_Connection, $Connection);
 $query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.IsiSJKir, isisjkirim.QKirim, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
+// Table MYSQL Fetch
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+// Safety Net
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
+  $updateSQL = sprintf("SELECT edit_sjkembali(%s,%s,%s, %s)",
+					   GetSQLValueString($_POST['hd_editsjkembali_IsiSJKem'][$i], "text"),
+                       GetSQLValueString($_POST['tx_editsjkembali_QTertanda'][$i], "int"),
+					   GetSQLValueString($_POST['tx_editsjkembali_Warehouse'][$i], "text"),
+					   GetSQLValueString($_POST['tx_editsjkembali_Tgl2'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+  }
+
+  $updateGoTo = "ViewSJKembali.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+}
+// Safety Net
+
+/* Rumus Awal
 $QTertanda = $row_EditIsiSJKembali['QTertanda'];
 
 $SJKem = $_GET['SJKem'];
+
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE sjkembali SET Tgl=%s WHERE SJKem = '$SJKem'",
@@ -189,6 +218,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   header(sprintf("Location: %s", $updateGoTo));
   }
 }
+*/
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -353,7 +383,7 @@ $totalRows_User = mysql_num_rows($User);
                     
 						<?php do { ?>
                         <tr>
-							<input name="hd_editsjkembali_Id[]" type="hidden" id="hd_editsjkembali_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
+							<input name="hd_editsjkembali_IsiSJKem[]" type="hidden" id="hd_editsjkembali_IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>">
                             <input name="hd_editsjkembali_IsiSJKir[]" type="hidden" id="hd_editsjkembali_IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
 							<td><input name="tx_editsjkembali_Tgl" type="text" class="form-control" id="tx_editsjkembali_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
 							<td><input name="tx_editsjkembali_Barang" type="text" class="form-control" id="tx_editsjkembali_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
