@@ -145,12 +145,6 @@ $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
 
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalLimit = sprintf("SELECT S FROM periode WHERE Id = %s AND Deletes = 'Sewa'", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
-$TanggalLimit = mysql_query($query_TanggalLimit, $Connection) or die(mysql_error());
-$row_TanggalLimit = mysql_fetch_assoc($TanggalLimit);
-$totalRows_TanggalLimit = mysql_num_rows($TanggalLimit);
-
-mysql_select_db($database_Connection, $Connection);
 $query_LastClaim = "SELECT Id FROM transaksiclaim ORDER BY Id DESC";
 $LastClaim = mysql_query($query_LastClaim, $Connection) or die(mysql_error());
 $row_LastClaim = mysql_fetch_assoc($LastClaim);
@@ -460,7 +454,7 @@ $totalRows_User = mysql_num_rows($User);
     
     <?php
 	
-	$TanggalS = $row_TanggalLimit['S'];
+	$TanggalS = $row_InsertTransaksiClaim['S'];
 	$Convert = str_replace('/', '-', $TanggalS);
 	$date = new DateTime($Convert);
 	$Today = new DateTime();

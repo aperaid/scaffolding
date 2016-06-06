@@ -125,6 +125,13 @@ $Edit = mysql_query($query_Edit, $Connection) or die(mysql_error());
 $row_Edit = mysql_fetch_assoc($Edit);
 $totalRows_Edit = mysql_num_rows($Edit);
 
+$query = mysql_query($query_Edit, $Connection) or die(mysql_error());
+$IsiSJKir = array();
+while($row = mysql_fetch_assoc($query)){
+	$IsiSJKir[] = $row['IsiSJKir'];
+}
+$IsiSJKir2 = join(',', $IsiSJKir);
+
 $QClaim = $row_Edit['QClaim'];
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
@@ -149,10 +156,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+$QClaim-%s WHERE Periode=%s AND Deletes !='KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+$QClaim-%s WHERE Periode=%s AND IsiSJKir IN ('$IsiSJKir2') AND Deletes !='KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'",
                        GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
-					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"),
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"));
+					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
