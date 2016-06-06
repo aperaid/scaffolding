@@ -307,14 +307,11 @@ $totalRows_User = mysql_num_rows($User);
       <div class="row">
         <div class="col-xs-12">
 		<form action="<?php echo $editFormAction; ?>" id="fm_editsjkembaliquantity_form1" name="fm_editsjkembaliquantity_form1" method="POST">
-
           <div class="box box-primary">
             <div class="box-body no-padding">
 				  <table id="tb_editsjkembaliquantity_example1" name="tb_editsjkembaliquantity_example1" class="table table-bordered">
 					<thead>
 					<tr>
-					  <th>#</th>
-					  <th>#Pur</th>
 					  <th>Tanggal Kirim</th>
 					  <th>Barang</th>
 					  <th>Warehouse</th>
@@ -331,8 +328,6 @@ $totalRows_User = mysql_num_rows($User);
                             <input name="hd_editsjkembaliquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkembaliquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
                             <input name="hd_editsjkembaliquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkembaliquantity_Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>">
                             <input name="tx_editsjkembaliquantity_QTerima2[]" type="hidden" class="form-control" id="tx_editsjkembaliquantity_QTerima2" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>">
-							<td><?php echo $row_EditIsiSJKembali['IsiSJKem']; ?></td>
-							<td><?php echo $row_EditIsiSJKembali['Purchase']; ?></td>
 							<td><input name="tx_editsjkembaliquantity_Tgl" type="text" class="form-control" id="tx_editsjkembaliquantity_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_Barang" type="text" class="form-control" id="tx_editsjkembaliquantity_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkembaliquantity_Warehouse[]" type="text" class="form-control" id="tx_editsjkembaliquantity_Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
@@ -347,6 +342,15 @@ $totalRows_User = mysql_num_rows($User);
 			</div>
             <!-- /.box-body -->
             <div class="box-footer">
+				<label>Tanggal Selesai Penghitungan</label>
+				<div class="input-group">
+				<div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+                </div>
+				<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_TglValue['S']; ?>" required>
+				</div>
+				<input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E" value="<?php echo $row_TglValue['E']; ?>">
+				<br>
 				<a href="ViewSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
 				<button type="submit" name="bt_editsjkembaliquantity_submit" id="bt_editsjkembaliquantity_submit" class="btn btn-success pull-right">Update</button>
 			</div>

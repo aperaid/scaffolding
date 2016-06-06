@@ -125,7 +125,7 @@ if (isset($_GET['SJKem'])) {
   $colname_View = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT SJKem FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT SJKem, Tgl FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -266,8 +266,8 @@ $totalRows_User = mysql_num_rows($User);
 		<div class="row">
         <div class="col-xs-12">
           <h2 class="page-header">
-            <i class="fa fa-globe"></i> SJ Kembali | <?php echo $row_ViewIsiSJKembali['SJKem']; ?>
-			<small class="pull-right">Date: <?php echo $row_ViewIsiSJKembali['Tgl']; ?></small>
+            <i class="fa fa-globe"></i> SJ Kembali | <?php echo $row_View['SJKem']; ?>
+			<small class="pull-right">Date: <?php echo $row_View['Tgl']; ?></small>
 		  </h2>
         </div>
         <!-- /.col -->

@@ -131,11 +131,13 @@ $Tgl = mysql_query($query_Tgl, $Connection) or die(mysql_error());
 $row_Tgl = mysql_fetch_assoc($Tgl);
 $totalRows_Tgl = mysql_num_rows($Tgl);
 
+//Pengambilan Tanggal Start & End
 mysql_select_db($database_Connection, $Connection);
 $query_TglValue = sprintf("SELECT periode.S, periode.E FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE isisjkirim.SJKir = %s AND Periode = '1'", GetSQLValueString($colname_EditIsiSJKirim, "text"));
 $TglValue = mysql_query($query_TglValue, $Connection) or die(mysql_error());
 $row_TglValue = mysql_fetch_assoc($TglValue);
 $totalRows_TglValue = mysql_num_rows($TglValue);
+//Pengambilan Tanggal Start & End
 
 mysql_select_db($database_Connection, $Connection);
 $query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
