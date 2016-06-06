@@ -125,7 +125,7 @@ if (isset($_GET['SJKem'])) {
   $colname_EditIsiSJKembali = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, periode.S, periode.E, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali LEFT JOIN periode ON isisjkembali.IsiSJKir=periode.IsiSJKir INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE periode.SJKem = %s GROUP BY periode.Purchase ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
@@ -207,6 +207,8 @@ $totalRows_User = mysql_num_rows($User);
   <link rel="stylesheet" href="../../library/ionicons-2.0.1/css/ionicons.min.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../../library/datatables/dataTables.bootstrap.css">
+  <!-- datepicker -->
+  <link rel="stylesheet" href="../../library/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -320,7 +322,11 @@ $totalRows_User = mysql_num_rows($User);
                 	</tr>
 					</thead>
 					<tbody>
-					  <?php $x=1; ?>
+					  <?php 
+					  $Min = $row_EditIsiSJKembali['S'];
+					  $Tgl = $row_EditIsiSJKembali['E'];
+					  $x=1; 
+					  ?>
 					  <?php do { ?>
 						<tr>
 							<input name="hd_editsjkembaliquantity_Id[]" type="hidden" id="hd_editsjkembaliquantity_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
@@ -347,9 +353,8 @@ $totalRows_User = mysql_num_rows($User);
 				<div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
                 </div>
-				<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_TglValue['S']; ?>" required>
+				<input name="tx_editsjkembaliquantity_E" type="text" class="form-control" id="tx_editsjkembaliquantity_E" autocomplete="off" value="<?php echo $Tgl; ?>" required>
 				</div>
-				<input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E" value="<?php echo $row_TglValue['E']; ?>">
 				<br>
 				<a href="ViewSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
 				<button type="submit" name="bt_editsjkembaliquantity_submit" id="bt_editsjkembaliquantity_submit" class="btn btn-success pull-right">Update</button>
@@ -396,6 +401,8 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
+<!-- datepicker -->
+<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- Custome Script -->
 <script language="javascript">
   function sisa() {
@@ -419,6 +426,17 @@ function minmax(value, min, max)
         return parseInt(max); 
     else return value;
 }
+</script>
+
+<script>
+var Min = <?php echo json_encode($Min); ?>;
+  $('#tx_editsjkembaliquantity_E').datepicker({
+	  format: "dd/mm/yyyy",
+	  startDate: Min,
+	  orientation: "bottom left",
+	  todayHighlight: true,
+	  autoclose: true
+  }); 
 </script>
 </body>
 </html>
