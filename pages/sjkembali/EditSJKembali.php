@@ -389,7 +389,7 @@ $totalRows_User = mysql_num_rows($User);
 			</div>
             <!-- /.box-body -->
             <div class="box-footer">
-            <label>Return Date</label>
+            <label>Tanggal SJ Kembali</label>
 					<div class="input-group">
 					<div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
