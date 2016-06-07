@@ -36,7 +36,8 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 
 // Below old code
 mysql_select_db($database_Connection, $Connection);
-$query_Periode = sprintf("SELECT invoice.Periode FROM invoice LEFT JOIN sjkembali on invoice.Reference = sjkembali.Reference WHERE sjkembali.SJKem = %s AND invoice.Transport IS NULL ORDER BY invoice.Id DESC", GetSQLValueString($_GET['SJKem'], "text"));
+// Ambil periode dari sjkem paling terakhir
+$query_Periode = sprintf("SELECT MAX(invoice.Periode) AS Periode FROM invoice LEFT JOIN sjkembali on invoice.Reference = sjkembali.Reference WHERE sjkembali.SJKem = %s", GetSQLValueString($_GET['SJKem'], "text"));
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
@@ -59,12 +60,13 @@ $IsiSJKir3 = join(',',$IsiSJKir2);
 
 mysql_select_db($database_Connection, $Connection);
 $query_Quantity = sprintf("SELECT Quantity FROM periode WHERE SJKem = %s AND Deletes = 'KembaliS' AND IsiSJKir IN ($IsiSJKir3)", GetSQLValueString($_GET['SJKem'], "text"));
+
 $Quantity = mysql_query($query_Quantity, $Connection) or die(mysql_error());
 $row_Quantity = mysql_fetch_assoc($Quantity);
 $totalRows_Quantity = mysql_num_rows($Quantity);
 
-$query = mysql_query($query_Quantity, $Connection) or die(mysql_error());
 $Quantity2 = array();
+$query = mysql_query($query_Quantity, $Connection) or die(mysql_error());
 while($row = mysql_fetch_assoc($query)){
 	$Quantity2[] = $row['Quantity'];
 }
@@ -91,7 +93,7 @@ if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
 
 for($i=0;$i<$totalRows_Quantity;$i++){
 if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Periode = %s AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Periode = %s AND (Deletes = 'sewa' OR Deletes = 'extend')",
   					   GetSQLValueString($Quantity2[$i], "int"),
                        GetSQLValueString($IsiSJKir2[$i], "text"),
 					   GetSQLValueString($Periodess, "text"));
