@@ -140,7 +140,7 @@ while($row = mysql_fetch_assoc($query)){
 $IsiSJKir2 = join(',',$IsiSJKir); 
 
 mysql_select_db($database_Connection, $Connection);
-$query_Tanggal = sprintf("SELECT S, E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND periode = $periode AND (Deletes='Kembalis' OR Deletes='Sewa')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_Tanggal = sprintf("SELECT S, E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND periode = $periode AND (Deletes='Kembalis' OR Deletes='Sewa' OR Deletes='Extend')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $Tanggal = mysql_query($query_Tanggal, $Connection) or die(mysql_error());
 $row_Tanggal = mysql_fetch_assoc($Tanggal);
 $totalRows_Tanggal = mysql_num_rows($Tanggal);

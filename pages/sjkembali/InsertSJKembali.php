@@ -137,13 +137,21 @@ $totalRows_NoSJ = mysql_num_rows($NoSJ);
 $Reference = $_GET['Reference'];
 
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Deletes = 'Sewa'";
+$query_Periode = "SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = '$Reference' AND (Deletes = 'Sewa' OR Deletes = 'Extend')";
+$Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
+$row_Periode = mysql_fetch_assoc($Periode);
+$totalRows_Periode = mysql_num_rows($Periode);
+
+$Periode2 = $row_Periode['Periode'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND Deletes = 'Sewa' OR Deletes = 'Extend' ORDER BY Id ASC";
 $TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
 $row_TanggalMin = mysql_fetch_assoc($TanggalMin);
 $totalRows_TanggalMin = mysql_num_rows($TanggalMin);
 
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual' ORDER BY Id DESC";
+$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND Deletes = 'Sewa' OR Deletes = 'Extend' ORDER BY Id DESC";
 $TanggalMax = mysql_query($query_TanggalMax, $Connection) or die(mysql_error());
 $row_TanggalMax = mysql_fetch_assoc($TanggalMax);
 $totalRows_TanggalMax = mysql_num_rows($TanggalMax);
