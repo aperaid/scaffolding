@@ -125,10 +125,25 @@ if (isset($_GET['SJKem'])) {
   $colname_EditIsiSJKembali = $_GET['SJKem'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, periode.S, periode.E, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali LEFT JOIN periode ON isisjkembali.IsiSJKir=periode.IsiSJKir INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE periode.SJKem = %s GROUP BY periode.Purchase ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
+
+$periode = $row_EditIsiSJKembali['Periode'];
+
+$query = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
+$IsiSJKir = array();
+while($row = mysql_fetch_assoc($query)){
+	$IsiSJKir[] = $row['IsiSJKir'];
+}
+$IsiSJKir2 = join(',',$IsiSJKir); 
+
+mysql_select_db($database_Connection, $Connection);
+$query_Tanggal = sprintf("SELECT S, E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND periode = $periode AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$Tanggal = mysql_query($query_Tanggal, $Connection) or die(mysql_error());
+$row_Tanggal = mysql_fetch_assoc($Tanggal);
+$totalRows_Tanggal = mysql_num_rows($Tanggal);
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
@@ -164,11 +179,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE isisjkembali SET QTerima=%s WHERE Id=%s",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkembaliquantity_Id'][$i], "int"));
-  $deleteSQL = sprintf("DELETE FROM periode WHERE Quantity=0");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
 
   $updateGoTo = "ViewSJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -323,8 +336,8 @@ $totalRows_User = mysql_num_rows($User);
 					</thead>
 					<tbody>
 					  <?php 
-					  $Min = $row_EditIsiSJKembali['S'];
-					  $Tgl = $row_EditIsiSJKembali['E'];
+					  $Min = $row_Tanggal['S'];
+					  $Tgl = $row_Tanggal['E'];
 					  $x=1; 
 					  ?>
 					  <?php do { ?>
