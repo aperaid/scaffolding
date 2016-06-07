@@ -130,8 +130,6 @@ $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mys
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
 
-$periode = $row_EditIsiSJKembali['Periode'];
-
 $query = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $IsiSJKir = array();
 while($row = mysql_fetch_assoc($query)){
@@ -140,7 +138,7 @@ while($row = mysql_fetch_assoc($query)){
 $IsiSJKir2 = join(',',$IsiSJKir); 
 
 mysql_select_db($database_Connection, $Connection);
-$query_Tanggal = sprintf("SELECT S, E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND periode = $periode AND (Deletes='Kembalis' OR Deletes='Sewa' OR Deletes='Extend')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_Tanggal = sprintf("SELECT S, E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Kembalis' OR Deletes='KembaliE')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $Tanggal = mysql_query($query_Tanggal, $Connection) or die(mysql_error());
 $row_Tanggal = mysql_fetch_assoc($Tanggal);
 $totalRows_Tanggal = mysql_num_rows($Tanggal);
@@ -172,6 +170,14 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Kembalis' OR Deletes='KembaliE')",
+                       GetSQLValueString($_POST['tx_editsjkembaliquantity_E'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
 
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){

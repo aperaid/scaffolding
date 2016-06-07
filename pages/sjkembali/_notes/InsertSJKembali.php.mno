@@ -8,4 +8,5 @@
 	<infoitem key="UD_TanggalMin" value="name:S;datatype:string" />
 	<infoitem key="UD_TanggaMax" value="name:E;datatype:string" />
 	<infoitem key="UD_TanggalMax" value="name:E;datatype:string" />
+	<infoitem key="UD_Periode" value="name:Periode;datatype:int" />
 </info>
