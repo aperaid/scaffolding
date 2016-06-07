@@ -31,6 +31,10 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
+
+
+
+// Below old code
 mysql_select_db($database_Connection, $Connection);
 $query_Periode = sprintf("SELECT invoice.Periode FROM invoice LEFT JOIN sjkembali on invoice.Reference = sjkembali.Reference WHERE sjkembali.SJKem = %s AND invoice.Transport IS NULL ORDER BY invoice.Id DESC", GetSQLValueString($_GET['SJKem'], "text"));
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
