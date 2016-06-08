@@ -143,15 +143,20 @@ if (isset($_GET['Reference'])) {
   $colname_GetPeriode = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_GetPeriode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'", GetSQLValueString($colname_GetPeriode, "text"));
-$GetPeriode = mysql_query($query_GetPeriode, $Connection) or die(mysql_error());
-$row_GetPeriode = mysql_fetch_assoc($GetPeriode);
-$totalRows_GetPeriode = mysql_num_rows($GetPeriode);
+$query_GetId = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id DESC", GetSQLValueString($colname_GetPeriode, "text"));
+$GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
+$row_GetId = mysql_fetch_assoc($GetId);
+$totalRows_GetId = mysql_num_rows($GetId);
 
-$Periode = $row_GetPeriode['Periode'];
+$query = mysql_query($query_GetId, $Connection) or die(mysql_error());
+$Id2 = array();
+while($row = mysql_fetch_assoc($query)){
+	$Id2[] = $row['Id'];
+}
+$Id3 = join(',',$Id2); 
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.IsiSJKir IN ($IsiSJKir) AND transaksi.Reference=%s AND periode.Periode IN ($Periode) GROUP BY isisjkirim.IsiSJKir ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_GetPeriode, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.IsiSJKir IN ($IsiSJKir) AND transaksi.Reference=%s AND periode.Id IN ($Id3) GROUP BY isisjkirim.IsiSJKir ORDER BY periode.Id ASC", GetSQLValueString($colname_GetPeriode, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
@@ -474,7 +479,7 @@ $totalRows_User = mysql_num_rows($User);
 	        <input name="hd_insertsjkembalibarang2_E[]" type="hidden" id="hd_insertsjkembalibarang2_E" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
             <input name="hd_insertsjkembalibarang2_LastTgl" type="hidden" id="hd_insertsjkembalibarang2_LastTgl" value="<?php echo $E2; ?>">
 	        <input name="hd_insertsjkembalibarang2_IsiSJKem[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>">
-	    <td><input name="tx_insertsjkembalibarang2_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Tgl" value="<?php echo $row_InsertSJKembali['Tgl']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkembalibarang2_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Tgl" value="<?php echo $row_InsertSJKembali['S']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Warehouse" autocomplete="off"></td>
 	    <td><input name="tx_insertsjkembalibarang2_QSisaKem[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
