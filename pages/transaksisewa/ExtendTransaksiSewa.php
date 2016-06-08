@@ -47,6 +47,11 @@ if (isset($_GET['Periode'])) {
   $colname_Extend2 = $_GET['Periode'];
 }
 
+$colname_Extend3 = "-1";
+if (isset($_GET['SJKir'])) {
+  $colname_Extend3 = $_GET['SJKir'];
+}
+
 $colname_Invoice = "-1";
 if (isset($_GET['Reference'])) {
   $colname_Invoice = $_GET['Reference'];
@@ -64,7 +69,7 @@ $row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
 $totalRows_LastInvoiceId = mysql_num_rows($LastInvoiceId);
 
 mysql_select_db($database_Connection, $Connection);
-$query_Extend = sprintf("SELECT periode.* FROM periode WHERE periode.Reference=%s AND periode.Periode=%s AND SJKem IS NULL AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'Jual'", GetSQLValueString($colname_Extend, "text"),GetSQLValueString($colname_Extend2, "text"));
+$query_Extend = sprintf("SELECT periode.* FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE periode.Reference=%s AND periode.Periode=%s AND isisjkirim.SJKir=%s AND periode.SJKem IS NULL AND (Deletes = 'Sewa' OR Deletes = 'Extend')", GetSQLValueString($colname_Extend, "text"),GetSQLValueString($colname_Extend2, "text"), GetSQLValueString($colname_Extend3, "text"));
 $Extend = mysql_query($query_Extend, $Connection) or die(mysql_error());
 $row_Extend = mysql_fetch_assoc($Extend);
 $totalRows_Extend = mysql_num_rows($Extend);

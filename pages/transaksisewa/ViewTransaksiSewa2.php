@@ -160,7 +160,7 @@ if (isset($_GET['Deletes'])) {
   $colname_View4 = $_GET['Deletes'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, transaksi.Barang, periode.S, periode.E, customer.Company, project.Project, periode.Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s AND isisjkirim.SJKir=%s AND periode.Deletes=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"),GetSQLValueString($colname_View3, "text"),GetSQLValueString($colname_View4, "text"));
+$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.IsiSJKir, transaksi.Barang, periode.S, periode.E, periode.Deletes, customer.Company, project.Project, periode.Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s AND isisjkirim.SJKir=%s AND periode.Deletes=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"),GetSQLValueString($colname_View3, "text"),GetSQLValueString($colname_View4, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -170,6 +170,19 @@ $query_View2 = sprintf("SELECT Reference FROM transaksi WHERE Reference = %s", G
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
 $totalRows_View2 = mysql_num_rows($View2);
+
+$query = mysql_query($query_View, $Connection) or die(mysql_error());
+$IsiSJKir = array();
+while($row = mysql_fetch_assoc($query)){
+	$IsiSJKir[] = $row['IsiSJKir'];
+}
+$IsiSJKir2 = join(',',$IsiSJKir); 
+
+mysql_select_db($database_Connection, $Connection);
+$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND IsiSJKir IN ($IsiSJKir2)", GetSQLValueString($colname_View, "text"));
+$Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
+$row_Periode = mysql_fetch_assoc($Periode);
+$totalRows_Periode = mysql_num_rows($Periode);
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -314,6 +327,10 @@ $totalRows_User = mysql_num_rows($User);
                 </tr>
                 </thead>
 				<tbody>
+                <?php 
+					  $Deletes = $row_View['Deletes']; 
+					  $Periode = $row_Periode['Periode']
+				?>
 					<?php do { ?>
 					<tr>
 						<td><?php echo $row_View['Periode']; ?></td>
@@ -344,6 +361,7 @@ $totalRows_User = mysql_num_rows($User);
             <!-- /.box-body -->
             <div class="box-footer">
                   <a href="ViewTransaksiSewa.php?Reference=<?php echo $row_View2['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Back</button></a>
+                  <a href="ExtendTransaksiSewa.php?Reference=<?php echo $_GET['Reference']; ?>&Periode=<?php echo $_GET['Periode']; ?>&SJKir=<?php echo $_GET['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" <?php if ($Deletes != 'Sewa' && $Deletes != 'Extend' || $Periode != $_GET['Periode']){ ?> class="btn btn-default pull-right" disabled <?php   } else { ?> class="btn btn-primary pull-right" <?php } ?>>Extend</button>
 			</div>
           </div>
           <!-- /.box -->
