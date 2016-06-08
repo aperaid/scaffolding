@@ -299,37 +299,49 @@ $totalRows_User = mysql_num_rows($User);
                       <th><a href="javascript:void(0);" id="hf_insertpocustomerbarang_addCF" class=" glyphicon glyphicon-plus"></a></th>
                       <th>Barang</th>
                       <th>J/S</th>
-                      <th>Price</th>
                       <th>Quantity</th>
+                      <th>Price</th>
                     </thead>
                   </table>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_example1" name="tb_insertpocustomerbarang_example1">
-                    <thead>
-                      <th>PPN</th>
-                      <th>Transport</th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                        <input name="tx_insertpocustomerbarang_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
-                        <input name="tx_insertpocustomerbarang_PPN" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1"></td>
-                        <td><input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" value="0" autocomplete="off"></td>
-                      </tr>
-    				</tbody>
-                </table>
-                  <a href="InsertPOCustomer.php?Reference=<?php echo $References; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
-                  <button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
-                </div>
-              <input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $References; ?>">
-              <input type="hidden" name="MM_insert" value="form1">
-              </form>
-            </div>
+					<!-- row ppn & transport -->
+				  <div class="form-group">
+				    <div class="col-sm-1"></div>
+					<!-- ppn checkbox -->
+					<div class="checkbox col-sm-3">
+						<label>
+							<input name="tx_insertpocustomerbarang_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
+							<input name="tx_insertpocustomerbarang_PPN" class="minimal" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1">
+							PPN
+						</label>
+                    </div>
+					<!-- ppn checkbox END -->
+					<div class="col-sm-1"></div>
+					<!-- transport text -->
+					<div class="input-group col-sm-5">
+						<span class="input-group-addon">Transport</span>
+						<input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" value="0" autocomplete="off" placeholder="Transport Fee">
+					</div>
+					<div class="col-sm-1"></div>
+					<!-- transport text END -->
+				  </div>
+				  <!-- row ppn & transport END -->
+			  <div class="form-group">
+				<a href="InsertPOCustomer.php?Reference=<?php echo $References; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+				<button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
+			  </div>
+				<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $References; ?>">
+				<input type="hidden" name="MM_insert" value="form1">
+              </div>
+			  </form>
+			
             <!-- /.box -->
         </div>
         <!-- /.col -->
+      </div>
+      <!-- /.row -->
       </div>
       <!-- /.row -->
     </section>
@@ -382,7 +394,7 @@ $totalRows_User = mysql_num_rows($User);
 		if(x < max_fields){ //max input box allowed
             x++; //text box count increment
 			z++;
-		$("#tb_insertpocustomerbarang_customFields").append('<tr><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td><td class="hidden"><input type="hidden" name="hd_insertpocustomerbarang_Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="tx_inputpocustomerbarang_Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control" required></td><td><select name="db_insertpocustomerbarang_JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="tx_insertpocustomerbarang_Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control" required></td><td><input type="text" name="tx_insertpocustomerbarang_Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control" required></td></tr>');
+		$("#tb_insertpocustomerbarang_customFields").append('<tr><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td><td class="hidden"><input type="hidden" name="hd_insertpocustomerbarang_Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="tx_inputpocustomerbarang_Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control" required></td><td><select name="db_insertpocustomerbarang_JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="tx_insertpocustomerbarang_Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control" required></td><td><input type="text" name="tx_insertpocustomerbarang_Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control" required></td></tr>');
 		}
 	});
     $("#tb_insertpocustomerbarang_customFields").on('click','.remCF',function(){

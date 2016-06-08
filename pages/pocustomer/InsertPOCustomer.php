@@ -356,7 +356,8 @@ $totalRows_User = mysql_num_rows($User);
 $(function() {
   var availableTags = <?php include ("../autocomplete.php");?>;
   $( "#tx_insertpocustomer_PCode" ).autocomplete({
-	source: availableTags
+	source: availableTags,
+	autoFocus: true
   });
 });
 </script>

@@ -33,7 +33,6 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 
 
 
-
 // Below old code
 mysql_select_db($database_Connection, $Connection);
 // Ambil periode dari sjkem paling terakhir
@@ -45,6 +44,7 @@ $totalRows_Periode = mysql_num_rows($Periode);
 $Periodess = $row_Periode['Periode'];
 $Periodes = $row_Periode['Periode']+1;
 
+// Ambil semua isisjkir dari isisjkembali untuk penghapusan periode
 mysql_select_db($database_Connection, $Connection);
 $query_IsiSJKir = sprintf("SELECT IsiSJKir FROM isisjkembali WHERE SJKem = %s", GetSQLValueString($_GET['SJKem'], "text"));
 $IsiSJKir = mysql_query($query_IsiSJKir, $Connection) or die(mysql_error());
@@ -58,6 +58,7 @@ while($row = mysql_fetch_assoc($query)){
 }
 $IsiSJKir3 = join(',',$IsiSJKir2);  
 
+// Ambil semua quantity dari periode untuk penghapusan periode
 mysql_select_db($database_Connection, $Connection);
 $query_Quantity = sprintf("SELECT Quantity FROM periode WHERE SJKem = %s AND Deletes = 'KembaliS' AND IsiSJKir IN ($IsiSJKir3)", GetSQLValueString($_GET['SJKem'], "text"));
 
@@ -71,28 +72,28 @@ while($row = mysql_fetch_assoc($query)){
 	$Quantity2[] = $row['Quantity'];
 }
 
-for($i=0;$i<$totalRows_IsiSJKir;$i++){
+// Safety Net
 if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QTertanda WHERE IsiSJKir=%s",
-                       GetSQLValueString($IsiSJKir2[$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-}
-
-if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
-  $deleteSQL = "DELETE FROM invoice WHERE Periode = $Periodes";
-
+  $deleteSQL = sprintf("SELECT delete_sjkem(%s)",
+                       GetSQLValueString($_GET['SJKem'], "text"));
+  
   $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
+  $alterSQL2 = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
+  $alterSQL3 = sprintf("ALTER TABLE isisjkembali AUTO_INCREMENT = 1");
+  $alterSQL4 = sprintf("ALTER TABLE sjkembali AUTO_INCREMENT = 1");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL2, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL3, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL4, $Connection) or die(mysql_error());
+
 }
 
-for($i=0;$i<$totalRows_Quantity;$i++){
+
 if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
+  for($i=0;$i<$totalRows_Quantity;$i++){
   $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Periode = %s AND (Deletes = 'sewa' OR Deletes = 'extend')",
   					   GetSQLValueString($Quantity2[$i], "int"),
                        GetSQLValueString($IsiSJKir2[$i], "text"),
@@ -100,7 +101,35 @@ if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+  
+  $deleteGoTo = "SJKembali.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
+    $deleteGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $deleteGoTo));
 }
+}
+/*
+for($i=0;$i<$totalRows_IsiSJKir;$i++){
+if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
+  $updateSQL = sprintf("UPDATE isisjkirim INNER JOIN isisjkembali ON isisjkirim.IsiSJKir=isisjkembali.IsiSJKir SET isisjkirim.QSisaKemInsert=isisjkirim.QSisaKemInsert+isisjkembali.QTertanda WHERE isisjkembali.SJKem=%s",
+                       GetSQLValueString($_GET['SJKem'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+// Hapus invoice yg periode nya Gede 
+if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
+  $deleteSQL = "DELETE FROM invoice WHERE Periode = $Periodes AND Reference=";
+
+  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 }
 
 if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
@@ -142,6 +171,7 @@ if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
   }
   header(sprintf("Location: %s", $deleteGoTo));
 }
+*/
 ?>
 <!doctype html>
 <html>
