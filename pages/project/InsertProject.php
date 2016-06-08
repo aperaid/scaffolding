@@ -380,7 +380,8 @@ function capital() {
 $(function() {
     var availableTags = <?php include ("../autocomplete2.php");?>;
     $( "#tx_insertproject_CCode" ).autocomplete({
-      source: availableTags
+      source: availableTags,
+	  autoFocus: true
     });
   });
 </script>

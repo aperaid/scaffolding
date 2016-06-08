@@ -349,7 +349,9 @@ $totalRows_User = mysql_num_rows($User);
 	  format: "dd/mm/yyyy",
 	  orientation: "bottom left",
 	  todayHighlight: true,
-	  autoclose: true
+	  autoclose: true,
+	  startDate: '-7d',
+	  endDate: '+7d'
   }); 
 </script>
 <script>

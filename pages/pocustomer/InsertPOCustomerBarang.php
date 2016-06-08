@@ -188,6 +188,8 @@ $totalRows_User = mysql_num_rows($User);
   <link rel="stylesheet" href="../../library/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
+  <!-- Remove spinner arrow on input number -->
+  <link rel="stylesheet" type="text/css" href="../mystyle.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../../library/dist/css/skins/_all-skins.min.css">
@@ -322,7 +324,7 @@ $totalRows_User = mysql_num_rows($User);
 					<!-- transport text -->
 					<div class="input-group col-sm-5">
 						<span class="input-group-addon">Transport</span>
-						<input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" value="0" autocomplete="off" placeholder="Transport Fee">
+						<input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" autocomplete="off" placeholder="Transport Fee" required>
 					</div>
 					<div class="col-sm-1"></div>
 					<!-- transport text END -->
@@ -382,26 +384,36 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/demo.js"></script>
 <!-- datepicker -->
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<!-- Mask Money -->
+<script src="../../library/maskmoney/src/jquery.maskMoney.js" type="text/javascript"></script>
 <!-- page script -->
 <script>
-     $(document).ready(function(){
-	var max_fields      = 10; //maximum input boxes allowed
-	
-	var x = 0; //initial text box count
-	var y = <?php echo $row_Purchase['Id']; ?>;
-	var z = y;
-	$("#hf_insertpocustomerbarang_addCF").click(function(){
-		if(x < max_fields){ //max input box allowed
-            x++; //text box count increment
-			z++;
-		$("#tb_insertpocustomerbarang_customFields").append('<tr><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td><td class="hidden"><input type="hidden" name="hd_insertpocustomerbarang_Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="tx_inputpocustomerbarang_Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control" required></td><td><select name="db_insertpocustomerbarang_JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="text" name="tx_insertpocustomerbarang_Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control" required></td><td><input type="text" name="tx_insertpocustomerbarang_Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control" required></td></tr>');
-		}
+    $(document).ready(function(){
+		var max_fields      = 10; //maximum input boxes allowed
+		
+		var x = 0; //initial text box count
+		var y = <?php echo $row_Purchase['Id']; ?>;
+		var z = y;
+		
+		$("#hf_insertpocustomerbarang_addCF").click(function(){
+			if(x < max_fields){ //max input box allowed
+				x++; //text box count increment
+				z++;
+			$("#tb_insertpocustomerbarang_customFields").append('<tr><td><a href="javascript:void(0);" class="remCF glyphicon glyphicon-remove"></a></td><td class="hidden"><input type="hidden" name="hd_insertpocustomerbarang_Purchase[]" class="textbox" id="hd_insertpocustomerbarang_Purchase" value="'+ z +'"></td><td><input type="text" name="tx_inputpocustomerbarang_Barang[]" id="tx_inputpocustomerbarang_Barang" autocomplete="off" class="form-control" required></td><td><select name="db_insertpocustomerbarang_JS[]" id="db_insertpocustomerbarang_JS" class="form-control"><option>Jual</option><option>Sewa</option></select></td><td><input type="number" name="tx_insertpocustomerbarang_Quantity[]" id="tx_insertpocustomerbarang_Quantity" autocomplete="off" class="form-control" required></td><td><input type="number" name="tx_insertpocustomerbarang_Amount[]" autocomplete="off" id="tx_insertpocustomerbarang_Amount" class="form-control" required></td></tr>');
+			}
+		});
+		
+		$("#tb_insertpocustomerbarang_customFields").on('click','.remCF',function(){
+			$(this).parent().parent().remove();
+			x--;
+		});
+		
+		//Mask Transport
+		$("#tx_insertpocustomerbarang_Transport").maskMoney({prefix:'Rp ', allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+		//Mask Price
+		$("#tx_insertpocustomerbarang_Amount").maskMoney({prefix:'Rp ', allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+		
 	});
-    $("#tb_insertpocustomerbarang_customFields").on('click','.remCF',function(){
-        $(this).parent().parent().remove();
-		x--;
-    });
-});
 </script>
 </body>
 </html>
