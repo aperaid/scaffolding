@@ -409,9 +409,9 @@ $totalRows_User = mysql_num_rows($User);
 		});
 		
 		//Mask Transport
-		$("#tx_insertpocustomerbarang_Transport").maskMoney({prefix:'Rp ', allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+		$("#tx_insertpocustomerbarang_Transport").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
 		//Mask Price
-		$("#tx_insertpocustomerbarang_Amount").maskMoney({prefix:'Rp ', allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+		$("#tx_insertpocustomerbarang_Amount").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
 		
 	});
 </script>
