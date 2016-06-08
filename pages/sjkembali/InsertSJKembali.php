@@ -145,7 +145,7 @@ $totalRows_Periode = mysql_num_rows($Periode);
 $Periode2 = $row_Periode['Periode'];
 
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND Deletes = 'Sewa' OR Deletes = 'Extend' ORDER BY Id ASC";
+$query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND (Deletes = 'Sewa' OR Deletes = 'Extend') ORDER BY Id ASC";
 $TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
 $row_TanggalMin = mysql_fetch_assoc($TanggalMin);
 $totalRows_TanggalMin = mysql_num_rows($TanggalMin);
