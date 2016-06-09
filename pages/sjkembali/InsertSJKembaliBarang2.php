@@ -424,7 +424,7 @@ $totalRows_User = mysql_num_rows($User);
                   <table id="tb_insertsjkembalibarang2_example1" name="tb_insertsjkiribarang2_example1" class="table table-bordered table-striped table-responsive">
                   <thead>
 					  <tr>
-					    <th>Tgl Kirim</th>
+					    <th>Tgl Extend</th>
 					    <th>Barang</th>
 					    <th>Warehouse</th>
 					    <th>Q Sisa Kembali</th>

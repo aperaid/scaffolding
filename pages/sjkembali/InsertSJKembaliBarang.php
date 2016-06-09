@@ -121,7 +121,20 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKemInsert, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_GetId = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
+$row_GetId = mysql_fetch_assoc($GetId);
+$totalRows_GetId = mysql_num_rows($GetId);
+
+$query = mysql_query($query_GetId, $Connection) or die(mysql_error());
+$Id2 = array();
+while($row = mysql_fetch_assoc($query)){
+	$Id2[] = $row['Id'];
+}
+$Id3 = join(',',$Id2); 
+
+mysql_select_db($database_Connection, $Connection);
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKemInsert, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' AND periode.Id IN ($Id3) ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
@@ -284,7 +297,7 @@ $totalRows_User = mysql_num_rows($User);
                   <thead>
                   <tr>
                     <th>Pilih</th>
-                    <th>Tgl Kirim</th>
+                    <th>Tgl Extend</th>
                     <th>Barang</th>
                     <th>Quantity Sisa Kembali</th>
                     <th>SJ Code</th>
@@ -295,7 +308,7 @@ $totalRows_User = mysql_num_rows($User);
                     <?php do { ?>
                       <tr>
                         <td><input type="checkbox" name="cb_insertsjkembalibarang_checkbox[]" id="cb_insertsjkembalibarang_checkbox" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>"></td>
-                        <td><input name="tx_insertsjkembalibarang_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Tgl" value="<?php echo $row_InsertSJKembali['Tgl']; ?>" readonly></td>
+                        <td><input name="tx_insertsjkembalibarang_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Tgl" value="<?php echo $row_InsertSJKembali['S']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_QSisaKemInsert[]" type="text" class="form-control" id="tx_insertsjkembalibarang_QSisaKemInsert" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_SJKir[]" type="text" class="form-control" id="tx_insertsjkembalibarang_SJKir" value="<?php echo $row_InsertSJKembali['SJKir']; ?>" readonly></td>

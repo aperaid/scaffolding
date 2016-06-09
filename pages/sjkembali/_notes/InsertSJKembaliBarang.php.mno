@@ -13,4 +13,6 @@
 	<infoitem key="UD_InsertSJKembali" value="name:IsiSJKir;datatype:string,name:QSisaKemInsert;datatype:int,name:SJKir;datatype:string,name:Tgl;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
 	<infoitem key="UD_Id" value="name:Periode;datatype:int" />
+	<infoitem key="UD_Tgl" value="name:S;datatype:string" />
+	<infoitem key="UD_GetId" value="name:Id;datatype:int" />
 </info>
