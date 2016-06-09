@@ -405,38 +405,41 @@ $totalRows_User = mysql_num_rows($User);
     </tbody>
     </table>
     </div>
-    
-    <div class="form-group">
-                  <label class="col-sm-2 control-label">Pajak</label>
-                  <div class="col-sm-6">
-                    <input id="tx_viewinvoice_PPN" name="tx_viewinvoice_PPN" type="text" class="form-control" value="<?php echo $row_View['PPN']; ?>" onKeyUp="tot()">
-                    <input id="hd_viewinvoice_PPN2" name="hd_viewinvoice_PPN2" type="hidden" autocomplete="off" value="<?php echo $row_View['PPN']; ?>">
-                  </div>
+				<!-- PPN checkbox -->
+				<div class="form-group">
+                <label class="col-sm-2 control-label">Pajak</label>
+				<div class="col-sm-6">
+					<input name="tx_viewinvoice_PPN" type="hidden" id="tx_viewinvoice_PPN" value="0">
+					<input name="tx_viewinvoice_PPN" type="checkbox" id="tx_viewinvoice_PPN" value="1" <?php if ($row_View['PPN'] == 1){ ?> checked <?php } ?>>
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Transport</label>
-                  <div class="col-sm-6">
-                    <input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo number_format($row_View['Transport'], 2); }?>" onKeyUp="tot()">
-                    <input id="hd_viewinvoice_Transport2" name="hd_viewinvoice_Transport2" type="hidden" autocomplete="off" value="<?php if ($row_View['Periode'] == 1){ echo $row_View['Transport']; }?>">
-                  </div>
+				</div>
+                <!-- Transport Input -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Transport</label>
+					<div class="col-sm-6">
+						<input id="hd_viewinvoice_Transport2" name="hd_viewinvoice_Transport2" type="hidden" autocomplete="off" value="<?php if ($row_View['Periode'] == 1){ echo $row_View['Transport']; }?>">
+						<input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo number_format($row_View['Transport'], 2); }?>" onKeyUp="tot()">
+					</div>
                 </div>
+				<!-- Total Text -->
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
                     <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
 					else $toss = 0;
-					 echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss, 2, '.','.');?>"  readonly>
+					echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss, 2, '.','.');?>"  readonly>
                     <input id="hd_viewinvoice_Totals2" name="hd_viewinvoice_Totals2" type="hidden" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>
-                
+                <!-- Footer Box -->
                 <div class="box-footer">
-                <button type="submit" name="tx_viewinvoice_submit" id="tx_viewinvoice_submit" class="btn btn-info pull-right">Update</button>
-                <div class="btn-group"><a href="Invoice.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
-                <div class="btn-group" ><a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a></div>
-              </div>
-              <input type="hidden" name="MM_update" value="form1">
-<!-- /.box-footer -->
+					<!-- Back Button -->	<a href="Invoice.php">	<button type="button" class="btn btn-default">Back</button></a>
+					<!-- Print Button -->	<a href="#">			<button type="button" class="btn btn-default"><i class="fa fa-print"></i> Print</button></a>
+					<!-- Submit Button -->							<button type="submit" name="tx_viewinvoice_submit" id="tx_viewinvoice_submit"  class="btn btn-info pull-right">Update</button>
+					<!-- Edit Button -->							<button type="submit" name="bt_viewinvoice_edit" id="bt_viewinvoice_edit" style="margin-right: 3px;" class="btn btn-primary pull-right">Edit</button>
+				</div>
+				<!-- /.box-footer -->
+				<input type="hidden" name="MM_update" value="form1">
             </form>
           </div>
           <!-- /.box -->
@@ -480,16 +483,16 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/demo.js"></script>
 <!-- page script -->
 
-<script language="javascript">
-  function tot() {
+<script>
+function tot() {
     var txtFirstNumberValue = document.getElementById('hd_viewinvoice_Totals2').value;
     var txtSecondNumberValue = document.getElementById('tx_viewinvoice_PPN').value;
 	var txtThirdNumberValue = document.getElementById('tx_viewinvoice_Transport').value;
 	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue) + parseFloat(txtThirdNumberValue);
-	  if (!isNaN(result)) {
+	if (!isNaN(result)) {
 		document.getElementById('tx_viewinvoice_Totals').value = result;
-      }
-   }
+    }
+}
 </script>
 </body>
 </html>

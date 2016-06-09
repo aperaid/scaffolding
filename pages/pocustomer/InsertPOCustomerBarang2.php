@@ -151,7 +151,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 	  $tx_insertpocustomerbarang2_Tgl = substr($_SESSION['tx_insertpocustomer_Tgl'], 1, -1);
 	  $tx_insertpocustomerbarang2_PCode = substr($_SESSION['tx_insertpocustomer_PCode'], 1, -1);
 	  $tx_insertpocustomerbarang2_PPN = $_SESSION['tx_insertpocustomerbarang_PPN'];
-	  $tx_insertpocustomerbarang2_Transport = substr($_SESSION['tx_insertpocustomerbarang_Transport'], 3);
+	  $tx_insertpocustomerbarang2_Transport = str_replace(".","",substr($_SESSION['tx_insertpocustomerbarang_Transport'], 3));
  	  ?>
       <?php $tgl = 0; $bln = substr($tx_insertpocustomerbarang2_Tgl, 3, -5); $thn = substr($tx_insertpocustomerbarang2_Tgl, 6);
 			if ($bln == 1){
