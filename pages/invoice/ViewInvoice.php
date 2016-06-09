@@ -137,7 +137,7 @@ if (isset($_GET['JS'])) {
 mysql_select_db($database_Connection, $Connection);
 $query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, periode.Quantity, periode.S, periode.E, periode.SJKem, periode.Deletes, transaksi.Amount, periode.Periode FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
 LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
-WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
+WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s AND periode.Quantity != 0 ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"),
 GetSQLValueString($colname_ViewPeriode, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
@@ -357,6 +357,8 @@ $totalRows_User = mysql_num_rows($User);
           <?php 
 		  $date1 = $row_View2['S'];
 		  $date2 = $row_View2['E'];
+		  $month1 = substr($row_View2['S'], 3, -5);
+		  $month2 = substr($row_View2['E'], 3, -5);
 		  $date1 = str_replace('/', '-', $date1);
 		  $date2 = str_replace('/', '-', $date2);
 		  $FirstDate = date('01/m/Y', strtotime($date1));
@@ -365,6 +367,10 @@ $totalRows_User = mysql_num_rows($User);
 		  $Check = strtotime(str_replace('/', '-', $row_View2['E']));
 		  
 		  if($row_View['Periode'] == 1 || $date1==$date2){
+			  $FirstDate2 = $row_View2['S'];
+		  }
+		  elseif( ($row_View2['Deletes'] == 'KembaliS' && $month1==$month2) ||
+		          ($row_View2['Deletes'] == 'ClaimS' && $month1==$month2)      ){
 			  $FirstDate2 = $row_View2['S'];
 		  }
 		  elseif($row_View2['Deletes'] == 'Extend' || $row_View2['Deletes'] == 'KembaliS' || $row_View2['Deletes'] == 'KembaliE' || $row_View2['Deletes'] == 'ClaimS' || $row_View2['Deletes'] == 'ClaimE'){

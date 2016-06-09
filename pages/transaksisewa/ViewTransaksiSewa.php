@@ -146,7 +146,7 @@ if (isset($_GET['Reference'])) {
   $colname_View = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference = %s AND (periode.Deletes = 'KembaliS' OR periode.Deletes = 'ClaimS' OR Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY isisjkirim.SJKir, periode.Periode, periode,Deletes ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference = %s AND periode.Quantity != 0 AND (periode.Deletes = 'KembaliS' OR periode.Deletes = 'ClaimS' OR Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY isisjkirim.SJKir, periode.Periode, periode,Deletes ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
