@@ -438,7 +438,11 @@ $totalRows_User = mysql_num_rows($User);
 	$tx_insertsjkembalibarang2_Tgl = substr($_SESSION['tx_insertsjkembali_Tgl'], 1, -1);
 	$tx_insertsjkembalibarang2_Reference = substr($_SESSION['tx_insertsjkembali_Reference'], 1, -1);
  	?>     
-	<?php 
+	
+     
+    <?php $increment = 1; ?>
+	<?php do { ?>
+    <?php 
 	
 	$tgl = $tx_insertsjkembalibarang2_Tgl;
 	$convert = str_replace('/', '-', $tgl);
@@ -462,9 +466,6 @@ $totalRows_User = mysql_num_rows($User);
 	}
 	
 	?>
-     
-    <?php $increment = 1; ?>
-	<?php do { ?>
 	  <tr>
       <!--<?php $FirstDate = substr($tx_insertsjkembalibarang2_Tgl, 2); ?>-->
       	  <input name="hd_insertsjkembalibarang2_SJKem" type="hidden" id="hd_insertsjkembalibarang2_SJKem" value="<?php echo $tx_insertsjkembalibarang2_SJKem; ?>">
