@@ -407,7 +407,7 @@ $totalRows_User = mysql_num_rows($User);
     </div>
 				<!-- PPN checkbox -->
 				<div class="form-group">
-                <label class="col-sm-2 control-label">Pajak</label>
+                <label class="col-sm-2 control-label">Pajak 10%</label>
 				<div class="col-sm-6">
 					<input name="tx_viewinvoice_PPN" type="hidden" id="tx_viewinvoice_PPN" value="0">
 					<input name="tx_viewinvoice_PPN" type="checkbox" id="tx_viewinvoice_PPN" value="1" <?php if ($row_View['PPN'] == 1){ ?> checked <?php } ?>>

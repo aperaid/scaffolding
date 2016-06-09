@@ -36,13 +36,10 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 // Below old code
 mysql_select_db($database_Connection, $Connection);
 // Ambil periode dari sjkem paling terakhir
-$query_Periode = sprintf("SELECT MAX(invoice.Periode) AS Periode FROM invoice LEFT JOIN sjkembali on invoice.Reference = sjkembali.Reference WHERE sjkembali.SJKem = %s", GetSQLValueString($_GET['SJKem'], "text"));
+$query_Periode = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode LEFT JOIN isisjkembali on periode.IsiSJKir = isisjkembali.IsiSJKir WHERE isisjkembali.SJKem = %s AND (Deletes='Sewa' or Deletes='Extend');", GetSQLValueString($_GET['SJKem'], "text"));
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
-
-$Periodess = $row_Periode['Periode'];
-$Periodes = $row_Periode['Periode']+1;
 
 // Ambil semua isisjkir dari isisjkembali untuk penghapusan periode
 mysql_select_db($database_Connection, $Connection);
@@ -97,7 +94,7 @@ if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
   $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Periode = %s AND (Deletes = 'sewa' OR Deletes = 'extend')",
   					   GetSQLValueString($Quantity2[$i], "int"),
                        GetSQLValueString($IsiSJKir2[$i], "text"),
-					   GetSQLValueString($Periodess, "text"));
+					   GetSQLValueString($row_Periode['Periode'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
