@@ -229,7 +229,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference2'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"));
-  $deleteSQL = sprintf("DELETE FROM periode WHERE S=E");
+  $deleteSQL = sprintf("DELETE FROM periode WHERE S=E AND Deletes = 'KembaliE'");
   $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
 
 

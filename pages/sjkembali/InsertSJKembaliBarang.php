@@ -306,8 +306,21 @@ $totalRows_User = mysql_num_rows($User);
                   <tbody>
                     <?php $increment = 1; ?>
                     <?php do { ?>
+                    <?php 
+					
+					$tx_insertsjkembalibarang_Tgl = substr($_SESSION['tx_insertsjkembali_Tgl'], 1, -1);
+					
+					$tgl = $tx_insertsjkembalibarang_Tgl;
+					$convert = str_replace('/', '-', $tgl);
+					$tgl2 = $row_InsertSJKembali['S'];
+					$convert2 = str_replace('/', '-', $tgl2);
+					
+					$check = strtotime($convert);
+					$check2 = strtotime($convert2);
+					
+					?>
                       <tr>
-                        <td><input type="checkbox" name="cb_insertsjkembalibarang_checkbox[]" id="cb_insertsjkembalibarang_checkbox" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>"></td>
+                        <td><input type="checkbox" name="cb_insertsjkembalibarang_checkbox[]" id="cb_insertsjkembalibarang_checkbox" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>" <?php if ($check < $check2){ ?> disabled <?php } ?>></td>
                         <td><input name="tx_insertsjkembalibarang_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Tgl" value="<?php echo $row_InsertSJKembali['S']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_QSisaKemInsert[]" type="text" class="form-control" id="tx_insertsjkembalibarang_QSisaKemInsert" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>

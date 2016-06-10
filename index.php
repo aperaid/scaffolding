@@ -1,4 +1,5 @@
 <?php require_once('connections/Connection.php'); ?>
+<?php date_default_timezone_set("Asia/Krasnoyarsk"); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -109,6 +110,21 @@ $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
+
+$Today = date("d/m/Y");
+$Today1 = date("d/m/Y", time()+86400);
+$Today2 = date("d/m/Y", time()+86400*2);
+$Today3 = date("d/m/Y", time()+86400*3);
+$Today4 = date("d/m/Y", time()+86400*4);
+$Today5 = date("d/m/Y", time()+86400*5);
+$Today6 = date("d/m/Y", time()+86400*6);
+$Today7 = date("d/m/Y", time()+86400*7);
+
+mysql_select_db($database_Connection, $Connection);
+$query_View = "SELECT periode.Id, periode.Periode, periode.IsiSJKir, periode.Reference, isisjkirim.SJKir, transaksi.Barang, periode.S, periode.E, periode.Deletes, project.Project, customer.Company, customer.Customer, customer.CompPhone, customer.CustPhone FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE (periode.Deletes='Sewa' OR periode.Deletes='Extend') AND periode.Id IN (SELECT MAX(periode.Id) AS Id FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' GROUP BY isisjkirim.SJKir) AND (periode.E = '$Today' OR periode.E = '$Today1' OR periode.E = '$Today2' OR periode.E = '$Today3' OR periode.E = '$Today4' OR periode.E = '$Today5' OR periode.E = '$Today6' OR periode.E = '$Today7') GROUP BY isisjkirim.SJKir, periode.Periode, periode.Deletes ORDER BY periode.Id ASC";
+$View = mysql_query($query_View, $Connection) or die(mysql_error());
+$row_View = mysql_fetch_assoc($View);
+$totalRows_View = mysql_num_rows($View);
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -232,7 +248,52 @@ $totalRows_User = mysql_num_rows($User);
 
     <!-- Main content -->
     <section class="content">
-      
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+            <div class="box-body">
+              <table id="tb_index_example1" class="table table-bordered table-striped table-responsive">
+                <thead>
+                <tr>
+                  <th>Periode</th>
+                  <th>Start</th>
+                  <th>End</th>
+                  <th>Company</th>
+                  <th>Project</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>View</th>
+                  <th>Extend</th>
+                </tr>
+                </thead>
+				<tbody>
+					<?php do { ?>
+					<tr>
+						<td><?php echo $row_View['Periode']; ?></td>
+						<td><?php echo $row_View['S']; ?></td>
+						<td><?php echo $row_View['E']; ?></td>
+						<td><?php echo $row_View['Company']; ?></td>
+						<td><?php echo $row_View['Project']; ?></td>
+                        <td><?php echo $row_View['Customer']; ?></td>
+                        <td><?php echo $row_View['CompPhone']; ?></td>
+                        <td>
+                        <a href="pages/transaksisewa/ViewTransaksiSewa2.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>&Deletes=<?php echo $row_View['Deletes']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Detail</button></a></td>
+                        <td><a href="pages/transaksisewa/ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" class="btn btn-block btn-primary btn-sm">Extend</button></a></td>
+					</tr>
+					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
+				</tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+			</div>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
     </section>
     <!-- /.content -->
   </div>
@@ -270,13 +331,13 @@ $totalRows_User = mysql_num_rows($User);
 <!-- page script -->
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tb_index_example1").DataTable();
   });
 </script>
 </body>
 </html>
 <?php
 mysql_free_result($Menu);
-
+mysql_free_result($View);
 mysql_free_result($User);
 ?>

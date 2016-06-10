@@ -313,16 +313,6 @@ $totalRows_User = mysql_num_rows($User);
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
-                <tfoot>
-                <tr>
-                  <th>Barang</th>
-                  <th>Tanggal Kirim</th>
-                  <th>Company</th>
-                  <th>Project</th>
-                  <th>Quantity</th>
-                  <th>Amount</th>
-                </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
