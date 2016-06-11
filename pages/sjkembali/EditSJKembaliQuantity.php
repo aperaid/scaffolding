@@ -104,32 +104,40 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
+//Menu
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
-$colname_View = "-1";
+//Assign SJKEM dari URL
+$colname_View = "-1"; //assign default value auto dari dreamweaver (masya ollo)
 if (isset($_GET['SJKem'])) {
   $colname_View = $_GET['SJKem'];
 }
+
+//Ambil Kode SJKEM lagi
 mysql_select_db($database_Connection, $Connection);
 $query_View = sprintf("SELECT SJKem FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
-$colname_EditIsiSJKembali = "-1";
+//Assign SJKEM dari URL lagi
+$colname_EditIsiSJKembali = "-1"; //assign default value auto dari dreamweaver (masya ollo)
 if (isset($_GET['SJKem'])) {
   $colname_EditIsiSJKembali = $_GET['SJKem'];
 }
+
+//Query buat nunjukin isisjkembali
 mysql_select_db($database_Connection, $Connection);
 $query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
 
+//Query khusus untuk ambil IsiSJKir apa aja yg ada di sjkembali ini 
 $query = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $IsiSJKir = array();
 while($row = mysql_fetch_assoc($query)){
@@ -137,6 +145,7 @@ while($row = mysql_fetch_assoc($query)){
 }
 $IsiSJKir2 = join(',',$IsiSJKir); 
 
+//Query untuk ambil tanggal start & end dari periode
 mysql_select_db($database_Connection, $Connection);
 $query_Tanggal = sprintf("SELECT S, E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Kembalis' OR Deletes='KembaliE')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $Tanggal = mysql_query($query_Tanggal, $Connection) or die(mysql_error());
@@ -148,8 +157,9 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
+// update overall qsisakembali di transaksi diupdate
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 	$QTerima = GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima2'][$i], "int");
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+$QTerima-%s WHERE Purchase=%s",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
@@ -160,6 +170,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 }
 
+// jumlah qsisakembaliquantity di isisjkirim diupdate
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 	$QTerima = GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima2'][$i], "int");
@@ -172,16 +183,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 }
 
+//update qterima di sjkembali
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Kembalis' OR Deletes='KembaliE')",
-                       GetSQLValueString($_POST['tx_editsjkembaliquantity_E'], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE isisjkembali SET QTerima=%s WHERE Id=%s",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkembaliquantity_Id'][$i], "int"));
@@ -189,15 +193,92 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
-  $updateGoTo = "ViewSJKembali.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-    $updateGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  
-  header(sprintf("Location: %s", $updateGoTo));
-  }
 }
+}
+
+/* OLD atur tanggal periode
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Kembalis' OR Deletes='KembaliE')",
+                       GetSQLValueString($_POST['tx_editsjkembaliquantity_E'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+*/
+
+/**** Update Tanggal ****/
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+/* --- Tanggal yang diinput sama user --- */
+// 1. Input tgl sjkembali
+$tgl_input_user = $_POST['tx_editsjkembaliquantity_E'];
+// 2. Abis itu di convert dalam bentuk tanggal yg bisa dicompare system
+$tgl_input_user_converted = str_replace('/', '-', $tgl_input_user);
+// 3. convert ke bentuk comparable
+$tgl_input_user_system = strtotime($tgl_input_user_converted);
+
+/* --- Tanggal start sewa atau extend --- */
+// 1. Tanggal Start (S) di periode
+$tgl_start = $row_Tanggal['S'];
+// 2. Abis itu diconvert dalam bentuk tanggal yg bisa dicompare system trus dimasukkin ke variable $convert2
+$tgl_start_converted = str_replace('/', '-', $tgl_start);
+// 3. Tanggal start sewa/extend, ambil tanggal akhirnya, masukin ke $last
+$tgl_31_start_converted = date('t-m-Y', strtotime($tgl_start_converted));
+// 4. convert ke bentuk comparable
+$tgl_31_start_system = strtotime($tgl_31_start_converted);
+
+/* JADI Sekarang Kita Punya: */
+$tgl_input_user_system;	// Tanggal yg diinput user
+$tgl_31_start_system;	// Tanggal 31 start
+
+// Bandingin apakah tgl yg diinput user lebih kecil atau sama dengan tanggal akhir dari start bulan sewa/extendnya
+if($tgl_input_user_system <= $tgl_31_start_system)
+{
+	// Kalau lebih kecil/sama dengan tanggal akhir bulan tgl_start
+	// 1. Update Tanggal KembaliS yg udah ada
+	$update_tgl_sql=sprintf("UPDATE periode SET E='$tgl_input_user' WHERE sjkem='$colname_EditIsiSJKembali' AND Deletes='KembaliS' ");
+	mysql_select_db($database_Connection, $Connection);
+	$query = mysql_query($update_tgl_sql, $Connection) or die(mysql_error());
+	// 2. Hapus row KembaliE ada ato ngga
+	$delete_tgl_sql=sprintf("DELETE FROM periode WHERE periode.sjkem='$colname_EditIsiSJKembali' AND Deletes='KembaliE' ");
+	mysql_select_db($database_Connection, $Connection);
+	$query = mysql_query($delete_tgl_sql, $Connection) or die(mysql_error());
+}
+else	
+{
+	// Kalau lebih besar
+	// 1. Update Tanggal KembaliS dan Kembali E yg udah ada
+	$update_tgl_sql=sprintf("UPDATE periode SET periode.E='$tgl_input_user' WHERE sjkem='$colname_EditIsiSJKembali' AND (Deletes='KembaliS' OR Deletes='KembaliE')");
+	mysql_select_db($database_Connection, $Connection);
+	$query = mysql_query($update_tgl_sql, $Connection) or die(mysql_error());
+	// 2. Insert Kembali E Baru kalau memang belum ada
+	// Tanggal End yg udah ada, diconvert biar bisa jadi perbandingan
+	$tgl_end = $row_Tanggal['E'];
+	$tgl_end = str_replace('/', '-', $tgl_end);
+	$tgl_end_system = strtotime($tgl_end);
+	//Perbandingan apakah tanggal END yg udah ada itu lebih besar dari tanggal 31 bulan sewa/extendnya
+	if($tgl_31_start_system > $tgl_end_system){
+		//Tanggal yg diinput sama user, ambil tanggal 01 nya
+		$tgl_01_input_user = date('01/m/Y', strtotime($tgl_input_user_converted));
+		//Insert row KembaliE dengan menduplikat row Kembali S yg udah ada
+		$insert_tgl_sql=sprintf("INSERT INTO periode (IsiSJKir, Periode, S, E, Quantity, SJKem, Reference, Purchase, Claim, Deletes)
+								SELECT IsiSJKir, Periode+1, '$tgl_01_input_user', '$tgl_input_user', Quantity, SJKem, Reference, Purchase, Claim, 'KembaliE'
+								FROM periode WHERE SJKem='$colname_EditIsiSJKembali' AND Deletes='KembaliS'"
+								);
+		mysql_select_db($database_Connection, $Connection);
+		$query = mysql_query($insert_tgl_sql, $Connection) or die(mysql_error());
+	}
+}
+
+// Redirect ke sjkembali
+$updateGoTo = "ViewSJKembali.php";
+if (isset($_SERVER['QUERY_STRING'])) {
+	$updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+	$updateGoTo .= $_SERVER['QUERY_STRING'];
+}  
+header(sprintf("Location: %s", $updateGoTo));
+
+}
+/*** UPDATE TANGGAL END ***/
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -208,6 +289,7 @@ $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueS
 $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
+
 ?>
 
 <!DOCTYPE html>
@@ -348,17 +430,17 @@ $totalRows_User = mysql_num_rows($User);
 					  ?>
 					  <?php do { ?>
 						<tr>
-							<input name="hd_editsjkembaliquantity_Id[]" type="hidden" id="hd_editsjkembaliquantity_Id" value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
-							<input name="hd_editsjkembaliquantity_QSisaKem2" type="hidden" id="hd_editsjkembaliquantity_QSisaKem2<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>">
-                            <input name="hd_editsjkembaliquantity_IsiSJKir[]" type="hidden" class="textview" id="hd_editsjkembaliquantity_IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
-                            <input name="hd_editsjkembaliquantity_Purchase[]" type="hidden" class="textview" id="hd_editsjkembaliquantity_Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>">
-                            <input name="tx_editsjkembaliquantity_QTerima2[]" type="hidden" class="form-control" id="tx_editsjkembaliquantity_QTerima2" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>">
-							<td><input name="tx_editsjkembaliquantity_Tgl" type="text" class="form-control" id="tx_editsjkembaliquantity_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
-							<td><input name="tx_editsjkembaliquantity_Barang" type="text" class="form-control" id="tx_editsjkembaliquantity_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
-							<td><input name="tx_editsjkembaliquantity_Warehouse[]" type="text" class="form-control" id="tx_editsjkembaliquantity_Warehouse" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
-							<td><input name="tx_editsjkembaliquantity_QTertanda[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" readonly></td>
-                            <input name="tx_editsjkembaliquantity_QSisaKem[]" type="hidden" class="form-control" id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly>
-                            <td><input name="tx_editsjkembaliquantity_QTerima[]" type="text" class="form-control" id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda']; ?>)" onKeyUp="sisa();" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" required></td>
+									<input name="hd_editsjkembaliquantity_Id[]"			id="hd_editsjkembaliquantity_Id"							type="hidden"	value="<?php echo $row_EditIsiSJKembali['Id']; ?>">
+									<input name="hd_editsjkembaliquantity_QSisaKem2"	id="hd_editsjkembaliquantity_QSisaKem2<?php echo $x; ?>"	type="hidden"	value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>">
+									<input name="hd_editsjkembaliquantity_IsiSJKir[]"	id="hd_editsjkembaliquantity_IsiSJKir"						type="hidden"	class="textview"		value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
+									<input name="hd_editsjkembaliquantity_Purchase[]"	id="hd_editsjkembaliquantity_Purchase"						type="hidden"	class="textview"		value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>">
+									<input name="tx_editsjkembaliquantity_QTerima2[]"	id="tx_editsjkembaliquantity_QTerima2"						type="hidden"	class="form-control"	autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>">
+							<td>	<input name="tx_editsjkembaliquantity_Tgl"			id="tx_editsjkembaliquantity_Tgl"							type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
+							<td>	<input name="tx_editsjkembaliquantity_Barang"		id="tx_editsjkembaliquantity_Barang"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
+							<td>	<input name="tx_editsjkembaliquantity_Warehouse[]"	id="tx_editsjkembaliquantity_Warehouse"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
+							<td>	<input name="tx_editsjkembaliquantity_QTertanda[]"	id="tx_editsjkembaliquantity_QTertanda"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"autocomplete="off"  readonly></td>
+									<input name="tx_editsjkembaliquantity_QSisaKem[]"	id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>"		type="hidden"	class="form-control"	value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly>
+                            <td>	<input name="tx_editsjkembaliquantity_QTerima[]"	id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>"		type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda']; ?>)" onKeyUp="sisa();"  required></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
@@ -372,7 +454,7 @@ $totalRows_User = mysql_num_rows($User);
 				<div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
                 </div>
-				<input name="tx_editsjkembaliquantity_E" type="text" class="form-control" id="tx_editsjkembaliquantity_E" autocomplete="off" value="<?php echo $Tgl; ?>" required>
+					<input name="tx_editsjkembaliquantity_E" type="text" class="form-control" id="tx_editsjkembaliquantity_E" autocomplete="off" value="<?php echo $Tgl; ?>" required>
 				</div>
 				<br>
 				<a href="ViewSJKembali.php?SJKem=<?php echo $row_View['SJKem']; ?>"><button type="button" class="btn btn-default">Cancel</button></a>
