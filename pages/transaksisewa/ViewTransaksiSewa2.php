@@ -179,7 +179,7 @@ while($row = mysql_fetch_assoc($query)){
 $IsiSJKir2 = join(',',$IsiSJKir); 
 
 mysql_select_db($database_Connection, $Connection);
-$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND IsiSJKir IN ($IsiSJKir2)", GetSQLValueString($colname_View, "text"));
+$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND IsiSJKir IN ($IsiSJKir2) AND (Deletes = 'Sewa' OR Deletes = 'Extend')", GetSQLValueString($colname_View, "text"));
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
@@ -349,7 +349,7 @@ $totalRows_User = mysql_num_rows($User);
             <!-- /.box-body -->
             <div class="box-footer">
                   <a href="ViewTransaksiSewa.php?Reference=<?php echo $row_View2['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Back</button></a>
-                  <a href="ExtendTransaksiSewa.php?Reference=<?php echo $_GET['Reference']; ?>&Periode=<?php echo $_GET['Periode']; ?>&SJKir=<?php echo $_GET['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" <?php if ($Deletes != 'Sewa' && $Deletes != 'Extend' || $Periode != $_GET['Periode']){ ?> class="btn btn-default pull-right" disabled <?php   } else { ?> class="btn btn-primary pull-right" <?php } ?>>Extend</button></a>
+                  <a href="ExtendTransaksiSewa.php?Reference=<?php echo $_GET['Reference']; ?>&Periode=<?php echo $_GET['Periode']; ?>&SJKir=<?php echo $_GET['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" <?php if (($Deletes != 'Sewa' && $Deletes != 'Extend') || ($Periode != $_GET['Periode'])){ ?> class="btn btn-default pull-right" disabled <?php   } else { ?> class="btn btn-primary pull-right" <?php } ?>>Extend</button></a>
 			</div>
           </div>
           <!-- /.box -->
