@@ -145,12 +145,27 @@ while($row = mysql_fetch_assoc($query)){
 }
 $IsiSJKir2 = join(',',$IsiSJKir); 
 
-//Query untuk ambil tanggal start & end dari periode
+//Query ambil tanggal start & end kembali S&E yg udah ada 
 mysql_select_db($database_Connection, $Connection);
 $query_Tanggal = sprintf("SELECT S, E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Kembalis' OR Deletes='KembaliE')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $Tanggal = mysql_query($query_Tanggal, $Connection) or die(mysql_error());
 $row_Tanggal = mysql_fetch_assoc($Tanggal);
 $totalRows_Tanggal = mysql_num_rows($Tanggal);
+
+//Query ambil E untuk enddate datepicker
+/*	Rumusnya:
+	Di dalam satu sjkembali, ada banyak isisjkir. Masing2 isisjkir, punya periodenya masing-masing.
+	Masing-masing periode dari isisjkir tersebut, punya S dan E yg berbeda.
+	Sehingga datepicker harus menunjukkan tanggal maksimal dengan tanggal E yg paling pertama
+	Contoh, ada 2 isisjkir di satu sjkembali:
+	#############################################################################################
+	#	isisjkir	Q		S		E		Deletes												#
+	#	--------	---		---		---		-------												#
+	#	1			50		10/1	9/2		Extend	<-ini yg diambil E nya jadi maks datepicker	#
+	#	2			50		15/1	14/2	Extend												#
+	#############################################################################################
+*/
+//BINGUNG, masih blom dikerjain
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
