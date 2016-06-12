@@ -444,24 +444,39 @@ $totalRows_User = mysql_num_rows($User);
 	<?php do { ?>
     <?php 
 	
+	/* --- Tanggal yang diinput sama user --- */
+	// 1. Input tgl sjkembali di masukin user ke variable $tgl
 	$tgl = $tx_insertsjkembalibarang2_Tgl;
+	// 2. Abis itu di convert dalam bentuk tanggal yg bisa dicompare system trus dimasukkin ke variable $convert
 	$convert = str_replace('/', '-', $tgl);
-	$tgl2 = $row_InsertSJKembali['S'];
-	$convert2 = str_replace('/', '-', $tgl2);
-	
-	$S2 = date('01/m/Y', strtotime($convert));
-	$E2 = date('t/m/Y', strtotime($convert));
-	
-	$last = date('t-m-Y', strtotime($convert2));
-	$E = strtotime($last);
+	// 3. convert ke bentuk comparable
 	$check = strtotime($convert);
 	
+	/* --- Tanggal yang diinput sama user, ambil tanggal 01 nya dan akhir nya --- */
+	// 4. Tanggal yg diinput sama user, ambil tanggal 01 nya, masukin ke $S2
+	$S2 = date('01/m/Y', strtotime($convert));
+	// 5. Tanggal yg diinput sama user, ambil tanggal akhirnya (29, 30, atau 31),  masukin ke $E2 Untuk Invoice
+	$E2 = date('t/m/Y', strtotime($convert));
+	
+	/* --- Tanggal start sewa atau extend --- */
+	// 1. Tanggal Start (S) di periode, dimasukkin ke variable $tgl2
+	$tgl2 = $row_InsertSJKembali['S'];
+	// 2. Abis itu diconvert dalam bentuk tanggal yg bisa dicompare system trus dimasukkin ke variable $convert2
+	$convert2 = str_replace('/', '-', $tgl2);
+	// 3. Tanggal start sewa/extend, ambil tanggal akhirnya, masukin ke $last
+	$last = date('t-m-Y', strtotime($convert2));
+	// 4. convert ke bentuk comparable
+	$E = strtotime($last);
+	
+	// 9. bandingin apakah tgl yg diinput user lebih kecil atau sama dengan tanggal akhir dari bulan sewa/extendnya
 	if($check <= $E)
 	{
+		// 10. kalau lebih kecil/sama dengan, set $S dengan tanggal yg diinput
 		$S = $tx_insertsjkembalibarang2_Tgl;
 	}
 	else
 	{
+		// 11. kalau lebih besar, set $S dengan tanggal 01 dari bulan yg diinput sama user
 		$S = $S2;			
 	}
 	
