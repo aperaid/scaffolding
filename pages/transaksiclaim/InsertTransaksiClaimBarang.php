@@ -122,7 +122,20 @@ if (isset($_GET['Reference'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.Purchase, isisjkirim.QSisaKemInsert, transaksi.Barang, transaksi.JS FROM isisjkirim INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_InsertTransaksiClaim, "text"));
+$query_GetId = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"));
+$GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
+$row_GetId = mysql_fetch_assoc($GetId);
+$totalRows_GetId = mysql_num_rows($GetId);
+
+$query = mysql_query($query_GetId, $Connection) or die(mysql_error());
+$Id2 = array();
+while($row = mysql_fetch_assoc($query)){
+	$Id2[] = $row['Id'];
+}
+$Id3 = join(',',$Id2); 
+
+mysql_select_db($database_Connection, $Connection);
+$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.Purchase, isisjkirim.QSisaKemInsert, periode.S, periode.E, transaksi.Barang, transaksi.JS FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' AND periode.Id IN ($Id3) ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_InsertTransaksiClaim, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
@@ -288,8 +301,24 @@ $totalRows_User = mysql_num_rows($User);
     <tbody>
     <?php $increment = 1; ?>
 	<?php do { ?>
+    <?php 
+					
+					$tx_inserttransaksiclaimbarang_Tgl = substr($_SESSION['tx_inserttransaksiclaim_Tgl'], 1, -1);
+					
+					$tgl = $tx_inserttransaksiclaimbarang_Tgl;
+					$convert = str_replace('/', '-', $tgl);
+					$tgls = $row_InsertTransaksiClaim['S'];
+					$converts = str_replace('/', '-', $tgls);
+					$tgle = $row_InsertTransaksiClaim['E'];
+					$converte = str_replace('/', '-', $tgle);
+					
+					$check = strtotime($convert);
+					$checks = strtotime($converts);
+					$checke = strtotime($converte);
+					
+					?>
 	  <tr>
-	    <td align="center"><input type="checkbox" name="cb_inserttransaksiclaimbarang_checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>"></td>
+	    <td align="center"><input type="checkbox" name="cb_inserttransaksiclaimbarang_checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>" <?php if ($check < $checks){ ?> disabled <?php }elseif ($check > $checke){ ?> disabled <?php } ?>></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_JS[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_JS" value="<?php echo $row_InsertTransaksiClaim['JS']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_Barang[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_Quantity[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Quantity" value="<?php echo $row_InsertTransaksiClaim['QSisaKemInsert']; ?>" readonly></td>
@@ -303,7 +332,7 @@ $totalRows_User = mysql_num_rows($User);
               <!-- /.box-body -->
               <div class="box-footer">
                 <input type="submit" name="bt_inserttransaksiclaimbarang_submit" id="bt_inserttransaksiclaimbarang_submit" class="btn btn-primary pull-right" value="Choose" disabled>
-                <a href="../POCustomer/ViewTransaksi.php?Reference=<?php echo $_GET['Reference'] ?>"><button type="button" class="btn btn-default">Cancel</button></a>
+                <a href="InsertTransaksiClaim.php?Reference=<?php echo $_GET['Reference'] ?>"><button type="button" class="btn btn-default">Cancel</button></a>
               </div>
             </div>
             <!-- /.box -->

@@ -183,7 +183,7 @@ $totalRows_Invoice = mysql_num_rows($Invoice);
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO sjkembali (SJKem, Tgl, Reference) VALUES (%s, %s, %s)",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Tgl'], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'], "text"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -214,7 +214,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'KembaliS')",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_S'][$i], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'], "text"),
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
@@ -222,8 +222,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"));
   $insertSQL2 = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'KembaliE')",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode3'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_S2'][$i], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_S2'], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'], "text"),
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
@@ -244,7 +244,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Transport, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Invoice'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_LastTgl'], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E2'], "text"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_PPN'], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Transport'], "text"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference'], "text"),
@@ -484,7 +484,6 @@ $totalRows_User = mysql_num_rows($User);
 	  <tr>
       <!--<?php $FirstDate = substr($tx_insertsjkembalibarang2_Tgl, 2); ?>-->
       	  <input name="hd_insertsjkembalibarang2_SJKem" type="hidden" id="hd_insertsjkembalibarang2_SJKem" value="<?php echo $tx_insertsjkembalibarang2_SJKem; ?>">
-          <input name="hd_insertsjkembalibarang2_Tgl" type="hidden" id="hd_insertsjkembalibarang2_Tgl" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
           <input name="hd_insertsjkembalibarang2_Reference" type="hidden" id="hd_insertsjkembalibarang2_Reference" value="<?php echo $tx_insertsjkembalibarang2_Reference; ?>">
       	  <input name="hd_insertsjkembalibarang2_Invoice" type="hidden" id="hd_insertsjkembalibarang2_Invoice" value="<?php echo str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
           <input name="hd_insertsjkembalibarang2_PPN" type="hidden" id="hd_insertsjkembalibarang2_PPN" value="<?php echo $row_Invoice['PPN']; ?>">
@@ -497,12 +496,11 @@ $totalRows_User = mysql_num_rows($User);
 	      <input name="hd_insertsjkembalibarang2_Purchase[]" type="hidden" id="hd_insertsjkembalibarang2_Purchase" value="<?php echo $row_InsertSJKembali['Purchase']; ?>">
 	        <input name="hd_insertsjkembalibarang2_Periode[]" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_InsertSJKembali['Periode']; ?>">
 	        <input name="hd_insertsjkembalibarang2_S[]" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo $row_InsertSJKembali['S']; ?>">
-            <input name="hd_insertsjkembalibarang2_E[]" type="hidden" id="hd_insertsjkembalibarang2_E2" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
-            <input name="hd_insertsjkembalibarang2_S2[]" type="hidden" id="hd_insertsjkembalibarang2_S2" value="<?php echo $S; ?>">
-	        <input name="hd_insertsjkembalibarang2_E[]" type="hidden" id="hd_insertsjkembalibarang2_E" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
-            <input name="hd_insertsjkembalibarang2_LastTgl" type="hidden" id="hd_insertsjkembalibarang2_LastTgl" value="<?php echo $E2; ?>">
+            <input name="hd_insertsjkembalibarang2_E" type="hidden" id="hd_insertsjkembalibarang2_E" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
+            <input name="hd_insertsjkembalibarang2_S2" type="hidden" id="hd_insertsjkembalibarang2_S2" value="<?php echo $S; ?>">
+            <input name="hd_insertsjkembalibarang2_E2" type="hidden" id="hd_insertsjkembalibarang2_E2" value="<?php echo $E2; ?>">
 	        <input name="hd_insertsjkembalibarang2_IsiSJKem[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>">
-	    <td><input name="tx_insertsjkembalibarang2_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Tgl" value="<?php echo $row_InsertSJKembali['S']; ?>" readonly></td>
+        <td><input name="tx_insertsjkembalibarang2_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Tgl" value="<?php echo $row_InsertSJKembali['S']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Warehouse" autocomplete="off"></td>
 	    <td><input name="tx_insertsjkembalibarang2_QSisaKem[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
