@@ -126,6 +126,40 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
+$Reference = $_GET['Reference'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_Periode = "SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = '$Reference' AND (Deletes = 'Sewa' OR Deletes = 'Extend')";
+$Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
+$row_Periode = mysql_fetch_assoc($Periode);
+$totalRows_Periode = mysql_num_rows($Periode);
+
+$Periode2 = $row_Periode['Periode'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND (Deletes = 'Sewa' OR Deletes = 'Extend') ORDER BY Id ASC";
+$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
+$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
+$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND Deletes = 'Sewa' OR Deletes = 'Extend' ORDER BY Id DESC";
+$TanggalMax = mysql_query($query_TanggalMax, $Connection) or die(mysql_error());
+$row_TanggalMax = mysql_fetch_assoc($TanggalMax);
+$totalRows_TanggalMax = mysql_num_rows($TanggalMax);
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+	$_SESSION['tx_inserttransaksiclaim_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaim_Tgl'], "text"));
+	$_SESSION['tx_inserttransaksiclaim_Reference'] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaim_Reference'], "text"));
+
+  $insertGoTo = "InsertTransaksiClaimBarang.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+    $insertGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $insertGoTo));
+}
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -263,8 +297,24 @@ $totalRows_User = mysql_num_rows($User);
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="fm_inserttransaksiclaim_form1" name="fm_inserttransaksiclaim_form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>&Periode=<?php echo $row_Periode['Periode']; ?>" id="fm_inserttransaksiclaim_form1" name="fm_inserttransaksiclaim_form1" method="POST">
                 <div class="box-body">
+
+                  <?php
+	
+					  $Min = $row_TanggalMin['S'];
+					  $Max = $row_TanggalMax['E'];
+					
+				  ?>
+                  <div class="form-group">
+                    <label>Return Date</label>
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <input name="tx_inserttransaksiclaim_Tgl" type="text" autocomplete="off" class="form-control pull-right date" id="tx_inserttransaksiclaim_Tgl" required>
+                    </div>
+                  </div>
                   <div class="form-group">
                   <label>Reference Code</label>
                     <input name="tx_inserttransaksiclaim_Reference" type="text" class="form-control" id="tx_inserttransaksiclaim_Reference" autocomplete="off" onKeyUp="capital()" placeholder="00001/010116" value="<?php echo $_GET['Reference'] ?>" readonly>
@@ -321,6 +371,19 @@ $totalRows_User = mysql_num_rows($User);
 <!-- datepicker -->
 <script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
+
+<script>
+var Min = <?php echo json_encode($Min) ?>;
+var Max = <?php echo json_encode($Max) ?>;
+  $('#tx_inserttransaksiclaim_Tgl').datepicker({
+	  format: "dd/mm/yyyy",
+	  startDate: Min,
+	  endDate: Max,
+	  orientation: "bottom left",
+	  todayHighlight: true,
+	  autoclose: true
+  }); 
+</script>
 
 <script>
 function capital() {

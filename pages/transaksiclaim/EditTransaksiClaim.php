@@ -135,10 +135,10 @@ $IsiSJKir2 = join(',', $IsiSJKir);
 $QClaim = $row_Edit['QClaim'];
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+$QClaim-%s WHERE Reference=%s AND Barang=%s",
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+$QClaim-%s WHERE Reference=%s AND Purchase=%s",
                        GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
                        GetSQLValueString($_POST['hd_edittransaksiclaim_Reference'], "text"),
-					   GetSQLValueString($_POST['tx_edittransaksiclaim_Barang'], "text"));
+					   GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -366,7 +366,7 @@ $totalRows_User = mysql_num_rows($User);
 	    <td><input name="tx_edittransaksiclaim_QSisaKem" type="text" class="form-control" id="tx_edittransaksiclaim_QSisaKem" value="<?php echo $row_Edit['QSisaKem']; ?>" readonly></td>
 	    <td><input name="tx_edittransaksiclaim_QClaim" type="text" class="form-control" id="tx_edittransaksiclaim_QClaim" autocomplete="off" value="<?php echo $row_Edit['QClaim']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_Edit['QSisaKem']; ?>)"></td>
 	    <td><input name="tx_edittransaksiclaim_Amount" type="text" class="form-control" id="tx_edittransaksiclaim_Amount" autocomplete="off" value="<?php echo $row_Edit['Amount']; ?>"></td>
-	    <td><input name="tx_edittransaksiclaim_Purchase" type="text" class="form-control" id="tx_edittransaksiclaim_Purchase[]" value="<?php echo $row_Edit['Purchase']; ?>" readonly></td>
+	    <td><input name="tx_edittransaksiclaim_Purchase" type="text" class="form-control" id="tx_edittransaksiclaim_Purchase" value="<?php echo $row_Edit['Purchase']; ?>" readonly></td>
 	    </tr>
 			</div>
             </table>
