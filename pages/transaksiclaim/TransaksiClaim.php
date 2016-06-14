@@ -137,7 +137,7 @@ if (isset($_GET['Reference'])) {
 }
 	
 mysql_select_db($database_Connection, $Connection);
-$query_TransaksiClaim = "SELECT transaksiclaim.*, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode ORDER BY transaksiclaim.Id ASC";
+$query_TransaksiClaim = "SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.IsiSJKir=periode.IsiSJKir INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode GROUP BY transaksiclaim.Id ORDER BY transaksiclaim.Id ASC";
 $TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_error());
 $row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
 $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
@@ -288,6 +288,26 @@ $totalRows_User = mysql_num_rows($User);
 				</thead>
 				<tbody>
 					<?php do { ?>
+                    
+                    <?php 
+					
+					mysql_select_db($database_Connection, $Connection);
+					$query_PerClaim = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE Deletes='ClaimS' AND Reference=%s AND IsiSJKir=%s AND Periode=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['IsiSJKir'], "text"), GetSQLValueString($row_TransaksiClaim['Periode'], "text"));
+					$PerClaim = mysql_query($query_PerClaim, $Connection) or die(mysql_error());
+					$row_PerClaim = mysql_fetch_assoc($PerClaim);
+					$totalRows_PerClaim = mysql_num_rows($PerClaim);
+
+					mysql_select_db($database_Connection, $Connection);
+					$query_PerExtend = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE (Deletes='Extend' OR Deletes='Sewa') AND Reference=%s AND IsiSJKir=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['IsiSJKir'], "text"));
+					$PerExtend = mysql_query($query_PerExtend, $Connection) or die(mysql_error());
+					$row_PerExtend = mysql_fetch_assoc($PerExtend);
+					$totalRows_PerExtend = mysql_num_rows($PerExtend);
+					
+					$Claim = $row_PerClaim['Periode'];
+					$Extend = $row_PerExtend['Periode'];
+					
+					?>
+                    
 					<tr>
 						<td><?php echo $row_TransaksiClaim['Claim']; ?></td>
                         <td><?php echo $row_TransaksiClaim['Periode']; ?></td>
@@ -296,8 +316,8 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
 						<td><?php echo $row_TransaksiClaim['QClaim']; ?></td>
-                        <td><a href="EditTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">Edit</button></a></td>
-					  <td><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" class="btn btn-block btn-primary btn-sm btn-danger">Batal</button></a></td>
+                        <td><a href="EditTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-block btn-primary btn-sm" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Edit</button></a></td>
+					  <td><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
 				</tbody>

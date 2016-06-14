@@ -516,10 +516,10 @@ $totalRows_User = mysql_num_rows($User);
 	  <tr>
       <input name="hd_inserttransaksiclaimbarang2_Id[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Id" value="<?php echo $row_InsertTransaksiClaim['Id1']; ?>">
       <input name="hd_inserttransaksiclaimbarang2_Id2[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Id2" value="<?php echo $row_InsertTransaksiClaim['Id2']; ?>">
-      <input name="hd_inserttransaksiclaimbarang2_S[]" type="text" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
-      <input name="hd_inserttransaksiclaimbarang2_E" type="text" id="hd_inserttransaksiclaimbarang2_E" value="<?php echo $tx_inserttransaksiclaimbarang2_Tgl; ?>">
-      <input name="hd_inserttransaksiclaimbarang2_S2" type="text" id="hd_inserttransaksiclaimbarang2_S2" value="<?php echo $S ?>">
-      <input name="hd_inserttransaksiclaimbarang2_E2" type="text" id="hd_inserttransaksiclaimbarang2_E2" value="<?php echo $E2; ?>">
+      <input name="hd_inserttransaksiclaimbarang2_S[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
+      <input name="hd_inserttransaksiclaimbarang2_E" type="hidden" id="hd_inserttransaksiclaimbarang2_E" value="<?php echo $tx_inserttransaksiclaimbarang2_Tgl; ?>">
+      <input name="hd_inserttransaksiclaimbarang2_S2" type="hidden" id="hd_inserttransaksiclaimbarang2_S2" value="<?php echo $S ?>">
+      <input name="hd_inserttransaksiclaimbarang2_E2" type="hidden" id="hd_inserttransaksiclaimbarang2_E2" value="<?php echo $E2; ?>">
 	    <input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
 	      <input name="hd_inserttransaksiclaimbarang2_Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>">
 <input name="hd_inserttransaksiclaimbarang2_Periode[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
