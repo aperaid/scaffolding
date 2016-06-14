@@ -137,7 +137,7 @@ if (isset($_GET['Reference'])) {
 }
 	
 mysql_select_db($database_Connection, $Connection);
-$query_TransaksiClaim = "SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.IsiSJKir=periode.IsiSJKir INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode GROUP BY transaksiclaim.Periode ORDER BY transaksiclaim.Id ASC";
+$query_TransaksiClaim = sprintf("SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.IsiSJKir=periode.IsiSJKir INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE periode.Reference=%s GROUP BY transaksiclaim.Id ORDER BY transaksiclaim.Id ASC", GetSQLValueString($colname_TransaksiClaim, "text"));
 $TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_error());
 $row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
 $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
@@ -275,12 +275,13 @@ $totalRows_User = mysql_num_rows($User);
               <table id="tb_transaksiclaim_example1" name="tb_transaksiclaim_example1" class="table table-bordered table-striped table-responsive">
 				<thead>
 					<tr>
-					<th>Reference</th>
+					<th>No. Claim</th>
                     <th>Periode</th>
+                    <th>Barang</th>
 					<th>Tanggal Claim</th>
 					<th>Project</th>
 					<th>Amount</th>
-                    <th>Opsi</th>
+					<th>Quantity Claim</th>
 					<th>Opsi</th>
                     </tr>
 				</thead>
@@ -307,13 +308,14 @@ $totalRows_User = mysql_num_rows($User);
 					?>
                     
 					<tr>
-						<td><?php echo $row_TransaksiClaim['Reference']; ?></td>
+						<td><?php echo $row_TransaksiClaim['Claim']; ?></td>
                         <td><?php echo $row_TransaksiClaim['Periode']; ?></td>
+                        <td><?php echo $row_TransaksiClaim['Barang']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
-                        <td><a href="ViewTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-					  <td><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
+						<td><?php echo $row_TransaksiClaim['QClaim']; ?></td>
+                        <td><a href="EditTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-block btn-primary btn-sm" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Edit</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
 				</tbody>

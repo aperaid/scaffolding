@@ -277,7 +277,7 @@ for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode, IsiSJKir) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"),
-                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Tgl'], "text"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"),
