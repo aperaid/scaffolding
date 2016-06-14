@@ -135,7 +135,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	}
 	
-	mysql_select_db($database_Connection, $Connection);
+mysql_select_db($database_Connection, $Connection);
 $query_SJKembali = "SELECT sjkembali.*, project.Project, customer.Customer FROM sjkembali INNER JOIN pocustomer ON sjkembali.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode ORDER BY sjkembali.Id ASC";
 $SJKembali = mysql_query($query_SJKembali, $Connection) or die(mysql_error());
 $row_SJKembali = mysql_fetch_assoc($SJKembali);

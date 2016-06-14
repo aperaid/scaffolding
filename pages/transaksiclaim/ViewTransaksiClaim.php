@@ -134,10 +134,11 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 $colname_TransaksiClaim = "-1";
 if (isset($_GET['Reference'])) {
   $colname_TransaksiClaim = $_GET['Reference'];
+  $colname_Periode = $_GET['Periode'];
 }
 	
 mysql_select_db($database_Connection, $Connection);
-$query_TransaksiClaim = sprintf("SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.IsiSJKir=periode.IsiSJKir INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE periode.Reference=%s GROUP BY transaksiclaim.Id ORDER BY transaksiclaim.Id ASC", GetSQLValueString($colname_TransaksiClaim, "text"));
+$query_TransaksiClaim = sprintf("SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project, customer.* FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.IsiSJKir=periode.IsiSJKir INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND transaksiclaim.Periode=%s GROUP BY transaksiclaim.Id ORDER BY transaksiclaim.Id ASC", GetSQLValueString($colname_TransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_error());
 $row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
 $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
@@ -267,14 +268,55 @@ $totalRows_User = mysql_num_rows($User);
 
     <!-- Main content -->
     <section class="content">
+    <section class="invoice">
       <div class="row">
         <div class="col-xs-12">
-
-          <div class="box">
-            <div class="box-body">
-              <table id="tb_transaksiclaim_example1" name="tb_transaksiclaim_example1" class="table table-bordered table-striped table-responsive">
-				<thead>
-					<tr>
+          <h2 class="page-header">
+            <i class="fa fa-globe"></i> Transaksi Claim | <?php echo $row_TransaksiClaim['Reference']; ?>
+			<small class="pull-right">Date: <?php echo $row_TransaksiClaim['Tgl']; ?></small>
+		  </h2>
+        </div>
+        <!-- /.col -->
+      </div>
+	  
+	  <!-- info row -->
+      <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+          Company
+          <address>
+            <strong><?php echo $row_TransaksiClaim['Company']; ?></strong><br>
+            <?php echo $row_TransaksiClaim['Alamat']; ?><br>
+            <?php echo $row_TransaksiClaim['Kota']; ?>,  <?php echo $row_TransaksiClaim['Zip']; ?><br>
+            Phone: <?php echo $row_TransaksiClaim['CompPhone']; ?><br>
+            Email: <?php echo $row_TransaksiClaim['CompEmail']; ?>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Project
+          <address>
+            <strong><?php echo $row_TransaksiClaim['Project']; ?></strong><br>
+            <?php echo $row_TransaksiClaim['Alamat']; ?><br>
+            <?php echo $row_TransaksiClaim['Kota']; ?>,  <?php echo $row_TransaksiClaim['Zip']; ?><br>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          Contact Person
+          <address>
+            <strong><?php echo $row_TransaksiClaim['Customer']; ?></strong><br>
+            Phone: <?php echo $row_TransaksiClaim['CustPhone']; ?><br>
+            Email: <?php echo $row_TransaksiClaim['CustEmail']; ?>
+          </address>
+        </div>
+        <!-- /.col -->
+      </div>
+    
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+              <table id="tb_viewsjkirim_example1" class="table table-bordered table-striped table-responsive">
+                <thead>
+                <tr>
 					<th>No. Claim</th>
                     <th>Periode</th>
                     <th>Barang</th>
@@ -282,10 +324,9 @@ $totalRows_User = mysql_num_rows($User);
 					<th>Project</th>
 					<th>Amount</th>
 					<th>Quantity Claim</th>
-					<th>Opsi</th>
-                    </tr>
-				</thead>
-				<tbody>
+                </tr>
+                </thead>
+                <tbody>
 					<?php do { ?>
                     
                     <?php 
@@ -306,8 +347,7 @@ $totalRows_User = mysql_num_rows($User);
 					$Extend = $row_PerExtend['Periode'];
 					
 					?>
-                    
-					<tr>
+					  <tr>
 						<td><?php echo $row_TransaksiClaim['Claim']; ?></td>
                         <td><?php echo $row_TransaksiClaim['Periode']; ?></td>
                         <td><?php echo $row_TransaksiClaim['Barang']; ?></td>
@@ -315,16 +355,22 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
 						<td><?php echo $row_TransaksiClaim['QClaim']; ?></td>
-                        <td><a href="EditTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-block btn-primary btn-sm" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Edit</button></a></td>
-					</tr>
+					  </tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
-				</tbody>
-                
-			</table>
-            </div>
+                </tbody>
+              </table>
+              </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <div class="box-footer">
+				<a href="TransaksiClaim.php"><button type="button" class="btn btn-default">Back</button></a>
+				<a href="#"><button type="button" class="btn btn-default">Print</button></a>
+				
+				<div class="btn-group pull-right">
+					<a href="EditTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-primary" <?php } else { ?> class="btn btn-default" disabled <?php } ?>>Edit Claim</button></a>
+
+				</div>
+			</div>
+          
         </div>
         <!-- /.col -->
       </div>
@@ -344,10 +390,6 @@ $totalRows_User = mysql_num_rows($User);
   </footer>
   <!-- /.footer-wrapper -->
   
-  <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
-</div>
-
 <!-- jQuery 2.1.4 -->
 <script src="../../library/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.5 -->

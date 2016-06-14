@@ -312,8 +312,8 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
-                        <td><a href="ViewTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-					  <td><a href="DeleteTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
+                        <td><a href="ViewTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+					  <td><a href="DeleteTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
 				</tbody>
