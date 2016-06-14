@@ -318,7 +318,7 @@ $totalRows_User = mysql_num_rows($User);
 					
 					?>
 	  <tr>
-	    <td align="center"><input type="checkbox" name="cb_inserttransaksiclaimbarang_checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>" <?php if ($check < $checks){ ?> disabled <?php }elseif ($check > $checke){ ?> disabled <?php } ?>></td>
+	    <td align="center"><input type="checkbox" name="cb_inserttransaksiclaimbarang_checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>" <?php if ($check < $checks){ ?> disabled <?php }elseif ($check > $checke){ ?> disabled <?php }elseif ($row_InsertTransaksiClaim['QSisaKemInsert'] == 0){ ?> disabled <?php } ?>></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_JS[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_JS" value="<?php echo $row_InsertTransaksiClaim['JS']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_Barang[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_Quantity[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Quantity" value="<?php echo $row_InsertTransaksiClaim['QSisaKemInsert']; ?>" readonly></td>
@@ -326,6 +326,7 @@ $totalRows_User = mysql_num_rows($User);
 	    </tr>
 	  <?php $increment++; ?>
 	  <?php } while ($row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim)); ?>
+      <p><label><input type="checkbox" id="SelectAll"/> Check all</label></p>
 	</tbody>
                 </table>
               </div>
@@ -384,6 +385,14 @@ var checkboxes = $("input[type='checkbox']"),
 
 checkboxes.click(function() {
     submitButt.attr("disabled", !checkboxes.is(":checked"));
+});
+</script>
+
+<script>
+$('#SelectAll').click(function () {
+    var checked_status = this.checked;
+
+    $('input[type=checkbox]').not(":disabled").prop('checked', checked_status);
 });
 </script>
 

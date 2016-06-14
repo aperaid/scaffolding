@@ -293,13 +293,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                     <?php $increment = 1; ?>
                     <?php do { ?>
                       <tr>
-                        <td><input type="checkbox" name="cb_insertsjkirimbarang_checkbox[]" id="cb_insertsjkirimbarang_checkbox" value="<?php echo $row_InsertSJKirim['Purchase']; ?>"></td>
+                        <td><input type="checkbox" name="cb_insertsjkirimbarang_checkbox[]" id="cb_insertsjkirimbarang_checkbox" value="<?php echo $row_InsertSJKirim['Purchase']; ?>" <?php if ($row_InsertSJKirim['QSisaKirInsert'] == 0){ ?> disabled <?php } ?>></td>
                         <td><input name="tx_insertsjkirimbarang_JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
                         <td><input name="tx_insertsjkirimbarang_Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
                         <td><input name="tx_insertsjkirimbarang_QSisaKir[]" type="text" class="form-control" id="tx_insertsjkirimbarang_QSisaKir" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>
                         </tr>
                       <?php $increment++; ?>
                       <?php } while ($row_InsertSJKirim = mysql_fetch_assoc($InsertSJKirim)); ?>
+                      <p><label><input type="checkbox" id="SelectAll"/> Check all</label></p>
                   </tbody>
                 </table>
               </div>
@@ -357,6 +358,14 @@ var checkboxes = $("input[type='checkbox']"),
 
 checkboxes.click(function() {
     submitButt.attr("disabled", !checkboxes.is(":checked"));
+});
+</script>
+
+<script>
+$('#SelectAll').click(function () {
+    var checked_status = this.checked;
+
+    $('input[type=checkbox]').not(":disabled").prop('checked', checked_status);
 });
 </script>
 
