@@ -314,8 +314,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 }
 
-// Kalau klik submit, hapus data2 dari session sebelumnya
-if 10. ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+// 10. Kalau klik submit, hapus data2 dari session sebelumnya
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 	unset($_SESSION['cb_inserttransaksiclaimbarang_checkbox']);
 	unset($_SESSION['tx_inserttransaksiclaim_Tgl']);
 	unset($_SESSION['tx_inserttransaksiclaim_Reference']);
