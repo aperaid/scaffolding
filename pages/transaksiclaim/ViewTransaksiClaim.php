@@ -314,9 +314,8 @@ $totalRows_User = mysql_num_rows($User);
     
     <div class="row">
         <div class="col-xs-12 table-responsive">
-              <table id="tb_viewsjkirim_example1" class="table table-bordered table-striped table-responsive">
+              <table id="tb_viewsjkirim_example1" class="table table-striped">
                 <thead>
-                <tr>
 					<th>No. Claim</th>
                     <th>Periode</th>
                     <th>Barang</th>
@@ -324,7 +323,6 @@ $totalRows_User = mysql_num_rows($User);
 					<th>Project</th>
 					<th>Amount</th>
 					<th>Quantity Claim</th>
-                </tr>
                 </thead>
                 <tbody>
 					<?php do { ?>
@@ -356,8 +354,8 @@ $totalRows_User = mysql_num_rows($User);
 						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
 						<td><?php echo $row_TransaksiClaim['QClaim']; ?></td>
 					  </tr>
-					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
-                </tbody>
+                      <?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
+                 </tbody>
               </table>
               </div>
             <!-- /.box-body -->
@@ -366,15 +364,16 @@ $totalRows_User = mysql_num_rows($User);
 				<a href="#"><button type="button" class="btn btn-default">Print</button></a>
 				
 				<div class="btn-group pull-right">
-					<a href="EditTransaksiClaim.php?Id=<?php echo $row_TransaksiClaim['Id']; ?>"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-primary" <?php } else { ?> class="btn btn-default" disabled <?php } ?>>Edit Claim</button></a>
-
-				</div>
-			</div>
-          
-        </div>
+				<a href="EditTransaksiClaim.php?Reference=<?php echo $_GET['Reference']; ?>&Periode=<?php echo $_GET['Periode']; ?>"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-primary" <?php } else { ?> class="btn btn-default" disabled <?php } ?> >Edit Claim </button>
+                </a>
+                </div>
+			  </div>
+                <!-- /.box -->
+        	</div>
         <!-- /.col -->
       </div>
       <!-- /.row -->
+      </section>
     </section>
     <!-- /.content -->
   </div>

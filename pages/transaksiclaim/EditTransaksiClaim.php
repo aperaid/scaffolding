@@ -116,11 +116,12 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 $colname_Edit = "-1";
-if (isset($_GET['Id'])) {
-  $colname_Edit = $_GET['Id'];
+if (isset($_GET['Reference'])) {
+  $colname_Edit = $_GET['Reference'];
+  $colname_Periode = $_GET['Periode'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_Edit = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Claim, transaksiclaim.QClaim, transaksiclaim.Amount, transaksiclaim.Purchase, transaksiclaim.Periode, transaksiclaim.IsiSJKir, transaksi.Barang, transaksi.QSisaKem, transaksi.Reference FROM transaksiclaim LEFT JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase WHERE transaksiclaim.Id = %s", GetSQLValueString($colname_Edit, "int"));
+$query_Edit = sprintf("SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, isisjkirim.QSisaKem FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.IsiSJKir=periode.IsiSJKir LEFT JOIN isisjkirim ON transaksiclaim.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON periode.Purchase = transaksi.Purchase WHERE periode.Reference=%s AND transaksiclaim.Periode=%s GROUP BY transaksiclaim.Id", GetSQLValueString($colname_Edit, "text"), GetSQLValueString($colname_Periode, "text"));
 $Edit = mysql_query($query_Edit, $Connection) or die(mysql_error());
 $row_Edit = mysql_fetch_assoc($Edit);
 $totalRows_Edit = mysql_num_rows($Edit);
@@ -132,33 +133,43 @@ while($row = mysql_fetch_assoc($query)){
 }
 $IsiSJKir2 = join(',', $IsiSJKir);
 
-$QClaim = $row_Edit['QClaim'];
+$query = mysql_query($query_Edit, $Connection) or die(mysql_error());
+$QClaim = array();
+while($row = mysql_fetch_assoc($query)){
+	$QClaim[] = $row['QClaim'];
+}
 
+for($i=0;$i<$totalRows_Edit;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+$QClaim-%s WHERE Reference=%s AND Purchase=%s",
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+%s-%s WHERE Reference=%s AND Purchase=%s",
+  					   GetSQLValueString($QClaim[$i], "int"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'][$i], "int"),
                        GetSQLValueString($_POST['hd_edittransaksiclaim_Reference'], "text"),
-					   GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"));
+					   GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+$QClaim-%s, QSisaKem=QSisaKem+$QClaim-%s WHERE Purchase=%s AND IsiSJKir=%s",
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
-					   GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
-					   GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"),
-                       GetSQLValueString($_POST['hd_edittransaksiclaim_IsiSJKir'], "text"));
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+%s-%s, QSisaKem=QSisaKem+%s-%s WHERE Purchase=%s AND IsiSJKir=%s",
+  					   GetSQLValueString($QClaim[$i], "int"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'][$i], "int"),
+					   GetSQLValueString($QClaim[$i], "int"),
+					   GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'][$i], "int"),
+					   GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'][$i], "text"),
+                       GetSQLValueString($_POST['hd_edittransaksiclaim_IsiSJKir'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+$QClaim-%s WHERE Periode=%s AND IsiSJKir IN ('$IsiSJKir2') AND Deletes !='KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'",
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
-					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"));
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s-%s WHERE Periode=%s AND IsiSJKir=%s AND (Deletes ='Extend' OR Deletes = 'Sewa')",
+  					   GetSQLValueString($QClaim[$i], "int"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'][$i], "int"),
+					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"),
+                       GetSQLValueString($_POST['hd_edittransaksiclaim_IsiSJKir'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -166,10 +177,10 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE Periode=%s AND Purchase=%s AND Claim=%s AND Deletes='ClaimS'",
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"),
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"),
-					   GetSQLValueString($_POST['tx_edittransaksiclaim_Claim'], "text"));
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'][$i], "text"),
+					   GetSQLValueString($_POST['tx_edittransaksiclaim_Claim'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -177,10 +188,10 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE Periode=%s+1 AND Purchase=%s AND Claim=%s AND Deletes='ClaimE'",
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['hd_edittransaksiclaim_Periode'], "int"),
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'], "text"),
-					   GetSQLValueString($_POST['tx_edittransaksiclaim_Claim'], "text"));
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_Purchase'][$i], "text"),
+					   GetSQLValueString($_POST['tx_edittransaksiclaim_Claim'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -188,9 +199,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE transaksiclaim SET QClaim=%s, Amount=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'], "int"),
-                       GetSQLValueString($_POST['tx_edittransaksiclaim_Amount'], "text"),
-                       GetSQLValueString($_POST['hd_edittransaksiclaim_Id'], "int"));
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_QClaim'][$i], "int"),
+                       GetSQLValueString($_POST['tx_edittransaksiclaim_Amount'][$i], "text"),
+                       GetSQLValueString($_POST['hd_edittransaksiclaim_Id'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -201,6 +212,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
     $updateGoTo .= $_SERVER['QUERY_STRING'];
   }
   header(sprintf("Location: %s", $updateGoTo));
+}
 }
 
 $colname_User = "-1";
@@ -355,21 +367,23 @@ $totalRows_User = mysql_num_rows($User);
       </tr>
     </thead>
     <tbody>
-
+	<?php do { ?>
 	  <tr>
-      <input name="hd_edittransaksiclaim_Id" type="hidden" class="form-control" id="hd_edittransaksiclaim_Id" value="<?php echo $row_Edit['Id']; ?>" readonly>
+      <input name="hd_edittransaksiclaim_Id[]" type="hidden" class="form-control" id="hd_edittransaksiclaim_Id" value="<?php echo $row_Edit['Id']; ?>" readonly>
       <input name="hd_edittransaksiclaim_Reference" type="hidden" class="form-control" id="hd_edittransaksiclaim_Reference" value="<?php echo $row_Edit['Reference']; ?>" readonly>
       <input name="hd_edittransaksiclaim_Periode" type="hidden" class="form-control" id="hd_edittransaksiclaim_Periode" value="<?php echo $row_Edit['Periode']; ?>" readonly>
-      <input name="hd_edittransaksiclaim_IsiSJKir" type="hidden" class="form-control" id="hd_edittransaksiclaim_IsiSJKir" value="<?php echo $row_Edit['IsiSJKir']; ?>" readonly>
-	    <td><input name="tx_edittransaksiclaim_Claim" type="text" class="form-control" id="tx_edittransaksiclaim_Claim" value="<?php echo $row_Edit['Claim']; ?>" readonly></td>
-	    <td><input name="tx_edittransaksiclaim_Barang" type="text" class="form-control" id="tx_edittransaksiclaim_Barang" value="<?php echo $row_Edit['Barang']; ?>" readonly></td>
-	    <td><input name="tx_edittransaksiclaim_QSisaKem" type="text" class="form-control" id="tx_edittransaksiclaim_QSisaKem" value="<?php echo $row_Edit['QSisaKem']; ?>" readonly></td>
-	    <td><input name="tx_edittransaksiclaim_QClaim" type="text" class="form-control" id="tx_edittransaksiclaim_QClaim" autocomplete="off" value="<?php echo $row_Edit['QClaim']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_Edit['QSisaKem']; ?>)"></td>
-	    <td><input name="tx_edittransaksiclaim_Amount" type="text" class="form-control" id="tx_edittransaksiclaim_Amount" autocomplete="off" value="<?php echo $row_Edit['Amount']; ?>"></td>
-	    <td><input name="tx_edittransaksiclaim_Purchase" type="text" class="form-control" id="tx_edittransaksiclaim_Purchase" value="<?php echo $row_Edit['Purchase']; ?>" readonly></td>
+      <input name="hd_edittransaksiclaim_IsiSJKir[]" type="hidden" class="form-control" id="hd_edittransaksiclaim_IsiSJKir" value="<?php echo $row_Edit['IsiSJKir']; ?>" readonly>
+	    <td><input name="tx_edittransaksiclaim_Claim[]" type="text" class="form-control" id="tx_edittransaksiclaim_Claim" value="<?php echo $row_Edit['Claim']; ?>" readonly></td>
+	    <td><input name="tx_edittransaksiclaim_Barang[]" type="text" class="form-control" id="tx_edittransaksiclaim_Barang" value="<?php echo $row_Edit['Barang']; ?>" readonly></td>
+	    <td><input name="tx_edittransaksiclaim_QSisaKem[]" type="text" class="form-control" id="tx_edittransaksiclaim_QSisaKem" value="<?php echo $row_Edit['QSisaKem']; ?>" readonly></td>
+	    <td><input name="tx_edittransaksiclaim_QClaim[]" type="text" class="form-control" id="tx_edittransaksiclaim_QClaim" autocomplete="off" value="<?php echo $row_Edit['QClaim']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_Edit['QSisaKem']; ?>)"></td>
+	    <td><input name="tx_edittransaksiclaim_Amount[]" type="text" class="form-control" id="tx_edittransaksiclaim_Amount" autocomplete="off" value="<?php echo $row_Edit['Amount']; ?>"></td>
+	    <td><input name="tx_edittransaksiclaim_Purchase[]" type="text" class="form-control" id="tx_edittransaksiclaim_Purchase" value="<?php echo $row_Edit['Purchase']; ?>" readonly></td>
 	    </tr>
-			</div>
+            <?php } while ($row_Edit = mysql_fetch_assoc($Edit)); ?>
+            </tbody>
             </table>
+            </div>
             <!-- /.box-body -->
             <div class="box-footer">
 	<a href="TransaksiClaim.php"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
