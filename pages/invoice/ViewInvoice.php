@@ -424,7 +424,7 @@ $totalRows_User = mysql_num_rows($User);
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Transport</label>
 					<div class="col-sm-6">
-						<input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){ echo number_format($row_View['Transport'],0,',','.'); }?>" onKeyUp="tot()">
+						<input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo 'Rp ', number_format($row_View['Transport'],0,',','.'); }?>" onKeyUp="tot()" <?php if($row_View['Periode'] > 1) { ?> disabled <?php } ?>>
 					</div>
                 </div>
 				<!-- Total Text -->

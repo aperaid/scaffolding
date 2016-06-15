@@ -149,11 +149,10 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
-// Update PPN&Transport berdasarkan nomor invoice
+// Update PPN berdasarkan nomor invoice
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s WHERE Invoice=%s",
+  $updateSQL = sprintf("UPDATE invoice SET PPN=%s WHERE Invoice=%s",
                        GetSQLValueString($_POST['tx_viewinvoiceclaim_PPN'], "int"),
-                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoiceclaim_Transport'], 3)), "text"),
                        GetSQLValueString($_POST['tx_viewinvoiceclaim_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -365,15 +364,9 @@ $totalRows_User = mysql_num_rows($User);
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Transport</label>
-                  <div class="col-sm-6">
-                    <input id="tx_viewinvoiceclaim_Transport" name="tx_viewinvoiceclaim_Transport" type="text" class="form-control" value="Rp <?php echo number_format($row_View['Transport'],0,',','.'); ?>" onKeyUp="tot()">
-				  </div>
-                </div>
-                <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
-                    <input name="tx_viewinvoiceclaim_Totals" type="text" class="form-control" id="tx_viewinvoiceclaim_Totals" value="Rp <?php echo number_format(($total*$row_View['PPN']*0.1)+$total+$row_View['Transport'], 2,',','.'); ?>" readonly>
+                    <input name="tx_viewinvoiceclaim_Totals" type="text" class="form-control" id="tx_viewinvoiceclaim_Totals" value="Rp <?php echo number_format(($total*$row_View['PPN']*0.1)+$total, 2,',','.'); ?>" readonly>
                     <input name="hd_viewinvoiceclaim_Totals2" type="hidden" id="hd_viewinvoiceclaim_Totals2" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>
@@ -426,25 +419,17 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
-<!-- Mask Money -->
-<script src="../../library/maskmoney/src/jquery.maskMoney.js" type="text/javascript"></script>
 <!-- page script -->
 
 <script language="javascript">
   function tot() {
     var txtFirstNumberValue = document.getElementById('hd_viewinvoiceclaim_Totals2').value;
     var txtSecondNumberValue = document.getElementById('tx_viewinvoiceclaim_PPN').value;
-	var txtThirdNumberValue = document.getElementById('tx_viewinvoiceclaim_Transport').value;
-	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue) + parseFloat(txtThirdNumberValue);
+	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1);
 	  if (!isNaN(result)) {
 		document.getElementById('tx_viewinvoiceclaim_Totals').value = result;
       }
    }
-   
-$(document).ready(function(){
-	//Mask Transport
-	$("#tx_viewinvoiceclaim_Transport").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
-});
 </script>
 </body>
 </html>

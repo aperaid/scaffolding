@@ -154,7 +154,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s WHERE Invoice=%s",
                        GetSQLValueString($_POST['tx_viewinvoicejual_PPN'], "int"),
-                       GetSQLValueString($_POST['tx_viewinvoicejual_Transport'], "text"),
+                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Transport'], 3)), "text"),
                        GetSQLValueString($_POST['tx_viewinvoicejual_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -353,16 +353,16 @@ $totalRows_User = mysql_num_rows($User);
     </div>
 
     <div class="form-group">
-                  <label class="col-sm-2 control-label">Pajak</label>
+                  <label class="col-sm-2 control-label">Pajak 10%</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoicejual_PPN" name="tx_viewinvoicejual_PPN" type="text" class="form-control" value="<?php echo $row_View['PPN']; ?>" onKeyUp="tot()">
-                    <input id="hd_viewinvoicejual_PPN2" name="hd_viewinvoicejual_PPN2" type="hidden" autocomplete="off" value="<?php echo $row_View['PPN']; ?>">
+                    <input name="tx_viewinvoicejual_PPN" type="hidden" id="tx_viewinvoicejual_PPN" value="0">
+					<input name="tx_viewinvoicejual_PPN" type="checkbox" id="tx_viewinvoicejual_PPN" value="1" <?php if ($row_View['PPN'] == 1){ ?> checked <?php } ?>>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Transport</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoicejual_Transport" name="tx_viewinvoicejual_Transport" type="text" class="form-control" value="<?php echo number_format($row_View['Transport'], 2); ?>" onKeyUp="tot()">
+                    <input id="tx_viewinvoicejual_Transport" name="tx_viewinvoicejual_Transport" type="text" class="form-control" value="<?php echo 'Rp ', number_format($row_View['Transport'],0,',','.'); ?>" onKeyUp="tot()">
                     <input id="hd_viewinvoicejual_Transport2" name="hd_viewinvoicejual_Transport2" type="hidden" autocomplete="off" value="<?php echo $row_View['Transport']; ?>">
                   </div>
                 </div>
@@ -422,6 +422,8 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
+<!-- Mask Money -->
+<script src="../../library/maskmoney/src/jquery.maskMoney.js" type="text/javascript"></script>
 <!-- page script -->
 
 <script language="javascript">
@@ -434,6 +436,11 @@ $totalRows_User = mysql_num_rows($User);
 		document.getElementById('tx_viewinvoicejual_Totals').value = result;
       }
    }
+   
+$(document).ready(function(){
+	//Mask Transport
+	$("#tx_viewinvoicejual_Transport").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+});
 </script>
 </body>
 </html>
