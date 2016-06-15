@@ -94,6 +94,7 @@ while($row = mysql_fetch_assoc($query)){
 $IsiSJKir2 = join(',',$IsiSJKir); 
 
 // Update Transaksi
+// Balikin Quantity ke QsisaKem Anggapannya masih di sewa
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 for($i=0;$i<$totalRows_Edit;$i++){
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+%s WHERE Reference=%s AND Purchase=%s",
@@ -107,6 +108,7 @@ for($i=0;$i<$totalRows_Edit;$i++){
 }
 
 // Update isisjkirim
+// Balikin Qsisakeminsert dan Qsisa kembali masing2 sesuai dgn jumlah apa yg udah diclaim
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 for($i=0;$i<$totalRows_Edit;$i++){
   $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+%s, QSisaKem=QSisaKem+%s WHERE Purchase=%s AND IsiSJKir=%s",
@@ -121,6 +123,7 @@ for($i=0;$i<$totalRows_Edit;$i++){
 }
 
 // Update Periode
+// Balikin quantity seperti semula sesua isisjkirim mana yg udah di claim
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 for($i=0;$i<$totalRows_Edit;$i++){
   $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Purchase=%s AND Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend')",
@@ -135,6 +138,7 @@ for($i=0;$i<$totalRows_Edit;$i++){
 }
 
 // Delete Periode
+// Delete ClaimE dan ClaimS sesuai nomor purchase dan reference dan isisjkir mana yg udah kena claim
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $deleteSQL = sprintf("DELETE FROM periode WHERE Reference=%s AND Purchase IN ($Purchase2) AND IsiSJKir IN ($IsiSJKir2) AND Claim IN ($Claim2) AND (Deletes='ClaimS' OR Deletes='ClaimE')",
   					   GetSQLValueString($row_Edit['Reference'], "text"));
@@ -147,6 +151,7 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 }
 
 // Delete Invoice
+// Hapus semua invoice yg 
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $deleteSQL = sprintf("DELETE FROM invoice WHERE Reference=%s AND Periode=%s AND JSC='Claim'",
   					   GetSQLValueString($row_Edit['Reference'], "text"),
