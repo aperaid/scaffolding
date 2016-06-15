@@ -120,38 +120,47 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   header(sprintf("Location: %s", $insertGoTo));
 }
 
+// Query Menu
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
+// Ambil nomor reference dari URI masukin ke variable $Reference
 $Reference = $_GET['Reference'];
 
+// Query utk ambil Periode Maximum dari periode dgn parameter: reference, Delete Sewa/Extend
 mysql_select_db($database_Connection, $Connection);
 $query_Periode = "SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = '$Reference' AND (Deletes = 'Sewa' OR Deletes = 'Extend')";
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
-
+// Dari query diatas, masukin ke Variable $Periode2
 $Periode2 = $row_Periode['Periode'];
 
+// Query utk ambil tanggal S dari periode dengan parameter: Reference, Periode, Deletes Sewa/Extend
 mysql_select_db($database_Connection, $Connection);
 $query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND (Deletes = 'Sewa' OR Deletes = 'Extend') ORDER BY Id ASC";
 $TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
 $row_TanggalMin = mysql_fetch_assoc($TanggalMin);
 $totalRows_TanggalMin = mysql_num_rows($TanggalMin);
 
+// Query untuk ambil tanggal E dari periode dengan parameter: Reference, Periode, Deletes=sewa/exend
 mysql_select_db($database_Connection, $Connection);
-$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND Deletes = 'Sewa' OR Deletes = 'Extend' ORDER BY Id DESC";
+$query_TanggalMax = "SELECT E FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND (Deletes = 'Sewa' OR Deletes = 'Extend') ORDER BY Id DESC";
 $TanggalMax = mysql_query($query_TanggalMax, $Connection) or die(mysql_error());
 $row_TanggalMax = mysql_fetch_assoc($TanggalMax);
 $totalRows_TanggalMax = mysql_num_rows($TanggalMax);
 
+// Rumus insert kalau udah di klik insert
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+	// Masukin Tgl transaksi claim ke session
 	$_SESSION['tx_inserttransaksiclaim_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaim_Tgl'], "text"));
+	// Masukkin No.Ref ke Session
 	$_SESSION['tx_inserttransaksiclaim_Reference'] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaim_Reference'], "text"));
-
+  
+  //Redirect after klik insert
   $insertGoTo = "InsertTransaksiClaimBarang.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
@@ -164,6 +173,7 @@ $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
 }
+
 mysql_select_db($database_Connection, $Connection);
 $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueString($colname_User, "text"));
 $User = mysql_query($query_User, $Connection) or die(mysql_error());

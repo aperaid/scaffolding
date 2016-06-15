@@ -109,24 +109,30 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+// Query Menu
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
+// Ambil Nomor Reference & Periode dari URI masukin ke variable
 $colname_InsertTransaksiClaim = "-1";
 if (isset($_GET['Reference'])) {
+  // Reference dari URI masukin ke $colname_InsertTransaksiClaim
   $colname_InsertTransaksiClaim = $_GET['Reference'];
+  // Periode dari URI masukin ke $colname_Periode
   $colname_Periode = $_GET['Periode'];
 }
 
+// Ambil max ID dari PERIODE parameter: Reference, Deletes= Sewa/Extend (karena mau ambil periode paling terakhir) berdasarkan isisjkir nya
 mysql_select_db($database_Connection, $Connection);
 $query_GetId = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"));
 $GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
 $row_GetId = mysql_fetch_assoc($GetId);
 $totalRows_GetId = mysql_num_rows($GetId);
 
+// Ambil ID paling besar setiap isisjkir extend/sewa doang
 $query = mysql_query($query_GetId, $Connection) or die(mysql_error());
 $Id2 = array();
 while($row = mysql_fetch_assoc($query)){
@@ -134,22 +140,27 @@ while($row = mysql_fetch_assoc($query)){
 }
 $Id3 = join(',',$Id2); 
 
+// Ambil isisjkir, purchase, qsisakeminsert, S, E, Barang, JS dari isisjkirim, periode, & sjkirim parameter: reference, js: sewa, dan periode ID=yg udah diambil di atas
 mysql_select_db($database_Connection, $Connection);
 $query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.Purchase, isisjkirim.QSisaKemInsert, periode.S, periode.E, transaksi.Barang, transaksi.JS FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' AND periode.Id IN ($Id3) ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_InsertTransaksiClaim, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
 
+// ambil ID dari transaksi claim
 mysql_select_db($database_Connection, $Connection);
 $query_LastId = "SELECT Id FROM transaksiclaim ORDER BY Id DESC";
 $LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
 $row_LastId = mysql_fetch_assoc($LastId);
 $totalRows_LastId = mysql_num_rows($LastId);
 
-for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
+// 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){  
+  // masukin ke array checkbox barang apa aja yg dipilih
   $_SESSION['cb_inserttransaksiclaimbarang_checkbox'][$i] = sprintf("%s", GetSQLValueString($_POST['cb_inserttransaksiclaimbarang_checkbox'][$i], "int"));
   
+  // redirect setelah selesai ke inserttransaksiclaimbarang2
   $insertGoTo = "InsertTransaksiClaimBarang2.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";

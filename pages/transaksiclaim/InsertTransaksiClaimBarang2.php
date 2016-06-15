@@ -109,12 +109,14 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+// Query Menu
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
+// Ambil Reference & Periode dari URI
 $colname_InsertTransaksiClaim = "-1";
 if (isset($_GET['Reference'])) {
   $colname_InsertTransaksiClaim = $_GET['Reference'];
@@ -123,7 +125,7 @@ if (isset($_GET['Reference'])) {
 
 $checkbox = $_SESSION['cb_inserttransaksiclaimbarang_checkbox'];
 $remove = preg_replace("/[^0-9,.]/", "", $checkbox);
-
+$test_count=count($remove);
 error_reporting(E_ERROR); // bagian di ilangin error
 $array = array();
     for ($i = 0; $i < 10; ++$i) { // krn bagian sini ga ngerti untuk count sesuai byk array
@@ -138,41 +140,49 @@ $arrayaftercount = array();
 	
 $IsiSJKir = join(',',$arrayaftercount);  
 
+// Ambil ID isisjkirim, purchase, qsisakem, barang, id periode dkk berdasarkan reference, periode, sewa/extend, dan isisjkir
 mysql_select_db($database_Connection, $Connection);
 $query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.Id AS Id1, isisjkirim.Purchase, isisjkirim.QSisaKem, transaksi.Barang, periode.Id AS Id2, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir = periode.IsiSJKir LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') AND isisjkirim.IsiSJKir IN ($IsiSJKir) ORDER BY transaksi.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
 
+// Ambil ID dari transaksi claim
 mysql_select_db($database_Connection, $Connection);
 $query_LastClaim = "SELECT Id FROM transaksiclaim ORDER BY Id DESC";
 $LastClaim = mysql_query($query_LastClaim, $Connection) or die(mysql_error());
 $row_LastClaim = mysql_fetch_assoc($LastClaim);
 $totalRows_LastClaim = mysql_num_rows($LastClaim);
 
+// Ambil reference dari URI masukin ke $colname_Reference
 $colname_Reference = "-1";
 if (isset($_GET['Reference'])) {
   $colname_Reference = $_GET['Reference'];
 }
 
+// Ambil reference dari URI mauskin ke $colname_Periode
 $colname_Periode = "-1";
 if (isset($_GET['Reference'])) {
   $colname_Periode = $_GET['Reference'];
 }
+
+// Ambil max periode dari periode parameter: reference, sewa/extend
 mysql_select_db($database_Connection, $Connection);
 $query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend')", GetSQLValueString($colname_Periode, "text"));
 $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
 
+// Ambil ID dari invoice
 mysql_select_db($database_Connection, $Connection);
 $query_LastId = "SELECT Id FROM invoice ORDER BY Id DESC";
 $LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
 $row_LastId = mysql_fetch_assoc($LastId);
 $totalRows_LastId = mysql_num_rows($LastId);
 
-for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
+// 1. Update transaksi, kurangin qsisakembali dengan jumlah yg diclaim
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem-%s WHERE Purchase=%s",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"));
@@ -182,8 +192,9 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 }
 
-for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
+// 2. Update isisjkirim, kurangin qsisakembali & qsisakembaliinsert dengan apa yg diketik
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
   $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=QSisaKem-%s, QSisaKemInsert=QSisaKemInsert-%s WHERE IsiSJKir=%s AND Id=%s",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
@@ -195,10 +206,12 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 }
 
-
-for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
+// 3. Update Periode
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Reference=%s AND Periode=%s AND Id=%s AND SJKem IS NULL AND (Deletes = 'Sewa' OR Deletes = 'Extend')",
+for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
+
+// 4. Update periode, quantity sewa/extend di kurang dgn apa yg di claim
+$updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Reference=%s AND Periode=%s AND Id=%s AND SJKem IS NULL AND (Deletes = 'Sewa' OR Deletes = 'Extend')",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
@@ -207,10 +220,10 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'ClaimS')",
+
+// 5. Insert periode ClaimS
+$insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'ClaimS')",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S'][$i], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
@@ -222,10 +235,10 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-}
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s+1, %s, %s, %s, %s, %s, %s, %s, 'ClaimE')",
+
+// 6. Insert periode ClaimE
+$insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s+1, %s, %s, %s, %s, %s, %s, %s, 'ClaimE')",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S2'], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
@@ -234,17 +247,20 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
 					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"),
 					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"));
-$deleteSQL = sprintf("DELETE FROM periode WHERE S=E AND Deletes = 'ClaimE'");
-$alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
 
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-  
+	//hapus ClaimE kalau lebih kecil dari tnggal 31
+	$deleteSQL = sprintf("DELETE FROM periode WHERE S=E AND Deletes = 'ClaimE'");
+	$alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
+
+	mysql_select_db($database_Connection, $Connection);
+	$Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+	$Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+	$Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
+
 }
 }
 
+// 7. Insert Invoice
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Claim', %s, %s, %s, %s)",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice2'], "text"),
@@ -257,7 +273,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
 
-  if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+// 8. Insert Invoice
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s+1)",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice3'], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E2'], "text"),
@@ -273,8 +290,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 }
 
-for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
+// 9. Insert transaksiclaim
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
   $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode, IsiSJKir) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
@@ -296,21 +314,25 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+// Kalau klik submit, hapus data2 dari session sebelumnya
+if 10. ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 	unset($_SESSION['cb_inserttransaksiclaimbarang_checkbox']);
 	unset($_SESSION['tx_inserttransaksiclaim_Tgl']);
 	unset($_SESSION['tx_inserttransaksiclaim_Reference']);
 }
 
+/* -------- USERNAME PRIVILEGE ---------- */
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
 }
+
 mysql_select_db($database_Connection, $Connection);
 $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueString($colname_User, "text"));
 $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
+/*--------- END ---------------- */
 ?>
 
 <!DOCTYPE html>
@@ -513,28 +535,28 @@ $totalRows_User = mysql_num_rows($User);
 	}
 	?>
     
-	  <tr>
-      <input name="hd_inserttransaksiclaimbarang2_Id[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Id" value="<?php echo $row_InsertTransaksiClaim['Id1']; ?>">
-      <input name="hd_inserttransaksiclaimbarang2_Id2[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Id2" value="<?php echo $row_InsertTransaksiClaim['Id2']; ?>">
-      <input name="hd_inserttransaksiclaimbarang2_S[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
-      <input name="hd_inserttransaksiclaimbarang2_E" type="hidden" id="hd_inserttransaksiclaimbarang2_E" value="<?php echo $tx_inserttransaksiclaimbarang2_Tgl; ?>">
-      <input name="hd_inserttransaksiclaimbarang2_S2" type="hidden" id="hd_inserttransaksiclaimbarang2_S2" value="<?php echo $S ?>">
-      <input name="hd_inserttransaksiclaimbarang2_E2" type="hidden" id="hd_inserttransaksiclaimbarang2_E2" value="<?php echo $E2; ?>">
-	    <input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
-	      <input name="hd_inserttransaksiclaimbarang2_Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>">
-<input name="hd_inserttransaksiclaimbarang2_Periode[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
-	      <input name="hd_inserttransaksiclaimbarang2_Invoice[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $increment, 5, "0", STR_PAD_LEFT); ?>">
-	    <td><input name="tx_inserttransaksiclaimbarang2_Claim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Claim" value="<?php echo $row_LastClaim['Id'] + $increment; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang2_Barang" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang2_QSisaKem" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_QSisaKem" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang2_QClaim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_QClaim" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>)" required></td>
-	    <td><input name="tx_inserttransaksiclaimbarang2_Amount[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Amount" autocomplete="off" required></td>
-	    <td><input name="tx_inserttransaksiclaimbarang2_Purchase[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Purchase[]" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
-	    </tr>
-	  <?php $increment++; ?>
-	  <?php } while ($row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim)); ?>
-                  </table>
-                      </div>
+	<tr>
+    <input name="hd_inserttransaksiclaimbarang2_Id[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Id" value="<?php echo $row_InsertTransaksiClaim['Id1']; ?>">
+    <input name="hd_inserttransaksiclaimbarang2_Id2[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Id2" value="<?php echo $row_InsertTransaksiClaim['Id2']; ?>">
+    <input name="hd_inserttransaksiclaimbarang2_S[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
+    <input name="hd_inserttransaksiclaimbarang2_E" type="hidden" id="hd_inserttransaksiclaimbarang2_E" value="<?php echo $tx_inserttransaksiclaimbarang2_Tgl; ?>">
+    <input name="hd_inserttransaksiclaimbarang2_S2" type="hidden" id="hd_inserttransaksiclaimbarang2_S2" value="<?php echo $S ?>">
+    <input name="hd_inserttransaksiclaimbarang2_E2" type="hidden" id="hd_inserttransaksiclaimbarang2_E2" value="<?php echo $E2; ?>">
+	<input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
+	<input name="hd_inserttransaksiclaimbarang2_Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>">
+	<input name="hd_inserttransaksiclaimbarang2_Periode[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
+	<input name="hd_inserttransaksiclaimbarang2_Invoice[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $increment, 5, "0", STR_PAD_LEFT); ?>">
+	<td><input name="tx_inserttransaksiclaimbarang2_Claim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Claim" value="<?php echo $row_LastClaim['Id'] + $increment; ?>" readonly></td>
+	<td><input name="tx_inserttransaksiclaimbarang2_Barang" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
+	<td><input name="tx_inserttransaksiclaimbarang2_QSisaKem" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_QSisaKem" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
+	<td><input name="tx_inserttransaksiclaimbarang2_QClaim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_QClaim" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>)" required></td>
+	<td><input name="tx_inserttransaksiclaimbarang2_Amount[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Amount" autocomplete="off" required></td>
+	<td><input name="tx_inserttransaksiclaimbarang2_Purchase[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Purchase[]" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
+	</tr>
+	<?php $increment++; ?>
+	<?php } while ($row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim)); ?>
+    </table>
+    </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
                 <table class="table table-hover table-bordered" id="tb_inserttransaksiclaimbarang2_example2" name="tb_inserttransaksiclaimbarang2_example2">

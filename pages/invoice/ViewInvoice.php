@@ -442,7 +442,6 @@ $totalRows_User = mysql_num_rows($User);
 					<!-- Back Button -->	<a href="Invoice.php">	<button type="button" class="btn btn-default">Back</button></a>
 					<!-- Print Button -->	<a href="#">			<button type="button" class="btn btn-default"><i class="fa fa-print"></i> Print</button></a>
 					<!-- Submit Button -->							<button type="submit" name="tx_viewinvoice_submit" id="tx_viewinvoice_submit"  class="btn btn-info pull-right">Update</button>
-					<!-- Edit Button -->							<button type="submit" name="bt_viewinvoice_edit" id="bt_viewinvoice_edit" style="margin-right: 3px;" class="btn btn-primary pull-right">Edit</button>
 				</div>
 				<!-- /.box-footer -->
 				<input type="hidden" name="MM_update" value="form1">
