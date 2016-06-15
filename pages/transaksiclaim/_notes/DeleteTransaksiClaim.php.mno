@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_Edit" value="name:Id;datatype:int,name:Claim;datatype:string,name:QClaim;datatype:int,name:Amount;datatype:string,name:Purchase;datatype:string,name:Periode;datatype:int,name:IsiSJKir;datatype:string,name:Barang;datatype:string,name:QSisaKem;datatype:int,name:Reference;datatype:string" />
+</info>

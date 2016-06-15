@@ -95,7 +95,7 @@ for($i=0;$i<$totalRows_Edit;$i++){
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+%s WHERE Reference=%s AND Purchase=%s",
  					   GetSQLValueString($QClaim[$i], "int"),
-                       GetSQLValueString($row_Edit[$i], "text"),
+                       GetSQLValueString($row_Edit['Reference'], "text"),
 					   GetSQLValueString($Purchase[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -118,7 +118,7 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 
 for($i=0;$i<$totalRows_Edit;$i++){
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Periode = %s AND purchase=%s AND (Deletes = 'Sewa' OR Deletes = 'Extend')",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Purchase=%s AND Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend')",
   					   GetSQLValueString($QClaim[$i], "int"),
 					   GetSQLValueString($IsiSJKir[$i], "text"),
 					   GetSQLValueString($Purchase[$i], "text"),
