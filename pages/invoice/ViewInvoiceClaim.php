@@ -131,7 +131,7 @@ if (isset($_GET['JS'])) {
 
 // Ambil detail transaksi claim berdasarkan reference & periode
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount FROM transaksiclaim LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s AND transaksiclaim.Periode = %s", GetSQLValueString($colname_View2, "text"), GetSQLValueString($colname_ViewPeriode, "text"));
+$query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, isisjkirim.SJKir, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount FROM transaksiclaim LEFT JOIN isisjkirim ON transaksiclaim.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s AND transaksiclaim.Periode = %s", GetSQLValueString($colname_View2, "text"), GetSQLValueString($colname_ViewPeriode, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
 
@@ -330,6 +330,7 @@ $totalRows_User = mysql_num_rows($User);
 
 	<thead>
       <tr>
+	    <th align="center">SJKir</th>
         <th align="center">Item</th>
         <th>Tgl Claim</th>
         <th>Quantity Claim</th>
@@ -343,6 +344,7 @@ $totalRows_User = mysql_num_rows($User);
 	  do { ?>
       
         <tr>
+          <td><?php echo $row_View2['SJKir']; ?></td>
           <td><?php echo $row_View2['Barang']; ?></td>
           <td><?php echo $row_View2['Tgl']; ?></td>
           <td><?php echo $row_View2['QClaim']; ?></td>

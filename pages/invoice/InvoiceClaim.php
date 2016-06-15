@@ -132,7 +132,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   }
 	
 mysql_select_db($database_Connection, $Connection);
-$query_Invoice = "SELECT invoice.*, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Claim'";
+$query_Invoice = "SELECT invoice.*, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Claim' GROUP BY invoice.Periode";
 $Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
 $row_Invoice = mysql_fetch_assoc($Invoice);
 $totalRows_Invoice = mysql_num_rows($Invoice);
@@ -273,6 +273,7 @@ $totalRows_User = mysql_num_rows($User);
 					<tr>
 					<th>No. Invoice</th>
 					<th>Project</th>
+                    <th>Periode</th>
 					<th>J/S/C</th>
 					<th>Perusahaan</th>
 					<th>Total</th>
@@ -284,6 +285,7 @@ $totalRows_User = mysql_num_rows($User);
 					<tr>
 						<td><?php echo $row_Invoice['Invoice']; ?></td>
 						<td><?php echo $row_Invoice['Project']; ?></td>
+                        <td><?php echo $row_Invoice['Periode']; ?></td>
 						<td><?php echo $row_Invoice['JSC']; ?></td>
 						<td><?php echo $row_Invoice['Company']; ?></td>
 						<td>&nbsp;</td>

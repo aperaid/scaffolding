@@ -268,6 +268,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference2'], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode2'], "int"));
+  $deleteSQL = "DELETE FROM invoice WHERE invoice.Periode NOT IN (SELECT periode.Periode FROM periode)";
+  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
   
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
