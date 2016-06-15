@@ -31,15 +31,19 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-if ((isset($_GET['CCode'])) && ($_GET['CCode'] != "")) {
+if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
   $deleteSQL = sprintf("SELECT delete_POCustomer('%s')",
-                       GetSQLValueString($_GET['CCode'], "Text"));
+                       GetSQLValueString($_GET['Reference'], "Text"));
 					   
-  $alterSQL = sprintf("ALTER TABLE customer AUTO_INCREMENT = 1");
+  $alterSQL = sprintf("ALTER TABLE pocustomer AUTO_INCREMENT = 1");
+  $alterSQL2 = sprintf("ALTER TABLE transaksi AUTO_INCREMENT = 1");
+  $alterSQL3 = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL2, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL3, $Connection) or die(mysql_error());
 
   $deleteGoTo = "POCustomer.php";
   if (isset($_SERVER['QUERY_STRING'])) {
