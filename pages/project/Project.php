@@ -250,7 +250,7 @@ $totalRows_Menu = mysql_num_rows($Menu);
                 <tr>
                   <th>Project Code</th>
                   <th>Project Name</th>
-                  <th>Opsi</th>
+                  <th>View</th>
                 </tr>
                 </thead>
                 <tbody>

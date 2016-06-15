@@ -282,7 +282,7 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Reference</th>
                   <th>Project</th>
                   <th>Customer</th>
-                  <th>Opsi</th>
+                  <th>View</th>
                 </tr>
                 </thead>
 				<tbody>

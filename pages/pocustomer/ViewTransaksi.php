@@ -484,7 +484,7 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Tanggal</th>
                   <th>Progress</th>
                   <th>Status</th>
-				  <th>Opsi</th>
+				  <th>View</th>
                 </tr>
                 <?php do { ?>
                   <tr>
@@ -526,7 +526,7 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Tanggal</th>
                   <th>Progress</th>
                   <th>Status</th>
-				  <th>Opsi</th>
+				  <th>View</th>
                 </tr>
                 <?php do { ?>
                   <tr>

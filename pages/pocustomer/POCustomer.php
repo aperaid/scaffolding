@@ -282,8 +282,8 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Company Name</th>
                   <th>Project</th>
                   <th>Price</th>
-                  <th>Opsi</th>
-                  <th>Opsi</th>
+                  <th>Edit</th>
+                  <th>View</th>
                 </tr>
                 </thead>
                 <tbody>

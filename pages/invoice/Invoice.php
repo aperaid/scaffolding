@@ -278,7 +278,7 @@ $totalRows_User = mysql_num_rows($User);
 					<th>Perusahaan</th>
 					<th>Total</th>
 					<th>Tanggal Invoice</th>
-					<th>Opsi</th>
+					<th>View</th>
 				</thead>
 				<tbody>
 					<?php do { ?>

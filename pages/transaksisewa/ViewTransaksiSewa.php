@@ -298,7 +298,8 @@ $totalRows_User = mysql_num_rows($User);
                   <th>End</th>
                   <th>Customer</th>
                   <th>Project</th>
-                  <th>Opsi</th>
+                  <th>View</th>
+                  <th>Extend</th>
                 </tr>
                 </thead>
 				<tbody>

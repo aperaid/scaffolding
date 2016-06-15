@@ -281,8 +281,8 @@ $totalRows_User = mysql_num_rows($User);
                   <th>Tgl Tertanda</th>
                   <th>Customer</th>
                   <th>Project</th>
-                  <th>Opsi</th>
-                  <th>Opsi</th>
+                  <th>View</th>
+                  <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
