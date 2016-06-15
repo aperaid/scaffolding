@@ -7,4 +7,5 @@
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
 	<infoitem key="UD_Tgl" value="name:S;datatype:string" />
 	<infoitem key="UD_Tanggal" value="name:S;datatype:string,name:E;datatype:string" />
+	<infoitem key="UD_TanggalMin" value="name:S;datatype:string" />
 </info>

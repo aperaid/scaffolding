@@ -145,9 +145,18 @@ while($row = mysql_fetch_assoc($query)){
 }
 $IsiSJKir2 = join(',',$IsiSJKir); 
 
+$Reference = $row_EditIsiSJKembali['Reference'];
+$Periode = $row_EditIsiSJKembali['Periode'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalMin = "SELECT S FROM periode WHERE Reference = '$Reference' AND Periode = '$Periode2' AND (Deletes = 'Sewa' OR Deletes = 'Extend') ORDER BY Id ASC";
+$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
+$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
+$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
+
 //Query ambil tanggal start & end kembali S&E yg udah ada 
 mysql_select_db($database_Connection, $Connection);
-$query_Tanggal = sprintf("SELECT S, E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Kembalis' OR Deletes='KembaliE')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_Tanggal = sprintf("SELECT E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Sewa' OR Deletes='Extend')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $Tanggal = mysql_query($query_Tanggal, $Connection) or die(mysql_error());
 $row_Tanggal = mysql_fetch_assoc($Tanggal);
 $totalRows_Tanggal = mysql_num_rows($Tanggal);
@@ -439,7 +448,7 @@ $totalRows_User = mysql_num_rows($User);
 					</thead>
 					<tbody>
 					  <?php 
-					  $Min = $row_Tanggal['S'];
+					  $Min = $row_TanggalMin['S'];
 					  $Tgl = $row_Tanggal['E'];
 					  $x=1; 
 					  ?>
