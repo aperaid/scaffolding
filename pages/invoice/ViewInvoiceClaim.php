@@ -334,7 +334,7 @@ $totalRows_User = mysql_num_rows($User);
         <th align="center">Item</th>
         <th>Tgl Claim</th>
         <th>Quantity Claim</th>
-        <th>Claim Amount</th>
+        <th>Price</th>
         <th>Total</th>
         </tr>
       </thead>

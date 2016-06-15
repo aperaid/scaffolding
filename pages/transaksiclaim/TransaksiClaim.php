@@ -279,7 +279,7 @@ $totalRows_User = mysql_num_rows($User);
                     <th>Periode</th>
 					<th>Tanggal Claim</th>
 					<th>Project</th>
-					<th>Amount</th>
+					<th>Price</th>
                     <th>Opsi</th>
 					<th>Opsi</th>
                     </tr>

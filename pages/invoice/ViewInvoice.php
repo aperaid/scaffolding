@@ -341,7 +341,7 @@ $totalRows_User = mysql_num_rows($User);
         <th>Periode</th>
         <th>I</th>
         <th>Quantity</th>
-        <th>Amount</th>
+        <th>Price</th>
         <th>Total</th>
         </tr>
       </thead>

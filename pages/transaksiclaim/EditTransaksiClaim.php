@@ -362,7 +362,7 @@ $totalRows_User = mysql_num_rows($User);
 		<th>Barang</th>
 		<th>Quantity Ditempat</th>
 		<th>Quantity Claim</th>
-		<th>Amount</th>
+		<th>Price</th>
 		<th>No. Purchase</th>
       </tr>
     </thead>

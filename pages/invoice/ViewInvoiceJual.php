@@ -330,7 +330,7 @@ $totalRows_User = mysql_num_rows($User);
         <th align="center">SJ Kirim</th>
         <th align="center">Item</th>
         <th>Quantity Kirim</th>
-        <th>Amount</th>
+        <th>Price</th>
         <th>Total</th>
         </tr>
       </thead>
