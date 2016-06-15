@@ -330,7 +330,6 @@ $totalRows_User = mysql_num_rows($User);
 
 	<thead>
       <tr>
-        <th align="center">SJ Kirim</th>
         <th align="center">Item</th>
         <th>Tgl Claim</th>
         <th>Quantity Claim</th>
@@ -344,7 +343,6 @@ $totalRows_User = mysql_num_rows($User);
 	  do { ?>
       
         <tr>
-          <td></td>
           <td><?php echo $row_View2['Barang']; ?></td>
           <td><?php echo $row_View2['Tgl']; ?></td>
           <td><?php echo $row_View2['QClaim']; ?></td>
