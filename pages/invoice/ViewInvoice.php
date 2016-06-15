@@ -159,12 +159,13 @@ $totalRows_Menu = mysql_num_rows($Menu);
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s WHERE Invoice=%s",
                        GetSQLValueString($_POST['tx_viewinvoice_PPN'], "int"),
-                       GetSQLValueString($_POST['tx_viewinvoice_Transport'], "text"),
+                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Transport'], 3)), "text"),
                        GetSQLValueString($_POST['tx_viewinvoice_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-
+  
+  // Redirect
   $updateGoTo = "ViewInvoice.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
@@ -423,8 +424,7 @@ $totalRows_User = mysql_num_rows($User);
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Transport</label>
 					<div class="col-sm-6">
-						<input id="hd_viewinvoice_Transport2" name="hd_viewinvoice_Transport2" type="hidden" autocomplete="off" value="<?php if ($row_View['Periode'] == 1){ echo $row_View['Transport']; }?>">
-						<input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo number_format($row_View['Transport'], 2); }?>" onKeyUp="tot()">
+						<input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){ echo number_format($row_View['Transport'],0,',','.'); }?>" onKeyUp="tot()">
 					</div>
                 </div>
 				<!-- Total Text -->
@@ -433,7 +433,7 @@ $totalRows_User = mysql_num_rows($User);
                   <div class="col-sm-6">
                     <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
 					else $toss = 0;
-					echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss, 2, '.','.');?>"  readonly>
+					echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss, 2, ',','.');?>"  readonly>
                     <input id="hd_viewinvoice_Totals2" name="hd_viewinvoice_Totals2" type="hidden" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>
@@ -486,6 +486,8 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
+<!-- Mask Money -->
+<script src="../../library/maskmoney/src/jquery.maskMoney.js" type="text/javascript"></script>
 <!-- page script -->
 
 <script>
@@ -498,6 +500,10 @@ function tot() {
 		document.getElementById('tx_viewinvoice_Totals').value = result;
     }
 }
+$(document).ready(function(){
+	//Mask Transport
+	$("#tx_viewinvoice_Transport").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+});
 </script>
 </body>
 </html>

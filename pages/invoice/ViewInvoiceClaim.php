@@ -120,11 +120,16 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
+// Ambil value dari URI
 $colname_View2 = "-1";
 if (isset($_GET['JS'])) {
+  // Ambil Reference
   $colname_View2 = $_GET['Reference'];
+  // Ambil Periode
   $colname_ViewPeriode = $_GET['Periode'];
 }
+
+// Ambil detail transaksi claim berdasarkan reference & periode
 mysql_select_db($database_Connection, $Connection);
 $query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount FROM transaksiclaim LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s AND transaksiclaim.Periode = %s", GetSQLValueString($colname_View2, "text"), GetSQLValueString($colname_ViewPeriode, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
@@ -137,22 +142,25 @@ if (isset($_GET['totalRows_View2'])) {
   $totalRows_View2 = mysql_num_rows($all_View2);
 }
 
+// Query Menu
 mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
+// Update PPN&Transport berdasarkan nomor invoice
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s WHERE Invoice=%s",
                        GetSQLValueString($_POST['tx_viewinvoiceclaim_PPN'], "int"),
-                       GetSQLValueString($_POST['tx_viewinvoiceclaim_Transport'], "text"),
+                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoiceclaim_Transport'], 3)), "text"),
                        GetSQLValueString($_POST['tx_viewinvoiceclaim_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-
-  $updateGoTo = "ViewInvoiceJual.php";
+  
+  // Redirect
+  $updateGoTo = "ViewInvoiceClaim.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
     $updateGoTo .= $_SERVER['QUERY_STRING'];
@@ -160,6 +168,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   header(sprintf("Location: %s", $updateGoTo));
 }
 
+/* --------- User Credential --------- */
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -169,6 +178,7 @@ $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueS
 $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
+/* ---------------- */
 ?>
 
 <!DOCTYPE html>
@@ -348,18 +358,17 @@ $totalRows_User = mysql_num_rows($User);
     </div>
 
     <div class="form-group">
-                  <label class="col-sm-2 control-label">Pajak</label>
+                  <label class="col-sm-2 control-label">Pajak 10%</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoiceclaim_PPN" name="tx_viewinvoiceclaim_PPN" type="text" class="form-control" value="<?php echo $row_View['PPN']; ?>" onKeyUp="tot()">
-                    <input id="hd_viewinvoiceclaim_PPN2" name="hd_viewinvoiceclaim_PPN2" type="hidden" autocomplete="off" value="<?php echo $row_View['PPN']; ?>">
+                    <input name="tx_viewinvoiceclaim_PPN" type="hidden" id="tx_viewinvoiceclaim_PPN" value="0">
+					<input name="tx_viewinvoiceclaim_PPN" type="checkbox" id="tx_viewinvoiceclaim_PPN" value="1" <?php if ($row_View['PPN'] == 1){ ?> checked <?php } ?>>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Transport</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoiceclaim_Transport" name="tx_viewinvoiceclaim_Transport" type="text" class="form-control" value="<?php echo number_format($row_View['Transport'], 2); ?>" onKeyUp="tot()">
-                    <input id="hd_viewinvoiceclaim_Transport2" name="hd_viewinvoiceclaim_Transport2" type="hidden" autocomplete="off" value="<?php echo $row_View['Transport']; ?>">
-                  </div>
+                    <input id="tx_viewinvoiceclaim_Transport" name="tx_viewinvoiceclaim_Transport" type="text" class="form-control" value="Rp <?php echo number_format($row_View['Transport'],0,',','.'); ?>" onKeyUp="tot()">
+				  </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
@@ -417,6 +426,8 @@ $totalRows_User = mysql_num_rows($User);
 <script src="../../library/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../library/dist/js/demo.js"></script>
+<!-- Mask Money -->
+<script src="../../library/maskmoney/src/jquery.maskMoney.js" type="text/javascript"></script>
 <!-- page script -->
 
 <script language="javascript">
@@ -429,6 +440,11 @@ $totalRows_User = mysql_num_rows($User);
 		document.getElementById('tx_viewinvoiceclaim_Totals').value = result;
       }
    }
+   
+$(document).ready(function(){
+	//Mask Transport
+	$("#tx_viewinvoiceclaim_Transport").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+});
 </script>
 </body>
 </html>
