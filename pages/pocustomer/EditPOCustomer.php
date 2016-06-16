@@ -369,6 +369,7 @@ $(function() {
   var availableTags = <?php include ("../autocomplete.php");?>;
   $( "#tx_editpocustomer_PCode" ).autocomplete({
 	source: availableTags
+	autoFocus: true
   });
 });
 </script>

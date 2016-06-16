@@ -398,6 +398,7 @@ $(function() {
     var availableTags = <?php include ("../autocomplete2.php");?>;
     $( "#tx_editproject_CCode" ).autocomplete({
       source: availableTags
+	  autoFocus: true
     });
   });
 </script>
