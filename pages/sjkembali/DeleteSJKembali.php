@@ -57,7 +57,7 @@ $IsiSJKir3 = join(',',$IsiSJKir2);
 
 // Ambil semua quantity dari periode untuk penghapusan periode
 mysql_select_db($database_Connection, $Connection);
-$query_Quantity = sprintf("SELECT Quantity FROM periode WHERE SJKem = %s AND Deletes = 'KembaliS' AND IsiSJKir IN ($IsiSJKir3)", GetSQLValueString($_GET['SJKem'], "text"));
+$query_Quantity = sprintf("SELECT Quantity FROM periode WHERE SJKem = %s AND Deletes = 'Kembali' AND IsiSJKir IN ($IsiSJKir3)", GetSQLValueString($_GET['SJKem'], "text"));
 
 $Quantity = mysql_query($query_Quantity, $Connection) or die(mysql_error());
 $row_Quantity = mysql_fetch_assoc($Quantity);

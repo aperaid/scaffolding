@@ -180,6 +180,7 @@ $Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
 $row_Invoice = mysql_fetch_assoc($Invoice);
 $totalRows_Invoice = mysql_num_rows($Invoice);
 
+for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO sjkembali (SJKem, Tgl, Reference) VALUES (%s, %s, %s)",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
@@ -190,7 +191,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
 
-for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert-%s WHERE IsiSJKir=%s",
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
@@ -203,7 +203,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE Periode=%s AND IsiSJKir = %s AND Deletes !='KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'",
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -211,54 +211,20 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'KembaliS')",
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'Kembali')",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_S'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_S'], "text"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'], "text"),
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference2'][$i], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference'], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"));
-  $insertSQL2 = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'KembaliE')",
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode3'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_S2'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference2'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"));
-  $deleteSQL = sprintf("DELETE FROM periode WHERE S=E AND Deletes = 'KembaliE'");
-  $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
-
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($insertSQL2, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-}
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Transport, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Invoice'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E2'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_PPN'], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Transport'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode2'], "int"));
-  $deleteSQL = "DELETE FROM invoice WHERE invoice.Periode NOT IN (SELECT periode.Periode FROM periode)";
-  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-}
-
-for($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, SJKem, Periode, IsiSJKir) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKem'][$i], "text"),
@@ -266,7 +232,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -443,62 +409,20 @@ $totalRows_User = mysql_num_rows($User);
     <?php $increment = 1; ?>
 	<?php do { ?>
     <?php 
-	
-	/* --- Tanggal yang diinput sama user --- */
-	// 1. Input tgl sjkembali di masukin user ke variable $tgl
+
 	$tgl = $tx_insertsjkembalibarang2_Tgl;
-	// 2. Abis itu di convert dalam bentuk tanggal yg bisa dicompare system trus dimasukkin ke variable $convert
-	$convert = str_replace('/', '-', $tgl);
-	// 3. convert ke bentuk comparable
-	$check = strtotime($convert);
-	
-	/* --- Tanggal yang diinput sama user, ambil tanggal 01 nya dan akhir nya --- */
-	// 4. Tanggal yg diinput sama user, ambil tanggal 01 nya, masukin ke $S2
-	$S2 = date('01/m/Y', strtotime($convert));
-	// 5. Tanggal yg diinput sama user, ambil tanggal akhirnya (29, 30, atau 31),  masukin ke $E2 Untuk Invoice
-	$E2 = date('t/m/Y', strtotime($convert));
-	
-	/* --- Tanggal start sewa atau extend --- */
-	// 1. Tanggal Start (S) di periode, dimasukkin ke variable $tgl2
-	$tgl2 = $row_InsertSJKembali['S'];
-	// 2. Abis itu diconvert dalam bentuk tanggal yg bisa dicompare system trus dimasukkin ke variable $convert2
-	$convert2 = str_replace('/', '-', $tgl2);
-	// 3. Tanggal start sewa/extend, ambil tanggal akhirnya, masukin ke $last
-	$last = date('t-m-Y', strtotime($convert2));
-	// 4. convert ke bentuk comparable
-	$E = strtotime($last);
-	
-	// 9. bandingin apakah tgl yg diinput user lebih kecil atau sama dengan tanggal akhir dari bulan sewa/extendnya
-	if($check <= $E)
-	{
-		// 10. kalau lebih kecil/sama dengan, set $S dengan tanggal yg diinput
-		$S = $tx_insertsjkembalibarang2_Tgl;
-	}
-	else
-	{
-		// 11. kalau lebih besar, set $S dengan tanggal 01 dari bulan yg diinput sama user
-		$S = $S2;			
-	}
-	
+
 	?>
 	  <tr>
       <!--<?php $FirstDate = substr($tx_insertsjkembalibarang2_Tgl, 2); ?>-->
       	  <input name="hd_insertsjkembalibarang2_SJKem" type="hidden" id="hd_insertsjkembalibarang2_SJKem" value="<?php echo $tx_insertsjkembalibarang2_SJKem; ?>">
           <input name="hd_insertsjkembalibarang2_Reference" type="hidden" id="hd_insertsjkembalibarang2_Reference" value="<?php echo $tx_insertsjkembalibarang2_Reference; ?>">
-      	  <input name="hd_insertsjkembalibarang2_Invoice" type="hidden" id="hd_insertsjkembalibarang2_Invoice" value="<?php echo str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
-          <input name="hd_insertsjkembalibarang2_PPN" type="hidden" id="hd_insertsjkembalibarang2_PPN" value="<?php echo $row_Invoice['PPN']; ?>">
-          <input name="hd_insertsjkembalibarang2_Transport" type="hidden" id="hd_insertsjkembalibarang2_Transport" value=0>
-          <input name="hd_insertsjkembalibarang2_Periode2" type="hidden" id="hd_insertsjkembalibarang2_Periode2" value="<?php echo $row_Invoice['Periode'] + 1; ?>">
-          <input name="hd_insertsjkembalibarang2_Periode3[]" type="hidden" id="hd_insertsjkembalibarang2_Periode3" value="<?php echo $row_InsertSJKembali['Periode'] + 1; ?>">
 	      <input name="hd_insertsjkembalibarang2_Id[]" type="hidden" id="hd_insertsjkembalibarang2_Id" value="<?php echo $row_InsertSJKembali['Id']; ?>">
-	      <input name="hd_insertsjkembalibarang2_Reference2[]" type="hidden" id="hd_insertsjkembalibarang2_Reference" value="<?php echo $row_InsertSJKembali['Reference']; ?>">
           <input name="hd_insertsjkembalibarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKir" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>">
 	      <input name="hd_insertsjkembalibarang2_Purchase[]" type="hidden" id="hd_insertsjkembalibarang2_Purchase" value="<?php echo $row_InsertSJKembali['Purchase']; ?>">
 	        <input name="hd_insertsjkembalibarang2_Periode[]" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_InsertSJKembali['Periode']; ?>">
-	        <input name="hd_insertsjkembalibarang2_S[]" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo $row_InsertSJKembali['S']; ?>">
+	        <input name="hd_insertsjkembalibarang2_S" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo $row_InsertSJKembali['S']; ?>">
             <input name="hd_insertsjkembalibarang2_E" type="hidden" id="hd_insertsjkembalibarang2_E" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
-            <input name="hd_insertsjkembalibarang2_S2" type="hidden" id="hd_insertsjkembalibarang2_S2" value="<?php echo $S; ?>">
-            <input name="hd_insertsjkembalibarang2_E2" type="hidden" id="hd_insertsjkembalibarang2_E2" value="<?php echo $E2; ?>">
 	        <input name="hd_insertsjkembalibarang2_IsiSJKem[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>">
         <td><input name="tx_insertsjkembalibarang2_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Tgl" value="<?php echo $row_InsertSJKembali['S']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>

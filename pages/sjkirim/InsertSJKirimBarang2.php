@@ -194,7 +194,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
   
-    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (1, 'Q Tertanda', 'Q Tertanda', %s, %s, %s, %s, %s)",
+    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (1, %s, %s, %s, %s, %s, %s, %s)",
+					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_Tgl'], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_TglE'], "text"),
                        GetSQLValueString($_POST['tx_insertsjkirimbarang2_QKirim'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkirimbarang2_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_Reference2'][$i], "text"),
@@ -368,12 +370,17 @@ $totalRows_User = mysql_num_rows($User);
 	$tx_insertsjkirimbarang2_SJKir = substr($_SESSION['tx_insertsjkirim_SJKir'], 1, -1);
 	$tx_insertsjkirimbarang2_Tgl = substr($_SESSION['tx_insertsjkirim_Tgl'], 1, -1);
 	$tx_insertsjkirimbarang2_Reference = substr($_SESSION['tx_insertsjkirim_Reference'], 1, -1);
+	
+	$end = str_replace('/', '-', $tx_insertsjkirimbarang2_Tgl);
+	$end2 = strtotime("-1 day +1 month", strtotime($end));
+	$end3 = date("d/m/Y", $end2);
  	?>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
       	  <input name="hd_insertsjkirimbarang2_SJKir" type="hidden" id="hd_insertsjkirimbarang2_SJKir" value="<?php echo $tx_insertsjkirimbarang2_SJKir; ?>">
           <input name="hd_insertsjkirimbarang2_Tgl" type="hidden" id="hd_insertsjkirimbarang2_Tgl" value="<?php echo $tx_insertsjkirimbarang2_Tgl; ?>">
+          <input name="hd_insertsjkirimbarang2_TglE" type="hidden" id="hd_insertsjkirimbarang2_TglE" value="<?php echo $end3; ?>">
           <input name="hd_insertsjkirimbarang2_Reference" type="hidden" id="hd_insertsjkirimbarang2_Reference" value="<?php echo $tx_insertsjkirimbarang2_Reference; ?>">
 	      <input name="hd_insertsjkirimbarang2_Id[]" type="hidden" id="hd_insertsjkirimbarang2_Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
 	      <input name="hd_insertsjkirimbarang2_Reference2[]" type="hidden" id="hd_insertsjkirimbarang2_Reference2" value="<?php echo $row_InsertSJKirim['Reference']; ?>">

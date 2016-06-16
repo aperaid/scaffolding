@@ -153,7 +153,7 @@ $totalRows_Tgl = mysql_num_rows($Tgl);
 
 //Query ambil tanggal start & end kembali S&E yg udah ada 
 mysql_select_db($database_Connection, $Connection);
-$query_Tanggal = sprintf("SELECT E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Sewa' OR Deletes='Extend')", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_Tanggal = sprintf("SELECT E FROM periode WHERE IsiSJKir IN ($IsiSJKir2) AND Deletes='Kembali'", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $Tanggal = mysql_query($query_Tanggal, $Connection) or die(mysql_error());
 $row_Tanggal = mysql_fetch_assoc($Tanggal);
 $totalRows_Tanggal = mysql_num_rows($Tanggal);
@@ -217,78 +217,13 @@ for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 }
 }
 
-/* OLD atur tanggal periode
+//update tanggal di periode
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir IN ($IsiSJKir2) AND (Deletes='Kembalis' OR Deletes='KembaliE')",
+  $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir IN ($IsiSJKir2) AND Deletes='Kembali'",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_E'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-*/
-
-/**** Update Tanggal ****/
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-/* --- Tanggal yang diinput sama user --- */
-// 1. Input tgl sjkembali
-$tgl_input_user = $_POST['tx_editsjkembaliquantity_E'];
-// 2. Abis itu di convert dalam bentuk tanggal yg bisa dicompare system
-$tgl_input_user_converted = str_replace('/', '-', $tgl_input_user);
-// 3. convert ke bentuk comparable
-$tgl_input_user_system = strtotime($tgl_input_user_converted);
-
-/* --- Tanggal start sewa atau extend --- */
-// 1. Tanggal Start (S) di periode
-$tgl_start = $row_Tanggal['S'];
-// 2. Abis itu diconvert dalam bentuk tanggal yg bisa dicompare system trus dimasukkin ke variable $convert2
-$tgl_start_converted = str_replace('/', '-', $tgl_start);
-// 3. Tanggal start sewa/extend, ambil tanggal akhirnya, masukin ke $last
-$tgl_31_start_converted = date('t-m-Y', strtotime($tgl_start_converted));
-// 4. convert ke bentuk comparable
-$tgl_31_start_system = strtotime($tgl_31_start_converted);
-
-/* JADI Sekarang Kita Punya: */
-$tgl_input_user_system;	// Tanggal yg diinput user
-$tgl_31_start_system;	// Tanggal 31 start
-
-// Bandingin apakah tgl yg diinput user lebih kecil atau sama dengan tanggal akhir dari start bulan sewa/extendnya
-if($tgl_input_user_system <= $tgl_31_start_system)
-{
-	// Kalau lebih kecil/sama dengan tanggal akhir bulan tgl_start
-	// 1. Update Tanggal KembaliS yg udah ada
-	$update_tgl_sql=sprintf("UPDATE periode SET E='$tgl_input_user' WHERE sjkem='$colname_EditIsiSJKembali' AND Deletes='KembaliS' ");
-	mysql_select_db($database_Connection, $Connection);
-	$query = mysql_query($update_tgl_sql, $Connection) or die(mysql_error());
-	// 2. Hapus row KembaliE ada ato ngga
-	$delete_tgl_sql=sprintf("DELETE FROM periode WHERE periode.sjkem='$colname_EditIsiSJKembali' AND Deletes='KembaliE' ");
-	mysql_select_db($database_Connection, $Connection);
-	$query = mysql_query($delete_tgl_sql, $Connection) or die(mysql_error());
-}
-else	
-{
-	// Kalau lebih besar
-	// 1. Update Tanggal KembaliS dan Kembali E yg udah ada
-	$update_tgl_sql=sprintf("UPDATE periode SET periode.E='$tgl_input_user' WHERE sjkem='$colname_EditIsiSJKembali' AND (Deletes='KembaliS' OR Deletes='KembaliE')");
-	mysql_select_db($database_Connection, $Connection);
-	$query = mysql_query($update_tgl_sql, $Connection) or die(mysql_error());
-	// 2. Insert Kembali E Baru kalau memang belum ada
-	// Tanggal End yg udah ada, diconvert biar bisa jadi perbandingan
-	$tgl_end = $row_Tanggal['E'];
-	$tgl_end = str_replace('/', '-', $tgl_end);
-	$tgl_end_system = strtotime($tgl_end);
-	//Perbandingan apakah tanggal END yg udah ada itu lebih besar dari tanggal 31 bulan sewa/extendnya
-	if($tgl_31_start_system > $tgl_end_system){
-		//Tanggal yg diinput sama user, ambil tanggal 01 nya
-		$tgl_01_input_user = date('01/m/Y', strtotime($tgl_input_user_converted));
-		//Insert row KembaliE dengan menduplikat row Kembali S yg udah ada
-		$insert_tgl_sql=sprintf("INSERT INTO periode (IsiSJKir, Periode, S, E, Quantity, SJKem, Reference, Purchase, Claim, Deletes)
-								SELECT IsiSJKir, Periode+1, '$tgl_01_input_user', '$tgl_input_user', Quantity, SJKem, Reference, Purchase, Claim, 'KembaliE'
-								FROM periode WHERE SJKem='$colname_EditIsiSJKembali' AND Deletes='KembaliS'"
-								);
-		mysql_select_db($database_Connection, $Connection);
-		$query = mysql_query($insert_tgl_sql, $Connection) or die(mysql_error());
-	}
-}
 
 // Redirect ke sjkembali
 $updateGoTo = "ViewSJKembali.php";
@@ -299,7 +234,6 @@ if (isset($_SERVER['QUERY_STRING'])) {
 header(sprintf("Location: %s", $updateGoTo));
 
 }
-/*** UPDATE TANGGAL END ***/
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
