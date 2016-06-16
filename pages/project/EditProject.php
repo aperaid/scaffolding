@@ -315,7 +315,7 @@ $totalRows_check = mysql_num_rows($check);
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Company Code</label>
                   <div class="col-sm-4">
-                    <input id="tx_editproject_CCode" name="tx_editproject_CCode" type="text" autocomplete="off" onKeyUp="capital()" class="form-control" placeholder="Company Code" value="<?php echo $row_Edit['CCode']; ?>" maxlength="5" required>
+                    <input id="tx_editproject_CCode" name="tx_editproject_CCode" type="text" onKeyUp="capital()" class="form-control" placeholder="Company Code" value="<?php echo $row_Edit['CCode']; ?>" maxlength="5" required>
                   </div>
                 </div>
               </div>
@@ -397,7 +397,7 @@ function capital() {
 $(function() {
     var availableTags = <?php include ("../autocomplete2.php");?>;
     $( "#tx_editproject_CCode" ).autocomplete({
-      source: availableTags
+      source: availableTags,
 	  autoFocus: true
     });
   });
