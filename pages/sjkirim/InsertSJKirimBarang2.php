@@ -194,7 +194,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
   
-    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (1, %s, %s, %s, %s, %s, %s, %s)",
+    $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_Periode'], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_Tgl'], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkirimbarang2_TglE'], "text"),
                        GetSQLValueString($_POST['tx_insertsjkirimbarang2_QKirim'][$i], "int"),
@@ -371,22 +372,41 @@ $totalRows_User = mysql_num_rows($User);
 	$tx_insertsjkirimbarang2_Tgl = substr($_SESSION['tx_insertsjkirim_Tgl'], 1, -1);
 	$tx_insertsjkirimbarang2_Reference = substr($_SESSION['tx_insertsjkirim_Reference'], 1, -1);
 	
+	mysql_select_db($database_Connection, $Connection);
+	$query_ECont = sprintf("SELECT E, Reference, Periode FROM periode WHERE Reference = %s AND Periode = (SELECT MAX(Periode) FROM periode)", GetSQLValueString($tx_insertsjkirimbarang2_Reference, "text"));
+	$ECont = mysql_query($query_ECont, $Connection) or die(mysql_error());
+	$row_ECont = mysql_fetch_assoc($ECont);
+	
 	$end = str_replace('/', '-', $tx_insertsjkirimbarang2_Tgl);
 	$end2 = strtotime("-1 day +1 month", strtotime($end));
 	$end3 = date("d/m/Y", $end2);
+	
+	if($tx_insertsjkirimbarang2_Reference == $row_ECont['Reference']){
+	
+	$tglE = $row_ECont['E'];
+	$periode = $row_ECont['Periode'];
+	$JS = 'Extend';
+	
+	}else{
+	$tglE = $end3;
+	$periode = 1;
+	$JS = $row_InsertSJKirim['JS'];
+	}
+
  	?>
     <?php $increment = 1; ?>
 	<?php do { ?>
 	  <tr>
       	  <input name="hd_insertsjkirimbarang2_SJKir" type="hidden" id="hd_insertsjkirimbarang2_SJKir" value="<?php echo $tx_insertsjkirimbarang2_SJKir; ?>">
           <input name="hd_insertsjkirimbarang2_Tgl" type="hidden" id="hd_insertsjkirimbarang2_Tgl" value="<?php echo $tx_insertsjkirimbarang2_Tgl; ?>">
-          <input name="hd_insertsjkirimbarang2_TglE" type="hidden" id="hd_insertsjkirimbarang2_TglE" value="<?php echo $end3; ?>">
+          <input name="hd_insertsjkirimbarang2_TglE" type="hidden" id="hd_insertsjkirimbarang2_TglE" value="<?php echo $tglE; ?>">
           <input name="hd_insertsjkirimbarang2_Reference" type="hidden" id="hd_insertsjkirimbarang2_Reference" value="<?php echo $tx_insertsjkirimbarang2_Reference; ?>">
 	      <input name="hd_insertsjkirimbarang2_Id[]" type="hidden" id="hd_insertsjkirimbarang2_Id" value="<?php echo $row_InsertSJKirim['Id']; ?>">
+          <input name="hd_insertsjkirimbarang2_Periode" type="hidden" id="hd_insertsjkirimbarang2_Periode" value="<?php echo $periode; ?>">
 	      <input name="hd_insertsjkirimbarang2_Reference2[]" type="hidden" id="hd_insertsjkirimbarang2_Reference2" value="<?php echo $row_InsertSJKirim['Reference']; ?>">
 	      <input name="hd_insertsjkirimbarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkirimbarang2_IsiSJKir" value="<?php echo $row_LastIsiSJKirim['Id'] + $increment; ?>">
           <input name="hd_insertsjkirimbarang2_Purchase[]" type="hidden" id="hd_insertsjkirimbarang2_Purchase" value="<?php echo $row_InsertSJKirim['Purchase']; ?>">
-	    <td><input name="tx_insertsjkirimbarang2_JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_JS" value="<?php echo $row_InsertSJKirim['JS']; ?>" readonly></td>
+	    <td><input name="tx_insertsjkirimbarang2_JS[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_JS" value="<?php echo $JS; ?>" readonly></td>
 	    <td><input name="tx_insertsjkirimbarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_Barang" value="<?php echo $row_InsertSJKirim['Barang']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkirimbarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_Warehouse" autocomplete="off"></td>
 	    <td><input name="tx_insertsjkirimbarang2_QSisaKirInsert[]" type="text" class="form-control" id="tx_insertsjkirimbarang2_QSisaKirInsert<?php echo $increment; ?>" value="<?php echo $row_InsertSJKirim['QSisaKirInsert']; ?>" readonly></td>

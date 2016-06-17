@@ -5,4 +5,5 @@
 	<infoitem key="UD_TransaksiSewa" value="name:Id;datatype:int,name:Purchase;datatype:string,name:JS;datatype:string,name:Barang;datatype:string,name:Quantity;datatype:int,name:QSisaKirInsert;datatype:int,name:QSisaKir;datatype:int,name:QSisaKem;datatype:int,name:Amount;datatype:string,name:TglStart;datatype:string,name:Reference;datatype:string,name:Project;datatype:string,name:Customer;datatype:string" />
 	<infoitem key="UD_LastPeriode" value="name:Periode;datatype:int" />
 	<infoitem key="UD_User" value="name:Name;datatype:string" />
+	<infoitem key="UD_Periode" value="name:Id;datatype:int" />
 </info>

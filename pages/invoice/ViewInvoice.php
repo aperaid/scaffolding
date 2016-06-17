@@ -356,56 +356,31 @@ $totalRows_User = mysql_num_rows($User);
           <td><?php echo $row_View2['Barang']; ?></td>
           
           <?php 
-		  $date1 = $row_View2['S'];
-		  $date2 = $row_View2['E'];
-		  $month1 = substr($row_View2['S'], 3, -5);
-		  $month2 = substr($row_View2['E'], 3, -5);
-		  $date1 = str_replace('/', '-', $date1);
-		  $date2 = str_replace('/', '-', $date2);
-		  $FirstDate = date('01/m/Y', strtotime($date1));
-		  $LastDate = date('t/m/Y', strtotime($date1));
-		  $Proof = strtotime(str_replace('/', '-', $LastDate));
-		  $Check = strtotime(str_replace('/', '-', $row_View2['E']));
+		  $start = $row_View2['S'];
+		  $end = $row_View2['E'];
+
+		  $start2 = str_replace('/', '-', $start);
+		  $end2 = str_replace('/', '-', $end);
+		  $start3 = strtotime($start2);
+		  $end3 = strtotime($end2);
 		  
-		  if($row_View['Periode'] == 1 || $date1==$date2){
-			  $FirstDate2 = $row_View2['S'];
-		  }
-		  elseif( ($row_View2['Deletes'] == 'KembaliS' && $month1==$month2) ||
-		          ($row_View2['Deletes'] == 'ClaimS' && $month1==$month2)      ){
-			  $FirstDate2 = $row_View2['S'];
-		  }
-		  elseif($row_View2['Deletes'] == 'Extend' || $row_View2['Deletes'] == 'KembaliS' || $row_View2['Deletes'] == 'KembaliE' || $row_View2['Deletes'] == 'ClaimS' || $row_View2['Deletes'] == 'ClaimE'){
-			  $FirstDate2 = $FirstDate;
-		  }
+		  $SE = round((($end3 - $start3) / 86400),1)+1;
 		  
-		  if($Proof < $Check){
-			  $LastDate2 = $LastDate;
-		  }
-		  else{
-			  $LastDate2 = $row_View2['E'];
-		  }
-		
-		  $Freplace = str_replace('/', '-', $FirstDate2);
-		  $Lreplace = str_replace('/', '-', $LastDate2);
-		  $sjkem = strtotime($Lreplace); $sjkir = strtotime($Freplace); 
-		  
-		  $SE = round((($sjkem - $sjkir) / 86400),1)+1;
-		  
-		  $Days = str_replace('/', ',', $FirstDate2);
+		  $Days = str_replace('/', ',', $start);
 		  $M = substr($Days, 3, -5);
 		  $Y = substr($Days, 6);
 		  $Days2 = cal_days_in_month(CAL_GREGORIAN, $M, $Y);
 		  
 		  ?>
           
-          <td><?php echo $FirstDate2 ?></td>
-          <td><?php echo $LastDate2; ?></td>
+          <td><?php echo $row_View2['S']; ?></td>
+          <td><?php echo $row_View2['E']; ?></td>
           <td><?php echo $SE; ?></td>
           <td><?php echo $Days2 ?></td>
-          <td><?php echo round(((($sjkem - $sjkir) / 86400)+1)/$Days2, 4) ?></td>
+          <td><?php echo round(((($end3 - $start3) / 86400)+1)/$Days2, 4) ?></td>
           <td><?php echo $row_View2['Quantity']; ?></td>
           <td>Rp <?php echo number_format($row_View2['Amount'], 2, ',', '.'); ?></td>
-          <?php $total2 = ((($sjkem - $sjkir) / 86400)+1)/$Days2*$row_View2['Quantity']* $row_View2['Amount']; $total += $total2 ?>
+          <?php $total2 = ((($end3 - $start3) / 86400)+1)/$Days2*$row_View2['Quantity']* $row_View2['Amount']; $total += $total2 ?>
           <td>Rp <?php echo number_format($total2, 2, ',', '.'); ?></td>
         </tr>
       <?php } while ($row_View2 = mysql_fetch_assoc($View2)); ?>
