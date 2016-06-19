@@ -146,7 +146,7 @@ if (isset($_GET['SJKir'])) {
   $colname_ViewIsiSJKirim = $_GET['SJKir'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.*, customer.* FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_ViewIsiSJKirim, "text"));
+$query_ViewIsiSJKirim = sprintf("SELECT isisjkirim.Id AS Id2, isisjkirim.*, periode.Periode, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, transaksi.Reference, project.*, customer.* FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE isisjkirim.SJKir = %s GROUP BY periode.IsiSJKir ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_ViewIsiSJKirim, "text"));
 $ViewIsiSJKirim = mysql_query($query_ViewIsiSJKirim, $Connection) or die(mysql_error());
 $row_ViewIsiSJKirim = mysql_fetch_assoc($ViewIsiSJKirim);
 $totalRows_ViewIsiSJKirim = mysql_num_rows($ViewIsiSJKirim);
@@ -159,11 +159,6 @@ $colname_View = "-1";
 if (isset($_GET['SJKir'])) {
   $colname_View = $_GET['SJKir'];
 }
-mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT SJKir FROM sjkirim WHERE SJKir = %s", GetSQLValueString($colname_View, "text"));
-$View = mysql_query($query_View, $Connection) or die(mysql_error());
-$row_View = mysql_fetch_assoc($View);
-$totalRows_View = mysql_num_rows($View);
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -177,7 +172,7 @@ $totalRows_User = mysql_num_rows($User);
 
 //Qttd disabled function
 mysql_select_db($database_Connection, $Connection);
-$qttdbutton = sprintf("SELECT check_qttdbutton(%s) as result",  GetSQLValueString($colname_ViewIsiSJKirim, "text"));
+$qttdbutton = sprintf("SELECT check_qttdbutton(%s) as result",  GetSQLValueString($row_ViewIsiSJKirim['Id2'], "text"));
 $query_qttdbutton = mysql_query($qttdbutton, $Connection) or die(mysql_error());
 $row_qttdbutton = mysql_fetch_assoc($query_qttdbutton);
 ?>
@@ -352,9 +347,12 @@ $row_qttdbutton = mysql_fetch_assoc($query_qttdbutton);
                 </tr>
                 </thead>
                 <tbody>
+                <?php 
+				$Periode = $row_ViewIsiSJKirim['Periode']; 
+				$Reference = $row_ViewIsiSJKirim['Reference'];
+				?>
 					<?php do { ?>
 						<tr>
-							<input name="hd_viewsjkirim_Id" type="hidden" id="hd_viewsjkirim_Id">
 							<td><input name="tx_viewsjkirim_JS" type="text" class="form-control" id="tx_viewsjkirim_JS" value="<?php echo $row_ViewIsiSJKirim['JS']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_Barang" type="text" class="form-control" id="tx_viewsjkirim_Barang" value="<?php echo $row_ViewIsiSJKirim['Barang']; ?>" readonly></td>
 							<td><input name="tx_viewsjkirim_Warehouse" type="text" class="form-control" id="tx_viewsjkirim_Warehouse" value="<?php echo $row_ViewIsiSJKirim['Warehouse']; ?>" readonly></td>
@@ -381,8 +379,8 @@ $row_qttdbutton = mysql_fetch_assoc($query_qttdbutton);
 				<a href="#"><button type="button" class="btn btn-default">Print</button></a>
 				
 				<div class="btn-group pull-right">
-					<a href="EditSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" <?php if ($jumlah > '0'){ ?> class="btn btn-default" disabled <?php   } else { ?> class="btn btn-primary" <?php } ?>>Edit Pengiriman</button></a>
-					<a href="EditSJKirimQuantity.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" <?php if ($row_qttdbutton['result'] > 0) { ?> class="btn btn-default" disabled <?php } else { ?> class="btn btn-success" <?php } ?>>Q Tertanda</button></a>
+					<a href="EditSJKirim.php?SJKir=<?php echo $_GET['SJKir']; ?>"><button type="button" <?php if ($jumlah > '0'){ ?> class="btn btn-default" disabled <?php   } else { ?> class="btn btn-primary" <?php } ?>>Edit Pengiriman</button></a>
+					<a href="EditSJKirimQuantity.php?SJKir=<?php echo $_GET['SJKir']; ?>&Periode=<?php echo $Periode; ?>&Reference=<?php echo $Reference; ?>"><button type="button" <?php if ($row_qttdbutton['result'] > 0) { ?> class="btn btn-default" disabled <?php } else { ?> class="btn btn-success" <?php } ?>>Q Tertanda</button></a>
 
 				</div>
 			</div>
@@ -431,6 +429,5 @@ $row_qttdbutton = mysql_fetch_assoc($query_qttdbutton);
 <?php
   mysql_free_result($Menu);
   mysql_free_result($ViewIsiSJKirim);
-  mysql_free_result($View);
   mysql_free_result($User);
 ?>

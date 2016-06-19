@@ -124,6 +124,8 @@ $totalRows_View = mysql_num_rows($View);
 $colname_EditIsiSJKirim = "-1";
 if (isset($_GET['SJKir'])) {
   $colname_EditIsiSJKirim = $_GET['SJKir'];
+  $colname_Periode = $_GET['Periode'];
+  $colname_Reference = $_GET['Reference'];
 }
 mysql_select_db($database_Connection, $Connection);
 $query_Tgl = sprintf("SELECT Tgl FROM sjkirim WHERE SJKir = %s", GetSQLValueString($colname_EditIsiSJKirim, "text"));
@@ -133,7 +135,7 @@ $totalRows_Tgl = mysql_num_rows($Tgl);
 
 //Pengambilan Tanggal Start & End
 mysql_select_db($database_Connection, $Connection);
-$query_TglValue = sprintf("SELECT periode.S, periode.E FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE isisjkirim.SJKir = %s AND Periode = '1'", GetSQLValueString($colname_EditIsiSJKirim, "text"));
+$query_TglValue = sprintf("SELECT periode.S, periode.E FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE Reference = %s AND SJKir = %s AND Periode = %s", GetSQLValueString($colname_Reference, "text"), GetSQLValueString($colname_EditIsiSJKirim, "text"), GetSQLValueString($colname_Periode, "text"));
 $TglValue = mysql_query($query_TglValue, $Connection) or die(mysql_error());
 $row_TglValue = mysql_fetch_assoc($TglValue);
 $totalRows_TglValue = mysql_num_rows($TglValue);
@@ -374,6 +376,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 					<tbody>
                     <?php
 					$Min = $row_Tgl['Tgl'];
+					$Max = $row_TglValue['E'];
 				  ?>
                     	<?php $x=1; ?>
 						<?php do { ?>
@@ -406,7 +409,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                     </div>
 					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_TglValue['S']; ?>" required>
 					</div>
-					<input name="hd_editsjkirimquantity_E" type="hidden" id="hd_editsjkirimquantity_E" value="<?php echo $row_TglValue['E']; ?>">
 				<br>
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
 				<button type="submit" name="bt_editsjkirimquantity_submit" id="bt_editsjkirimquantity_submit" class="btn btn-success pull-right">Update</button>
@@ -485,28 +487,15 @@ function minmax(value, min, max)
 </script>
 <script>
 var Min = <?php echo json_encode($Min) ?>;
+var Max = <?php echo json_encode($Max) ?>;
   $('#tx_editsjkirimquantity_S').datepicker({
 	  format: "dd/mm/yyyy",
 	  startDate: Min,
+	  endDate: Max,
 	  orientation: "bottom left",
 	  todayHighlight: true,
 	  autoclose: true
   }); 
-</script>
-
-<script>
-function tgl(text){
-
-	var date = text.value.substr(0, 2);
-	var month = text.value.substr(3, 2)-1;
-	var year = text.value.substr(6, 5);
-	
-	var test = new Date(year, month, date);
-	var test2 = new Date(new Date(test).setMonth(test.getMonth()+1));
-	var test3 = new Date(new Date(test2).setDate(test2.getDate()-1));
-	document.getElementById('hd_editsjkirimquantity_E').value = ('0' + test3.getDate()).slice(-2) + "/" + ('0' + (test3.getMonth()+1)).slice(-2) + "/" + test3.getFullYear();
-	
-}
 </script>
 
 </body>
