@@ -130,7 +130,7 @@ $arrayaftercount = array();
         $arrayaftercount[$i] = $remove[$i];
 }
 	
-$IsiSJKir = join(',',$arrayaftercount); 
+$Purchase = join(',',$arrayaftercount); 
 
 mysql_select_db($database_Connection, $Connection);
 $query_LastIsiSJKembali = "SELECT Id FROM isisjkembali ORDER BY Id DESC";
@@ -153,10 +153,10 @@ $Id2 = array();
 while($row = mysql_fetch_assoc($query)){
 	$Id2[] = $row['Id'];
 }
-$Id3 = join(',',$Id2); 
+$Id3 = join(',',$Id2);
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, periode.Periode, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.IsiSJKir IN ($IsiSJKir) AND transaksi.Reference=%s AND periode.Id IN ($Id3) GROUP BY isisjkirim.IsiSJKir ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, SUM(isisjkirim.QSisaKemInsert) AS QSisaKemInsert, periode.Periode, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.Purchase IN ($Purchase) AND periode.Id IN ($Id3) AND transaksi.Reference=%s GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);

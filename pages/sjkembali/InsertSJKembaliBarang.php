@@ -134,7 +134,7 @@ while($row = mysql_fetch_assoc($query)){
 $Id3 = join(',',$Id2); 
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.QSisaKemInsert, periode.S, periode.E,  sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' AND periode.Id IN ($Id3) ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.Purchase, SUM(isisjkirim.QSisaKemInsert) AS QSisaKemInsert, periode.S, periode.E,  sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' AND periode.Id IN ($Id3) GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertSJKembali, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
@@ -323,7 +323,7 @@ $totalRows_User = mysql_num_rows($User);
 					
 					?>
                       <tr>
-                        <td><input type="checkbox" name="cb_insertsjkembalibarang_checkbox[]" id="cb_insertsjkembalibarang_checkbox" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>" <?php if ($check < $checks){ ?> disabled <?php }elseif ($check > $checke){ ?> disabled <?php }elseif ($row_InsertSJKembali['QSisaKemInsert'] == 0){ ?> disabled <?php } ?>></td>
+                        <td><input type="checkbox" name="cb_insertsjkembalibarang_checkbox[]" id="cb_insertsjkembalibarang_checkbox" value="<?php echo $row_InsertSJKembali['Purchase']; ?>" <?php if ($check < $checks){ ?> disabled <?php }elseif ($check > $checke){ ?> disabled <?php }elseif ($row_InsertSJKembali['QSisaKemInsert'] == 0){ ?> disabled <?php } ?>></td>
                         <td><input name="tx_insertsjkembalibarang_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Tgl" value="<?php echo $row_InsertSJKembali['S']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
                         <td><input name="tx_insertsjkembalibarang_QSisaKemInsert[]" type="text" class="form-control" id="tx_insertsjkembalibarang_QSisaKemInsert" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
