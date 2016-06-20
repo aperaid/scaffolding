@@ -191,18 +191,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
 
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-	for ($i=0;$i<$totalRows_InsertSJKembali;$i++){
-  $updateSQL = sprintf("CALL check_quantity_sjkembali(%s, %s, %s)",
-                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-}
-
 /*if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE Periode=%s AND IsiSJKir = %s AND Deletes !='KembaliS' AND Deletes != 'KembaliE' AND Deletes != 'ClaimS' AND Deletes != 'ClaimE' AND Deletes != 'Jual'",
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
@@ -213,16 +201,29 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }*/
 
+mysql_select_db($database_Connection, $Connection);
+$query_InsertSJKembali2 = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, periode.Periode, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.Purchase IN ($Purchase) AND periode.Id IN ($Id3) AND transaksi.Reference=%s GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
+$InsertSJKembali2 = mysql_query($query_InsertSJKembali2, $Connection) or die(mysql_error());
+$row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2);
+$totalRows_InsertSJKembali2 = mysql_num_rows($InsertSJKembali2);
+
+do{
+	$Quantity[]=$row_InsertSJKembali2['Quantity'];
+	$IsiSJKir[]=$row_InsertSJKembali2['IsiSJKir'];
+	$Purchase[]=$row_InsertSJKembali2['Purchase'];
+} while ($row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2));
+
+for ($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'Kembali')",
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_S'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference'], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"));
+                       GetSQLValueString($row_InsertSJKembali2['Periode'][$i], "int"),
+                       GetSQLValueString($row_InsertSJKembali2['S'], "text"),
+                       GetSQLValueString($row_InsertSJKembali2['E'], "text"),
+                       GetSQLValueString($Quantity[$i], "int"),
+                       GetSQLValueString($IsiSJKir[$i], "text"),
+					   GetSQLValueString($row_InsertSJKembali2['SJKem'], "text"),
+					   GetSQLValueString($row_InsertSJKembali2['Reference'], "text"),
+					   GetSQLValueString($Purchase[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -240,6 +241,18 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+	for ($i=0;$i<$totalRows_InsertSJKembali;$i++){
+  $updateSQL = sprintf("CALL check_quantity_sjkembali(%s, %s, %s)",
+                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
   $insertGoTo = "SJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -248,6 +261,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   }
   header(sprintf("Location: %s", $insertGoTo));
   }
+} 
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
