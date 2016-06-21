@@ -148,18 +148,32 @@ $GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
 $row_GetId = mysql_fetch_assoc($GetId);
 $totalRows_GetId = mysql_num_rows($GetId);
 
-$query = mysql_query($query_GetId, $Connection) or die(mysql_error());
-$Id2 = array();
-while($row = mysql_fetch_assoc($query)){
-	$Id2[] = $row['Id'];
-}
-$Id3 = join(',',$Id2);
+$Id = array();
+do{
+	$Id[] = $row_GetId['Id'];
+} while ($row_GetId = mysql_fetch_assoc($GetId));
+$Id2 = join(',',$Id);
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, SUM(isisjkirim.QSisaKemInsert) AS QSisaKemInsert, periode.Periode, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.Purchase IN ($Purchase) AND periode.Id IN ($Id3) AND transaksi.Reference=%s GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
+$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, SUM(isisjkirim.QSisaKemInsert) AS QSisaKemInsert, periode.Periode, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.Purchase IN ($Purchase) AND periode.Id IN ($Id2) AND transaksi.Reference=%s GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
 $InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
 $totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
+
+mysql_select_db($database_Connection, $Connection);
+$query_InsertSJKembali2 = sprintf("SELECT periode.Quantity, periode.IsiSJKir, periode.Purchase FROM periode WHERE periode.Id IN ($Id2) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
+$InsertSJKembali2 = mysql_query($query_InsertSJKembali2, $Connection) or die(mysql_error());
+$row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2);
+$totalRows_InsertSJKembali2 = mysql_num_rows($InsertSJKembali2);
+
+$Quantity = array();
+$IsiSJKir = array();
+$Purchase2 = array();
+do{
+	$Quantity[]=$row_InsertSJKembali2['Quantity'];
+	$IsiSJKir[]=$row_InsertSJKembali2['IsiSJKir'];
+	$Purchase2[]=$row_InsertSJKembali2['Purchase'];
+} while ($row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2));
 
 $query = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $Periode = array();
@@ -201,34 +215,24 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }*/
 
-mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali2 = sprintf("SELECT isisjkirim.*, isisjkirim.QSisaKemInsert, periode.Periode, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.Purchase IN ($Purchase) AND periode.Id IN ($Id3) AND transaksi.Reference=%s GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
-$InsertSJKembali2 = mysql_query($query_InsertSJKembali2, $Connection) or die(mysql_error());
-$row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2);
-$totalRows_InsertSJKembali2 = mysql_num_rows($InsertSJKembali2);
-
-do{
-	$Quantity[]=$row_InsertSJKembali2['Quantity'];
-	$IsiSJKir[]=$row_InsertSJKembali2['IsiSJKir'];
-	$Purchase[]=$row_InsertSJKembali2['Purchase'];
-} while ($row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2));
-
-for ($i=0;$i<$totalRows_InsertSJKembali;$i++){
+for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, SJKem, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'Kembali')",
-                       GetSQLValueString($row_InsertSJKembali2['Periode'][$i], "int"),
-                       GetSQLValueString($row_InsertSJKembali2['S'], "text"),
-                       GetSQLValueString($row_InsertSJKembali2['E'], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "int"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_S'], "text"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_E'], "text"),
                        GetSQLValueString($Quantity[$i], "int"),
                        GetSQLValueString($IsiSJKir[$i], "text"),
-					   GetSQLValueString($row_InsertSJKembali2['SJKem'], "text"),
-					   GetSQLValueString($row_InsertSJKembali2['Reference'], "text"),
-					   GetSQLValueString($Purchase[$i], "text"));
+					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Reference'], "text"),
+					   GetSQLValueString($Purchase2[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
+}
 
+for ($i=0;$i<$totalRows_InsertSJKembali;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, SJKem, Periode, IsiSJKir) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKem'][$i], "text"),
@@ -236,20 +240,18 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"),
+                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "int"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
-}
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-	for ($i=0;$i<$totalRows_InsertSJKembali;$i++){
   $updateSQL = sprintf("CALL check_quantity_sjkembali(%s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'][$i], "int"));
+					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -437,7 +439,7 @@ $totalRows_User = mysql_num_rows($User);
 	      <input name="hd_insertsjkembalibarang2_Id[]" type="hidden" id="hd_insertsjkembalibarang2_Id" value="<?php echo $row_InsertSJKembali['Id']; ?>">
           <input name="hd_insertsjkembalibarang2_IsiSJKir[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKir" value="<?php echo $row_InsertSJKembali['IsiSJKir']; ?>">
 	      <input name="hd_insertsjkembalibarang2_Purchase[]" type="hidden" id="hd_insertsjkembalibarang2_Purchase" value="<?php echo $row_InsertSJKembali['Purchase']; ?>">
-	        <input name="hd_insertsjkembalibarang2_Periode[]" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_InsertSJKembali['Periode']; ?>">
+	        <input name="hd_insertsjkembalibarang2_Periode" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_InsertSJKembali['Periode']; ?>">
 	        <input name="hd_insertsjkembalibarang2_S" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo $row_InsertSJKembali['S']; ?>">
             <input name="hd_insertsjkembalibarang2_E" type="hidden" id="hd_insertsjkembalibarang2_E" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
 	        <input name="hd_insertsjkembalibarang2_IsiSJKem[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>">
