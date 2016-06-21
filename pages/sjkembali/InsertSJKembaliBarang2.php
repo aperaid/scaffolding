@@ -248,7 +248,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("CALL check_quantity_sjkembali(%s, %s, %s)",
+  $updateSQL = sprintf("CALL insert_sjkembali(%s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "int"));

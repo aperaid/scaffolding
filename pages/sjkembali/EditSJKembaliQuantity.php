@@ -194,10 +194,9 @@ for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 // jumlah qsisakembaliquantity di isisjkirim diupdate
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-	$QTerima = GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima2'][$i], "int");
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=QSisaKem+$QTerima-%s WHERE IsiSJKir=%s",
+  $updateSQL = sprintf("CALL edit_sjkembaliquantity(%s, %s)",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkembaliquantity_IsiSJKir'][$i], "text"));
+                       GetSQLValueString($_POST['hd_editsjkembaliquantity_Purchase'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
