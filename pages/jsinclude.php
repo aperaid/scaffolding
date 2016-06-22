@@ -15,3 +15,5 @@
 <script src="<?php echo $ROOT ?>library/dist/js/demo.js"></script>
 <!-- Mask Money -->
 <script src="../../library/maskmoney/src/jquery.maskMoney.js" type="text/javascript"></script>
+<!-- datepicker -->
+<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>

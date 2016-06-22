@@ -119,6 +119,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 	unset($_SESSION['tx_insertpocustomer_Transport']);
 }
 
+// Declare Root directory
+$ROOT="../../";
 ?>
 <!doctype html>
 <html>
