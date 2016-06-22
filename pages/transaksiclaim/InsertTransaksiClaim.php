@@ -197,12 +197,7 @@ $ROOT="../../";
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index.php" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>BDN</b></span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">PT. <b>BDN</b></span>
-    </a>
+    <?php include_once('../../pages/logo.php'); ?>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
       <!-- Sidebar toggle button-->
@@ -250,11 +245,11 @@ $ROOT="../../";
     <section class="sidebar">
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MENU</li>
-        <?php do { ?>
-        <li><a href="../../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
-        <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
-      </ul>
+      <!-- Sidebar Menu -->
+		<?php
+			$top_menu_sel="menu_claim";
+			include_once('../../pages/menu.php');
+		?>
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -327,11 +322,7 @@ $ROOT="../../";
   
   <!-- Footer Wrapper -->
   <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> `1.0.0
-    </div>
-    <strong>Copyright &copy; 2015 <a href="http://apera.id">Apera Indonesia</a>.</strong> All rights
-    reserved.
+    <?php include_once('../../pages/footer.php'); ?>
   </footer>
   <!-- /.footer-wrapper -->
   
@@ -339,25 +330,8 @@ $ROOT="../../";
   <div class="control-sidebar-bg"></div>
 </div>
 
-<!-- jQuery 2.1.4 -->
-<script src="../../library/jQuery/jQuery-2.1.4.min.js"></script>
-<!-- jQuery UI -->
-<script src="../../library/jQueryUI/jquery-ui.js"></script>
-<!-- Bootstrap 3.3.5 -->
-<script src="../../library/bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="../../library/datatables/jquery.dataTables.min.js"></script>
-<script src="../../library/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="../../library/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="../../library/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="../../library/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../library/dist/js/demo.js"></script>
-<!-- datepicker -->
-<script src="../../library/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<!-- jsinclude -->
+<?php include_once('../../pages/jsinclude.php'); ?>
 <!-- page script -->
 
 <script>
