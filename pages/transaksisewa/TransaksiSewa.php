@@ -157,6 +157,8 @@ $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
 	
+// Declare Root directory
+$ROOT="../../";
 	?>
 
 <!DOCTYPE html>
