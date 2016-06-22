@@ -21,4 +21,5 @@
 			<li <?php if ($top_menu_sel=="menu_invoice"){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>pages/invoice/Invoice.php"><i class="fa fa-list-alt"></i> <span>Invoice</span></a></li>
 		</ul>
 	</li>
+	
 </ul>
