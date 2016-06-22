@@ -29,30 +29,30 @@
 			<i class="fa fa-angle-left pull-right"></i>
 		</a>
 		<ul class="treeview-menu">
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-users"></i> <span>Permintaan</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-building-o"></i> <span>PO</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-file-text-o"></i> <span>Penerimaan</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-credit-card"></i> <span>Retur</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-money"></i> <span>Pembayaran</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-envelope-o"></i> <span>Permintaan</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-file-text-o"></i> <span>PO</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-automobile"></i> <span>Penerimaan</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-history"></i> <span>Retur</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-list-alt"></i> <span>Invoice</span></a></li>
 		</ul>
 	</li>
 	<li class="treeview <?php if (0) { ?> active <?php } ?>">
 		<a href="#">
-			<i class="fa fa-cart-plus"></i>
+			<i class="fa fa-archive"></i>
 			<span>Inventori</span>
 			<i class="fa fa-angle-left pull-right"></i>
 		</a>
 		<ul class="treeview-menu">
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-users"></i> <span>Lihat Stok</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-building-o"></i> <span>Penyesuaian Stok</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-file-text-o"></i> <span>Transfer Barang</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-credit-card"></i> <span>Daftar Barang</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-money"></i> <span>Daftar Gudang</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-folder-open-o"></i> <span>Lihat Stok</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-database"></i> <span>Penyesuaian Stok</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-exchange"></i> <span>Transfer Antar Gudang</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-cubes"></i> <span>Daftar Barang</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-industry"></i> <span>Daftar Gudang</span></a></li>
 		</ul>
 	</li>
 	<li class="treeview <?php if (0) { ?> active <?php } ?>">
 		<a href="#">
-			<i class="fa fa-cart-plus"></i>
+			<i class="fa fa-gears "></i>
 			<span>Manufaktur</span>
 			<i class="fa fa-angle-left pull-right"></i>
 		</a>
@@ -64,15 +64,15 @@
 			<i class="fa fa-angle-left pull-right"></i>
 		</a>
 		<ul class="treeview-menu">
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-users"></i> <span>Penerimaan</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-building-o"></i> <span>Pembayaran</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-file-text-o"></i> <span>Transfer Antar Akun</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-credit-card"></i> <span>Daftar Akun</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-plus"></i> <span>Penerimaan</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-minus"></i> <span>Pembayaran</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-exchange"></i> <span>Transfer Antar Akun</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-user-plus"></i> <span>Daftar Akun</span></a></li>
 		</ul>
 	</li>
 	<li class="treeview <?php if (0) { ?> active <?php } ?>">
 		<a href="#">
-			<i class="fa fa-cart-plus"></i>
+			<i class="fa  fa-book"></i>
 			<span>Buku Besar</span>
 			<i class="fa fa-angle-left pull-right"></i>
 		</a>
