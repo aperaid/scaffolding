@@ -170,6 +170,8 @@ $check = mysql_query($query_check, $Connection) or die(mysql_error());
 $row_check = mysql_fetch_assoc($check);
 //check end
 
+// Declare Root directory
+$ROOT = '../../';
 ?>
 
 <!DOCTYPE html>
@@ -178,42 +180,16 @@ $row_check = mysql_fetch_assoc($check);
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>BDN ERP | Edit Customer</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.5 -->
-  <link rel="stylesheet" href="../../library/bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../library/font-awesome-4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../../library/ionicons-2.0.1/css/ionicons.min.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="../../library/datatables/dataTables.bootstrap.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../../library/dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../library/dist/css/skins/_all-skins.min.css">
-  <!-- Remove spinner arrow on input number -->
-  <link rel="stylesheet" type="text/css" href="../mystyle.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+  
+  <!-- cssinclude -->
+  <?php include_once('../../pages/cssinclude.php'); ?>
 </head>
 <body class="hold-transition skin-blue fixed sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index.php" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>BDN</b></span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">PT. <b>BDN</b></span>
-    </a>
+    <?php include_once('../../pages/logo.php'); ?>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
       <!-- Sidebar toggle button-->
@@ -260,12 +236,10 @@ $row_check = mysql_fetch_assoc($check);
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-        <li class="header">MENU</li>
-        <?php do { ?>
-        <li><a href="../../<?php echo $row_Menu['link']; ?>"><i class="<?php echo $row_Menu['icon']; ?>"></i> <span><?php echo $row_Menu['nama']; ?></span></a></li>
-        <?php } while ($row_Menu = mysql_fetch_assoc($Menu)); ?>
-      </ul>
+      <?php 
+	  $top_menu_sel='menu_customer';
+	  include_once('../../pages/menu.php');
+	  ?>
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -413,11 +387,7 @@ $row_check = mysql_fetch_assoc($check);
   
   <!-- Footer Wrapper -->
   <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> `1.0.0
-    </div>
-    <strong>Copyright &copy; 2015 <a href="http://apera.id">Apera Indonesia</a>.</strong> All rights
-    reserved.
+    <?php include_once('../../pages/footer.php'); ?>
   </footer>
   <!-- /.footer-wrapper -->
   
@@ -425,21 +395,8 @@ $row_check = mysql_fetch_assoc($check);
   <div class="control-sidebar-bg"></div>
 </div>
 
-<!-- jQuery 2.1.4 -->
-<script src="../../library/jQuery/jQuery-2.1.4.min.js"></script>
-<!-- Bootstrap 3.3.5 -->
-<script src="../../library/bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="../../library/datatables/jquery.dataTables.min.js"></script>
-<script src="../../library/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="../../library/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="../../library/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="../../library/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../library/dist/js/demo.js"></script>
+<!-- jsinclude -->
+<?php include_once('../../pages/jsinclude.php'); ?>
 <!-- page script -->
 <script>
 function capital() {

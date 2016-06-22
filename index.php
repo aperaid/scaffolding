@@ -129,6 +129,9 @@ $query_User = sprintf("SELECT Name FROM users WHERE Username = %s", GetSQLValueS
 $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
+
+// Define Root Directory
+$ROOT="";
 ?>
 
 <!DOCTYPE html>
@@ -146,12 +149,7 @@ $totalRows_User = mysql_num_rows($User);
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index.php" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>BDN</b></span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">PT. <b>BDN</b></span>
-    </a>
+    <?php include_once('pages/logo.php'); ?>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
       <!-- Sidebar toggle button-->
