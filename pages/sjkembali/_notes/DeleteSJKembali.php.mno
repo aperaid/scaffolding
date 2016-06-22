@@ -4,4 +4,6 @@
 	<infoitem key="UD_Periode" value="name:Periode;datatype:int" />
 	<infoitem key="UD_IsiSJKir" value="name:Periode;datatype:int" />
 	<infoitem key="UD_Quantity" value="name:Quantity;datatype:int" />
+	<infoitem key="UD_Id" value="name:Id;datatype:int" />
+	<infoitem key="UD_IdKembali" value="name:Id;datatype:int" />
 </info>

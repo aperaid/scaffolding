@@ -41,53 +41,29 @@ $Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
 $row_Periode = mysql_fetch_assoc($Periode);
 $totalRows_Periode = mysql_num_rows($Periode);
 
-// Ambil semua isisjkir dari isisjkembali untuk penghapusan periode
-mysql_select_db($database_Connection, $Connection);
-$query_IsiSJKir = sprintf("SELECT IsiSJKir FROM isisjkembali WHERE SJKem = %s", GetSQLValueString($_GET['SJKem'], "text"));
+// Ambil semua isisjkir dari periode untuk penghapusan periode
+ mysql_select_db($database_Connection, $Connection);
+$query_IsiSJKir = sprintf("SELECT IsiSJKir FROM periode WHERE SJKem = %s", GetSQLValueString($_GET['SJKem'], "text"));
 $IsiSJKir = mysql_query($query_IsiSJKir, $Connection) or die(mysql_error());
 $row_IsiSJKir = mysql_fetch_assoc($IsiSJKir);
 $totalRows_IsiSJKir = mysql_num_rows($IsiSJKir);
 
-$query = mysql_query($query_IsiSJKir, $Connection) or die(mysql_error());
 $IsiSJKir2 = array();
-while($row = mysql_fetch_assoc($query)){
-	$IsiSJKir2[] = $row['IsiSJKir'];
-}
-$IsiSJKir3 = join(',',$IsiSJKir2);  
+do{
+	$IsiSJKir2[]=$row_IsiSJKir['IsiSJKir'];
+} while ($row_IsiSJKir = mysql_fetch_assoc($IsiSJKir));
 
 // Ambil semua quantity dari periode untuk penghapusan periode
 mysql_select_db($database_Connection, $Connection);
-$query_Quantity = sprintf("SELECT Quantity FROM periode WHERE SJKem = %s AND Deletes = 'Kembali' AND IsiSJKir IN ($IsiSJKir3)", GetSQLValueString($_GET['SJKem'], "text"));
-
+$query_Quantity = sprintf("SELECT Quantity FROM periode WHERE SJKem = %s AND Deletes = 'Kembali'", GetSQLValueString($_GET['SJKem'], "text"));
 $Quantity = mysql_query($query_Quantity, $Connection) or die(mysql_error());
 $row_Quantity = mysql_fetch_assoc($Quantity);
 $totalRows_Quantity = mysql_num_rows($Quantity);
 
 $Quantity2 = array();
-$query = mysql_query($query_Quantity, $Connection) or die(mysql_error());
-while($row = mysql_fetch_assoc($query)){
-	$Quantity2[] = $row['Quantity'];
-}
-
-// Safety Net
-if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
-  $deleteSQL = sprintf("SELECT delete_sjkem(%s)",
-                       GetSQLValueString($_GET['SJKem'], "text"));
-  
-  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
-  $alterSQL2 = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
-  $alterSQL3 = sprintf("ALTER TABLE isisjkembali AUTO_INCREMENT = 1");
-  $alterSQL4 = sprintf("ALTER TABLE sjkembali AUTO_INCREMENT = 1");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL2, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL3, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL4, $Connection) or die(mysql_error());
-
-}
-
+do{
+	$Quantity2[]=$row_Quantity['Quantity'];
+} while ($row_Quantity = mysql_fetch_assoc($Quantity));
 
 if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
   for($i=0;$i<$totalRows_Quantity;$i++){
@@ -95,9 +71,25 @@ if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
   					   GetSQLValueString($Quantity2[$i], "int"),
                        GetSQLValueString($IsiSJKir2[$i], "text"),
 					   GetSQLValueString($row_Periode['Periode'], "text"));
-
+					   
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+ }
+
+// Safety Net
+if ((isset($_GET['SJKem'])) && ($_GET['SJKem'] != "")) {
+  $deleteSQL = sprintf("SELECT delete_sjkem(%s)",
+                       GetSQLValueString($_GET['SJKem'], "text"));
+  
+  $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
+  $alterSQL2 = sprintf("ALTER TABLE isisjkembali AUTO_INCREMENT = 1");
+  $alterSQL3 = sprintf("ALTER TABLE sjkembali AUTO_INCREMENT = 1");
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL2, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL3, $Connection) or die(mysql_error());
   
   $deleteGoTo = "SJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {
