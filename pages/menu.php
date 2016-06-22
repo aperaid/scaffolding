@@ -65,7 +65,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-plus"></i> <span>Penerimaan</span></a></li>
-			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-minus"></i> <span>Pembayaran</span></a></li>
+			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-minus"></i> <span>Pengeluaran</span></a></li>
 			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-exchange"></i> <span>Transfer Antar Akun</span></a></li>
 			<li <?php if (0){ ?> class="active" <?php } ?>><a href="<?php echo $ROOT; ?>#"><i class="fa fa-user-plus"></i> <span>Daftar Akun</span></a></li>
 		</ul>
