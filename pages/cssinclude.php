@@ -15,3 +15,5 @@ folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="<?php echo $ROOT ?>library/dist/css/skins/_all-skins.min.css">
   <!-- Remove spinner arrow on input number -->
   <link rel="stylesheet" type="text/css" href="../mystyle.css">
+  <!-- datepicker -->
+  <link rel="stylesheet" href="<?php echo $ROOT ?>library/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
