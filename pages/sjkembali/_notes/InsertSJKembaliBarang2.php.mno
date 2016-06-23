@@ -16,4 +16,5 @@
 	<infoitem key="UD_Invoice" value="name:PPN;datatype:int,name:Transport;datatype:string" />
 	<infoitem key="UD_GetId" value="name:Id;datatype:int" />
 	<infoitem key="UD_InsertSJKembali2" value="name:Id;datatype:int,name:IsiSJKir;datatype:string,name:Warehouse;datatype:string,name:QKirim;datatype:int,name:QTertanda;datatype:int,name:QSisaKemInsert;datatype:int,name:QSisaKem;datatype:int,name:Purchase;datatype:string,name:SJKir;datatype:string,name:QSisaKemInsert;datatype:int,name:Periode;datatype:int,name:S;datatype:string,name:SJKir;datatype:string,name:Tgl;datatype:string,name:Barang;datatype:string,name:Purchase;datatype:string,name:Reference;datatype:string" />
+	<infoitem key="UD_DeleteId" value="name:Id;datatype:int" />
 </info>
