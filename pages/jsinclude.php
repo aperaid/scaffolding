@@ -1,5 +1,7 @@
 <!-- jQuery 2.1.4 -->
 <script src="<?php echo $ROOT ?>library/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- jQuery UI -->
+<script src="../../library/jQueryUI/jquery-ui.js"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="<?php echo $ROOT ?>library/bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
