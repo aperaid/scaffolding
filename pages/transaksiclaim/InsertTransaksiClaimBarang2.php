@@ -138,14 +138,41 @@ $arrayaftercount = array();
         $arrayaftercount[$i] = $remove[$i];
 }
 	
-$IsiSJKir = join(',',$arrayaftercount);  
+$Purchase = join(',',$arrayaftercount);  
+
+mysql_select_db($database_Connection, $Connection);
+$query_GetId = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id DESC", GetSQLValueString($_GET['Reference'], "text"));
+$GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
+$row_GetId = mysql_fetch_assoc($GetId);
+$totalRows_GetId = mysql_num_rows($GetId);
+
+$Id = array();
+do{
+	$Id[] = $row_GetId['Id'];
+} while ($row_GetId = mysql_fetch_assoc($GetId));
+$Id2 = join(',',$Id);
 
 // Ambil ID isisjkirim, purchase, qsisakem, barang, id periode dkk berdasarkan reference, periode, sewa/extend, dan isisjkir
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.Id AS Id1, isisjkirim.Purchase, isisjkirim.QSisaKem, transaksi.Barang, periode.Id AS Id2, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir = periode.IsiSJKir LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') AND isisjkirim.IsiSJKir IN ($IsiSJKir) ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.Id AS Id1, isisjkirim.Purchase, SUM(isisjkirim.QSisaKem) AS QSisaKem, transaksi.Barang, periode.Id AS Id2, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir = periode.IsiSJKir LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') AND isisjkirim.Purchase IN ($Purchase) GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
+
+mysql_select_db($database_Connection, $Connection);
+$query_InsertTransaksiClaim2 = sprintf("SELECT periode.Quantity, periode.IsiSJKir, periode.Purchase FROM periode WHERE periode.Id IN ($Id2) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
+$InsertTransaksiClaim2 = mysql_query($query_InsertTransaksiClaim2, $Connection) or die(mysql_error());
+$row_InsertTransaksiClaim2 = mysql_fetch_assoc($InsertTransaksiClaim2);
+$totalRows_InsertTransaksiClaim2 = mysql_num_rows($InsertTransaksiClaim);
+
+$Quantity = array();
+$IsiSJKir = array();
+$Purchase2 = array();
+do{
+	$Quantity[]=$row_InsertTransaksiClaim2['Quantity'];
+	$IsiSJKir[]=$row_InsertTransaksiClaim2['IsiSJKir'];
+	$Purchase2[]=$row_InsertTransaksiClaim2['Purchase'];
+} while ($row_InsertTransaksiClaim2 = mysql_fetch_assoc($InsertSJKembali2));
 
 // Ambil ID dari transaksi claim
 mysql_select_db($database_Connection, $Connection);
