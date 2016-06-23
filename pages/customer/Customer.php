@@ -151,151 +151,79 @@ $User = mysql_query($query_User, $Connection) or die(mysql_error());
 $row_User = mysql_fetch_assoc($User);
 $totalRows_User = mysql_num_rows($User);
 
-// Declare Root directory
-$ROOT="../../";
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BDN ERP | Customer</title>
-  <!-- css include -->
-  <?php include_once('../../pages/cssinclude.php'); ?>
-</head>
-<body class="hold-transition skin-blue fixed sidebar-mini">
-<div class="wrapper">
-
-  <header class="main-header">
-    <!-- Logo -->
-    <?php include_once('../../pages/logo.php'); ?>
-    
-	<!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Buka/Tutup</span>
-      </a>
-
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../../library/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?php echo "Welcome ".$_SESSION['MM_Username']; ?></span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img src="../../library/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                <p>
-                  <?php echo $_SESSION['MM_Username']; ?> - <?php echo $row_User['Name']; ?>
-                  <small>Super Profile</small>
-                </p>
-              </li>
-              
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-right">
-                  <a href="<?php echo $logoutAction ?>" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-  
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar Menu -->
-		<?php
-			$top_menu_sel="menu_customer";
-			include_once('../../pages/menu.php');
-		?>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
-  
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Customer
-        <small>All</small>
-        <large><a href="InsertCustomer.php"><button id="bt_customer_insert" name="bt_customer_insert" type="button" class="btn btn-success btn-sm">New Customer</button></a></large>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-        <li class="active">Customer</li>
-      </ol>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-
-          <div class="box">
-            <div class="box-body">
-              <table id="tb_customer_example1" name="tb_customer_example1" class="table table-bordered table-striped table-responsive">
-                <thead>
-                <tr>
-                  <th>Customer Code</th>
-                  <th>Company Name</th>
-                  <th>View</th>
-                </tr>
-                </thead>
-                <tbody>
-				  <?php do { ?>
-                  <tr>
-                    <td><?php echo $row_Customer['CCode']; ?></td>
-                    <td><?php echo $row_Customer['Company']; ?></td>
-                    <td><a href="ViewCustomer.php?Id=<?php echo $row_Customer['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-                  </tr>
-                  <?php } while ($row_Customer = mysql_fetch_assoc($Customer)); ?>
-                </tbody>
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  
-  <!-- Footer Wrapper -->
-  <footer class="main-footer">
-    <?php include_once('../../pages/footer.php'); ?>
-  </footer>
-  <!-- /.footer-wrapper -->
-  
-  <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
+<?php
+// Declare Root directory
+$ROOT="../../";
+$PAGE="Customer";
+$top_menu_sel="menu_customer";
+include_once($ROOT . 'pages/html_header.php');
+include_once($ROOT . 'pages/html_main_header.php');
+?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			Customer
+			<small>All</small>
+			<large><a href="InsertCustomer.php"><button id="bt_customer_insert" name="bt_customer_insert" type="button" class="btn btn-success btn-sm">New Customer</button></a></large>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="<?php echo $ROOT ?>pages/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
+			<li class="active">Customer</li>
+		</ol>
+	</section>
+	
+	<!-- Main content -->
+	<section class="content">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-body">
+						<table id="tb_customer_example1" name="tb_customer_example1" class="table table-bordered table-striped table-responsive">
+							<thead>
+								<tr>
+									<th>Customer Code</th>
+									<th>Company Name</th>
+									<th>View</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php do { ?>
+									<tr>
+										<td><?php echo $row_Customer['CCode']; ?></td>
+										<td><?php echo $row_Customer['Company']; ?></td>
+										<td><a href="ViewCustomer.php?Id=<?php echo $row_Customer['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+									</tr>
+								<?php } while ($row_Customer = mysql_fetch_assoc($Customer)); ?>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</section>
+	<!-- /.content -->
 </div>
-
-<!-- jsinclude -->
-<?php include_once('../../pages/jsinclude.php'); ?>
+<!-- /.content-wrapper -->
+  
+<!-- Footer Wrapper -->
+<?php include_once($ROOT . 'pages/footer.php'); ?>
+<!-- /.footer-wrapper -->
 
 <!-- page script -->
 <script>
-  $(function () {
-    $("#tb_customer_example1").DataTable();
-  });
+	$(function () {
+		$("#tb_customer_example1").DataTable();
+	});
 </script>
-</body>
-</html>
+
 <?php
   mysql_free_result($Customer);
   mysql_free_result($User);
