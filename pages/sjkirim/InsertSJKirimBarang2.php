@@ -298,7 +298,7 @@ $ROOT="../../";
     <section class="sidebar">
       <!-- Sidebar Menu -->
 		<?php
-			$top_menu_sel="menu_customer";
+			$top_menu_sel="menu_sjkirim";
 			include_once('../../pages/menu.php');
 		?>
     </section>
