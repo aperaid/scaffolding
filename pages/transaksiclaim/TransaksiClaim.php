@@ -206,7 +206,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                     <?php 
 					
 					mysql_select_db($database_Connection, $Connection);
-					$query_PerClaim = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE Deletes='ClaimS' AND Reference=%s AND IsiSJKir=%s AND Periode=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['IsiSJKir'], "text"), GetSQLValueString($row_TransaksiClaim['Periode'], "text"));
+					$query_PerClaim = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE Deletes='Claim' AND Reference=%s AND IsiSJKir=%s AND Periode=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['IsiSJKir'], "text"), GetSQLValueString($row_TransaksiClaim['Periode'], "text"));
 					$PerClaim = mysql_query($query_PerClaim, $Connection) or die(mysql_error());
 					$row_PerClaim = mysql_fetch_assoc($PerClaim);
 					$totalRows_PerClaim = mysql_num_rows($PerClaim);
@@ -229,7 +229,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
                         <td><a href="ViewTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-					  <td><a href="DeleteTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
+					  <td><a href="DeleteTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim = $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
 					</tr>
 					<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
 				</tbody>

@@ -138,9 +138,9 @@ for($i=0;$i<$totalRows_Edit;$i++){
 }
 
 // Delete Periode
-// Delete ClaimE dan ClaimS sesuai nomor purchase dan reference dan isisjkir mana yg udah kena claim
+// Delete ClaimE dan Claim sesuai nomor purchase dan reference dan isisjkir mana yg udah kena claim
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM periode WHERE Reference=%s AND Purchase IN ($Purchase2) AND IsiSJKir IN ($IsiSJKir2) AND Claim IN ($Claim2) AND (Deletes='ClaimS' OR Deletes='ClaimE')",
+  $deleteSQL = sprintf("DELETE FROM periode WHERE Reference=%s AND Purchase IN ($Purchase2) AND IsiSJKir IN ($IsiSJKir2) AND Claim IN ($Claim2) AND Deletes='Claim'",
   					   GetSQLValueString($row_Edit['Reference'], "text"));
 					   
   $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
