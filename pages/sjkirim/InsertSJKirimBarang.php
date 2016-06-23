@@ -165,8 +165,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <?php
 // Declare Root directory
 $ROOT="../../";
-$PAGE="Customer";
-$top_menu_sel="menu_customer";
+$PAGE="Insert Barang";
+$top_menu_sel="menu_sjkirim";
 include_once($ROOT . 'pages/html_header.php');
 include_once($ROOT . 'pages/html_main_header.php');
 ?>

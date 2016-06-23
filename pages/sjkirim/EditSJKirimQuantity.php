@@ -244,8 +244,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <?php
 // Declare Root directory
 $ROOT="../../";
-$PAGE="Customer";
-$top_menu_sel="menu_customer";
+$PAGE="Verifikasi Pengiriman";
+$top_menu_sel="menu_sjkirim";
 include_once($ROOT . 'pages/html_header.php');
 include_once($ROOT . 'pages/html_main_header.php');
 ?>

@@ -180,8 +180,8 @@ $row_qttdbutton = mysql_fetch_assoc($query_qttdbutton);
 <?php
 // Declare Root directory
 $ROOT="../../";
-$PAGE="Customer";
-$top_menu_sel="menu_customer";
+$PAGE="View SJ Kirim";
+$top_menu_sel="menu_sjkirim";
 include_once($ROOT . 'pages/html_header.php');
 include_once($ROOT . 'pages/html_main_header.php');
 ?>
