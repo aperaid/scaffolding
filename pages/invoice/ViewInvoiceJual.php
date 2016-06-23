@@ -279,6 +279,13 @@ include_once($ROOT . 'pages/html_main_header.php');
                     <input id="hd_viewinvoicejual_Transport2" name="hd_viewinvoicejual_Transport2" type="hidden" autocomplete="off" value="<?php echo $row_View['Transport']; ?>">
                   </div>
                 </div>
+				<!-- Discount Input -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Discount</label>
+					<div class="col-sm-6">
+						<input id="tx_viewinvoice_Discount" name="tx_viewinvoice_Discount" type="text" class="form-control" value="" onKeyUp="tot()" >
+					</div>
+                </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">

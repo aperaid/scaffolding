@@ -276,6 +276,13 @@ include_once($ROOT . 'pages/html_main_header.php');
 					<input name="tx_viewinvoiceclaim_PPN" type="checkbox" id="tx_viewinvoiceclaim_PPN" value="1" <?php if ($row_View['PPN'] == 1){ ?> checked <?php } ?>>
                   </div>
                 </div>
+				<!-- Discount Input -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Discount</label>
+					<div class="col-sm-6">
+						<input id="tx_viewinvoice_Discount" name="tx_viewinvoice_Discount" type="text" class="form-control" value="" onKeyUp="tot()" >
+					</div>
+                </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">

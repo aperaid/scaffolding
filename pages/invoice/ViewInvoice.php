@@ -315,6 +315,13 @@ include_once($ROOT . 'pages/html_main_header.php');
 						<input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo 'Rp ', number_format($row_View['Transport'],0,',','.'); }?>" onKeyUp="tot()" <?php if($row_View['Periode'] > 1) { ?> disabled <?php } ?>>
 					</div>
                 </div>
+				<!-- Discount Input -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Discount</label>
+					<div class="col-sm-6">
+						<input id="tx_viewinvoice_Discount" name="tx_viewinvoice_Discount" type="text" class="form-control" value="" onKeyUp="tot()" >
+					</div>
+                </div>
 				<!-- Total Text -->
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
