@@ -39,7 +39,7 @@ if (isset($_GET['Reference'])) {
 
 // Ambil claim code, quantity, amount, purchase#, periode, dll
 mysql_select_db($database_Connection, $Connection);
-$query_Edit = sprintf("SELECT SUM(periode.Quantity) AS Quantity, periode.IsiSJKir, periode.Purchase, periode.Claim FROM periode WHERE periode.Periode = %s AND periode.Reference = %s AND periode.Deletes = 'Claim' GROUP BY periode.Claim", GetSQLValueString($colname_Periode, "text"), GetSQLValueString($colname_Edit, "text"));
+$query_Edit = sprintf("SELECT SUM(periode.Quantity) AS Quantity, periode.IsiSJKir, periode.Purchase, periode.Claim FROM periode WHERE periode.Periode = %s AND periode.Reference = %s AND periode.Deletes = 'Claim' GROUP BY periode.IsiSJKir", GetSQLValueString($colname_Periode, "text"), GetSQLValueString($colname_Edit, "text"));
 $Edit = mysql_query($query_Edit, $Connection) or die(mysql_error());
 $row_Edit = mysql_fetch_assoc($Edit);
 $totalRows_Edit = mysql_num_rows($Edit);
@@ -119,7 +119,7 @@ for($i=0;$i<$totalRows_Edit;$i++){
 // Delete Periode
 // Delete ClaimE dan Claim sesuai nomor purchase dan reference dan isisjkir mana yg udah kena claim
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM periode WHERE Reference=%s AND Purchase IN ($Purchase2) AND IsiSJKir IN ($IsiSJKir2) AND Claim IN ($Claim2) AND Deletes='Claim'",
+  $deleteSQL = sprintf("DELETE FROM periode WHERE Reference=%s AND Purchase IN ($Purchase2) AND IsiSJKir IN ($IsiSJKir2) AND Deletes='Claim'",
   					   GetSQLValueString($colname_Edit, "text"));
 					   
   $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
@@ -143,25 +143,11 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
 }
 
-// Delete Invoice
-if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM invoice WHERE Reference=%s AND Periode=%s+1",
-  					   GetSQLValueString($colname_Edit, "text"),
-                       GetSQLValueString($colname_Periode, "int"));
-					   
-  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-}
-
 // Delete Transaksi
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   for($i=0;$i<$totalRows_Edit;$i++){
-  // delete transaksi claim sesuai ID
-  $deleteSQL = sprintf("DELETE FROM transaksiclaim WHERE Claim = %s AND Purchase = %s AND Periode = %s",
-					   GetSQLValueString($Claim[$i], "int"),
+  // delete transaksi claim
+  $deleteSQL = sprintf("DELETE FROM transaksiclaim WHERE Purchase = %s AND Periode = %s",
 					   GetSQLValueString($Purchase[$i], "text"),
 					   GetSQLValueString($colname_Periode, "int"));
   // abis delete, auto increment nya dijadiin 1 lagi				   

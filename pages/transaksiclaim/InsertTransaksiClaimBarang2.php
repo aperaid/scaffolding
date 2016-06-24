@@ -224,7 +224,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 }
 
-for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 //Insert Invoice
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Claim', %s, %s, %s, %s)",
@@ -242,6 +241,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
 
+for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 //Update transaksi, kurangin qsisakembali dengan jumlah yg diclaim
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
