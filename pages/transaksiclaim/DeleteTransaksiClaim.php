@@ -37,39 +37,18 @@ if (isset($_GET['Reference'])) {
   $colname_Periode = $_GET['Periode'];
 }
 
+// Ambil claim code, quantity, amount, purchase#, periode, dll
 mysql_select_db($database_Connection, $Connection);
-// Ambil periode dari claim paling terakhir
-$query_ClaimId = sprintf("SELECT transaksiclaim.Id FROM transaksiclaim LEFT JOIN periode on transaksiclaim.IsiSJKir = periode.IsiSJKir WHERE periode.Reference = %s AND transaksiclaim.Periode = %s AND (Deletes='Sewa' or Deletes='Extend') GROUP BY transaksiclaim.Id;", GetSQLValueString($colname_Edit, "text"), GetSQLValueString($colname_Periode, "text"));
-$ClaimId = mysql_query($query_ClaimId, $Connection) or die(mysql_error());
-$row_ClaimId = mysql_fetch_assoc($ClaimId);
-$totalRows_ClaimId = mysql_num_rows($ClaimId);
-
-$query = mysql_query($query_ClaimId, $Connection) or die(mysql_error());
-$Id = array();
-while($row = mysql_fetch_assoc($query)){
-	$Id[] = $row['Id'];
-}
-$Id2 = join(',',$Id); 
-
-mysql_select_db($database_Connection, $Connection);
-// Ambil periode dari claim paling terakhir
-$query_Periode = "SELECT MAX(periode.Periode) AS Periode FROM periode LEFT JOIN transaksiclaim on periode.IsiSJKir = transaksiclaim.IsiSJKir WHERE transaksiclaim.Id IN ($Id2) AND (Deletes='Sewa' or Deletes='Extend');";
-$Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
-$row_Periode = mysql_fetch_assoc($Periode);
-$totalRows_Periode = mysql_num_rows($Periode);
-
-// Ambil claim ID, claim code, qclaim, amount, purchase#, periode, dll
-mysql_select_db($database_Connection, $Connection);
-$query_Edit = "SELECT transaksiclaim.Id, transaksiclaim.Claim, transaksiclaim.QClaim, transaksiclaim.Amount, transaksiclaim.Purchase, transaksiclaim.Periode, transaksiclaim.IsiSJKir, transaksi.Barang, transaksi.QSisaKem, transaksi.Reference FROM transaksiclaim LEFT JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase WHERE transaksiclaim.Id IN ($Id2)";
+$query_Edit = sprintf("SELECT SUM(periode.Quantity) AS Quantity, periode.IsiSJKir, periode.Purchase, periode.Claim FROM periode WHERE periode.Periode = %s AND periode.Reference = %s AND periode.Deletes = 'Claim' GROUP BY periode.Claim", GetSQLValueString($colname_Periode, "text"), GetSQLValueString($colname_Edit, "text"));
 $Edit = mysql_query($query_Edit, $Connection) or die(mysql_error());
 $row_Edit = mysql_fetch_assoc($Edit);
 $totalRows_Edit = mysql_num_rows($Edit);
 
 
 $query = mysql_query($query_Edit, $Connection) or die(mysql_error());
-$QClaim = array();
+$Quantity = array();
 while($row = mysql_fetch_assoc($query)){
-	$QClaim[] = $row['QClaim'];
+	$Quantity[] = $row['Quantity'];
 }
 
 $query = mysql_query($query_Edit, $Connection) or die(mysql_error());
@@ -98,8 +77,8 @@ $IsiSJKir2 = join(',',$IsiSJKir);
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 for($i=0;$i<$totalRows_Edit;$i++){
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem+%s WHERE Reference=%s AND Purchase=%s",
- 					   GetSQLValueString($QClaim[$i], "int"),
-                       GetSQLValueString($row_Edit['Reference'], "text"),
+ 					   GetSQLValueString($Quantity[$i], "int"),
+                       GetSQLValueString($colname_Edit, "text"),
 					   GetSQLValueString($Purchase[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -112,8 +91,8 @@ for($i=0;$i<$totalRows_Edit;$i++){
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 for($i=0;$i<$totalRows_Edit;$i++){
   $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+%s, QSisaKem=QSisaKem+%s WHERE Purchase=%s AND IsiSJKir=%s",
- 					   GetSQLValueString($QClaim[$i], "int"),
-					   GetSQLValueString($QClaim[$i], "int"),
+ 					   GetSQLValueString($Quantity[$i], "int"),
+					   GetSQLValueString($Quantity[$i], "int"),
 					   GetSQLValueString($Purchase[$i], "text"),
 					   GetSQLValueString($IsiSJKir[$i], "text"));
 
@@ -127,10 +106,10 @@ for($i=0;$i<$totalRows_Edit;$i++){
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 for($i=0;$i<$totalRows_Edit;$i++){
   $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s WHERE IsiSJKir=%s AND Purchase=%s AND Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend')",
-  					   GetSQLValueString($QClaim[$i], "int"),
+  					   GetSQLValueString($Quantity[$i], "int"),
 					   GetSQLValueString($IsiSJKir[$i], "text"),
 					   GetSQLValueString($Purchase[$i], "text"),
-					   GetSQLValueString($row_Periode['Periode'], "int"));
+					   GetSQLValueString($colname_Periode, "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -141,7 +120,7 @@ for($i=0;$i<$totalRows_Edit;$i++){
 // Delete ClaimE dan Claim sesuai nomor purchase dan reference dan isisjkir mana yg udah kena claim
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $deleteSQL = sprintf("DELETE FROM periode WHERE Reference=%s AND Purchase IN ($Purchase2) AND IsiSJKir IN ($IsiSJKir2) AND Claim IN ($Claim2) AND Deletes='Claim'",
-  					   GetSQLValueString($row_Edit['Reference'], "text"));
+  					   GetSQLValueString($colname_Edit, "text"));
 					   
   $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
 
@@ -154,8 +133,8 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 // Hapus semua invoice yg 
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $deleteSQL = sprintf("DELETE FROM invoice WHERE Reference=%s AND Periode=%s AND JSC='Claim'",
-  					   GetSQLValueString($row_Edit['Reference'], "text"),
-                       GetSQLValueString($row_Periode['Periode'], "int"));
+  					   GetSQLValueString($colname_Edit, "text"),
+                       GetSQLValueString($colname_Periode, "int"));
 					   
   $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
 
@@ -167,8 +146,8 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 // Delete Invoice
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $deleteSQL = sprintf("DELETE FROM invoice WHERE Reference=%s AND Periode=%s+1",
-  					   GetSQLValueString($row_Edit['Reference'], "text"),
-                       GetSQLValueString($row_Periode['Periode'], "int"));
+  					   GetSQLValueString($colname_Edit, "text"),
+                       GetSQLValueString($colname_Periode, "int"));
 					   
   $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
 
@@ -179,8 +158,12 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 
 // Delete Transaksi
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
+  for($i=0;$i<$totalRows_Edit;$i++){
   // delete transaksi claim sesuai ID
-  $deleteSQL = "DELETE FROM transaksiclaim WHERE Id IN ($Id2)";
+  $deleteSQL = sprintf("DELETE FROM transaksiclaim WHERE Claim = %s AND Purchase = %s AND Periode = %s",
+					   GetSQLValueString($Claim[$i], "int"),
+					   GetSQLValueString($Purchase[$i], "text"),
+					   GetSQLValueString($colname_Periode, "int"));
   // abis delete, auto increment nya dijadiin 1 lagi				   
   $alterSQL = sprintf("ALTER TABLE transaksiclaim AUTO_INCREMENT = 1");
 
@@ -195,6 +178,7 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
     $deleteGoTo .= $_SERVER['QUERY_STRING'];
   }
   header(sprintf("Location: %s", $deleteGoTo));
+  }
 }
 ?>
 <!doctype html>

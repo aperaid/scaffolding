@@ -137,7 +137,7 @@ if (isset($_GET['Reference'])) {
 }
 	
 mysql_select_db($database_Connection, $Connection);
-$query_TransaksiClaim = "SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.IsiSJKir=periode.IsiSJKir INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode GROUP BY transaksiclaim.Periode ORDER BY transaksiclaim.Id ASC";
+$query_TransaksiClaim = "SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.Claim=periode.Claim INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode GROUP BY transaksiclaim.Periode ORDER BY transaksiclaim.Id ASC";
 $TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_error());
 $row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
 $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
@@ -206,13 +206,13 @@ include_once($ROOT . 'pages/html_main_header.php');
                     <?php 
 					
 					mysql_select_db($database_Connection, $Connection);
-					$query_PerClaim = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE Deletes='Claim' AND Reference=%s AND IsiSJKir=%s AND Periode=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['IsiSJKir'], "text"), GetSQLValueString($row_TransaksiClaim['Periode'], "text"));
+					$query_PerClaim = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE Deletes='Claim' AND Reference=%s AND Claim=%s AND Periode=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['Claim'], "text"), GetSQLValueString($row_TransaksiClaim['Periode'], "text"));
 					$PerClaim = mysql_query($query_PerClaim, $Connection) or die(mysql_error());
 					$row_PerClaim = mysql_fetch_assoc($PerClaim);
 					$totalRows_PerClaim = mysql_num_rows($PerClaim);
 
 					mysql_select_db($database_Connection, $Connection);
-					$query_PerExtend = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE (Deletes='Extend' OR Deletes='Sewa') AND Reference=%s AND IsiSJKir=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['IsiSJKir'], "text"));
+					$query_PerExtend = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE (Deletes='Extend' OR Deletes='Sewa') AND Reference=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"));
 					$PerExtend = mysql_query($query_PerExtend, $Connection) or die(mysql_error());
 					$row_PerExtend = mysql_fetch_assoc($PerExtend);
 					$totalRows_PerExtend = mysql_num_rows($PerExtend);
