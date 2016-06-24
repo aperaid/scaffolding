@@ -138,14 +138,41 @@ $arrayaftercount = array();
         $arrayaftercount[$i] = $remove[$i];
 }
 	
-$IsiSJKir = join(',',$arrayaftercount);  
+$Purchase = join(',',$arrayaftercount);  
+
+mysql_select_db($database_Connection, $Connection);
+$query_GetId = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id DESC", GetSQLValueString($_GET['Reference'], "text"));
+$GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
+$row_GetId = mysql_fetch_assoc($GetId);
+$totalRows_GetId = mysql_num_rows($GetId);
+
+$Id = array();
+do{
+	$Id[] = $row_GetId['Id'];
+} while ($row_GetId = mysql_fetch_assoc($GetId));
+$Id2 = join(',',$Id);
 
 // Ambil ID isisjkirim, purchase, qsisakem, barang, id periode dkk berdasarkan reference, periode, sewa/extend, dan isisjkir
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.Id AS Id1, isisjkirim.Purchase, isisjkirim.QSisaKem, transaksi.Barang, periode.Id AS Id2, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir = periode.IsiSJKir LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') AND isisjkirim.IsiSJKir IN ($IsiSJKir) ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.Purchase, SUM(isisjkirim.QSisaKem) AS QSisaKem, transaksi.Barang, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir = periode.IsiSJKir LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') AND isisjkirim.Purchase IN ($Purchase) GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
+
+mysql_select_db($database_Connection, $Connection);
+$query_InsertTransaksiClaim2 = sprintf("SELECT periode.Quantity, periode.IsiSJKir, periode.Purchase FROM periode WHERE periode.Id IN ($Id2) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"));
+$InsertTransaksiClaim2 = mysql_query($query_InsertTransaksiClaim2, $Connection) or die(mysql_error());
+$row_InsertTransaksiClaim2 = mysql_fetch_assoc($InsertTransaksiClaim2);
+$totalRows_InsertTransaksiClaim2 = mysql_num_rows($InsertTransaksiClaim2);
+
+$Quantity = array();
+$IsiSJKir = array();
+$Purchase2 = array();
+do{
+	$Quantity[]=$row_InsertTransaksiClaim2['Quantity'];
+	$IsiSJKir[]=$row_InsertTransaksiClaim2['IsiSJKir'];
+	$Purchase2[]=$row_InsertTransaksiClaim2['Purchase'];
+} while ($row_InsertTransaksiClaim2 = mysql_fetch_assoc($InsertTransaksiClaim2));
 
 // Ambil ID dari transaksi claim
 mysql_select_db($database_Connection, $Connection);
@@ -180,9 +207,45 @@ $LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
 $row_LastId = mysql_fetch_assoc($LastId);
 $totalRows_LastId = mysql_num_rows($LastId);
 
-// 1. Update transaksi, kurangin qsisakembali dengan jumlah yg diclaim
+//Insert Periode
+for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'Claim')",
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S'], "text"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
+                       GetSQLValueString($Quantity[$i], "int"),
+                       GetSQLValueString($IsiSJKir[$i], "text"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"),
+					   GetSQLValueString($Purchase2[$i], "text"),
+					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"));
+					   
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+}
+
+for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
+//Insert Invoice
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Claim', %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice'][$i], "text"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"));
+  $deleteSQL = sprintf("DELETE FROM invoice WHERE invoice.Periode NOT IN (SELECT periode.Periode FROM periode WHERE Reference=%s) AND Reference=%s",
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"));
+  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
+  
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+
+//Update transaksi, kurangin qsisakembali dengan jumlah yg diclaim
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
+
   $updateSQL = sprintf("UPDATE transaksi SET QSisaKem=QSisaKem-%s WHERE Purchase=%s",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"));
@@ -190,124 +253,31 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
-}
 
-// 2. Update isisjkirim, kurangin qsisakembali & qsisakembaliinsert dengan apa yg diketik
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=QSisaKem-%s, QSisaKemInsert=QSisaKemInsert-%s WHERE IsiSJKir=%s AND Id=%s",
-                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
-					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Id'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-}
-
-// 3. Update Periode
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
-
-// 4. Update periode, quantity sewa/extend di kurang dgn apa yg di claim
-$updateSQL = sprintf("UPDATE periode SET Quantity=Quantity-%s WHERE IsiSJKir=%s AND Reference=%s AND Periode=%s AND Id=%s AND SJKem IS NULL AND (Deletes = 'Sewa' OR Deletes = 'Extend')",
-                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Id2'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-
-
-// 5. Insert periode ClaimS
-$insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'ClaimS')",
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S'][$i], "text"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
-                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
-					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-
-
-// 6. Insert periode ClaimE
-$insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s+1, %s, %s, %s, %s, %s, %s, %s, 'ClaimE')",
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S2'], "text"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
-                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'][$i], "text"),
-					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"));
-
-	//hapus ClaimE kalau lebih kecil dari tnggal 31
-	$deleteSQL = sprintf("DELETE FROM periode WHERE S=E AND Deletes = 'ClaimE'");
-	$alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
-
-	mysql_select_db($database_Connection, $Connection);
-	$Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-	$Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-	$Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-
-}
-}
-
-// 7. Insert Invoice
+//Insert transaksiclaim
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Claim', %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice2'], "text"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E2'], "text"),
-                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference2'], "text"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode2'], "int"));
-  $deleteSQL = sprintf("DELETE FROM invoice WHERE invoice.Periode NOT IN (SELECT periode.Periode FROM periode WHERE Reference=%s) AND Reference=%s",
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference2'], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference2'], "text"));
-  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
-  
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-}
-
-// 8. Insert Invoice
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s+1)",
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice3'], "text"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E2'], "text"),
-                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference2'], "text"),
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode2'], "int"));
-  $deleteSQL = "DELETE FROM invoice WHERE invoice.Periode NOT IN (SELECT periode.Periode FROM periode)";
-  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-  $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
-}
-
-// 9. Insert transaksiclaim
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
   $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode, IsiSJKir) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'][$i], "int"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"),
 					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+	$updateSQL = sprintf("CALL insert_claim(%s, %s, %s, %s)",
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
+                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"),
+					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"));
+	
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
   $insertGoTo = "TransaksiClaim.php";
   if (isset($_SERVER['QUERY_STRING'])) {
@@ -318,7 +288,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 }
 
-// 10. Kalau klik submit, hapus data2 dari session sebelumnya
+//Kalau klik submit, hapus data2 dari session sebelumnya
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 	unset($_SESSION['cb_inserttransaksiclaimbarang_checkbox']);
 	unset($_SESSION['tx_inserttransaksiclaim_Tgl']);
@@ -411,53 +381,16 @@ include_once($ROOT . 'pages/html_main_header.php');
 	<?php do { ?>
     <?php
 	
-    /* --- Tanggal yang diinput sama user --- */
-	// 1. Input tgl claim di masukin user ke variable $tgl
-	$tgl = $tx_inserttransaksiclaimbarang2_Tgl;
-	// 2. Abis itu di convert dalam bentuk tanggal yg bisa dicompare system trus dimasukkin ke variable $convert
-	$convert = str_replace('/', '-', $tgl);
-	// 3. convert ke bentuk comparable
-	$check = strtotime($convert);
+    $tgl = $tx_inserttransaksiclaimbarang2_Tgl;
 	
-	/* --- Tanggal yang diinput sama user, ambil tanggal 01 nya dan akhir nya --- */
-	// 4. Tanggal yg diinput sama user, ambil tanggal 01 nya, masukin ke $S2
-	$S2 = date('01/m/Y', strtotime($convert));
-	// 5. Tanggal yg diinput sama user, ambil tanggal akhirnya (29, 30, atau 31),  masukin ke $E2 Untuk Invoice
-	$E2 = date('t/m/Y', strtotime($convert));
-	
-	/* --- Tanggal start sewa atau extend --- */
-	// 1. Tanggal Start (S) di periode, dimasukkin ke variable $tgl2
-	$tgl2 = $row_InsertTransaksiClaim['S'];
-	// 2. Abis itu diconvert dalam bentuk tanggal yg bisa dicompare system trus dimasukkin ke variable $convert2
-	$convert2 = str_replace('/', '-', $tgl2);
-	// 3. Tanggal start sewa/extend, ambil tanggal akhirnya, masukin ke $last
-	$last = date('t-m-Y', strtotime($convert2));
-	// 4. convert ke bentuk comparable
-	$E = strtotime($last);
-	
-	// 9. bandingin apakah tgl yg diinput user lebih kecil atau sama dengan tanggal akhir dari bulan sewa/extendnya
-	if($check <= $E)
-	{
-		// 10. kalau lebih kecil/sama dengan, set $S dengan tanggal yg diinput
-		$S = $tx_inserttransaksiclaimbarang2_Tgl;
-	}
-	else
-	{
-		// 11. kalau lebih besar, set $S dengan tanggal 01 dari bulan yg diinput sama user
-		$S = $S2;			
-	}
 	?>
     
 	<tr>
-    <input name="hd_inserttransaksiclaimbarang2_Id[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Id" value="<?php echo $row_InsertTransaksiClaim['Id1']; ?>">
-    <input name="hd_inserttransaksiclaimbarang2_Id2[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Id2" value="<?php echo $row_InsertTransaksiClaim['Id2']; ?>">
-    <input name="hd_inserttransaksiclaimbarang2_S[]" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
-    <input name="hd_inserttransaksiclaimbarang2_E" type="hidden" id="hd_inserttransaksiclaimbarang2_E" value="<?php echo $tx_inserttransaksiclaimbarang2_Tgl; ?>">
-    <input name="hd_inserttransaksiclaimbarang2_S2" type="hidden" id="hd_inserttransaksiclaimbarang2_S2" value="<?php echo $S ?>">
-    <input name="hd_inserttransaksiclaimbarang2_E2" type="hidden" id="hd_inserttransaksiclaimbarang2_E2" value="<?php echo $E2; ?>">
+    <input name="hd_inserttransaksiclaimbarang2_S" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
+    <input name="hd_inserttransaksiclaimbarang2_E" type="hidden" id="hd_inserttransaksiclaimbarang2_E2" value="<?php echo $tgl; ?>">
 	<input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
-	<input name="hd_inserttransaksiclaimbarang2_Reference[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>">
-	<input name="hd_inserttransaksiclaimbarang2_Periode[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
+	<input name="hd_inserttransaksiclaimbarang2_Reference" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>">
+	<input name="hd_inserttransaksiclaimbarang2_Periode" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
 	<input name="hd_inserttransaksiclaimbarang2_Invoice[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $increment, 5, "0", STR_PAD_LEFT); ?>">
 	<td><input name="tx_inserttransaksiclaimbarang2_Claim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Claim" value="<?php echo $row_LastClaim['Id'] + $increment; ?>" readonly></td>
 	<td><input name="tx_inserttransaksiclaimbarang2_Barang" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
@@ -488,10 +421,6 @@ include_once($ROOT . 'pages/html_main_header.php');
                 <a href="InsertTransaksiClaimBarang.php?Reference=<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>&Periode=<?php echo $row_Periode['Periode']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
 		   <button type="submit" name="bt_inserttransaksiclaimbarang2_submit" id="bt_inserttransaksiclaimbarang2_submit" class="btn btn-success pull-right">Insert</button>
                 </div>
-                <input name="hd_inserttransaksiclaimbarang2_Invoice2" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice2" value="<?php echo str_pad($row_LastId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
-                <input name="hd_inserttransaksiclaimbarang2_Invoice3" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice3" value="<?php echo str_pad($row_LastId['Id'] + 2, 5, "0", STR_PAD_LEFT); ?>">
-            <input name="hd_inserttransaksiclaimbarang2_Reference2" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference2" value="<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>">
-          <input name="hd_inserttransaksiclaimbarang2_Periode2" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode2" value="<?php echo $row_Periode['Periode']; ?>">
   <input type="hidden" name="MM_insert" value="form1">
   <input type="hidden" name="MM_update" value="form1">
 </form>

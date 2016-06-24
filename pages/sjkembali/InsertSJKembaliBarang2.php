@@ -253,7 +253,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                        GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "int"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"));
-	$deleteSQL = "CALL insert_sjkembali2";
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());

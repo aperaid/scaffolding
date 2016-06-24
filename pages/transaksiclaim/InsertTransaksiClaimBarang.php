@@ -142,7 +142,7 @@ $Id3 = join(',',$Id2);
 
 // Ambil isisjkir, purchase, qsisakeminsert, S, E, Barang, JS dari isisjkirim, periode, & sjkirim parameter: reference, js: sewa, dan periode ID=yg udah diambil di atas
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.Purchase, isisjkirim.QSisaKemInsert, periode.S, periode.E, transaksi.Barang, transaksi.JS FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' AND periode.Id IN ($Id3) ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_InsertTransaksiClaim, "text"));
+$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.IsiSJKir, isisjkirim.Purchase, SUM(isisjkirim.QSisaKem) AS QSisaKem, periode.S, periode.E, transaksi.Barang, transaksi.JS FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE sjkirim.Reference = %s AND transaksi.JS = 'Sewa' AND periode.Id IN ($Id3) GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_InsertTransaksiClaim, "text"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
@@ -242,10 +242,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 					
 					?>
 	  <tr>
-	    <td align="center"><input type="checkbox" name="cb_inserttransaksiclaimbarang_checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>" <?php if ($check < $checks){ ?> disabled <?php }elseif ($check > $checke){ ?> disabled <?php }elseif ($row_InsertTransaksiClaim['QSisaKemInsert'] == 0){ ?> disabled <?php } ?>></td>
+	    <td align="center"><input type="checkbox" name="cb_inserttransaksiclaimbarang_checkbox[]" id="cb_inserttransaksiclaimbarang_checkbox" value="<?php echo $row_InsertTransaksiClaim['Purchase']; ?>" <?php if ($check < $checks){ ?> disabled <?php }elseif ($check > $checke){ ?> disabled <?php }elseif ($row_InsertTransaksiClaim['QSisaKem'] == 0){ ?> disabled <?php } ?>></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_JS[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_JS" value="<?php echo $row_InsertTransaksiClaim['JS']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_Barang[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
-	    <td><input name="tx_inserttransaksiclaimbarang_Quantity[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Quantity" value="<?php echo $row_InsertTransaksiClaim['QSisaKemInsert']; ?>" readonly></td>
+	    <td><input name="tx_inserttransaksiclaimbarang_Quantity[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Quantity" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
 	    <td><input name="tx_inserttransaksiclaimbarang_Purchase[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang_Purchase" value=<?php echo $row_InsertTransaksiClaim['Purchase']; ?> readonly></td>
 	    </tr>
 	  <?php $increment++; ?>

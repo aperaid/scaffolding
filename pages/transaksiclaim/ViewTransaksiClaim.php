@@ -246,7 +246,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                     <?php 
 					
 					mysql_select_db($database_Connection, $Connection);
-					$query_PerClaim = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE Deletes='ClaimS' AND Reference=%s AND IsiSJKir=%s AND Periode=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['IsiSJKir'], "text"), GetSQLValueString($row_TransaksiClaim['Periode'], "text"));
+					$query_PerClaim = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE Deletes='Claim' AND Reference=%s AND IsiSJKir=%s AND Periode=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['IsiSJKir'], "text"), GetSQLValueString($row_TransaksiClaim['Periode'], "text"));
 					$PerClaim = mysql_query($query_PerClaim, $Connection) or die(mysql_error());
 					$row_PerClaim = mysql_fetch_assoc($PerClaim);
 					$totalRows_PerClaim = mysql_num_rows($PerClaim);
@@ -280,7 +280,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<a href="#"><button type="button" class="btn btn-default">Print</button></a>
 				
 				<div class="btn-group pull-right">
-				<a href="EditTransaksiClaim.php?Reference=<?php echo $_GET['Reference']; ?>&Periode=<?php echo $_GET['Periode']; ?>"><button type="button" <?php if ($Claim >= $Extend) { ?> class="btn btn-primary" <?php } else { ?> class="btn btn-default" disabled <?php } ?> >Edit Claim </button>
+				<a href="EditTransaksiClaim.php?Reference=<?php echo $_GET['Reference']; ?>&Periode=<?php echo $_GET['Periode']; ?>"><button type="button" <?php if ($Claim = $Extend) { ?> class="btn btn-primary" <?php } else { ?> class="btn btn-default" disabled <?php } ?> >Edit Claim </button>
                 </a>
                 </div>
 			  </div>
