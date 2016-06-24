@@ -175,7 +175,7 @@ include_once($ROOT . 'pages/html_main_header.php');
       <h1>
         Purchase Order
         <small>All</small>
-        <large><a href="InsertPOCustomer.php"><button type="button" class="btn btn-success btn-sm">New PO</button></a></large>
+        <large><a href="InsertPOCustomer.php"><button type="button" class="btn btn-success btn-sm">New Reference</button></a></large>
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
