@@ -110,19 +110,28 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-$References = substr($_SESSION['tx_insertpocustomer_Reference'], 1, -1);
+mysql_select_db($database_Connection, $Connection);
+$query_POCode = sprintf("SELECT MAX(POCode) AS POCode FROM transaksi WHERE Reference=%s", GetSQLValueString($_GET['Reference'], "text"));
+$POCode = mysql_query($query_POCode, $Connection) or die(mysql_error());
+$row_POCode = mysql_fetch_assoc($POCode);
+$totalRows_POCode = mysql_num_rows($POCode);
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $_SESSION['tx_insertpocustomerbarang_PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
+if($row_POCode['POCode'] == NULL){
+	$POCode = 0;
+}else
+{
+	$POCode = $row_POCode['POCode'];
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $_SESSION['tx_insertpocustomerbarang_PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
   $_SESSION['tx_insertpocustomerbarang_Transport'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Transport'], "float"));
+  $_SESSION['tx_insertpocustomerbarang_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"));
 }
 
 for($i=0;$i<10;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference, POCode) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s+1)",
                        GetSQLValueString($_POST['hd_insertpocustomerbarang_Purchase'][$i], "text"),
                        GetSQLValueString($_POST['db_insertpocustomerbarang_JS'][$i], "text"),
                        GetSQLValueString($_POST['tx_inputpocustomerbarang_Barang'][$i], "text"),
@@ -130,7 +139,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Quantity'][$i], "int"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Quantity'][$i], "int"),
                        GetSQLValueString($_POST['tx_insertpocustomerbarang_Amount'][$i], "text"),
-                       GetSQLValueString($_POST['hd_inputpocustomerbarang_Reference'], "text"));
+                       GetSQLValueString($_POST['hd_inputpocustomerbarang_Reference'], "text"),
+					   GetSQLValueString($POCode, "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -202,7 +212,7 @@ include_once($ROOT . 'pages/html_main_header.php');
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>Reference=<?php echo $References; ?>" id="fm_insertpocustomerbarang_form1" name="fm_insertpocustomerbarang_form1" method="POST">
+              <form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomerbarang_form1" name="fm_insertpocustomerbarang_form1" method="POST">
                 <div class="box-body">
                   <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
                     <thead>
@@ -236,13 +246,20 @@ include_once($ROOT . 'pages/html_main_header.php');
 					</div>
 					<div class="col-sm-1"></div>
 					<!-- transport text END -->
+					<!-- tanggal text -->
+					<div class="input-group col-sm-5">
+						<span class="input-group-addon">Date</span>
+						<input name="tx_insertpocustomerbarang_Tgl" type="text" id="tx_insertpocustomerbarang_Tgl" class="form-control" autocomplete="off" placeholder="Date" required>
+					</div>
+					<div class="col-sm-1"></div>
+					<!-- tanggal text END -->
 				  </div>
 				  <!-- row ppn & transport END -->
 			  <div class="form-group">
-				<a href="InsertPOCustomer.php?Reference=<?php echo $References; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+				<a href="ViewTransaksi.php?Reference=<?php echo $_GET['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
 				<button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
 			  </div>
-				<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $References; ?>">
+				<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $_GET['Reference']; ?>">
 				<input type="hidden" name="MM_insert" value="form1">
               </div>
 			  </form>
@@ -262,6 +279,17 @@ include_once($ROOT . 'pages/html_main_header.php');
 <!-- Footer Wrapper -->
 <?php include_once($ROOT . 'pages/footer.php'); ?>
 <!-- /.footer-wrapper -->
+<script>
+  $('#tx_insertpocustomerbarang_Tgl').datepicker({
+	  format: "dd/mm/yyyy",
+	  orientation: "bottom left",
+	  todayHighlight: true,
+	  autoclose: true,
+	  startDate: '-7d',
+	  endDate: '+7d'
+  }); 
+</script>
+
 <script>
     $(document).ready(function(){
 		var max_fields      = 10; //maximum input boxes allowed

@@ -383,7 +383,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 		  <a href="../transaksiclaim/inserttransaksiclaim.php?Reference=<?php echo $row_View['Reference']; ?>">	<button id="claim_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_sjkembalicheck['result'] == 0) 	{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-info pull-right"		<?php }?>	>Claim</button></a>
           <a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">							<button id="edit_button"		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) 			{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-primary pull-right"	<?php }?>	>Edit</button></a>
           <a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>">						<button id="delete_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) 			{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-danger pull-right"	<?php }?> onclick="return confirm('Delete PO Customer?')">Delete</button></a>
-		  <a href="#">																							<button id="insertPO_button" 	type="button"  	style="margin-right: 5px;"																															class="btn btn-success pull-right"				>Insert PO</button></a>
+		  <a href="InsertPOCustomerBarang.php?Reference=<?php echo $colname_View; ?>">																							<button id="insertPO_button" 	type="button"  	style="margin-right: 5px;"																															class="btn btn-success pull-right"				>Insert PO</button></a>
         </div>
       </div>
     </section>
