@@ -162,10 +162,13 @@ $row_Reference = mysql_fetch_assoc($Reference);
 $totalRows_Reference = mysql_num_rows($Reference);
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO sjkirim (SJKir, Tgl, Reference) VALUES (%s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO sjkirim (SJKir, Tgl, Reference, NoPolisi, Sopir, Kenek) VALUES (%s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['hd_insertsjkirimbarang2_SJKir'], "text"),
                        GetSQLValueString($_POST['hd_insertsjkirimbarang2_Tgl'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_Reference'], "text"));
+                       GetSQLValueString($_POST['hd_insertsjkirimbarang2_Reference'], "text"),
+					   GetSQLValueString($_POST['tx_insertsjkirimbarang2_NoPolisi'], "text"),
+                       GetSQLValueString($_POST['tx_insertsjkirimbarang2_Sopir'], "text"),
+                       GetSQLValueString($_POST['tx_insertsjkirimbarang2_Kenek'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -326,6 +329,22 @@ include_once($ROOT . 'pages/html_main_header.php');
                 <input type="hidden" name="MM_insert" value="form1">
   			    <input type="hidden" name="MM_update" value="form1">
                 </div>
+				<table id="tb_insertsjkirimbarang2_example2" name="tb_insertsjkirimbarang2_example2" class="table table-bordered table-striped table-responsive">
+				<thead>
+				<tr>
+				<th>No Polisi</th>
+				<th>Sopir</th>
+				<th>Kenek</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+				<td><input name="tx_insertsjkirimbarang2_NoPolisi" type="text" class="form-control" id="tx_insertsjkirimbarang2_NoPolisi" autocomplete="off" required></td>
+	    <td><input name="tx_insertsjkirimbarang2_Sopir" type="text" class="form-control" id="tx_insertsjkirimbarang2_Sopir" autocomplete="off" required></td>
+	    <td><input name="tx_insertsjkirimbarang2_Kenek" type="text" class="form-control" id="tx_insertsjkirimbarang2_Kenek" autocomplete="off" required></td>
+				</tr>
+				</tbody>
+				</table>
             <!-- /.box-body -->
             <div class="box-footer">
                   <a href="InsertSJKirimBarang.php?Reference=<?php echo $row_Reference['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
