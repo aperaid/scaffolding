@@ -210,26 +210,24 @@ $totalRows_LastId = mysql_num_rows($LastId);
 //Insert Periode
 for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'Claim')",
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, 'Claim')",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_S'], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
                        GetSQLValueString($Quantity[$i], "int"),
                        GetSQLValueString($IsiSJKir[$i], "text"),
 					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"),
-					   GetSQLValueString($Purchase2[$i], "text"),
-					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"));
+					   GetSQLValueString($Purchase2[$i], "text"));
 					   
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
 }
 
-for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 //Insert Invoice
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Claim', %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice'][$i], "text"),
+                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice'], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"),
@@ -243,6 +241,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
 
+for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
 //Update transaksi, kurangin qsisakembali dengan jumlah yg diclaim
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
@@ -256,14 +255,13 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 //Insert transaksiclaim
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode, IsiSJKir) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode) VALUES (%s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Claim'][$i], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_QClaim'][$i], "int"),
 					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
                        GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_IsiSJKir'][$i], "int"));
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -391,7 +389,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 	<input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
 	<input name="hd_inserttransaksiclaimbarang2_Reference" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>">
 	<input name="hd_inserttransaksiclaimbarang2_Periode" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
-	<input name="hd_inserttransaksiclaimbarang2_Invoice[]" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + $increment, 5, "0", STR_PAD_LEFT); ?>">
+	<input name="hd_inserttransaksiclaimbarang2_Invoice" type="hidden" id="hd_inserttransaksiclaimbarang2_Invoice" value="<?php echo str_pad($row_LastId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
 	<td><input name="tx_inserttransaksiclaimbarang2_Claim[]" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Claim" value="<?php echo $row_LastClaim['Id'] + $increment; ?>" readonly></td>
 	<td><input name="tx_inserttransaksiclaimbarang2_Barang" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_Barang" value="<?php echo $row_InsertTransaksiClaim['Barang']; ?>" readonly></td>
 	<td><input name="tx_inserttransaksiclaimbarang2_QSisaKem" type="text" class="form-control" id="tx_inserttransaksiclaimbarang2_QSisaKem" value="<?php echo $row_InsertTransaksiClaim['QSisaKem']; ?>" readonly></td>
@@ -423,6 +421,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                 </div>
   <input type="hidden" name="MM_insert" value="form1">
   <input type="hidden" name="MM_update" value="form1">
+  <input type="hidden" name="MM_delete" value="form1">
 </form>
             </div>
             <!-- /.box -->
@@ -474,4 +473,11 @@ function minmax(value, min, max)
   mysql_free_result($Periode);
   mysql_free_result($LastId);
   mysql_free_result($User);
+  
+  if ((isset($_POST["MM_delete"])) && ($_POST["MM_delete"] == "form1")) {
+	$deleteSQL = "CALL insert_claim2";
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+}
 ?>
