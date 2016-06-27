@@ -160,27 +160,17 @@ include_once($ROOT . 'pages/html_main_header.php');
 
           <div class="box">
             <div class="box-body">
-              <table id="tb_project_example1" name="tb_project_example1" class="table table-bordered table-striped table-responsive">
+              <table id="tb_project" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
+                  <th>Project ID</th>
                   <th>Project Code</th>
                   <th>Project Name</th>
-                  <th>View</th>
                 </tr>
-                </thead>
-                <tbody>
-				  <?php do { ?>
-                  <tr>
-                    <td><?php echo $row_Project['PCode']; ?></td>
-                    <td><?php echo $row_Project['Project']; ?></td>
-                    <td><a href="ViewProject.php?Id=<?php echo $row_Project['Id']; ?>">
-                    <button type="button" id="bt_project_view" name="bt_project_view" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-                  </tr>
-                  <?php } while ($row_Project = mysql_fetch_assoc($Project)); ?>
-                </tbody>
-                
+                </thead>                
               </table>
-            </div>
+            
+			</div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -199,7 +189,25 @@ include_once($ROOT . 'pages/html_main_header.php');
 <!-- page script -->
 <script>
   $(function () {
-    $("#tb_project_example1").DataTable();
+	var table = $("#tb_project").DataTable({
+		"paging": false,
+		"processing": true,
+		"serverSide": true,
+		"sAjaxSource": "project_table.php",
+		"scrollY": "100%",
+		"columnDefs":[
+			{
+				"targets": [0],
+				"visible": false,
+				"searchable": false
+			}
+		],
+		"order": [[0, "desc"]]
+		});
+	$('#tb_project').on('click', 'tr', function () {
+			var data = table.row( this ).data();
+			window.open("viewproject.php?Id="+ data[0],"_self");
+		} );
   });
 </script>
 <?php

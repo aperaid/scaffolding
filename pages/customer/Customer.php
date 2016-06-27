@@ -183,23 +183,14 @@ include_once($ROOT . 'pages/html_main_header.php');
 			<div class="col-xs-12">
 				<div class="box">
 					<div class="box-body">
-						<table id="tb_customer_example1" name="tb_customer_example1" class="table table-bordered table-striped table-responsive">
+						<table id="tb_customer2" name="tb_customer2" class="table table-bordered table-hover">
 							<thead>
 								<tr>
+									<th>Cust ID</th>
 									<th>Customer Code</th>
 									<th>Company Name</th>
-									<th>View</th>
 								</tr>
 							</thead>
-							<tbody>
-								<?php do { ?>
-									<tr>
-										<td><?php echo $row_Customer['CCode']; ?></td>
-										<td><?php echo $row_Customer['Company']; ?></td>
-										<td><a href="ViewCustomer.php?Id=<?php echo $row_Customer['Id']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-									</tr>
-								<?php } while ($row_Customer = mysql_fetch_assoc($Customer)); ?>
-							</tbody>
 						</table>
 					</div>
 					<!-- /.box-body -->
@@ -216,12 +207,34 @@ include_once($ROOT . 'pages/html_main_header.php');
   
 <!-- Footer Wrapper -->
 <?php include_once($ROOT . 'pages/footer.php'); ?>
+
 <!-- /.footer-wrapper -->
 
 <!-- page script -->
 <script>
-	$(function () {
-		$("#tb_customer_example1").DataTable();
+	$(document).ready(function () {
+		
+		var table = $("#tb_customer2").DataTable({
+		"paging": false,
+		"processing": true,
+		"serverSide": true,
+		"scrollY": "100%",
+		"sAjaxSource": "customer_table.php",
+		"columnDefs":[
+			{
+				"targets": [0],
+				"visible": false,
+				"searchable": false
+			}
+		],
+		"order": [[0, "desc"]]
+		});
+		
+		$('#tb_customer2 tbody').on('click', 'tr', function () {
+			var data = table.row( this ).data();
+			window.open("viewcustomer.php?Id="+ data[0],"_self");
+		} );
+		
 	});
 </script>
 

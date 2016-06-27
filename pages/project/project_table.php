@@ -12,13 +12,13 @@
 	/* Array of database columns which should be read and sent back to DataTables. Use a space where
 	 * you want to insert a non-database field (for example a counter or static image)
 	 */
-	$aColumns = array( 'Id', 'CCode', 'Company' );
+	$aColumns = array( 'Id', 'PCode', 'Project' );
 	
 	/* Indexed column (used for fast and accurate table cardinality) */
 	$sIndexColumn = "Id";
 	
 	/* DB table to use */
-	$sTable = "customer";
+	$sTable = "project";
 	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -35,7 +35,7 @@
 	mysql_select_db( $database_Connection, $Connection ) or 
 		die( 'Could not select database '. $gaSql['db'] );
 	*/
-	require_once('../connections/Connection.php');
+	require_once('../../connections/Connection.php');
 	
 	/* 
 	 * Paging
@@ -112,7 +112,12 @@
 	 * Get data to display
 	 */
 	$sQuery = "
-		SELECT * FROM Customer;
+		SELECT SQL_CALC_FOUND_ROWS ".str_replace(" , ", " ", implode(", ", $aColumns))."
+        FROM   $sTable
+        $sWhere
+        $sOrder
+        $sLimit
+		LIMIT 15
 	";
 	$rResult = mysql_query( $sQuery, $Connection ) or die(mysql_error());
 	
