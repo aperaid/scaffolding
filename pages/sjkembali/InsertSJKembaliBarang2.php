@@ -133,7 +133,7 @@ $arrayaftercount = array();
 $Purchase = join(',',$arrayaftercount); 
 
 mysql_select_db($database_Connection, $Connection);
-$query_LastIsiSJKembali = "SELECT Id FROM isisjkembali ORDER BY Id DESC";
+$query_LastIsiSJKembali = "SELECT MAX(Id) AS Id FROM isisjkembali";
 $LastIsiSJKembali = mysql_query($query_LastIsiSJKembali, $Connection) or die(mysql_error());
 $row_LastIsiSJKembali = mysql_fetch_assoc($LastIsiSJKembali);
 $totalRows_LastIsiSJKembali = mysql_num_rows($LastIsiSJKembali);
@@ -169,11 +169,16 @@ $totalRows_InsertSJKembali2 = mysql_num_rows($InsertSJKembali2);
 $Quantity = array();
 $IsiSJKir = array();
 $Purchase2 = array();
+$IsiSJKem = array();
+$x = 1;
 do{
 	$Quantity[]=$row_InsertSJKembali2['Quantity'];
 	$IsiSJKir[]=$row_InsertSJKembali2['IsiSJKir'];
 	$Purchase2[]=$row_InsertSJKembali2['Purchase'];
+	$IsiSJKem[]=$row_LastIsiSJKembali['Id']+$x;
+	$x++;
 } while ($row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2));
+$Quantity2 = join(',',$Quantity);
 
 $query = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $Periode = array();
@@ -183,7 +188,7 @@ while($row = mysql_fetch_assoc($query)){
 $Periode2 = join(',',$Periode);
 
 mysql_select_db($database_Connection, $Connection);
-$query_LastInvoiceId = "SELECT Id FROM invoice ORDER BY Id DESC";
+$query_LastInvoiceId = "SELECT MAX(Id) AS Id FROM invoice";
 $LastInvoiceId = mysql_query($query_LastInvoiceId, $Connection) or die(mysql_error());
 $row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
 $totalRows_LastInvoiceId = mysql_num_rows($LastInvoiceId);
@@ -405,11 +410,7 @@ function minmax(value, min, max)
   mysql_free_result($Reference);
   mysql_free_result($InsertSJKembali);
   mysql_free_result($LastTglS);
-  
-  if ((isset($_POST["MM_delete"])) && ($_POST["MM_delete"] == "form1")) {
-	$deleteSQL = "CALL insert_sjkembali2";
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
 }
-?>
