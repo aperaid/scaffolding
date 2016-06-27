@@ -237,21 +237,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 }
 
-for ($i=0;$i<$totalRows_InsertSJKembali;$i++){
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, SJKem, Periode, IsiSJKir) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKem'][$i], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Purchase'][$i], "text"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
-                       GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "int"),
-					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_IsiSJKir'][$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-}
-  
+for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 	$updateSQL = sprintf("CALL insert_sjkembali(%s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
@@ -410,7 +396,26 @@ function minmax(value, min, max)
   mysql_free_result($Reference);
   mysql_free_result($InsertSJKembali);
   mysql_free_result($LastTglS);
+?>
+
+<?php
+if ((isset($_POST["MM_delete"])) && ($_POST["MM_delete"] == "form1")) {
+  $deleteSQL = "CALL insert_sjkembali2";
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
 }
+  
+for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, SJKem, Periode, IsiSJKir) SELECT %s, %s, periode.Quantity, periode.Purchase, periode.SJKem, periode.Periode, periode.IsiSJKir FROM periode WHERE periode.SJKem = %s AND periode.IsiSJKir = %s",
+                       GetSQLValueString($IsiSJKem[$i], "text"),
+                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
+					   GetSQLValueString($IsiSJKir[$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+}
+?>
