@@ -186,95 +186,95 @@ include_once($ROOT . 'pages/html_header.php');
 include_once($ROOT . 'pages/html_main_header.php');
 ?>
   
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Purchase Order
-        <small>Item</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-        <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
-        <li class="active">Insert PO Barang</li>
-      </ol>
-    </section>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			Purchase Order
+			<small>Item</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
+			<li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
+			<li class="active">Insert PO Barang</li>
+		</ol>
+	</section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-md-12">
-            <!-- general form elements -->
-            <div class="box box-primary">
-              <div class="box-header with-border">
-                <h3 class="box-title">Input PO Item</h3>
-              </div>
-              <!-- /.box-header -->
-              <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomerbarang_form1" name="fm_insertpocustomerbarang_form1" method="POST">
-                <div class="box-body">
-                  <table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
-                    <thead>
-                      <th><a href="javascript:void(0);" id="hf_insertpocustomerbarang_addCF" class=" glyphicon glyphicon-plus"></a></th>
-                      <th>Barang</th>
-                      <th>J/S</th>
-                      <th>Quantity</th>
-                      <th>Price</th>
-                    </thead>
-                  </table>
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-					<!-- row ppn & transport -->
-				  <div class="form-group">
-				    <div class="col-sm-1"></div>
-					<!-- ppn checkbox -->
-					<div class="checkbox col-sm-3">
-						<label>
-							<input name="tx_insertpocustomerbarang_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
-							<input name="tx_insertpocustomerbarang_PPN" class="minimal" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1">
-							PPN
-						</label>
-                    </div>
-					<!-- ppn checkbox END -->
-					<div class="col-sm-1"></div>
-					<!-- transport text -->
-					<div class="input-group col-sm-5">
-						<span class="input-group-addon">Transport</span>
-						<input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" autocomplete="off" placeholder="Transport Fee" required>
+	<!-- Main content -->
+	<section class="content">
+		<form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomerbarang_form1" name="fm_insertpocustomerbarang_form1" method="POST">	
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="box box-primary">
+						<div class="box-body">
+							<a href="ViewTransaksi.php?Reference=<?php echo $_GET['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+							<button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
+						</div>
 					</div>
-					<div class="col-sm-1"></div>
-					<!-- transport text END -->
-					<!-- tanggal text -->
-					<div class="input-group col-sm-5">
-						<span class="input-group-addon">Date</span>
-						<input name="tx_insertpocustomerbarang_Tgl" type="text" id="tx_insertpocustomerbarang_Tgl" class="form-control" autocomplete="off" placeholder="Date" required>
-					</div>
-					<div class="col-sm-1"></div>
-					<!-- tanggal text END -->
-				  </div>
-				  <!-- row ppn & transport END -->
-			  <div class="form-group">
-				<a href="ViewTransaksi.php?Reference=<?php echo $_GET['Reference']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
-				<button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-success pull-right">Insert</button>
-			  </div>
-				<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $_GET['Reference']; ?>">
-				<input type="hidden" name="MM_insert" value="form1">
-              </div>
-			  </form>
+				</div>
+			</div>
 			
-            <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      </div>
-      <!-- /.row -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+			<div class="row">
+				<div class="col-md-3">
+					<div class="box box-primary">
+						<div class="box-header with-border">
+							<h3 class="box-title">PO Detail</h3>
+						</div>
+						<div class="box-body">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Nomor PO</label>
+								<input type="text" class="form-control" id="tx_insertpocustomerbarang_pocode" placeholder="Input PO Number" required>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputPassword1">Tanggal</label>
+								<input name="tx_insertpocustomerbarang_Tgl" type="text" id="tx_insertpocustomerbarang_Tgl" class="form-control" autocomplete="off" placeholder="Date" required>
+							</div>
+							<div class="checkbox">
+									<label>
+										<input name="tx_insertpocustomerbarang_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
+										<input name="tx_insertpocustomerbarang_PPN" class="minimal" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1">
+										PPN
+									</label>
+								</div>
+							<div class="form-group">
+								<label for="exampleInputPassword1">Transport</label>
+								<input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" autocomplete="off" placeholder="Transport Fee" required>
+							</div>
+							<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $_GET['Reference']; ?>">
+							<input type="hidden" name="MM_insert" value="form1">
+						</div>
+					</div>        
+				</div>
+				<div class="col-md-9">
+					<!-- general form elements -->
+					<div class="box box-primary">
+						<div class="box-header with-border">
+							<h3 class="box-title">Input PO Item</h3>
+						</div>
+						<div class="box-body">
+							<table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
+								<thead>
+									<th><a href="javascript:void(0);" id="hf_insertpocustomerbarang_addCF" class=" glyphicon glyphicon-plus"></a></th>
+									<th>Barang</th>
+									<th>J/S</th>
+									<th>Quantity</th>
+									<th>Price</th>
+								</thead>
+							</table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.row -->
+		</form>
+	</section>
+	<!-- /.section -->
+</div>
+<!-- /.content-wrapper -->
   
 <!-- Footer Wrapper -->
 <?php include_once($ROOT . 'pages/footer.php'); ?>
