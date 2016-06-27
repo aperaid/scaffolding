@@ -223,7 +223,18 @@ include_once($ROOT . 'pages/html_main_header.php');
                 </tbody>
                 
               </table>
-            </div>
+              <table id="tb_pocustomer" class="table table-bordered table-hover">
+			    <thead>
+					<tr>
+					  <th>Reference</th>
+					  <th>Tgl</th>
+					  <th>Company</th>
+					  <th>Project</th>
+					  <th>Price</th>
+					</tr>
+				</thead>
+			  </table>
+			</div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -240,9 +251,29 @@ include_once($ROOT . 'pages/html_main_header.php');
 <?php include_once($ROOT . 'pages/footer.php'); ?>
 <!-- /.footer-wrapper -->
 <script>
-  $(function () {
-    $("#tb_pocustomer_example1").DataTable();
-  });
+  $(document).ready(function () {
+		$("#tb_pocustomer_example1").DataTable();
+		
+		var table = $("#tb_pocustomer").DataTable({
+		"paging": false,
+		"processing": true,
+		"serverSide": true,
+		"scrollY": "100%",
+		"sAjaxSource": "po_table.php",
+		"columnDefs":[
+			{
+				"render": $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ),
+				"targets": 4
+			}
+		],
+		"order": [[1, "desc"]]
+		});
+		
+		$('#tb_pocustomer tbody').on('click', 'tr', function () {
+			var data = table.row( this ).data();
+		} );
+		
+	});
 </script>
 
 <?php
