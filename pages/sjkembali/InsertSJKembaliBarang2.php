@@ -188,12 +188,6 @@ while($row = mysql_fetch_assoc($query)){
 $Periode2 = join(',',$Periode);
 
 mysql_select_db($database_Connection, $Connection);
-$query_LastInvoiceId = "SELECT MAX(Id) AS Id FROM invoice";
-$LastInvoiceId = mysql_query($query_LastInvoiceId, $Connection) or die(mysql_error());
-$row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
-$totalRows_LastInvoiceId = mysql_num_rows($LastInvoiceId);
-
-mysql_select_db($database_Connection, $Connection);
 $query_Invoice = sprintf("SELECT * FROM invoice WHERE Reference = %s AND Periode IN ($Periode2) GROUP BY Periode ORDER BY Id DESC", GetSQLValueString($colname_GetId, "text"));
 $Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
 $row_Invoice = mysql_fetch_assoc($Invoice);
@@ -325,8 +319,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 	$tx_insertsjkembalibarang2_Reference = substr($_SESSION['tx_insertsjkembali_Reference'], 1, -1);
  	?>     
 	
-     
-    <?php $increment = 1; ?>
 	<?php do { ?>
     <?php 
 
@@ -343,14 +335,12 @@ include_once($ROOT . 'pages/html_main_header.php');
 	        <input name="hd_insertsjkembalibarang2_Periode" type="hidden" id="hd_insertsjkembalibarang2_Periode" value="<?php echo $row_InsertSJKembali['Periode']; ?>">
 	        <input name="hd_insertsjkembalibarang2_S" type="hidden" id="hd_insertsjkembalibarang2_S" value="<?php echo $row_InsertSJKembali['S']; ?>">
             <input name="hd_insertsjkembalibarang2_E" type="hidden" id="hd_insertsjkembalibarang2_E" value="<?php echo $tx_insertsjkembalibarang2_Tgl; ?>">
-	        <input name="hd_insertsjkembalibarang2_IsiSJKem[]" type="hidden" id="hd_insertsjkembalibarang2_IsiSJKem" value="<?php echo $row_LastIsiSJKembali['Id'] + $increment; ?>">
         <td><input name="tx_insertsjkembalibarang2_Tgl[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Tgl" value="<?php echo $row_InsertSJKembali['S']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_Barang[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Barang" value="<?php echo $row_InsertSJKembali['Barang']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_Warehouse[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_Warehouse" autocomplete="off"></td>
 	    <td><input name="tx_insertsjkembalibarang2_QSisaKem[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_QSisaKem" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" readonly></td>
 	    <td><input name="tx_insertsjkembalibarang2_QTertanda[]" type="text" class="form-control" id="tx_insertsjkembalibarang2_QTertanda" autocomplete="off" value="<?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_InsertSJKembali['QSisaKemInsert']; ?>)" required></td>
 	    </tr>
-        <?php $increment++; ?>
 	  <?php } while ($row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali)); ?>
     				</tbody>
                 </table>
