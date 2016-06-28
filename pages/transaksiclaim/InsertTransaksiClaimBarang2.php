@@ -184,6 +184,7 @@ do{
 	$Claim[]=$row_LastClaim['Id']+$x;
 	$x++;
 } while ($row_InsertTransaksiClaim2 = mysql_fetch_assoc($InsertTransaksiClaim2));
+$Claim2 = join(',',$Claim);
 
 // Ambil reference dari URI masukin ke $colname_Reference
 $colname_Reference = "-1";
@@ -375,7 +376,7 @@ include_once($ROOT . 'pages/html_main_header.php');
     
 	<tr>
     <input name="hd_inserttransaksiclaimbarang2_S" type="hidden" id="hd_inserttransaksiclaimbarang2_S" value="<?php echo $row_InsertTransaksiClaim['S']; ?>">
-    <input name="hd_inserttransaksiclaimbarang2_E" type="hidden" id="hd_inserttransaksiclaimbarang2_E2" value="<?php echo $tgl; ?>">
+    <input name="hd_inserttransaksiclaimbarang2_E" type="hidden" id="hd_inserttransaksiclaimbarang2_E" value="<?php echo $tgl; ?>">
 	<input name="hd_inserttransaksiclaimbarang2_IsiSJKir[]" type="hidden" id="hd_inserttransaksiclaimbarang2_IsiSJKir" value="<?php echo $row_InsertTransaksiClaim['IsiSJKir']; ?>">
 	<input name="hd_inserttransaksiclaimbarang2_Reference" type="hidden" id="hd_inserttransaksiclaimbarang2_Reference" value="<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>">
 	<input name="hd_inserttransaksiclaimbarang2_Periode" type="hidden" id="hd_inserttransaksiclaimbarang2_Periode" value="<?php echo $row_InsertTransaksiClaim['Periode']; ?>">
@@ -474,17 +475,29 @@ if ((isset($_POST["MM_delete"])) && ($_POST["MM_delete"] == "form1")) {
 }
 
 //Insert transaksiclaim
-for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
+for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode) SELECT %s, %s, periode.Quantity, %s, periode.Purchase, periode.Periode FROM periode WHERE periode.Claim = %s AND periode.IsiSJKir = %s",
-                       GetSQLValueString($Claim[$i], "text"),
+  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode, IsiSJKir) SELECT periode.Claim, %s, periode.Quantity, %s, periode.Purchase, periode.Periode, periode.IsiSJKir FROM periode WHERE periode.Claim IN ($Claim2) AND periode.IsiSJKir = %s",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
 					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
-					   GetSQLValueString($Claim[$i], "text"),
 					   GetSQLValueString($IsiSJKir[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+}
+?>
+
+<?php
+for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+	$updateSQL = sprintf("UPDATE transaksiclaim SET transaksiclaim.Amount = %s WHERE transaksiclaim.periode = %s AND transaksiclaim.Claim = %s AND transaksiclaim.Amount IS NULL",
+					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
+					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"),
+					   GetSQLValueString($Claim[$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
 }
 ?>
