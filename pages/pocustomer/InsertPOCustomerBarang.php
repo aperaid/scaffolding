@@ -133,7 +133,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO po (POCode, Tgl, Catatan) VALUES (%s, %s, %s)",
                        GetSQLValueString($POCode+1, "text"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"),
-					   GetSQLValueString($tx_insertpocustomerbarang_Catatan, "text"));
+					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Catatan'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -232,10 +232,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 							<h3 class="box-title">PO Detail</h3>
 						</div>
 						<div class="box-body">
-							<div class="form-group">
+							<!--<div class="form-group">
 								<label for="exampleInputEmail1">Nomor PO</label>
 								<input type="text" class="form-control" id="tx_insertpocustomerbarang_pocode" placeholder="Input PO Number" required>
-							</div>
+							</div>-->
 							<div class="form-group">
 								<label for="exampleInputPassword1">Tanggal</label>
 								<input name="tx_insertpocustomerbarang_Tgl" type="text" id="tx_insertpocustomerbarang_Tgl" class="form-control" autocomplete="off" placeholder="Date" required>
@@ -253,7 +253,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 							</div>
 							<div class="form-group">
 								<label for="exampleInputPassword1">Catatan</label>
-								<textarea name="tx_insertpocustomerbarang_Catatan" type="textarea" id="tx_insertpocustomerbarang_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5 required></textarea>
+								<textarea name="tx_insertpocustomerbarang_Catatan" type="textarea" id="tx_insertpocustomerbarang_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5></textarea>
 							</div>
 							<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $_GET['Reference']; ?>">
 							<input type="hidden" name="MM_insert" value="form1">

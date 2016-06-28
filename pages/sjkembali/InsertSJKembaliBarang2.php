@@ -398,14 +398,27 @@ if ((isset($_POST["MM_delete"])) && ($_POST["MM_delete"] == "form1")) {
   
 for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, Warehouse, QTertanda, Purchase, SJKem, Periode, IsiSJKir) SELECT %s, %s, periode.Quantity, periode.Purchase, periode.SJKem, periode.Periode, periode.IsiSJKir FROM periode WHERE periode.SJKem = %s AND periode.IsiSJKir = %s",
+  $insertSQL = sprintf("INSERT INTO isisjkembali (IsiSJKem, QTertanda, Purchase, SJKem, Periode, IsiSJKir) SELECT %s, periode.Quantity, periode.Purchase, periode.SJKem, periode.Periode, periode.IsiSJKir FROM periode WHERE periode.SJKem = %s AND periode.IsiSJKir = %s",
                        GetSQLValueString($IsiSJKem[$i], "text"),
-                       GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"),
 					   GetSQLValueString($IsiSJKir[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+}
+?>
+
+<?php
+for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+	$updateSQL = sprintf("UPDATE isisjkembali SET isisjkembali.Warehouse = %s WHERE isisjkembali.periode = %s AND isisjkembali.IsiSJKem = %s AND transaksiclaim.Amount IS NULL",
+					   GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"),
+					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "text"),
+					   GetSQLValueString($IsiSJKem[$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
 }
 ?>

@@ -105,7 +105,7 @@ if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
 
 for($i=0;$i<$totalRows_Extend;$i++){
 if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
-  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, 'Extend')",
+  $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, '', 'Extend')",
                        GetSQLValueString($Periode+1, "int"),
                        GetSQLValueString($FirstDate2, "text"),
                        GetSQLValueString($LastDate2, "text"),
@@ -117,7 +117,7 @@ if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 
-  $insertGoTo = "ViewTransaksiSewa.php";
+  $insertGoTo = "TransaksiSewa.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];

@@ -136,16 +136,21 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 	}
 	
 	mysql_select_db($database_Connection, $Connection);
-$query_TransaksiSewa = "SELECT pocustomer.Reference, project.Project, customer.Company, project.Project, customer.Customer FROM pocustomer LEFT JOIN transaksi ON pocustomer.Reference=transaksi.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE transaksi.JS='Sewa' GROUP BY pocustomer.Reference ORDER BY pocustomer.Id";
-$TransaksiSewa = mysql_query($query_TransaksiSewa, $Connection) or die(mysql_error());
-$row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa);
-$totalRows_TransaksiSewa = mysql_num_rows($TransaksiSewa);
-	
-	mysql_select_db($database_Connection, $Connection);
 $query_Menu = "SELECT * FROM menu";
 $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
+
+mysql_select_db($database_Connection, $Connection);
+$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, periode.IsiSJKir, periode.Reference, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' GROUP BY periode.Reference, periode.Periode");
+$View = mysql_query($query_View, $Connection) or die(mysql_error());
+$row_View = mysql_fetch_assoc($View);
+$totalRows_View = mysql_num_rows($View);
+
+/*$query_LastPeriode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s", GetSQLValueString($colname_View, "text"));
+ $LastPeriode = mysql_query($query_LastPeriode, $Connection) or die(mysql_error());
+ $row_LastPeriode = mysql_fetch_assoc($LastPeriode);
+ $totalRows_LastPeriode = mysql_num_rows($LastPeriode);*/
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -173,11 +178,13 @@ include_once($ROOT . 'pages/html_main_header.php');
     <section class="content-header">
       <h1>
         Transaksi Sewa
-        <small>All</small>
+        <small>View</small>
+        <!--<large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_LastPeriode['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>-->
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-        <li class="active">Transaksi Sewa</li>
+        <li><a href="TransaksiSewa.php">Transaksi Sewa</a></li>
+        <li class="active">View Transaksi Sewa</li>
       </ol>
     </section>
 
@@ -188,29 +195,50 @@ include_once($ROOT . 'pages/html_main_header.php');
 
           <div class="box">
             <div class="box-body">
-              <table id="tb_transaksisewa_example1" class="table table-bordered table-striped table-responsive">
+              <table id="tb_viewtransaksisewa_example1" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
-                  <th>Reference</th>
-                  <th>Project</th>
+				  <th>Reference</th>
+                  <th>Periode</th>
+                  <th>Start</th>
+                  <th>End</th>
                   <th>Customer</th>
+                  <th>Project</th>
                   <th>View</th>
+				  <th>Extend</th>
                 </tr>
                 </thead>
 				<tbody>
 					<?php do { ?>
+                    
+					<?php
+					mysql_select_db($database_Connection, $Connection);
+					$query_Periode = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND IsiSJKir = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id ASC", GetSQLValueString($row_View['Reference'], "text"), GetSQLValueString($row_View['IsiSJKir'], "text"));
+					$Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
+					$row_Periode = mysql_fetch_assoc($Periode);
+					$totalRows_Periode = mysql_num_rows($Periode);
+					
+					$Id = $row_Periode['Id'];
+					?>
+					
 					<tr>
-						<td><?php echo $row_TransaksiSewa['Reference']; ?></td>
-						<td><?php echo $row_TransaksiSewa['Project']; ?></td>
-						<td><?php echo $row_TransaksiSewa['Customer']; ?></td>
-						<td><a href="ViewTransaksiSewa.php?Reference=<?php echo $row_TransaksiSewa['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+						<td><?php echo $row_View['Reference']; ?></td>
+						<td><?php echo $row_View['Periode']; ?></td>
+						<td><?php echo $row_View['S']; ?></td>
+						<td><?php echo $row_View['E']; ?></td>
+						<td><?php echo $row_View['Customer']; ?></td>
+						<td><?php echo $row_View['Project']; ?></td>
+						<td><a href="ViewTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Detail</button></a></td>
+						<td><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" <?php if (($row_Periode['Id'] != $row_View['Id'])){ ?> class="btn btn-block btn-default btn-sm" disabled <?php   } else { ?> class="btn btn-block btn-primary btn-sm" <?php } ?>>Extend</button></a></td>
 					</tr>
-					<?php } while ($row_TransaksiSewa = mysql_fetch_assoc($TransaksiSewa)); ?>
+					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
-                
               </table>
             </div>
             <!-- /.box-body -->
+            <!-- <div class="box-footer">
+                  <a href="TransaksiSewa.php"><button type="button" class="btn btn-default pull-left">Back</button></a>
+			</div> -->
           </div>
           <!-- /.box -->
         </div>
@@ -229,11 +257,12 @@ include_once($ROOT . 'pages/html_main_header.php');
 <!-- page script -->
 <script>
   $(function () {
-    $("#tb_transaksisewa_example1").DataTable();
+    $("#tb_viewtransaksisewa_example1").DataTable();
   });
 </script>
 
 <?php
-  mysql_free_result($TransaksiSewa);
-  mysql_free_result($User);
+mysql_free_result($Menu);
+mysql_free_result($View);
+mysql_free_result($User);
 ?>

@@ -135,7 +135,7 @@ $totalRows_Tgl = mysql_num_rows($Tgl);
 
 //Pengambilan Tanggal Start & End
 mysql_select_db($database_Connection, $Connection);
-$query_TglValue = sprintf("SELECT periode.S, periode.E FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE Reference = %s AND SJKir = %s AND Periode = %s", GetSQLValueString($colname_Reference, "text"), GetSQLValueString($colname_EditIsiSJKirim, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_TglValue = sprintf("SELECT periode.S, periode.E FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE Reference = %s AND Periode = %s", GetSQLValueString($colname_Reference, "text"), GetSQLValueString($colname_Periode, "text"));
 $TglValue = mysql_query($query_TglValue, $Connection) or die(mysql_error());
 $row_TglValue = mysql_fetch_assoc($TglValue);
 $totalRows_TglValue = mysql_num_rows($TglValue);

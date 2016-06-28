@@ -145,16 +145,25 @@ $colname_View = "-1";
 if (isset($_GET['Reference'])) {
   $colname_View = $_GET['Reference'];
 }
+
+$colname_View2 = "-1";
+if (isset($_GET['Periode'])) {
+  $colname_View2 = $_GET['Periode'];
+}
+
+$colname_View3 = "-1";
+if (isset($_GET['SJKir'])) {
+  $colname_View3 = $_GET['SJKir'];
+}
+$colname_View4 = "-1";
+if (isset($_GET['Deletes'])) {
+  $colname_View4 = $_GET['Deletes'];
+}
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference = %s GROUP BY periode.Periode", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.IsiSJKir, transaksi.Barang, periode.S, periode.E, periode.Deletes, customer.Company, project.Project, SUM(periode.Quantity) AS Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s AND (periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend') GROUP BY periode.Purchase, periode.S ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"),GetSQLValueString($colname_View3, "text"),GetSQLValueString($colname_View4, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
-
-$query_LastPeriode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s", GetSQLValueString($colname_View, "text"));
- $LastPeriode = mysql_query($query_LastPeriode, $Connection) or die(mysql_error());
- $row_LastPeriode = mysql_fetch_assoc($LastPeriode);
- $totalRows_LastPeriode = mysql_num_rows($LastPeriode);
 
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
@@ -170,7 +179,7 @@ $totalRows_User = mysql_num_rows($User);
 <?php
 // Declare Root directory
 $ROOT="../../";
-$PAGE="Transaksi Sewa";
+$PAGE="View Detail";
 $top_menu_sel="menu_sewa";
 include_once($ROOT . 'pages/html_header.php');
 include_once($ROOT . 'pages/html_main_header.php');
@@ -182,13 +191,12 @@ include_once($ROOT . 'pages/html_main_header.php');
     <section class="content-header">
       <h1>
         Transaksi Sewa
-        <small>View</small>
-        <large><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_LastPeriode['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" class="btn btn-success btn-sm">Extend</button></a></large>
+        <small>View Detail</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
         <li><a href="TransaksiSewa.php">Transaksi Sewa</a></li>
-        <li class="active">View Transaksi Sewa</li>
+        <li class="active">View Transaksi Sewa Detail</li>
       </ol>
     </section>
 
@@ -199,27 +207,30 @@ include_once($ROOT . 'pages/html_main_header.php');
 
           <div class="box">
             <div class="box-body">
-              <table id="tb_viewtransaksisewa_example1" class="table table-bordered table-striped table-responsive">
+              <table id="tb_viewtransaksisewa2_example1" class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>
                   <th>Periode</th>
+                  <th>Barang</th>
                   <th>Start</th>
                   <th>End</th>
-                  <th>Customer</th>
+                  <th>Company</th>
                   <th>Project</th>
-                  <th>View</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
                 </tr>
                 </thead>
 				<tbody>
 					<?php do { ?>
-                    
 					<tr>
 						<td><?php echo $row_View['Periode']; ?></td>
+                        <td><?php echo $row_View['Barang']; ?></td>
 						<td><?php echo $row_View['S']; ?></td>
 						<td><?php echo $row_View['E']; ?></td>
-						<td><?php echo $row_View['Customer']; ?></td>
+						<td><?php echo $row_View['Company']; ?></td>
 						<td><?php echo $row_View['Project']; ?></td>
-						<td><a href="ViewTransaksiSewa2.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Detail</button></a></td>
+                        <td><?php echo $row_View['Quantity']; ?></td>
+                        <td>Rp <?php echo number_format($row_View['Amount'], 2,',', '.'); ?></td>
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
@@ -247,12 +258,14 @@ include_once($ROOT . 'pages/html_main_header.php');
 <!-- page script -->
 <script>
   $(function () {
-    $("#tb_viewtransaksisewa_example1").DataTable();
+    $("#tb_viewtransaksisewa2_example1").DataTable();
   });
 </script>
 
 <?php
 mysql_free_result($Menu);
+
 mysql_free_result($View);
+
 mysql_free_result($User);
-?>
+	?>

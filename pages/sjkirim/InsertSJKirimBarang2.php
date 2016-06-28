@@ -285,13 +285,13 @@ include_once($ROOT . 'pages/html_main_header.php');
 	$tx_insertsjkirimbarang2_Reference = substr($_SESSION['tx_insertsjkirim_Reference'], 1, -1);
 	
 	mysql_select_db($database_Connection, $Connection);
-	$query_ECont = sprintf("SELECT E, Reference, Periode FROM periode WHERE Reference = %s AND Periode = (SELECT MAX(Periode) FROM periode)", GetSQLValueString($tx_insertsjkirimbarang2_Reference, "text"));
+	$query_ECont = sprintf("SELECT E, Reference, Periode FROM periode WHERE Reference = %s AND Periode = (SELECT MAX(Periode) FROM periode WHERE Reference = %s)", GetSQLValueString($tx_insertsjkirimbarang2_Reference, "text"), GetSQLValueString($tx_insertsjkirimbarang2_Reference, "text"));
 	$ECont = mysql_query($query_ECont, $Connection) or die(mysql_error());
 	$row_ECont = mysql_fetch_assoc($ECont);
 	
-	$end = str_replace('/', '-', $tx_insertsjkirimbarang2_Tgl);
+	/*$end = str_replace('/', '-', $tx_insertsjkirimbarang2_Tgl);
 	$end2 = strtotime("-1 day +1 month", strtotime($end));
-	$end3 = date("d/m/Y", $end2);
+	$end3 = date("d/m/Y", $end2);*/
 	
 	if($tx_insertsjkirimbarang2_Reference == $row_ECont['Reference']){
 	
@@ -299,7 +299,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 	$periode = $row_ECont['Periode'];
 	
 	}else{
-	$tglE = $end3;
+	$tglE = $row_ECont['E'];
 	$periode = 1;
 	}
 
