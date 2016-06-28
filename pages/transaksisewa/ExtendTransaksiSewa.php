@@ -59,7 +59,7 @@ $row_Invoice = mysql_fetch_assoc($Invoice);
 $totalRows_Invoice = mysql_num_rows($Invoice);
 
 mysql_select_db($database_Connection, $Connection);
-$query_LastInvoiceId = "SELECT Id FROM invoice ORDER BY Id DESC";
+$query_LastInvoiceId = "SELECT MAX(Id)AS Id FROM invoice";
 $LastInvoiceId = mysql_query($query_LastInvoiceId, $Connection) or die(mysql_error());
 $row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
 $totalRows_LastInvoiceId = mysql_num_rows($LastInvoiceId);
@@ -70,28 +70,49 @@ $Extend = mysql_query($query_Extend, $Connection) or die(mysql_error());
 $row_Extend = mysql_fetch_assoc($Extend);
 $totalRows_Extend = mysql_num_rows($Extend);
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+$Quantity = array();
+$IsiSJKir = array();
+$Purchase = array();
+do{
+	$Periode=$row_Extend['Periode'];
+	$date = $row_Extend['E'];
+	$Quantity[]=$row_Extend['Quantity'];
+	$IsiSJKir[]=$row_Extend['IsiSJKir'];
+	$Reference=$row_Extend['Reference'];
+	$Purchase[]=$row_Extend['Purchase'];
+	
+} while ($row_Extend = mysql_fetch_assoc($Extend));
+
+$date2 = str_replace('/', '-', $date);
+$FirstDate = strtotime("+1 day", strtotime($date2));
+$FirstDate2 = date("d/m/Y", $FirstDate);
+$LastDate = strtotime("+1 month", strtotime($date2));
+$LastDate2 = date("d/m/Y", $LastDate);
+
+$LastInvoice = str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT);
+
+if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_Invoice'], "text"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_Tgl'], "text"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_PPN'], "int"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_Reference2'], "text"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_Periode2'], "int"));
+                       GetSQLValueString($LastInvoice, "text"),
+                       GetSQLValueString($LastDate2, "text"),
+                       GetSQLValueString($row_Invoice['PPN'], "int"),
+                       GetSQLValueString($Reference, "text"),
+                       GetSQLValueString($Periode+1, "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 }
 
 for($i=0;$i<$totalRows_Extend;$i++){
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
   $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, 'Extend')",
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_Periode'][$i], "int"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_S'][$i], "text"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_E'][$i], "text"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_Quantity'][$i], "int"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_IsiSJKir'][$i], "text"),
-                       GetSQLValueString($_POST['hd_extendtransaksisewa_Reference'][$i], "text"),
-					   GetSQLValueString($_POST['hd_extendtransaksisewa_Purchase'][$i], "text"));
+                       GetSQLValueString($Periode+1, "int"),
+                       GetSQLValueString($FirstDate2, "text"),
+                       GetSQLValueString($LastDate2, "text"),
+                       GetSQLValueString($Quantity[$i], "int"),
+                       GetSQLValueString($IsiSJKir[$i], "text"),
+                       GetSQLValueString($Reference, "text"),
+					   GetSQLValueString($Purchase[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -115,69 +136,10 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <title>Untitled Document</title>
 </head>
 
-<body onLoad="submits()">
-<form action="<?php echo $editFormAction; ?>" id="fm_extendtransaksisewa_form1" name="fm_extendtransaksisewa_form1" method="POST">
-  <table width="1350" border="0">
-    <tbody>
-      <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-          
-            <?php $Reference = $row_Extend['Reference']; $Periode = $row_Extend['Periode']; ?>
-      <?php do { ?> 
-      <?php 
-		  
-		  $date = $row_Extend['E'];
-		  $date2 = str_replace('/', '-', $date);
-		  $FirstDate = strtotime("+1 day", strtotime($date2));
-		  $FirstDate2 = date("d/m/Y", $FirstDate);
-		  $LastDate = strtotime("+1 month", strtotime($date2));
-		  $LastDate2 = date("d/m/Y", $LastDate);
-		  $TglInvoice = date("t/m/Y", $FirstDate)
-		
-		  ?>
-        <tr>
-          <td><input name="hd_extendtransaksisewa_Periode[]" type="hidden" id="hd_extendtransaksisewa_Periode" value="<?php echo $Periode+1; ?>">
-            <input name="hd_extendtransaksisewa_S[]" type="text" id="hd_extendtransaksisewa_S2" value="<?php echo $FirstDate2; ?>">
-            <input name="hd_extendtransaksisewa_E[]" type="hidden" id="hd_extendtransaksisewa_E2" value="<?php echo $LastDate2; ?>">
-            <input name="hd_extendtransaksisewa_Quantity[]" type="hidden" id="hd_extendtransaksisewa_Quantity" value="<?php echo $row_Extend['Quantity']; ?>">
-            <input name="hd_extendtransaksisewa_IsiSJKir[]" type="hidden" id="hd_extendtransaksisewa_IsiSJKir" value="<?php echo $row_Extend['IsiSJKir']; ?>">
-            <input name="hd_extendtransaksisewa_Reference[]" type="hidden" id="hd_extendtransaksisewa_Reference" value="<?php echo $Reference; ?>">
-            <input name="hd_extendtransaksisewa_Purchase[]" type="hidden" id="hd_extendtransaksisewa_Purchase" value="<?php echo $row_Extend['Purchase']; ?>"></td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-      <?php } while ($row_Extend = mysql_fetch_assoc($Extend)); ?>
-      <tr>
-        <td><input name="hd_extendtransaksisewa_Invoice" type="hidden" id="hd_extendtransaksisewa_Invoice" value="<?php echo str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT); ?>">
-          <input name="hd_extendtransaksisewa_Tgl" type="hidden" id="hd_extendtransaksisewa_Tgl" value="<?php echo $TglInvoice; ?>">
-          <input name="hd_extendtransaksisewa_PPN" type="hidden" id="hd_extendtransaksisewa_PPN" value="<?php echo $row_Invoice['PPN']; ?>">
-          <input name="hd_extendtransaksisewa_Transport" type="hidden" id="hd_extendtransaksisewa_Transport" value="<?php echo $row_Invoice['Transport']; ?>">
-<input name="hd_extendtransaksisewa_Reference2" type="hidden" id="hd_extendtransaksisewa_Reference2" value="<?php echo $Reference; ?>">
-        <input name="hd_extendtransaksisewa_Periode2" type="hidden" id="hd_extendtransaksisewa_Periode2" value="<?php echo $Periode+1; ?>"></td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-    </tbody>
-  </table>
-  <p>
-    <input type="submit" name="bt_extendtransaksisewa_submit" id="bt_extendtransaksisewa_submit" value="">
-  </p>
-  <p>&nbsp;</p>
-  <input type="hidden" name="MM_insert" value="form1">
-</form>
+<body>
+
 </body>
 </html>
-
-<script type="text/javascript">
-    function submit()
-    {
-        document.getElementById("bt_extendtransaksisewa_submit").click(); // Simulates button click
-        document.submitForm.submit(); // Submits the form without the button
-    }
-</script>
 
 <?php
   mysql_free_result($Extend);
