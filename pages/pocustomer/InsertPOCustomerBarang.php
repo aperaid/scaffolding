@@ -129,9 +129,19 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $_SESSION['tx_insertpocustomerbarang_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"));
 }
 
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO po (POCode, Tgl, Catatan) VALUES (%s, %s, %s)",
+                       GetSQLValueString($POCode+1, "text"),
+					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"),
+					   GetSQLValueString($tx_insertpocustomerbarang_Catatan, "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+
 for($i=0;$i<10;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference, POCode) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s+1)",
+  $insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference, POCode) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['hd_insertpocustomerbarang_Purchase'][$i], "text"),
                        GetSQLValueString($_POST['db_insertpocustomerbarang_JS'][$i], "text"),
                        GetSQLValueString($_POST['tx_inputpocustomerbarang_Barang'][$i], "text"),
@@ -140,7 +150,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Quantity'][$i], "int"),
                        GetSQLValueString($_POST['tx_insertpocustomerbarang_Amount'][$i], "text"),
                        GetSQLValueString($_POST['hd_inputpocustomerbarang_Reference'], "text"),
-					   GetSQLValueString($POCode, "text"));
+					   GetSQLValueString($POCode+1, "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -240,6 +250,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 							<div class="form-group">
 								<label for="exampleInputPassword1">Transport</label>
 								<input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" autocomplete="off" placeholder="Transport Fee" required>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputPassword1">Catatan</label>
+								<textarea name="tx_insertpocustomerbarang_Catatan" type="textarea" id="tx_insertpocustomerbarang_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5 required></textarea>
 							</div>
 							<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $_GET['Reference']; ?>">
 							<input type="hidden" name="MM_insert" value="form1">
