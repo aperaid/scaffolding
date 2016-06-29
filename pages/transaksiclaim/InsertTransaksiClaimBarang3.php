@@ -167,7 +167,7 @@ $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim2 = sprintf("SELECT periode.Quantity, periode.IsiSJKir, periode.Purchase FROM periode WHERE periode.Id IN ($Id2) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"));
+$query_InsertTransaksiClaim2 = sprintf("SELECT periode.Periode, periode.Quantity, periode.IsiSJKir, periode.Purchase FROM periode WHERE periode.Id IN ($Id2) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"));
 $InsertTransaksiClaim2 = mysql_query($query_InsertTransaksiClaim2, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim2 = mysql_fetch_assoc($InsertTransaksiClaim2);
 $totalRows_InsertTransaksiClaim2 = mysql_num_rows($InsertTransaksiClaim2);
@@ -178,6 +178,7 @@ $Purchase2 = array();
 $Claim = array();
 $x = 1;
 do{
+	$Periode=$row_InsertTransaksiClaim2['Periode'];
 	$Quantity[]=$row_InsertTransaksiClaim2['Quantity'];
 	$IsiSJKir[]=$row_InsertTransaksiClaim2['IsiSJKir'];
 	$Purchase2[]=$row_InsertTransaksiClaim2['Purchase'];
@@ -198,26 +199,11 @@ if (isset($_GET['Reference'])) {
   $colname_Periode = $_GET['Reference'];
 }
 
-// Ambil max periode dari periode parameter: reference, sewa/extend
-mysql_select_db($database_Connection, $Connection);
-$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend')", GetSQLValueString($colname_Periode, "text"));
-$Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
-$row_Periode = mysql_fetch_assoc($Periode);
-$totalRows_Periode = mysql_num_rows($Periode);
-
-// Ambil ID dari invoice
-mysql_select_db($database_Connection, $Connection);
-$query_LastId = "SELECT Id FROM invoice ORDER BY Id DESC";
-$LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
-$row_LastId = mysql_fetch_assoc($LastId);
-$totalRows_LastId = mysql_num_rows($LastId);
-
 //Insert transaksiclaim
 for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
-  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Purchase, Periode, IsiSJKir) SELECT periode.Claim, %s, periode.Quantity, periode.Purchase, periode.Periode, periode.IsiSJKir FROM periode WHERE periode.Claim = %s AND periode.IsiSJKir = %s",
+  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Purchase, Periode, IsiSJKir) SELECT periode.Claim, %s, periode.Quantity, periode.Purchase, periode.Periode, periode.IsiSJKir FROM periode WHERE periode.Claim IN ($Claim2) AND periode.IsiSJKir = %s",
                        GetSQLValueString(substr($_SESSION['hd_inserttransaksiclaimbarang2_E'], 1, -1), "text"),
-					   GetSQLValueString($Claim[$i], "text"),
 					   GetSQLValueString($IsiSJKir[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -227,10 +213,9 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 
 for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
-	$updateSQL = sprintf("UPDATE transaksiclaim SET transaksiclaim.Amount = %s WHERE transaksiclaim.periode = %s AND transaksiclaim.Claim = %s AND transaksiclaim.Amount IS NULL",
+	$updateSQL = sprintf("UPDATE transaksiclaim SET transaksiclaim.Amount = %s WHERE transaksiclaim.periode = %s AND transaksiclaim.Claim IN ($Claim2) AND transaksiclaim.Amount IS NULL",
 					   GetSQLValueString($_SESSION['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
-					   GetSQLValueString($row_InsertTransaksiClaim2['Periode'], "int"),
-					   GetSQLValueString($Claim[$i], "text"));
+					   GetSQLValueString($Periode, "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -271,6 +256,7 @@ $totalRows_User = mysql_num_rows($User);
 <head>
 </head>
 <body>
+<!--<input value="<?php echo $Claim[1] ?>">-->
 </body>
 </html>
 

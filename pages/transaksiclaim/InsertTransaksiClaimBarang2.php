@@ -207,7 +207,7 @@ $totalRows_Periode = mysql_num_rows($Periode);
 
 // Ambil ID dari invoice
 mysql_select_db($database_Connection, $Connection);
-$query_LastId = "SELECT Id FROM invoice ORDER BY Id DESC";
+$query_LastId = "SELECT MAX(Id) AS Id FROM invoice";
 $LastId = mysql_query($query_LastId, $Connection) or die(mysql_error());
 $row_LastId = mysql_fetch_assoc($LastId);
 $totalRows_LastId = mysql_num_rows($LastId);
@@ -244,6 +244,13 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+}
+
+for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $_SESSION['tx_inserttransaksiclaimbarang2_Amount'][$i] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"));
+  $_SESSION['hd_inserttransaksiclaimbarang2_E'] = sprintf("%s", GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"));
+}
 }
 
 for($i=0;$i<$totalRows_InsertTransaksiClaim;$i++){
@@ -472,12 +479,5 @@ if ((isset($_POST["MM_delete"])) && ($_POST["MM_delete"] == "form1")) {
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
-}
-
-for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $_SESSION['tx_inserttransaksiclaimbarang2_Amount'][$i] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"));
-  $_SESSION['hd_inserttransaksiclaimbarang2_E'] = sprintf("%s", GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "int"));
-}
 }
 ?>
