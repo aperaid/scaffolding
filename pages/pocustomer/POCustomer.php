@@ -168,92 +168,63 @@ include_once($ROOT . 'pages/html_header.php');
 include_once($ROOT . 'pages/html_main_header.php');
 ?>
   
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Purchase Order
-        <small>All</small>
-        <large><a href="InsertPOCustomer.php"><button type="button" class="btn btn-success btn-sm">New Reference</button></a></large>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-        <li class="active">PO</li>
-      </ol>
-    </section>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			Purchase Order
+			<small>All</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
+			<li class="active">PO</li>
+		</ol>
+	</section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-body">
-              <table id="tb_pocustomer_example1" class="table table-bordered table-striped table-responsive">
-                <thead>
-                <tr>
-                  <th>Reference</th>
-                  <th>Date</th>
-                  <th>Company Name</th>
-                  <th>Project</th>
-                  <th>Price</th>
-                  <th>Edit</th>
-                  <th>View</th>
-                </tr>
-                </thead>
-                <tbody>
-				  <?php do { ?>
-                  <?php
-				  $Reference = $row_POCustomer['Reference'];
-				  mysql_select_db($database_Connection, $Connection);
-				  $query_check = sprintf("SELECT check_POCustomer('$Reference') AS result");
-				  $check = mysql_query($query_check, $Connection) or die(mysql_error());
-				  $row_check = mysql_fetch_assoc($check); 
-				  ?>
-                  <tr>
-                    <td><?php echo $row_POCustomer['Reference']; ?></td>
-                    <td><?php echo $row_POCustomer['Tgl']; ?></td>
-                    <td><?php echo $row_POCustomer['Company']; ?></td>
-                    <td><?php echo $row_POCustomer['Project']; ?></td>
-                    <td>Rp <?php echo number_format($row_POCustomer['Amount'], 2,',', '.'); ?></td>
-                    <td><a href="EditPOCustomer.php?Id=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" <?php if ($row_check['result'] == 1){ ?> class="btn btn-block btn-default btn-sm"  disabled <?php   } else { ?>class="btn btn-block btn-primary btn-sm" <?php } ?>>Edit</button></a></td>
-                    <td><a href="ViewTransaksi.php?Reference=<?php echo $row_POCustomer['Reference']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-                  </tr>
-                  <?php } while ($row_POCustomer = mysql_fetch_assoc($POCustomer)); ?>
-                </tbody>
-                
-              </table>
-              <table id="tb_pocustomer" class="table table-bordered table-hover">
-			    <thead>
-					<tr>
-					  <th>Reference</th>
-					  <th>Tgl</th>
-					  <th>Company</th>
-					  <th>Project</th>
-					  <th>Price</th>
-					</tr>
-				</thead>
-			  </table>
+	<!-- Main content -->
+	<section class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header">
+						<a href="InsertPOCustomer.php"><button type="button" class="btn btn-success pull-left">New Reference</button></a>
+						<button id="bt_pocustomer_view" class="btn btn-primary pull-right">View</button>
+						<button id="bt_pocustomer_edit" class="btn btn-primary pull-right"  style="margin-right: 5px;">Edit</button>
+					</div>
+					<div class="box-body">
+						<table id="tb_pocustomer" class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>Reference</th>
+									<th>Tgl</th>
+									<th>Company</th>
+									<th>Project</th>
+									<th>Price</th>
+									<th>RefCheck</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
 			</div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</section>
+	<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
   
 <!-- Footer Wrapper -->
 <?php include_once($ROOT . 'pages/footer.php'); ?>
 <!-- /.footer-wrapper -->
 <script>
   $(document).ready(function () {
-		$("#tb_pocustomer_example1").DataTable();
 		
+		// Set Table to Datatable
 		var table = $("#tb_pocustomer").DataTable({
 		"paging": false,
 		"processing": true,
@@ -262,15 +233,49 @@ include_once($ROOT . 'pages/html_main_header.php');
 		"sAjaxSource": "po_table.php",
 		"columnDefs":[
 			{
-				"render": $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ),
-				"targets": 4
+				"targets": [4],
+				"render": $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' )
+			},
+			{
+				"targets": [5],
+				"visible": false,
+				"searchable": false
 			}
 		],
 		"order": [[1, "desc"]]
 		});
 		
-		$('#tb_pocustomer tbody').on('click', 'tr', function () {
+		// Set when selected
+		$('#tb_pocustomer tbody').on( 'click', 'tr', function () {
 			var data = table.row( this ).data();
+			
+			if  (data[5] == 1){
+				$("#bt_pocustomer_edit").addClass('disabled');
+			}
+			else
+			{
+				$("#bt_pocustomer_edit").removeClass('disabled');
+			}
+			
+			if ( $(this).hasClass('active') ) {
+				$(this).removeClass('active');
+			}
+			else {
+				table.$('tr.active').removeClass('active');
+				$(this).addClass('active');
+			}
+		} );
+		
+		// When button edit is clicked
+		$('#bt_pocustomer_edit').click( function () {
+			var data = table.row('.active').data();
+			window.open("EditPOCustomer.php?Id="+ data[0],"_self");
+		} );
+		
+		// When button view is clicked
+		$('#bt_pocustomer_view').click( function () {
+			var data = table.row('.active').data();
+			window.open("ViewTransaksi.php?Reference="+ data[0],"_self");
 		} );
 		
 	});
@@ -280,5 +285,4 @@ include_once($ROOT . 'pages/html_main_header.php');
   mysql_free_result($POCustomer);
   mysql_free_result($Menu);
   mysql_free_result($User);
-  mysql_free_result($check);
 ?>

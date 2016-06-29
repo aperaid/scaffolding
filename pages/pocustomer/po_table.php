@@ -12,13 +12,13 @@
 	/* Array of database columns which should be read and sent back to DataTables. Use a space where
 	 * you want to insert a non-database field (for example a counter or static image)
 	 */
-	$aColumns = array( 'Reference', 'Tgl', 'Company', 'Project', 'Price' );
+	$aColumns = array( 'Reference', 'Tgl', 'Company', 'Project', 'Price', 'RefCheck' );
 	
 	/* Indexed column (used for fast and accurate table cardinality) */
 	$sIndexColumn = "Reference";
 	
 	/* DB table to use */
-	$sTable = "(SELECT pocustomer.Reference AS Reference, pocustomer.Tgl AS Tgl, customer.Company AS Company, project.Project AS Project, sum(transaksi.Amount*transaksi.Quantity) AS Price FROM pocustomer LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode LEFT JOIN transaksi ON transaksi.Reference=pocustomer.Reference GROUP BY pocustomer.Reference) as T1";
+	$sTable = "(SELECT pocustomer.Reference AS Reference, pocustomer.Tgl AS Tgl, customer.Company AS Company, project.Project AS Project, sum(transaksi.Amount*transaksi.Quantity) AS Price, (SELECT check_POCustomer(pocustomer.Reference)) AS RefCheck FROM pocustomer LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode LEFT JOIN transaksi ON transaksi.Reference=pocustomer.Reference GROUP BY pocustomer.Reference) as T1";
 	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
