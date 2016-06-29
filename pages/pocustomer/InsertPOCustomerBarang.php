@@ -110,7 +110,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-mysql_select_db($database_Connection, $Connection);
+/*mysql_select_db($database_Connection, $Connection);
 $query_POCode = sprintf("SELECT MAX(POCode) AS POCode FROM transaksi WHERE Reference=%s", GetSQLValueString($_GET['Reference'], "text"));
 $POCode = mysql_query($query_POCode, $Connection) or die(mysql_error());
 $row_POCode = mysql_fetch_assoc($POCode);
@@ -121,7 +121,7 @@ if($row_POCode['POCode'] == NULL){
 }else
 {
 	$POCode = $row_POCode['POCode'];
-}
+}*/
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $_SESSION['tx_insertpocustomerbarang_PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
@@ -131,7 +131,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $insertSQL = sprintf("INSERT INTO po (POCode, Tgl, Catatan) VALUES (%s, %s, %s)",
-                       GetSQLValueString($POCode+1, "text"),
+                       GetSQLValueString($_POST['tx_insertpocustomerbarang_POCode'], "text"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Catatan'], "text"));
 
@@ -150,7 +150,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Quantity'][$i], "int"),
                        GetSQLValueString($_POST['tx_insertpocustomerbarang_Amount'][$i], "text"),
                        GetSQLValueString($_POST['hd_inputpocustomerbarang_Reference'], "text"),
-					   GetSQLValueString($POCode+1, "text"));
+					   GetSQLValueString($_POST['tx_insertpocustomerbarang_POCode'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -232,10 +232,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 							<h3 class="box-title">PO Detail</h3>
 						</div>
 						<div class="box-body">
-							<!--<div class="form-group">
+							<div class="form-group">
 								<label for="exampleInputEmail1">Nomor PO</label>
-								<input type="text" class="form-control" id="tx_insertpocustomerbarang_pocode" placeholder="Input PO Number" required>
-							</div>-->
+								<input name="tx_insertpocustomerbarang_POCode" type="text" class="form-control" id="tx_insertpocustomerbarang_POCode" placeholder="Input PO Number" required>
+							</div>
 							<div class="form-group">
 								<label for="exampleInputPassword1">Tanggal</label>
 								<input name="tx_insertpocustomerbarang_Tgl" type="text" id="tx_insertpocustomerbarang_Tgl" class="form-control" autocomplete="off" placeholder="Date" required>

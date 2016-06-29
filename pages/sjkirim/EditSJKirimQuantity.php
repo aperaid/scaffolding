@@ -147,6 +147,17 @@ $EditIsiSJKirim = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_e
 $row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim);
 $totalRows_EditIsiSJKirim = mysql_num_rows($EditIsiSJKirim);
 
+for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir=%s AND (Deletes='Sewa' OR  Deletes='Jual')",
+                       GetSQLValueString($row_TglValue['E'], "text"),
+					   GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
 $colname_User = "-1";
 if (isset($_SESSION['MM_Username'])) {
   $colname_User = $_SESSION['MM_Username'];
@@ -316,7 +327,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 					<div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                     </div>
-					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_TglValue['S']; ?>" required>
+					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_Tgl['Tgl']; ?>" required>
 					</div>
 				<br>
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
