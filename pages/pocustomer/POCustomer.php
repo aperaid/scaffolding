@@ -186,8 +186,8 @@ include_once($ROOT . 'pages/html_main_header.php');
 	<section class="content">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="box">
-					<div class="box-header">
+				<div class="box box-primary">
+					<div class="box-header with-border">
 						<a href="InsertPOCustomer.php"><button type="button" class="btn btn-success pull-left">New Reference</button></a>
 						<button id="bt_pocustomer_view" class="btn btn-primary pull-right">View</button>
 						<button id="bt_pocustomer_edit" class="btn btn-primary pull-right"  style="margin-right: 5px;">Edit</button>
@@ -222,7 +222,9 @@ include_once($ROOT . 'pages/html_main_header.php');
 <?php include_once($ROOT . 'pages/footer.php'); ?>
 <!-- /.footer-wrapper -->
 <script>
-  $(document).ready(function () {
+	$(document).ready(function () {
+		$("#bt_pocustomer_edit").attr("disabled", true);
+		$("#bt_pocustomer_view").attr("disabled", true);
 		
 		// Set Table to Datatable
 		var table = $("#tb_pocustomer").DataTable({
@@ -230,7 +232,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 		"processing": true,
 		"serverSide": true,
 		"scrollY": "100%",
-		"sAjaxSource": "po_table.php",
+		"sAjaxSource": "ref_table.php",
 		"columnDefs":[
 			{
 				"targets": [4],
@@ -247,18 +249,24 @@ include_once($ROOT . 'pages/html_main_header.php');
 		
 		// Set when selected
 		$('#tb_pocustomer tbody').on( 'click', 'tr', function () {
+			
+			$("#bt_pocustomer_view").removeAttr("disabled");
+			
 			var data = table.row( this ).data();
 			
 			if  (data[5] == 1){
-				$("#bt_pocustomer_edit").addClass('disabled');
+				$("#bt_pocustomer_edit").attr("disabled", true);
 			}
 			else
 			{
-				$("#bt_pocustomer_edit").removeClass('disabled');
+				$("#bt_pocustomer_edit").removeAttr("disabled");
 			}
 			
 			if ( $(this).hasClass('active') ) {
 				$(this).removeClass('active');
+				
+				$("#bt_pocustomer_edit").attr("disabled", true);
+				$("#bt_pocustomer_view").attr("disabled", true);
 			}
 			else {
 				table.$('tr.active').removeClass('active');
