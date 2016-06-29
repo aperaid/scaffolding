@@ -152,10 +152,12 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s WHERE Invoice=%s",
+  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
                        GetSQLValueString($_POST['tx_viewinvoicejual_PPN'], "int"),
                        GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Transport'], 3)), "text"),
-                       GetSQLValueString($_POST['tx_viewinvoicejual_Invoice'], "text"));
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Discount'], 3)), "text"),
+					   GetSQLValueString($_POST['tx_viewinvoicejual_Catatan'], "text"),
+					   GetSQLValueString($_POST['tx_viewinvoicejual_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -283,13 +285,21 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Discount</label>
 					<div class="col-sm-6">
-						<input id="tx_viewinvoice_Discount" name="tx_viewinvoice_Discount" type="text" class="form-control" value="" onKeyUp="tot()" >
+						<input id="tx_viewinvoicejual_Discount" name="tx_viewinvoicejual_Discount" type="text" class="form-control" value="<?php echo 'Rp ', number_format($row_View['Discount'],0,',','.'); ?>" onKeyUp="tot()" >
 					</div>
                 </div>
+				<!-- Catatan Input -->
+				<div class="form-group">
+					<label class="col-sm-2  control-label" >Catatan</label>
+					<div class="col-sm-6">
+						<textarea name="tx_viewinvoicejual_Catatan" type="textarea" id="tx_viewinvoicejual_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5><?php echo $row_View['Catatan']; ?></textarea>
+					</div>
+				</div>
+				<!-- Total Text -->
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
-                    <input name="tx_viewinvoicejual_Totals" type="text" class="form-control" id="tx_viewinvoicejual_Totals" value="Rp <?php echo number_format(($total*$row_View['PPN']*0.1)+$total+$row_View['Transport'], 2,',','.'); ?>" readonly>
+                    <input name="tx_viewinvoicejual_Totals" type="text" class="form-control" id="tx_viewinvoicejual_Totals" value="Rp <?php echo number_format(($total*$row_View['PPN']*0.1)+$total+$row_View['Transport']-$row_View['Discount'], 2,',','.'); ?>" readonly>
                     <input name="hd_viewinvoicejual_Totals2" type="hidden" id="hd_viewinvoicejual_Totals2" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>
@@ -323,7 +333,8 @@ include_once($ROOT . 'pages/html_main_header.php');
     var txtFirstNumberValue = document.getElementById('hd_viewinvoicejual_Totals2').value;
     var txtSecondNumberValue = document.getElementById('tx_viewinvoicejual_PPN').value;
 	var txtThirdNumberValue = document.getElementById('tx_viewinvoicejual_Transport').value;
-	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue) + parseFloat(txtThirdNumberValue);
+	var txtFourthNumberValue = document.getElementById('tx_viewinvoicejual_Discount').value;
+	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue) + parseFloat(txtThirdNumberValue) - parseFloat(txtFourthNumberValue);
 	  if (!isNaN(result)) {
 		document.getElementById('tx_viewinvoicejual_Totals').value = result;
       }
@@ -332,6 +343,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 $(document).ready(function(){
 	//Mask Transport
 	$("#tx_viewinvoicejual_Transport").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+	$("#tx_viewinvoicejual_Discount").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
 });
 </script>
 

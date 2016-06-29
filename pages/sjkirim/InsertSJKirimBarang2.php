@@ -289,9 +289,9 @@ include_once($ROOT . 'pages/html_main_header.php');
 	$ECont = mysql_query($query_ECont, $Connection) or die(mysql_error());
 	$row_ECont = mysql_fetch_assoc($ECont);
 	
-	/*$end = str_replace('/', '-', $tx_insertsjkirimbarang2_Tgl);
+	$end = str_replace('/', '-', $tx_insertsjkirimbarang2_Tgl);
 	$end2 = strtotime("-1 day +1 month", strtotime($end));
-	$end3 = date("d/m/Y", $end2);*/
+	$end3 = date("d/m/Y", $end2);
 	
 	if($tx_insertsjkirimbarang2_Reference == $row_ECont['Reference']){
 	
@@ -299,7 +299,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 	$periode = $row_ECont['Periode'];
 	
 	}else{
-	$tglE = $row_ECont['E'];
+	$tglE = $end3;
 	$periode = 1;
 	}
 

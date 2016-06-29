@@ -268,7 +268,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
-  $insertGoTo = "TransaksiClaim.php";
+  $insertGoTo = "InsertTransaksiClaimBarang3.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
@@ -278,11 +278,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 //Kalau klik submit, hapus data2 dari session sebelumnya
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-	unset($_SESSION['cb_inserttransaksiclaimbarang_checkbox']);
-	unset($_SESSION['tx_inserttransaksiclaim_Tgl']);
-	unset($_SESSION['tx_inserttransaksiclaim_Reference']);
-}
+//if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+//	unset($_SESSION['cb_inserttransaksiclaimbarang_checkbox']);
+//	unset($_SESSION['tx_inserttransaksiclaim_Tgl']);
+//	unset($_SESSION['tx_inserttransaksiclaim_Reference']);
+//}
 
 /* -------- USERNAME PRIVILEGE ---------- */
 $colname_User = "-1";
@@ -474,30 +474,10 @@ if ((isset($_POST["MM_delete"])) && ($_POST["MM_delete"] == "form1")) {
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
 }
 
-//Insert transaksiclaim
 for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Amount, Purchase, Periode, IsiSJKir) SELECT periode.Claim, %s, periode.Quantity, %s, periode.Purchase, periode.Periode, periode.IsiSJKir FROM periode WHERE periode.Claim IN ($Claim2) AND periode.IsiSJKir = %s",
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
-					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
-					   GetSQLValueString($IsiSJKir[$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
-}
-}
-?>
-
-<?php
-for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-	$updateSQL = sprintf("UPDATE transaksiclaim SET transaksiclaim.Amount = %s WHERE transaksiclaim.periode = %s AND transaksiclaim.Claim = %s AND transaksiclaim.Amount IS NULL",
-					   GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"),
-					   GetSQLValueString($Claim[$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+  $_SESSION['tx_inserttransaksiclaimbarang2_Amount'][$i] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"));
+  $_SESSION['hd_inserttransaksiclaimbarang2_E'] = sprintf("%s", GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "int"));
 }
 }
 ?>

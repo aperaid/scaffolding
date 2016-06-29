@@ -127,19 +127,25 @@ if (isset($_GET['SJKir'])) {
   $colname_Periode = $_GET['Periode'];
   $colname_Reference = $_GET['Reference'];
 }
+//tanggal min
 mysql_select_db($database_Connection, $Connection);
-$query_Tgl = sprintf("SELECT Tgl FROM sjkirim WHERE SJKir = %s", GetSQLValueString($colname_EditIsiSJKirim, "text"));
-$Tgl = mysql_query($query_Tgl, $Connection) or die(mysql_error());
-$row_Tgl = mysql_fetch_assoc($Tgl);
-$totalRows_Tgl = mysql_num_rows($Tgl);
+$query_TanggalMin = sprintf("SELECT Tgl FROM sjkirim WHERE SJKir = %s", GetSQLValueString($colname_EditIsiSJKirim, "text"));
+$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
+$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
+$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
 
-//Pengambilan Tanggal Start & End
+//tanggal max
 mysql_select_db($database_Connection, $Connection);
-$query_TglValue = sprintf("SELECT periode.S, periode.E FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE Reference = %s AND Periode = %s", GetSQLValueString($colname_Reference, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_TanggalMax = sprintf("SELECT periode.E FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE Reference = %s AND Periode = %s", GetSQLValueString($colname_Reference, "text"), GetSQLValueString($colname_Periode, "text"));
+$TanggalMax = mysql_query($query_TanggalMax, $Connection) or die(mysql_error());
+$row_TanggalMax = mysql_fetch_assoc($TanggalMax);
+$totalRows_TanggalMax = mysql_num_rows($TanggalMax);
+
+mysql_select_db($database_Connection, $Connection);
+$query_TglValue = sprintf("SELECT periode.S FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE Reference = %s AND Periode = %s AND SJKir = %s", GetSQLValueString($colname_Reference, "text"), GetSQLValueString($colname_Periode, "text"), GetSQLValueString($colname_EditIsiSJKirim, "text"));
 $TglValue = mysql_query($query_TglValue, $Connection) or die(mysql_error());
 $row_TglValue = mysql_fetch_assoc($TglValue);
 $totalRows_TglValue = mysql_num_rows($TglValue);
-//Pengambilan Tanggal Start & End
 
 mysql_select_db($database_Connection, $Connection);
 $query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, transaksi.Barang, transaksi.JS, transaksi.QSisaKir, project.Project FROM isisjkirim INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
@@ -150,7 +156,7 @@ $totalRows_EditIsiSJKirim = mysql_num_rows($EditIsiSJKirim);
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir=%s AND (Deletes='Sewa' OR  Deletes='Jual')",
-                       GetSQLValueString($row_TglValue['E'], "text"),
+                       GetSQLValueString($row_TanggalMax['E'], "text"),
 					   GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -295,8 +301,8 @@ include_once($ROOT . 'pages/html_main_header.php');
 					</thead>
 					<tbody>
                     <?php
-					$Min = $row_Tgl['Tgl'];
-					$Max = $row_TglValue['E'];
+					$Min = $row_TanggalMin['Tgl'];
+					$Max = $row_TanggalMax['E'];
 				  ?>
                     	<?php $x=1; ?>
 						<?php do { ?>
@@ -327,7 +333,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 					<div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                     </div>
-					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_Tgl['Tgl']; ?>" required>
+					<input name="tx_editsjkirimquantity_S" type="text" class="form-control" id="tx_editsjkirimquantity_S" autocomplete="off" value="<?php echo $row_TglValue['S']; ?>" required>
 					</div>
 				<br>
 				<a href="ViewSJKirim.php?SJKir=<?php echo $row_View['SJKir']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>

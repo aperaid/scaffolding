@@ -252,7 +252,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 								<input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" autocomplete="off" placeholder="Transport Fee" required>
 							</div>
 							<div class="form-group">
-								<label for="exampleInputPassword1">Catatan</label>
+								<label>Catatan</label>
 								<textarea name="tx_insertpocustomerbarang_Catatan" type="textarea" id="tx_insertpocustomerbarang_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5></textarea>
 							</div>
 							<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $_GET['Reference']; ?>">
