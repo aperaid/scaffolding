@@ -179,6 +179,7 @@ do{
 	$x++;
 } while ($row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2));
 $Quantity2 = join(',',$Quantity);
+$IsiSJKem2 = join(',',$IsiSJKem);
 
 $query = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
 $Periode = array();
@@ -412,7 +413,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <?php
 for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-	$updateSQL = sprintf("UPDATE isisjkembali SET isisjkembali.Warehouse = %s WHERE isisjkembali.periode = %s AND isisjkembali.IsiSJKem = %s AND transaksiclaim.Amount IS NULL",
+	$updateSQL = sprintf("UPDATE isisjkembali SET isisjkembali.Warehouse = %s WHERE isisjkembali.periode = %s AND isisjkembali.IsiSJKem = %s AND isisjkembali.Warehouse IS NULL",
 					   GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"),
 					   GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "text"),
 					   GetSQLValueString($IsiSJKem[$i], "text"));

@@ -213,9 +213,10 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 
 for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
-	$updateSQL = sprintf("UPDATE transaksiclaim SET transaksiclaim.Amount = %s WHERE transaksiclaim.periode = %s AND transaksiclaim.Claim IN ($Claim2) AND transaksiclaim.Amount IS NULL",
+	$updateSQL = sprintf("UPDATE transaksiclaim SET transaksiclaim.Amount = %s WHERE transaksiclaim.periode = %s AND transaksiclaim.Claim = %s AND transaksiclaim.Amount IS NULL",
 					   GetSQLValueString($_SESSION['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"),
-					   GetSQLValueString($Periode, "int"));
+					   GetSQLValueString($Periode, "int"),
+					   GetSQLValueString($Claim[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
