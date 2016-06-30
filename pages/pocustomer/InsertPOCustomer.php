@@ -159,70 +159,79 @@ include_once($ROOT . 'pages/html_header.php');
 include_once($ROOT . 'pages/html_main_header.php');
 ?>
   
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Purchase Order
-        <small>Insert</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-        <li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
-        <li class="active">Insert PO</li>
-      </ol>
-    </section>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			Purchase Order
+			<small>Insert</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
+			<li><a href="../POCustomer/POCustomer.php">Purchase Order</a></li>
+			<li class="active">Insert PO</li>
+		</ol>
+	</section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <!-- general form elements -->
-            <div class="box box-primary">
-              <div class="box-header with-border">
-                <h3 class="box-title">PO Detail</h3>
-              </div>
-              <!-- /.box-header -->
-              <!-- form start -->
-              <form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomer_form1" name="fm_insertpocustomer_form1" method="POST">
-                <div class="box-body">
-                  <div class="form-group">
-                    <label>Reference</label>
-                    <input name="tx_insertpocustomer_Reference" type="text" class="form-control" id="tx_insertpocustomer_Reference" onKeyUp="capital()" value="<?php echo str_pad($row_Reference['Id']+1, 5, "0", STR_PAD_LEFT); ?>/<?php echo date("dmy") ?>" readonly>
-                  </div>
-                  <div class="form-group">
-                    <label>Date</label>
-                    <div class="input-group">
-                      <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                      </div>
-                      <input name="tx_insertpocustomer_Tgl" type="text" class="form-control pull-right date" id="tx_insertpocustomer_Tgl" autocomplete="off" required>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label>Project Code</label>
-                    <input name="tx_insertpocustomer_PCode" type="text" class="form-control" id="tx_insertpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01" maxlength="5" required>
-                    <p class="help-block">Enter the beginning of the Project Code, then pick from the dropdown</p>
-                  </div>
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                  <a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Cancel</button></a> 
-                  <button type="submit" id="bt_insertpocustomer_submit" class="btn btn-primary pull-right">Insert</button>
-                </div>
-              <input type="hidden" name="MM_insert" value="form1">
-              </form>
-            </div>
-            <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+	<!-- Main content -->
+	<section class="content">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<!-- general form elements -->
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">PO Detail</h3>
+					</div>
+					<!-- /.box-header -->
+					
+					<!-- form start -->
+					<form action="<?php echo $editFormAction; ?>" id="fm_insertpocustomer_form1" name="fm_insertpocustomer_form1" method="POST">
+						<div class="box-body">
+							<div class="form-group">
+								<label>Reference</label>
+								<input name="tx_insertpocustomer_Reference" type="text" class="form-control" id="tx_insertpocustomer_Reference" onKeyUp="capital()" value="<?php echo str_pad($row_Reference['Id']+1, 5, "0", STR_PAD_LEFT); ?>/<?php echo date("dmy") ?>" readonly>
+							</div>
+							<div class="form-group">
+								<label>Date</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									<input name="tx_insertpocustomer_Tgl" type="text" class="form-control pull-right date" id="tx_insertpocustomer_Tgl" autocomplete="off" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Project Code</label>
+								<input name="tx_insertpocustomer_PCode" type="text" class="form-control" id="tx_insertpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01" maxlength="5" required>
+								<p class="help-block">Enter the beginning of the Project Code, then pick from the dropdown</p>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input name="tx_insertpocustomer_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
+									<input name="tx_insertpocustomer_PPN" class="minimal" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1">
+									PPN
+								</label>
+							</div>
+						</div>
+						<!-- /.box-body -->
+						
+						<div class="box-footer">
+							<a href="POCustomer.php"><button type="button" class="btn btn-default pull-left">Cancel</button></a> 
+							<button type="submit" id="bt_insertpocustomer_submit" class="btn btn-primary pull-right">Insert</button>
+						</div>
+						<input type="hidden" name="MM_insert" value="form1">
+					</form>
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</section>
+	<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
   
 <!-- Footer Wrapper -->
 <?php include_once($ROOT . 'pages/footer.php'); ?>
