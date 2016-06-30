@@ -151,9 +151,11 @@ $totalRows_Menu = mysql_num_rows($Menu);
 
 // Update PPN berdasarkan nomor invoice
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET PPN=%s WHERE Invoice=%s",
-                       GetSQLValueString($_POST['tx_viewinvoiceclaim_PPN'], "int"),
-                       GetSQLValueString($_POST['tx_viewinvoiceclaim_Invoice'], "text"));
+  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
+                       GetSQLValueString($_POST['tx_viewinvoicejual_PPN'], "int"),
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Discount'], 3)), "text"),
+					   GetSQLValueString($_POST['tx_viewinvoicejual_Catatan'], "text"),
+					   GetSQLValueString($_POST['tx_viewinvoicejual_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -280,9 +282,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Discount</label>
 					<div class="col-sm-6">
-						<input id="tx_viewinvoice_Discount" name="tx_viewinvoice_Discount" type="text" class="form-control" value="" onKeyUp="tot()" >
+						<input id="tx_viewinvoiceclaim_Discount" name="tx_viewinvoiceclaim_Discount" type="text" class="form-control" value="<?php echo 'Rp ', number_format($row_View['Discount'],0,',','.'); ?>" onKeyUp="tot()" >
 					</div>
                 </div>
+				<!-- Catatan Input -->
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
@@ -319,7 +322,8 @@ include_once($ROOT . 'pages/html_main_header.php');
   function tot() {
     var txtFirstNumberValue = document.getElementById('hd_viewinvoiceclaim_Totals2').value;
     var txtSecondNumberValue = document.getElementById('tx_viewinvoiceclaim_PPN').value;
-	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1);
+	var txtThirdNumberValue = document.getElementById('tx_viewinvoicejual_Discount').value;
+	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1 - parseFloat(txtThirdNumberValue));
 	  if (!isNaN(result)) {
 		document.getElementById('tx_viewinvoiceclaim_Totals').value = result;
       }

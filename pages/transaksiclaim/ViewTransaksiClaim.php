@@ -138,7 +138,7 @@ if (isset($_GET['Reference'])) {
 }
 	
 mysql_select_db($database_Connection, $Connection);
-$query_TransaksiClaim = sprintf("SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project, customer.* FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.Claim=periode.Claim INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND transaksiclaim.Periode=%s GROUP BY transaksiclaim.Id ORDER BY transaksiclaim.Id ASC", GetSQLValueString($colname_TransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_TransaksiClaim = sprintf("SELECT transaksiclaim.*, SUM(transaksiclaim.QClaim) QClaim2, transaksi.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project, customer.* FROM transaksiclaim LEFT JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE transaksi.Reference=%s AND transaksiclaim.Periode=%s GROUP BY transaksiclaim.Claim, transaksiclaim.Tgl, transaksiclaim.Claim ORDER BY transaksiclaim.Id ASC", GetSQLValueString($colname_TransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
 $TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_error());
 $row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
 $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
@@ -268,7 +268,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 						<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
-						<td><?php echo $row_TransaksiClaim['QClaim']; ?></td>
+						<td><?php echo $row_TransaksiClaim['QClaim2']; ?></td>
 					  </tr>
                       <?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
                  </tbody>

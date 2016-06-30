@@ -157,10 +157,12 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s WHERE Invoice=%s",
+  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
                        GetSQLValueString($_POST['tx_viewinvoice_PPN'], "int"),
                        GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Transport'], 3)), "text"),
-                       GetSQLValueString($_POST['tx_viewinvoice_Invoice'], "text"));
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Discount'], 3)), "text"),
+					   GetSQLValueString($_POST['tx_viewinvoice_Catatan'], "text"),
+					   GetSQLValueString($_POST['tx_viewinvoice_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -319,16 +321,24 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Discount</label>
 					<div class="col-sm-6">
-						<input id="tx_viewinvoice_Discount" name="tx_viewinvoice_Discount" type="text" class="form-control" value="" onKeyUp="tot()" >
+						<input id="tx_viewinvoice_Discount" name="tx_viewinvoice_Discount" type="text" class="form-control" value="<?php echo 'Rp ', number_format($row_View['Discount'],0,',','.'); ?>" onKeyUp="tot()" value="" onKeyUp="tot()" >
 					</div>
                 </div>
+				
+				<!-- Catatan Input -->
+				<div class="form-group">
+					<label class="col-sm-2  control-label" >Catatan</label>
+					<div class="col-sm-6">
+						<textarea name="tx_viewinvoice_Catatan" type="textarea" id="tx_viewinvoice_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5><?php echo $row_View['Catatan']; ?></textarea>
+					</div>
+				</div>
 				<!-- Total Text -->
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
                     <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
 					else $toss = 0;
-					echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss, 2, ',','.');?>"  readonly>
+					echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss-$row_View['Discount'], 2, ',','.');?>"  readonly>
                     <input id="hd_viewinvoice_Totals2" name="hd_viewinvoice_Totals2" type="hidden" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>
@@ -363,7 +373,8 @@ function tot() {
     var txtFirstNumberValue = document.getElementById('hd_viewinvoice_Totals2').value;
     var txtSecondNumberValue = document.getElementById('tx_viewinvoice_PPN').value;
 	var txtThirdNumberValue = document.getElementById('tx_viewinvoice_Transport').value;
-	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue) + parseFloat(txtThirdNumberValue);
+	var txtFourthNumberValue = document.getElementById('tx_viewinvoice_Discount').value;
+	var result = (parseFloat(txtFirstNumberValue) * parseFloat(txtSecondNumberValue)*0.1)+parseFloat(txtFirstNumberValue) + parseFloat(txtThirdNumberValue) - parseFloat(txtFourthNumberValue);
 	if (!isNaN(result)) {
 		document.getElementById('tx_viewinvoice_Totals').value = result;
     }
@@ -371,6 +382,7 @@ function tot() {
 $(document).ready(function(){
 	//Mask Transport
 	$("#tx_viewinvoice_Transport").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+	$("#tx_viewinvoice_Discount").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
 });
 </script>
 <?php

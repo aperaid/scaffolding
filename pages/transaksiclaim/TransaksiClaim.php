@@ -137,7 +137,7 @@ if (isset($_GET['Reference'])) {
 }
 	
 mysql_select_db($database_Connection, $Connection);
-$query_TransaksiClaim = "SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.Claim=periode.Claim INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode GROUP BY transaksiclaim.Periode ORDER BY transaksiclaim.Id ASC";
+$query_TransaksiClaim = "SELECT transaksiclaim.*, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project, customer.Customer FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.Claim=periode.Claim INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode GROUP BY transaksiclaim.Periode ORDER BY transaksiclaim.Id ASC";
 $TransaksiClaim = mysql_query($query_TransaksiClaim, $Connection) or die(mysql_error());
 $row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim);
 $totalRows_TransaksiClaim = mysql_num_rows($TransaksiClaim);
@@ -195,7 +195,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                     <th>Periode</th>
 					<th>Tanggal Claim</th>
 					<th>Project</th>
-					<th>Price</th>
+					<th>Customer</th>
                     <th>View</th>
 					<th>Delete</th>
                     </tr>
@@ -227,7 +227,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                         <td><?php echo $row_TransaksiClaim['Periode']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
 						<td><?php echo $row_TransaksiClaim['Project']; ?></td>
-						<td><?php echo number_format($row_TransaksiClaim['Amount'], 2); ?></td>
+						<td><?php echo $row_TransaksiClaim['Customer']; ?></td>
                         <td><a href="ViewTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
 					  <td><a href="DeleteTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim = $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
 					</tr>
