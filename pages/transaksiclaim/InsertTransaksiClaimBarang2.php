@@ -231,16 +231,11 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 
 //Insert Invoice
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Claim', %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, Reference, Periode) VALUES (%s, 'Claim', %s, %s, %s)",
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Invoice'], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"),
-                       GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"),
                        GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Periode'], "int"));
-  $deleteSQL = sprintf("DELETE FROM invoice WHERE invoice.Periode NOT IN (SELECT periode.Periode FROM periode WHERE Reference=%s) AND Reference=%s",
-                       GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"),
-					   GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_Reference'], "text"));
-  $alterSQL = sprintf("ALTER TABLE invoice AUTO_INCREMENT = 1");
   
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -250,6 +245,7 @@ for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $_SESSION['tx_inserttransaksiclaimbarang2_Amount'][$i] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_Amount'][$i], "int"));
   $_SESSION['hd_inserttransaksiclaimbarang2_E'] = sprintf("%s", GetSQLValueString($_POST['hd_inserttransaksiclaimbarang2_E'], "text"));
+  $_SESSION['tx_inserttransaksiclaimbarang2_PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_inserttransaksiclaimbarang2_PPN'], "int"));
 }
 }
 
