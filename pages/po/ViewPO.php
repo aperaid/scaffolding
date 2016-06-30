@@ -90,6 +90,18 @@ $query_poitem = sprintf("SELECT transaksi.Barang AS barang, transaksi.JS AS js, 
 $poitem = mysql_query($query_poitem, $Connection) or die(mysql_error());
 $row_poitem = mysql_fetch_assoc($poitem);
 
+//Get Reference for cancel button link
+mysql_select_db($database_Connection, $Connection);
+$query_reference = sprintf("SELECT DISTINCT transaksi.Reference AS reference FROM transaksi WHERE transaksi.POCode='$pocode'");
+$reference = mysql_query($query_reference, $Connection) or die(mysql_error());
+$row_reference = mysql_fetch_assoc($reference);
+
+//Delete and Edit button check
+mysql_select_db($database_Connection, $Connection);
+$query_checkpo = sprintf("SELECT check_po('$pocode') AS checkpo");
+$checkpo = mysql_query($query_checkpo, $Connection) or die(mysql_error());
+$row_checkpo = mysql_fetch_assoc($checkpo);
+
 ?>
 
 <?php
@@ -107,7 +119,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 	<section class="content-header">
 		<h1>
 			Purchase Order
-			<small>Item</small>
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -123,9 +134,9 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<div class="col-xs-12">
 					<div class="box box-primary">
 						<div class="box-body">
-							<a href=""><button type="button" class="btn btn-default pull-left">Cancel</button></a>
-							<a href=""><button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-primary pull-right">Edit</button></a>
-							<a href=""><button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-danger pull-right" style="margin-right: 5px;">Delete</button></a>
+							<a href="../pocustomer/ViewTransaksi.php?Reference=<?php echo $row_reference['reference']?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+							<a href=""><button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-primary pull-right" <?php if ($row_checkpo['checkpo']==1) { ?> disabled <?php } ?>>Edit</button></a>
+							<a href=""><button type="submit" id="bt_insertpocustomerbarang_submit" class="btn btn-danger pull-right" style="margin-right: 5px;" <?php if ($row_checkpo['checkpo']==1) { ?> disabled <?php } ?>>Delete</button></a>
 						</div>
 					</div>
 				</div>
@@ -169,7 +180,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 					<!-- general form elements -->
 					<div class="box box-primary">
 						<div class="box-header with-border">
-							<h3 class="box-title">Input PO Item</h3>
+							<h3 class="box-title">PO Item</h3>
 						</div>
 						<div class="box-body">
 							<table class="table table-hover table-bordered" id="tb_insertpocustomerbarang_customFields">
