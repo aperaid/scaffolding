@@ -163,12 +163,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }}
 
 mysql_select_db($database_Connection, $Connection);
-$query_Menu = "SELECT * FROM menu";
-$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
-$row_Menu = mysql_fetch_assoc($Menu);
-$totalRows_Menu = mysql_num_rows($Menu);
-
-mysql_select_db($database_Connection, $Connection);
 $query_Purchase = "SELECT Id FROM transaksi ORDER BY Id DESC";
 $Purchase = mysql_query($query_Purchase, $Connection) or die(mysql_error());
 $row_Purchase = mysql_fetch_assoc($Purchase);
@@ -255,7 +249,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 								<textarea name="tx_insertpocustomerbarang_Catatan" type="textarea" id="tx_insertpocustomerbarang_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5></textarea>
 							</div>
 							<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $_GET['Reference']; ?>">
-							<input type="hidden" name="MM_insert" value="form1">
 						</div>
 					</div>        
 				</div>
@@ -283,6 +276,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<!-- /.row -->
 			</div>
 			<!-- /.row -->
+		<input type="hidden" name="MM_insert" value="form1">
 		</form>
 	</section>
 	<!-- /.section -->
