@@ -125,6 +125,7 @@ if($row_POCode['POCode'] == NULL){
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $_SESSION['tx_insertpocustomerbarang_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"));
+  $_SESSION['tx_insertpocustomerbarang_Discount'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Discount'], "text"));
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
@@ -239,16 +240,13 @@ include_once($ROOT . 'pages/html_main_header.php');
 								<label for="exampleInputPassword1">Tanggal</label>
 								<input name="tx_insertpocustomerbarang_Tgl" type="text" id="tx_insertpocustomerbarang_Tgl" class="form-control" autocomplete="off" placeholder="Date" required>
 							</div>
-							<div class="checkbox">
-									<label>
-										<input name="tx_insertpocustomerbarang_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
-										<input name="tx_insertpocustomerbarang_PPN" class="minimal" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1">
-										PPN
-									</label>
-								</div>
 							<div class="form-group">
 								<label for="exampleInputPassword1">Transport</label>
 								<input name="tx_insertpocustomerbarang_Transport" type="text" id="tx_insertpocustomerbarang_Transport" class="form-control" autocomplete="off" placeholder="Transport Fee" required>
+							</div>
+							<div class="form-group">
+								<label>Discount</label>
+								<input name="tx_insertpocustomerbarang_Discount" type="text" id="tx_insertpocustomerbarang_Discount" class="form-control" autocomplete="off" placeholder="Discount" required>
 							</div>
 							<div class="form-group">
 								<label>Catatan</label>
@@ -328,6 +326,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 		$("#tx_insertpocustomerbarang_Transport").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
 		//Mask Price
 		$("#tx_insertpocustomerbarang_Amount").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+		$("#tx_insertpocustomerbarang_Discount").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
 		
 	});
 </script>

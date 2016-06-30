@@ -72,11 +72,12 @@ $totalRows_Reference = mysql_num_rows($Reference);
 
 for($i=0;$i<$totalRows_JS;$i++){
 if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, Reference, Periode) VALUES (%s, %s, %s, %s, 1)",
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, Reference, Periode, Discount) VALUES (%s, %s, %s, %s, 1, %s)",
                        GetSQLValueString($LastId2[$i], "text"),
                        GetSQLValueString($JS2[$i], "text"),
 					   GetSQLValueString(substr($_SESSION['tx_insertpocustomerbarang_Tgl'], 1, -1), "text"),
-					   GetSQLValueString($_GET['Reference'], "text"));
+					   GetSQLValueString($_GET['Reference'], "text"),
+					   GetSQLValueString(str_replace(".","",substr($_SESSION['tx_insertpocustomerbarang_Discount'], 3)), "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -92,6 +93,7 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
 
 if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
 	unset($_SESSION['tx_insertpocustomerbarang_Tgl']);
+	unset($_SESSION['tx_insertpocustomerbarang_Discount']);
 }
 
 ?>
