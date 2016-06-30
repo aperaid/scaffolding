@@ -162,7 +162,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE po SET Transport=%s WHERE POCode=%s",
-                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Transport'], 3)), "float"),
+                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Transport'], 3)), "text"),
 					   GetSQLValueString($_POST['hd_viewinvoicejual_POCode'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -296,7 +296,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                   <label class="col-sm-2 control-label">Transport</label>
                   <div class="col-sm-6">
                     <input id="tx_viewinvoicejual_Transport" name="tx_viewinvoicejual_Transport" type="text" class="form-control" value="<?php echo 'Rp ', number_format($Transport,0,',','.'); ?>" onKeyUp="tot()">
-                    <input id="hd_viewinvoicejual_Transport2" name="hd_viewinvoicejual_Transport2" type="hidden" autocomplete="off" value="<?php echo $row_View['Transport']; ?>">
+                    <input id="hd_viewinvoicejual_Transport2" name="hd_viewinvoicejual_Transport2" type="hidden" autocomplete="off" value="<?php echo $Transport; ?>">
                   </div>
                 </div>
 				<!-- Discount Input -->

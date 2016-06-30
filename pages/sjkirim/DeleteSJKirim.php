@@ -48,9 +48,13 @@ if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
                        GetSQLValueString($_GET['SJKir'], "text"));
   
   $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
+  $alterSQL2 = sprintf("ALTER TABLE sjkirim AUTO_INCREMENT = 1");
+  $alterSQL3 = sprintf("ALTER TABLE isisjkirim AUTO_INCREMENT = 1");
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL2, $Connection) or die(mysql_error());
+  $Result1 = mysql_query($alterSQL3, $Connection) or die(mysql_error());
   
   
   $deleteGoTo = "SJKirim.php";

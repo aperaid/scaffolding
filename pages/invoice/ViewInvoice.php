@@ -167,7 +167,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE po SET Transport=%s WHERE POCode=%s",
-                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Transport'], 3)), "float"),
+                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Transport'], 3)), "text"),
 					   GetSQLValueString($_POST['hd_viewinvoice_POCode'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -354,7 +354,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
+                    <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){$toss = $Transport; } 
 					else $toss = 0;
 					echo number_format(($total*$PPN*0.1)+$total+$toss-$row_View['Discount'], 2, ',','.');?>"  readonly>
                     <input id="hd_viewinvoice_Totals2" name="hd_viewinvoice_Totals2" type="hidden" value="<?php echo round($total, 2); ?>" >

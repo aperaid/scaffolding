@@ -302,7 +302,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<div class="form-group">
 					<label class="col-sm-2  control-label" >Catatan</label>
 					<div class="col-sm-6">
-						<textarea name="tx_viewinvoice_Catatan" type="textarea" id="tx_viewinvoiceclaim_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5><?php echo $row_View['Catatan']; ?></textarea>
+						<textarea name="tx_viewinvoiceclaim_Catatan" type="textarea" id="tx_viewinvoiceclaim_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5><?php echo $row_View['Catatan']; ?></textarea>
 					</div>
 				</div>
 				<!-- Total Text -->

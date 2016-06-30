@@ -133,7 +133,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['tx_insertpocustomerbarang_POCode'], "text"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Catatan'], "text"),
-					   GetSQLValueString(str_replace(".","",substr($_POST['tx_insertpocustomerbarang_Transport'], 3)), "float"));
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_insertpocustomerbarang_Transport'], 3)), "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
