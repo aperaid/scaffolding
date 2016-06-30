@@ -189,8 +189,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<div class="box box-primary">
 					<div class="box-header with-border">
 						<a href="InsertPOCustomer.php"><button type="button" class="btn btn-success pull-left">New Reference</button></a>
-						<button id="bt_pocustomer_view" class="btn btn-primary pull-right">View</button>
-						<button id="bt_pocustomer_edit" class="btn btn-primary pull-right"  style="margin-right: 5px;">Edit</button>
 					</div>
 					<div class="box-body">
 						<table id="tb_pocustomer" class="table table-bordered table-hover">
@@ -201,7 +199,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<th>Company</th>
 									<th>Project</th>
 									<th>Price</th>
-									<th>RefCheck</th>
 								</tr>
 							</thead>
 						</table>
@@ -223,8 +220,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 <!-- /.footer-wrapper -->
 <script>
 	$(document).ready(function () {
-		$("#bt_pocustomer_edit").attr("disabled", true);
-		$("#bt_pocustomer_view").attr("disabled", true);
 		
 		// Set Table to Datatable
 		var table = $("#tb_pocustomer").DataTable({
@@ -237,11 +232,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 			{
 				"targets": [4],
 				"render": $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' )
-			},
-			{
-				"targets": [5],
-				"visible": false,
-				"searchable": false
 			}
 		],
 		"order": [[1, "desc"]]
@@ -249,42 +239,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 		
 		// Set when selected
 		$('#tb_pocustomer tbody').on( 'click', 'tr', function () {
-			
-			$("#bt_pocustomer_view").removeAttr("disabled");
-			
 			var data = table.row( this ).data();
-			
-			if  (data[5] == 1){
-				$("#bt_pocustomer_edit").attr("disabled", true);
-			}
-			else
-			{
-				$("#bt_pocustomer_edit").removeAttr("disabled");
-			}
-			
-			if ( $(this).hasClass('active') ) {
-				$(this).removeClass('active');
-				
-				$("#bt_pocustomer_edit").attr("disabled", true);
-				$("#bt_pocustomer_view").attr("disabled", true);
-			}
-			else {
-				table.$('tr.active').removeClass('active');
-				$(this).addClass('active');
-			}
-		} );
-		
-		// When button edit is clicked
-		$('#bt_pocustomer_edit').click( function () {
-			var data = table.row('.active').data();
-			window.open("EditPOCustomer.php?Id="+ data[0],"_self");
-		} );
-		
-		// When button view is clicked
-		$('#bt_pocustomer_view').click( function () {
-			var data = table.row('.active').data();
 			window.open("ViewTransaksi.php?Reference="+ data[0],"_self");
 		} );
+		
 		
 	});
 </script>

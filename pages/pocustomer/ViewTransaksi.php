@@ -138,7 +138,7 @@ if (isset($_GET['Reference'])) {
 
 //Untuk Ambil reference doang
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT Reference FROM transaksi WHERE Reference = %s", GetSQLValueString($colname_View, "text"));
+$query_View = sprintf("SELECT Id, Reference FROM pocustomer WHERE Reference = %s", GetSQLValueString($colname_View, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -232,6 +232,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 					<li><a href="#sjkirim_tab" data-toggle="tab">SJKirim</a></li>
 					<li><a href="#sjkembali_tab" data-toggle="tab">SJKembali</a></li>
 					<li><a href="#claim_tab" data-toggle="tab">Claim</a></li>
+					<li><a href="#invoice_tab" data-toggle="tab">Invoice</a></li>
 				</ul>
 				<div class="tab-content">
 					<!-- OVERALL TAB -->
@@ -376,7 +377,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<a href="../sjkirim/InsertSJKirim.php?Reference=<?php echo $row_View['Reference']; ?>">				<button id="SJKirim_button" 	type="button"  	style="margin-right: 5px;"	<?php if ($row_sjkirimcheck['result'] == 0)		{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-success pull-right"	<?php }?>	>SJ Kirim</button></a>
 									<a href="../sjkembali/InsertSJKembali.php?Reference=<?php echo $row_View['Reference']; ?>">			<button id="SJKembali_button" 	type="button"  	style="margin-right: 5px;"	<?php if ($row_sjkembalicheck['result'] == 0) 	{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-warning pull-right"	<?php }?>	>SJ Kembali</button></a>
 									<a href="../transaksiclaim/inserttransaksiclaim.php?Reference=<?php echo $row_View['Reference']; ?>">	<button id="claim_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_sjkembalicheck['result'] == 0) 	{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-info pull-right"		<?php }?>	>Claim</button></a>
-									<a href="EditTransaksi.php?Reference=<?php echo $row_View['Reference']; ?>">							<button id="edit_button"		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) 			{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-primary pull-right"	<?php }?>	>Edit</button></a>
+									<a href="EditPOCustomer.php?Id=<?php echo $row_View['Id']; ?>">							<button id="edit_button"		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) 			{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-primary pull-right"	<?php }?>	>Edit</button></a>
 									<a href="DeletePOCustomer.php?Reference=<?php echo $row_View['Reference']; ?>">						<button id="delete_button" 		type="button"  	style="margin-right: 5px;"	<?php if ($row_check['result'] == 1) 			{ ?>	class="btn btn-default pull-right" disabled	<?php } else {?>	class="btn btn-danger pull-right"	<?php }?> onclick="return confirm('Delete PO Customer?')">Delete</button></a>
 									<a href="InsertPOCustomerBarang.php?Reference=<?php echo $colname_View; ?>"><button id="insertPO_button" type="button" style="margin-right: 5px;" class="btn btn-success pull-right">Insert PO</button></a>
 								</div>
@@ -392,8 +393,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<tr>
 										<th>PO Code</th>
 										<th>Tgl</th>
-										<th width="7%">Edit</th>
-										<th width="7%">View</th>
+										<th width="10%">View</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -401,8 +401,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<tr>
 										<td><?php echo $row_po['pocode']; ?></td>
 										<td><?php echo $row_po['tgl']; ?></td>
-										<td><a href="#?POCode=<?php echo $row_po['pocode']; ?>"><button class="btn btn-primary btn-sm">Edit</button></a></td>
-										<td><a href="#?POCode=<?php echo $row_po['pocode']; ?>"><button class="btn btn-primary btn-sm">View</button></a></td>
+										<td><a href="../po/ViewPO.php?POCode=<?php echo $row_po['pocode']; ?>"><button class="btn btn-primary btn-sm">View</button></a></td>
 									</tr>
 									<?php } while ($row_po = mysql_fetch_assoc($view_po)); ?>
 								</tbody>
@@ -491,6 +490,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 				
 					<!-- Claim TAB -->
 					<div class="tab-pane" id="claim_tab">
+					</div>
+					
+					<!-- Invoice TAB -->
+					<div class="tab-pane" id="invoice_tab">
 					</div>
 					
 				</div>

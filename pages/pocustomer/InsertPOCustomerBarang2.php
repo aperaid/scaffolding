@@ -87,7 +87,7 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
 
-  $insertGoTo = "POCustomer.php";
+  $insertGoTo = "ViewTransaksi.php?Reference=$colname_View";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
