@@ -333,7 +333,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 						<input id="tx_viewinvoice_Discount" name="tx_viewinvoice_Discount" type="text" class="form-control" value="<?php echo 'Rp ', number_format($row_View['Discount'],0,',','.'); ?>" onKeyUp="tot()" value="" onKeyUp="tot()" >
 					</div>
                 </div>
-				
 				<!-- Catatan Input -->
 				<div class="form-group">
 					<label class="col-sm-2  control-label" >Catatan</label>

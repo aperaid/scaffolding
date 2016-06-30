@@ -131,16 +131,17 @@ if (isset($_GET['JS'])) {
 
 // Ambil detail transaksi claim berdasarkan reference & periode
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, isisjkirim.SJKir, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount FROM transaksiclaim LEFT JOIN isisjkirim ON transaksiclaim.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s AND transaksiclaim.Periode = %s", GetSQLValueString($colname_View2, "text"), GetSQLValueString($colname_ViewPeriode, "text"));
+$query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, isisjkirim.SJKir, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount, transaksiclaim.PPN, periode.Claim FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.Claim=periode.Claim LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s AND transaksiclaim.Periode = %s", GetSQLValueString($colname_View2, "text"), GetSQLValueString($colname_ViewPeriode, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
+$totalRows_View2 = mysql_num_rows($View2);
 
-if (isset($_GET['totalRows_View2'])) {
+/*if (isset($_GET['totalRows_View2'])) {
   $totalRows_View2 = $_GET['totalRows_View2'];
 } else {
   $all_View2 = mysql_query($query_View2);
   $totalRows_View2 = mysql_num_rows($all_View2);
-}
+}*/
 
 // Query Menu
 mysql_select_db($database_Connection, $Connection);
@@ -149,13 +150,23 @@ $Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
 $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
-// Update PPN berdasarkan nomor invoice
+for($i=0;$i<$totalRows_View2;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
-                       GetSQLValueString($_POST['tx_viewinvoicejual_PPN'], "int"),
-					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Discount'], 3)), "text"),
-					   GetSQLValueString($_POST['tx_viewinvoicejual_Catatan'], "text"),
-					   GetSQLValueString($_POST['tx_viewinvoicejual_Invoice'], "text"));
+  $updateSQL = sprintf("UPDATE transaksiclaim SET PPN=%s WHERE Claim=%s",
+                       GetSQLValueString($_POST['tx_viewinvoiceclaim_PPN'], "int"),
+					   GetSQLValueString($_POST['tx_viewinvoiceclaim_Claim'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+// Update Discount berdasarkan nomor invoice
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE invoice SET Discount=%s, Catatan=%s WHERE Invoice=%s",
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoiceclaim_Discount'], 3)), "text"),
+					   GetSQLValueString($_POST['tx_viewinvoiceclaim_Catatan'], "text"),
+					   GetSQLValueString($_POST['tx_viewinvoiceclaim_Invoice'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -255,9 +266,11 @@ include_once($ROOT . 'pages/html_main_header.php');
       <tbody>
 	  <?php 
 	  $total = 0;
+	  $PPN = $row_View2['PPN'];
 	  do { ?>
       
         <tr>
+		<input name="tx_viewinvoiceclaim_Claim[]" type="hidden" id="tx_viewinvoiceclaim_Claim" value="<?php echo $row_View2['Claim']; ?>">
           <td><?php echo $row_View2['SJKir']; ?></td>
           <td><?php echo $row_View2['Barang']; ?></td>
           <td><?php echo $row_View2['Tgl']; ?></td>
@@ -275,7 +288,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                   <label class="col-sm-2 control-label">Pajak 10%</label>
                   <div class="col-sm-6">
                     <input name="tx_viewinvoiceclaim_PPN" type="hidden" id="tx_viewinvoiceclaim_PPN" value="0">
-					<input name="tx_viewinvoiceclaim_PPN" type="checkbox" id="tx_viewinvoiceclaim_PPN" value="1" <?php if ($row_View['PPN'] == 1){ ?> checked <?php } ?>>
+					<input name="tx_viewinvoiceclaim_PPN" type="checkbox" id="tx_viewinvoiceclaim_PPN" value="1" <?php if ($PPN == 1){ ?> checked <?php } ?>>
                   </div>
                 </div>
 				<!-- Discount Input -->
@@ -286,10 +299,17 @@ include_once($ROOT . 'pages/html_main_header.php');
 					</div>
                 </div>
 				<!-- Catatan Input -->
+				<div class="form-group">
+					<label class="col-sm-2  control-label" >Catatan</label>
+					<div class="col-sm-6">
+						<textarea name="tx_viewinvoice_Catatan" type="textarea" id="tx_viewinvoiceclaim_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5><?php echo $row_View['Catatan']; ?></textarea>
+					</div>
+				</div>
+				<!-- Total Text -->
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
-                    <input name="tx_viewinvoiceclaim_Totals" type="text" class="form-control" id="tx_viewinvoiceclaim_Totals" value="Rp <?php echo number_format(($total*$row_View['PPN']*0.1)+$total, 2,',','.'); ?>" readonly>
+                    <input name="tx_viewinvoiceclaim_Totals" type="text" class="form-control" id="tx_viewinvoiceclaim_Totals" value="Rp <?php echo number_format(($total*$PPN*0.1)+$total, 2,',','.'); ?>" readonly>
                     <input name="hd_viewinvoiceclaim_Totals2" type="hidden" id="hd_viewinvoiceclaim_Totals2" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>
@@ -328,6 +348,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 		document.getElementById('tx_viewinvoiceclaim_Totals').value = result;
       }
    }
+$(document).ready(function(){
+	//Mask Transport
+	$("#tx_viewinvoiceclaim_Discount").maskMoney({prefix:'Rp ', allowZero: true, allowNegative: false, thousands:'.', decimal:',', affixesStay: true, precision: 0});
+});
 </script>
 <?php
   mysql_free_result($View);

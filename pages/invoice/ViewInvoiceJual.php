@@ -152,8 +152,16 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
+  $updateSQL = sprintf("UPDATE pocustomer SET PPN=%s WHERE Reference=%s",
                        GetSQLValueString($_POST['tx_viewinvoicejual_PPN'], "int"),
+					   GetSQLValueString($colname_View, "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE invoice SET Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
                        GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Transport'], 3)), "text"),
 					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Discount'], 3)), "text"),
 					   GetSQLValueString($_POST['tx_viewinvoicejual_Catatan'], "text"),
