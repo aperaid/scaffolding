@@ -124,16 +124,16 @@ if($row_POCode['POCode'] == NULL){
 }*/
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $_SESSION['tx_insertpocustomerbarang_PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
-  $_SESSION['tx_insertpocustomerbarang_Transport'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Transport'], "float"));
   $_SESSION['tx_insertpocustomerbarang_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"));
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO po (POCode, Tgl, Catatan) VALUES (%s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO po (POCode, Tgl, Catatan, Transport, PPN) VALUES (%s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertpocustomerbarang_POCode'], "text"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"),
-					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Catatan'], "text"));
+					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Catatan'], "text"),
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_insertpocustomerbarang_Transport'], 3)), "float"),
+					   GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -234,7 +234,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 						<div class="box-body">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Nomor PO</label>
-								<input name="tx_insertpocustomerbarang_POCode" type="text" class="form-control" id="tx_insertpocustomerbarang_POCode" placeholder="Input PO Number" required>
+								<input name="tx_insertpocustomerbarang_POCode" type="text" class="form-control" id="tx_insertpocustomerbarang_POCode" autocomplete="off" placeholder="Input PO Number" required>
 							</div>
 							<div class="form-group">
 								<label for="exampleInputPassword1">Tanggal</label>

@@ -70,18 +70,12 @@ $Reference = mysql_query($query_Reference, $Connection) or die(mysql_error());
 $row_Reference = mysql_fetch_assoc($Reference);
 $totalRows_Reference = mysql_num_rows($Reference);
 
-$tx_insertpocustomerbarang2_PPN = $_SESSION['tx_insertpocustomerbarang_PPN'];
-$tx_insertpocustomerbarang2_Transport = str_replace(".","",substr($_SESSION['tx_insertpocustomerbarang_Transport'], 3));
-$tx_insertpocustomerbarang2_Tgl = substr($_SESSION['tx_insertpocustomerbarang_Tgl'], 1, -1);
-
 for($i=0;$i<$totalRows_JS;$i++){
 if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Transport, Reference, Periode) VALUES (%s, %s, %s, %s, %s, %s, 1)",
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, Reference, Periode) VALUES (%s, %s, %s, %s, 1)",
                        GetSQLValueString($LastId2[$i], "text"),
                        GetSQLValueString($JS2[$i], "text"),
-					   GetSQLValueString($tx_insertpocustomerbarang2_Tgl, "text"),
-					   GetSQLValueString($tx_insertpocustomerbarang2_PPN, "text"),
-					   GetSQLValueString($tx_insertpocustomerbarang2_Transport, "text"),
+					   GetSQLValueString(substr($_SESSION['tx_insertpocustomerbarang_Tgl'], 1, -1), "text"),
 					   GetSQLValueString($_GET['Reference'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -97,9 +91,7 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
 }
 
 if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
-	unset($_SESSION['tx_insertpocustomer_Tgl']);
-	unset($_SESSION['tx_insertpocustomerbarang_PPN']);
-	unset($_SESSION['tx_insertpocustomer_Transport']);
+	unset($_SESSION['tx_insertpocustomerbarang_Tgl']);
 }
 
 ?>
