@@ -98,7 +98,7 @@ $row_reference = mysql_fetch_assoc($reference);
 
 //Delete and Edit button check
 mysql_select_db($database_Connection, $Connection);
-$query_checkpo = sprintf("SELECT check_po('$pocode') AS checkpo");
+$query_checkpo = sprintf("SELECT check_pobutton('$pocode') AS checkpo");
 $checkpo = mysql_query($query_checkpo, $Connection) or die(mysql_error());
 $row_checkpo = mysql_fetch_assoc($checkpo);
 
