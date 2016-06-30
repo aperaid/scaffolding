@@ -53,12 +53,6 @@ if (isset($_GET['SJKir'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_Invoice = sprintf("SELECT PPN, Transport FROM invoice WHERE Reference = %s", GetSQLValueString($colname_Extend, "text"));
-$Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
-$row_Invoice = mysql_fetch_assoc($Invoice);
-$totalRows_Invoice = mysql_num_rows($Invoice);
-
-mysql_select_db($database_Connection, $Connection);
 $query_LastInvoiceId = "SELECT MAX(Id)AS Id FROM invoice";
 $LastInvoiceId = mysql_query($query_LastInvoiceId, $Connection) or die(mysql_error());
 $row_LastInvoiceId = mysql_fetch_assoc($LastInvoiceId);
@@ -92,10 +86,9 @@ $LastDate2 = date("d/m/Y", $LastDate);
 $LastInvoice = str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT);
 
 if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
-  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, PPN, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s)",
                        GetSQLValueString($LastInvoice, "text"),
                        GetSQLValueString($LastDate2, "text"),
-                       GetSQLValueString($row_Invoice['PPN'], "int"),
                        GetSQLValueString($Reference, "text"),
                        GetSQLValueString($Periode+1, "int"));
 

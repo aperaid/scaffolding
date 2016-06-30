@@ -128,12 +128,11 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO po (POCode, Tgl, Catatan, Transport, PPN) VALUES (%s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO po (POCode, Tgl, Catatan, Transport) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertpocustomerbarang_POCode'], "text"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"),
 					   GetSQLValueString($_POST['tx_insertpocustomerbarang_Catatan'], "text"),
-					   GetSQLValueString(str_replace(".","",substr($_POST['tx_insertpocustomerbarang_Transport'], 3)), "float"),
-					   GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_insertpocustomerbarang_Transport'], 3)), "float"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());

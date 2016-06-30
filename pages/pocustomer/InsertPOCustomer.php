@@ -110,10 +110,11 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO pocustomer (Reference, Tgl, PCode) VALUES (%s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO pocustomer (Reference, Tgl, PCode, PPN) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertpocustomer_Reference'], "text"),
                        GetSQLValueString($_POST['tx_insertpocustomer_Tgl'], "text"),
-					   GetSQLValueString($_POST['tx_insertpocustomer_PCode'], "text"));
+					   GetSQLValueString($_POST['tx_insertpocustomer_PCode'], "text"),
+					   GetSQLValueString($_POST['tx_insertpocustomer_PPN'], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
