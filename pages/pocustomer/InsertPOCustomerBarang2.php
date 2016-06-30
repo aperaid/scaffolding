@@ -77,7 +77,7 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
                        GetSQLValueString($JS2[$i], "text"),
 					   GetSQLValueString(substr($_SESSION['tx_insertpocustomerbarang_Tgl'], 1, -1), "text"),
 					   GetSQLValueString($_GET['Reference'], "text"),
-					   GetSQLValueString(str_replace(".","",substr($_SESSION['tx_insertpocustomerbarang_Discount'], 3)), "text"));
+					   GetSQLValueString(str_replace(".","",substr($_SESSION['tx_insertpocustomerbarang_Discount'], 3, -1)), "float"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());

@@ -154,7 +154,7 @@ for($i=0;$i<$totalRows_View2;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE transaksiclaim SET PPN=%s WHERE Claim=%s",
                        GetSQLValueString($_POST['tx_viewinvoiceclaim_PPN'], "int"),
-					   GetSQLValueString($_POST['tx_viewinvoiceclaim_Claim'][$i], "text"));
+					   GetSQLValueString($_POST['hd_viewinvoiceclaim_Claim'][$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -164,7 +164,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 // Update Discount berdasarkan nomor invoice
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE invoice SET Discount=%s, Catatan=%s WHERE Invoice=%s",
-					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoiceclaim_Discount'], 3)), "text"),
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoiceclaim_Discount'], 3)), "float"),
 					   GetSQLValueString($_POST['tx_viewinvoiceclaim_Catatan'], "text"),
 					   GetSQLValueString($_POST['tx_viewinvoiceclaim_Invoice'], "text"));
 
@@ -270,7 +270,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 	  do { ?>
       
         <tr>
-		<input name="tx_viewinvoiceclaim_Claim[]" type="hidden" id="tx_viewinvoiceclaim_Claim" value="<?php echo $row_View2['Claim']; ?>">
+		<input name="hd_viewinvoiceclaim_Claim[]" type="hidden" id="hd_viewinvoiceclaim_Claim" value="<?php echo $row_View2['Claim']; ?>">
           <td><?php echo $row_View2['SJKir']; ?></td>
           <td><?php echo $row_View2['Barang']; ?></td>
           <td><?php echo $row_View2['Tgl']; ?></td>

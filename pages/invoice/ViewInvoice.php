@@ -135,8 +135,8 @@ if (isset($_GET['JS'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, SUM(periode.Quantity) AS Quantity, periode.S, periode.E, periode.SJKem, periode.Deletes, transaksi.Amount, periode.Periode, pocustomer.PPN FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
-LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
+$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, SUM(periode.Quantity) AS Quantity, transaksi.Amount, transaksi.POCode, po.Transport, periode.S, periode.E, periode.SJKem, periode.Deletes, periode.Periode, pocustomer.PPN FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
+LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN po ON transaksi.POCode=po.POCode LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
 WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s AND periode.Quantity != 0 GROUP BY periode.Purchase, periode.S ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"),
 GetSQLValueString($colname_ViewPeriode, "text"));
@@ -166,9 +166,17 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
-                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Transport'], 3)), "text"),
-					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Discount'], 3)), "text"),
+  $updateSQL = sprintf("UPDATE po SET Transport=%s WHERE POCode=%s",
+                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Transport'], 3)), "float"),
+					   GetSQLValueString($_POST['hd_viewinvoice_POCode'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE invoice SET Discount=%s, Catatan=%s WHERE Invoice=%s",
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Discount'], 3)), "float"),
 					   GetSQLValueString($_POST['tx_viewinvoice_Catatan'], "text"),
 					   GetSQLValueString($_POST['tx_viewinvoice_Invoice'], "text"));
 
@@ -274,6 +282,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 	  do { ?>
       
         <tr>
+		<input name="hd_viewinvoice_POCode" type="hidden" id="hd_viewinvoice_POCode" value="<?php echo $row_View2['POCode']; ?>">
           <td><?php echo $row_View2['SJKir']; ?></td>
           <td><?php echo $row_View2['SJKem']; ?></td>
           <td><?php echo $row_View2['Barang']; ?></td>
@@ -295,6 +304,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 		  $Days2 = cal_days_in_month(CAL_GREGORIAN, $M, $Y);
 		  
 		  $PPN = $row_View2['PPN'];
+		  $Transport = $row_View2['Transport'];
 		  ?>
           
           <td><?php echo $row_View2['S']; ?></td>
@@ -323,7 +333,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Transport</label>
 					<div class="col-sm-6">
-						<input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo 'Rp ', number_format($row_View['Transport'],0,',','.'); }?>" onKeyUp="tot()" <?php if($row_View['Periode'] > 1) { ?> disabled <?php } ?>>
+						<input id="tx_viewinvoice_Transport" name="tx_viewinvoice_Transport" type="text" class="form-control" value="<?php if ($row_View['Periode'] == 1){ echo 'Rp ', number_format($Transport,0,',','.'); }?>" onKeyUp="tot()" <?php if($row_View['Periode'] > 1) { ?> disabled <?php } ?>>
 					</div>
                 </div>
 				<!-- Discount Input -->

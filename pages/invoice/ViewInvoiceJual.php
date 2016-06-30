@@ -133,7 +133,7 @@ if (isset($_GET['JS'])) {
   $colname_ViewJS = $_GET['JS'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT isisjkirim.QKirim, sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, sjkirim.Tgl AS S, transaksi.Amount FROM transaksi RIGHT JOIN isisjkirim ON isisjkirim.Purchase = transaksi.Purchase LEFT JOIN sjkirim ON sjkirim.SJKir = isisjkirim.SJKir WHERE transaksi.Reference = %s AND transaksi.JS = %s", GetSQLValueString($colname_View2, "text"),
+$query_View2 = sprintf("SELECT isisjkirim.QKirim, sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, sjkirim.Tgl AS S, transaksi.Amount, transaksi.POCode, po.Transport FROM transaksi LEFT JOIN po ON transaksi.POCode=po.POCode RIGHT JOIN isisjkirim ON isisjkirim.Purchase = transaksi.Purchase LEFT JOIN sjkirim ON sjkirim.SJKir = isisjkirim.SJKir WHERE transaksi.Reference = %s AND transaksi.JS = %s", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
@@ -161,9 +161,17 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
-                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Transport'], 3)), "text"),
-					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Discount'], 3)), "text"),
+  $updateSQL = sprintf("UPDATE po SET Transport=%s WHERE POCode=%s",
+                       GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Transport'], 3)), "float"),
+					   GetSQLValueString($_POST['hd_viewinvoicejual_POCode'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE invoice SET Discount=%s, Catatan=%s WHERE Invoice=%s",
+					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Discount'], 3)), "float"),
 					   GetSQLValueString($_POST['tx_viewinvoicejual_Catatan'], "text"),
 					   GetSQLValueString($_POST['tx_viewinvoicejual_Invoice'], "text"));
 
@@ -263,6 +271,8 @@ include_once($ROOT . 'pages/html_main_header.php');
 	  do { ?>
       
         <tr>
+		<?php $Transport = $row_View2['Transport']; ?>
+		<input name="hd_viewinvoicejual_POCode" type="hidden" id="hd_viewinvoicejual_POCode" value="<?php echo $row_View2['POCode']; ?>">
           <td><?php echo $row_View2['SJKir']; ?></td>
           <td><?php echo $row_View2['Barang']; ?></td>
           <td><?php echo $row_View2['QKirim']; ?></td>
@@ -285,7 +295,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Transport</label>
                   <div class="col-sm-6">
-                    <input id="tx_viewinvoicejual_Transport" name="tx_viewinvoicejual_Transport" type="text" class="form-control" value="<?php echo 'Rp ', number_format($row_View['Transport'],0,',','.'); ?>" onKeyUp="tot()">
+                    <input id="tx_viewinvoicejual_Transport" name="tx_viewinvoicejual_Transport" type="text" class="form-control" value="<?php echo 'Rp ', number_format($Transport,0,',','.'); ?>" onKeyUp="tot()">
                     <input id="hd_viewinvoicejual_Transport2" name="hd_viewinvoicejual_Transport2" type="hidden" autocomplete="off" value="<?php echo $row_View['Transport']; ?>">
                   </div>
                 </div>
@@ -307,7 +317,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
-                    <input name="tx_viewinvoicejual_Totals" type="text" class="form-control" id="tx_viewinvoicejual_Totals" value="Rp <?php echo number_format(($total*$row_View['PPN']*0.1)+$total+$row_View['Transport']-$row_View['Discount'], 2,',','.'); ?>" readonly>
+                    <input name="tx_viewinvoicejual_Totals" type="text" class="form-control" id="tx_viewinvoicejual_Totals" value="Rp <?php echo number_format(($total*$row_View['PPN']*0.1)+$total+$Transport-$row_View['Discount'], 2,',','.'); ?>" readonly>
                     <input name="hd_viewinvoicejual_Totals2" type="hidden" id="hd_viewinvoicejual_Totals2" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>

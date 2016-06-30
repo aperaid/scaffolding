@@ -326,7 +326,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 </script>
 
 <?php
-  mysql_free_result($Menu);
   mysql_free_result($Purchase);
   mysql_free_result($User);
 ?>
