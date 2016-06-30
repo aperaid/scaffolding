@@ -202,8 +202,9 @@ if (isset($_GET['Reference'])) {
 //Insert transaksiclaim
 for ($i=0;$i<$totalRows_InsertTransaksiClaim2;$i++){
 if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
-  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Purchase, Periode, IsiSJKir) SELECT periode.Claim, %s, periode.Quantity, periode.Purchase, periode.Periode, periode.IsiSJKir FROM periode WHERE periode.Claim IN ($Claim2) AND periode.IsiSJKir = %s",
+  $insertSQL = sprintf("INSERT INTO transaksiclaim (Claim, Tgl, QClaim, Purchase, Periode, IsiSJKir, PPN) SELECT periode.Claim, %s, periode.Quantity, periode.Purchase, periode.Periode, periode.IsiSJKir, %s FROM periode WHERE periode.Claim IN ($Claim2) AND periode.IsiSJKir = %s",
                        GetSQLValueString(substr($_SESSION['hd_inserttransaksiclaimbarang2_E'], 1, -1), "text"),
+					   GetSQLValueString($_SESSION['tx_inserttransaksiclaimbarang2_PPN'], "int"),
 					   GetSQLValueString($IsiSJKir[$i], "text"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -236,6 +237,7 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 	unset($_SESSION['tx_inserttransaksiclaim_Reference']);
 	unset($_SESSION['hd_inserttransaksiclaimbarang2_E']);
 	unset($_SESSION['tx_inserttransaksiclaimbarang2_Amount']);
+	unset($_SESSION['tx_inserttransaksiclaimbarang2_PPN']);
 }
 
 /* -------- USERNAME PRIVILEGE ---------- */
