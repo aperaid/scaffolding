@@ -115,7 +115,7 @@ if (isset($_GET['Reference'])) {
   $colname_ViewInvoice = $_GET['Invoice'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT invoice.*, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE invoice.Reference = %s AND invoice.Invoice = %s", GetSQLValueString($colname_View, "text"), GetSQLValueString($colname_ViewInvoice, "text"));
+$query_View = sprintf("SELECT invoice.*, pocustomer.PPN, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE invoice.Reference = %s AND invoice.Invoice = %s", GetSQLValueString($colname_View, "text"), GetSQLValueString($colname_ViewInvoice, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);

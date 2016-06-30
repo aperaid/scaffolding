@@ -135,8 +135,8 @@ if (isset($_GET['JS'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, SUM(periode.Quantity) AS Quantity, periode.S, periode.E, periode.SJKem, periode.Deletes, transaksi.Amount, periode.Periode FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
-LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
+$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, SUM(periode.Quantity) AS Quantity, periode.S, periode.E, periode.SJKem, periode.Deletes, transaksi.Amount, periode.Periode, pocustomer.PPN FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
+LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
 WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s AND periode.Quantity != 0 GROUP BY periode.Purchase, periode.S ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"),
 GetSQLValueString($colname_ViewPeriode, "text"));
@@ -157,8 +157,16 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
+  $updateSQL = sprintf("UPDATE pocustomer SET PPN=%s WHERE Reference=%s",
                        GetSQLValueString($_POST['tx_viewinvoice_PPN'], "int"),
+					   GetSQLValueString($colname_View, "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE invoice SET Transport=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
                        GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Transport'], 3)), "text"),
 					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Discount'], 3)), "text"),
 					   GetSQLValueString($_POST['tx_viewinvoice_Catatan'], "text"),
@@ -286,6 +294,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 		  $Y = substr($Days, 6);
 		  $Days2 = cal_days_in_month(CAL_GREGORIAN, $M, $Y);
 		  
+		  $PPN = $row_View2['PPN'];
 		  ?>
           
           <td><?php echo $row_View2['S']; ?></td>
@@ -307,7 +316,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                 <label class="col-sm-2 control-label">Pajak 10%</label>
 				<div class="col-sm-6">
 					<input name="tx_viewinvoice_PPN" type="hidden" id="tx_viewinvoice_PPN" value="0">
-					<input name="tx_viewinvoice_PPN" type="checkbox" id="tx_viewinvoice_PPN" value="1" <?php if ($row_View['PPN'] == 1){ ?> checked <?php } ?>>
+					<input name="tx_viewinvoice_PPN" type="checkbox" id="tx_viewinvoice_PPN" value="1" <?php if ($PPN == 1){ ?> checked <?php } ?>>
                 </div>
 				</div>
                 <!-- Transport Input -->
@@ -338,7 +347,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                   <div class="col-sm-6">
                     <input id="tx_viewinvoice_Totals" name="tx_viewinvoice_Totals" type="text" class="form-control" value="Rp <?php if ($row_View['Periode'] == 1){$toss = $row_View['Transport']; } 
 					else $toss = 0;
-					echo number_format(($total*$row_View['PPN']*0.1)+$total+$toss-$row_View['Discount'], 2, ',','.');?>"  readonly>
+					echo number_format(($total*$PPN*0.1)+$total+$toss-$row_View['Discount'], 2, ',','.');?>"  readonly>
                     <input id="hd_viewinvoice_Totals2" name="hd_viewinvoice_Totals2" type="hidden" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>
