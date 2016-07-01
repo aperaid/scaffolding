@@ -77,6 +77,7 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
                        GetSQLValueString($JS2[$i], "text"),
 					   GetSQLValueString(substr($_SESSION['tx_insertpocustomerbarang_Tgl'], 1, -1), "text"),
 					   GetSQLValueString($_GET['Reference'], "text"),
+					   GetSQLValueString($_SESSION['tx_insertpocustomerbarang_PPN'], "int"),
 					   GetSQLValueString(str_replace(".","",substr($_SESSION['tx_insertpocustomerbarang_Discount'], 3, -1)), "float"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -93,6 +94,7 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
 
 if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
 	unset($_SESSION['tx_insertpocustomerbarang_Tgl']);
+	unset($_SESSION['tx_insertpocustomerbarang_PPN']);
 	unset($_SESSION['tx_insertpocustomerbarang_Discount']);
 }
 

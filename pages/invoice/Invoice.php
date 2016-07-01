@@ -132,7 +132,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   }
 	
 mysql_select_db($database_Connection, $Connection);
-$query_Invoice = "SELECT invoice.*, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Sewa' AND EXISTS (SELECT periode.Reference FROM periode WHERE invoice.Reference = periode.Reference) GROUP BY invoice.Reference, invoice.Periode";
+$query_Invoice = "SELECT invoice.*, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Sewa' AND EXISTS (SELECT periode.Reference FROM periode WHERE invoice.Reference = periode.Reference AND Deletes='Sewa') GROUP BY invoice.Reference, invoice.Periode";
 $Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
 $row_Invoice = mysql_fetch_assoc($Invoice);
 $totalRows_Invoice = mysql_num_rows($Invoice);

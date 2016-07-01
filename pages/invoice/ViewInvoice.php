@@ -135,8 +135,8 @@ if (isset($_GET['JS'])) {
 }
 
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, SUM(periode.Quantity) AS Quantity, transaksi.Amount, transaksi.POCode, po.Transport, periode.S, periode.E, periode.SJKem, periode.Deletes, periode.Periode, pocustomer.PPN FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
-LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN po ON transaksi.POCode=po.POCode LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
+$query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, SUM(periode.Quantity) AS Quantity, transaksi.Amount, transaksi.POCode, po.Transport, periode.S, periode.E, periode.SJKem, periode.Deletes, periode.Periode FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
+LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN po ON transaksi.POCode=po.POCode LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
 WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s AND periode.Quantity != 0 GROUP BY periode.Purchase, periode.S ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"),
 GetSQLValueString($colname_ViewPeriode, "text"));
@@ -157,15 +157,6 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE pocustomer SET PPN=%s WHERE Reference=%s",
-                       GetSQLValueString($_POST['tx_viewinvoice_PPN'], "int"),
-					   GetSQLValueString($colname_View, "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE po SET Transport=%s WHERE POCode=%s",
                        GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Transport'], 3)), "text"),
 					   GetSQLValueString($_POST['hd_viewinvoice_POCode'], "text"));
@@ -175,7 +166,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET Discount=%s, Catatan=%s WHERE Invoice=%s",
+  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
+					   GetSQLValueString($_POST['tx_viewinvoice_PPN'], "int"),
 					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoice_Discount'], 3)), "float"),
 					   GetSQLValueString($_POST['tx_viewinvoice_Catatan'], "text"),
 					   GetSQLValueString($_POST['tx_viewinvoice_Invoice'], "text"));
@@ -303,7 +295,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 		  $Y = substr($Days, 6);
 		  $Days2 = cal_days_in_month(CAL_GREGORIAN, $M, $Y);
 		  
-		  $PPN = $row_View2['PPN'];
+		  $PPN = $row_View['PPN'];
 		  $Transport = $row_View2['Transport'];
 		  ?>
           
