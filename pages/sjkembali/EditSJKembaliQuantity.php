@@ -132,13 +132,19 @@ if (isset($_GET['SJKem'])) {
 
 //Query buat nunjukin isisjkembali
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, SUM(isisjkembali.QTertanda) AS QTertanda2, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s GROUP BY isisjkembali.Purchase ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
 
+mysql_select_db($database_Connection, $Connection);
+$query_EditIsiSJKembali2 = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$EditIsiSJKembali2 = mysql_query($query_EditIsiSJKembali2, $Connection) or die(mysql_error());
+$row_EditIsiSJKembali2 = mysql_fetch_assoc($EditIsiSJKembali2);
+$totalRows_EditIsiSJKembali2 = mysql_num_rows($EditIsiSJKembali2);
+
 //Query khusus untuk ambil IsiSJKir apa aja yg ada di sjkembali ini 
-$query = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
+$query = mysql_query($query_EditIsiSJKembali2, $Connection) or die(mysql_error());
 $IsiSJKir = array();
 while($row = mysql_fetch_assoc($query)){
 	$IsiSJKir[] = $row['IsiSJKir'];
@@ -194,9 +200,10 @@ for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 // jumlah qsisakembaliquantity di isisjkirim diupdate
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("CALL edit_sjkembaliquantity(%s, %s)",
+  $updateSQL = sprintf("CALL edit_sjkembaliquantity(%s, %s, %s)",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkembaliquantity_Purchase'][$i], "text"));
+                       GetSQLValueString($_POST['hd_editsjkembaliquantity_Purchase'][$i], "text"),
+					   GetSQLValueString($_GET['SJKem'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -204,7 +211,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 //update qterima di sjkembali
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+/*if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
   $updateSQL = sprintf("UPDATE isisjkembali SET QTerima=%s WHERE Id=%s",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
@@ -214,7 +221,7 @@ for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
 }
-}
+}*/
 
 //update tanggal di periode
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
@@ -302,9 +309,9 @@ include_once($ROOT . 'pages/html_main_header.php');
 							<td>	<input name="tx_editsjkembaliquantity_Tgl"			id="tx_editsjkembaliquantity_Tgl"							type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
 							<td>	<input name="tx_editsjkembaliquantity_Barang"		id="tx_editsjkembaliquantity_Barang"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td>	<input name="tx_editsjkembaliquantity_Warehouse[]"	id="tx_editsjkembaliquantity_Warehouse"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
-							<td>	<input name="tx_editsjkembaliquantity_QTertanda[]"	id="tx_editsjkembaliquantity_QTertanda"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>"autocomplete="off"  readonly></td>
+							<td>	<input name="tx_editsjkembaliquantity_QTertanda[]"	id="tx_editsjkembaliquantity_QTertanda"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTertanda2']; ?>"autocomplete="off"  readonly></td>
 									<input name="tx_editsjkembaliquantity_QSisaKem[]"	id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>"		type="hidden"	class="form-control"	value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly>
-                            <td>	<input name="tx_editsjkembaliquantity_QTerima[]"	id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>"		type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda']; ?>)" onKeyUp="sisa();"  required></td>
+                            <td>	<input name="tx_editsjkembaliquantity_QTerima[]"	id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>"		type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda2']; ?>)" onKeyUp="sisa();"  required></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
