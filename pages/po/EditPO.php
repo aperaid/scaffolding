@@ -123,7 +123,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 	
 	//Get the data for Input PO Item
 	mysql_select_db($database_Connection, $Connection);
-	$query_poitem = sprintf("SELECT transaksi.Barang AS barang, transaksi.JS AS js, transaksi.Quantity AS quantity, transaksi.Amount AS price FROM transaksi WHERE transaksi.POCode='$pocode'");
+	$query_poitem = sprintf("SELECT transaksi.Id, transaksi.Barang AS barang, transaksi.JS AS js, transaksi.Quantity AS quantity, transaksi.Amount AS price FROM transaksi WHERE transaksi.POCode='$pocode'");
 	$poitem = mysql_query($query_poitem, $Connection) or die(mysql_error());
 	$row_poitem = mysql_fetch_assoc($poitem);
 	
@@ -132,7 +132,21 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 	$query_purchase = sprintf("SELECT max(transaksi.ID) AS purchase FROM transaksi");
 	$purchase = mysql_query($query_purchase, $Connection) or die(mysql_error());
 	$row_purchase = mysql_fetch_assoc($purchase);
-	$last_purchase = $row_purchase['purchase'];
+	
+	//Get last purchase id for po item table
+	mysql_select_db($database_Connection, $Connection);
+	$query_purchase2 = sprintf("SELECT MIN(transaksi.Id) AS purchase FROM transaksi GROUP BY POCode ORDER BY Id DESC");
+	$purchase2= mysql_query($query_purchase2, $Connection) or die(mysql_error());
+	$row_purchase2 = mysql_fetch_assoc($purchase2);
+	
+	if ($row_poitem['Id']==$row_purchase2['purchase'])
+	{
+		$last_purchase = $row_purchase2['purchase']-1;
+	} else
+	{
+		$last_purchase = $row_purchase['purchase'];
+	}
+	
 	
 	//Set link to current php file for submit form
 	$editFormAction = $_SERVER['PHP_SELF'];

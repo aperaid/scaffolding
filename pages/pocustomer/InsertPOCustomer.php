@@ -110,11 +110,10 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO pocustomer (Reference, Tgl, PCode, PPN) VALUES (%s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO pocustomer (Reference, Tgl, PCode) VALUES (%s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertpocustomer_Reference'], "text"),
                        GetSQLValueString($_POST['tx_insertpocustomer_Tgl'], "text"),
-					   GetSQLValueString($_POST['tx_insertpocustomer_PCode'], "text"),
-					   GetSQLValueString($_POST['tx_insertpocustomer_PPN'], "int"));
+					   GetSQLValueString($_POST['tx_insertpocustomer_PCode'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
@@ -206,13 +205,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 								<label>Project Code</label>
 								<input name="tx_insertpocustomer_PCode" type="text" class="form-control" id="tx_insertpocustomer_PCode" autocomplete="off" onKeyUp="capital()" placeholder="ABC01" maxlength="5" required>
 								<p class="help-block">Enter the beginning of the Project Code, then pick from the dropdown</p>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="tx_insertpocustomer_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
-									<input name="tx_insertpocustomer_PPN" class="minimal" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1">
-									PPN
-								</label>
 							</div>
 						</div>
 						<!-- /.box-body -->

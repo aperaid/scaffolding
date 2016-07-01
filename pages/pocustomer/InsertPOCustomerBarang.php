@@ -126,6 +126,7 @@ if($row_POCode['POCode'] == NULL){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $_SESSION['tx_insertpocustomerbarang_Tgl'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Tgl'], "text"));
   $_SESSION['tx_insertpocustomerbarang_Discount'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_Discount'], "text"));
+  $_SESSION['tx_insertpocustomerbarang_PPN'] = sprintf("%s", GetSQLValueString($_POST['tx_insertpocustomerbarang_PPN'], "int"));
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
@@ -245,6 +246,13 @@ include_once($ROOT . 'pages/html_main_header.php');
 							<div class="form-group">
 								<label>Catatan</label>
 								<textarea name="tx_insertpocustomerbarang_Catatan" type="textarea" id="tx_insertpocustomerbarang_Catatan" class="form-control" autocomplete="off" placeholder="Catatan" rows=5></textarea>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input name="tx_insertpocustomerbarang_PPN" type="hidden" id="tx_insertpocustomerbarang_PPN" value="0">
+									<input name="tx_insertpocustomerbarang_PPN" class="minimal" type="checkbox" id="tx_insertpocustomerbarang_PPN" value="1">
+									PPN
+								</label>
 							</div>
 							<input name="hd_inputpocustomerbarang_Reference" type="hidden" id="hd_inputpocustomerbarang_Reference" value="<?php echo $_GET['Reference']; ?>">
 						</div>

@@ -115,7 +115,7 @@ if (isset($_GET['Reference'])) {
   $colname_ViewInvoice = $_GET['Invoice'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT invoice.*, pocustomer.PPN, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE invoice.Reference = %s AND invoice.Invoice = %s", GetSQLValueString($colname_View, "text"), GetSQLValueString($colname_ViewInvoice, "text"));
+$query_View = sprintf("SELECT invoice.*, project.Project, customer.Company FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE invoice.Reference = %s AND invoice.Invoice = %s", GetSQLValueString($colname_View, "text"), GetSQLValueString($colname_ViewInvoice, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -152,15 +152,6 @@ $row_Menu = mysql_fetch_assoc($Menu);
 $totalRows_Menu = mysql_num_rows($Menu);
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE pocustomer SET PPN=%s WHERE Reference=%s",
-                       GetSQLValueString($_POST['tx_viewinvoicejual_PPN'], "int"),
-					   GetSQLValueString($colname_View, "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE po SET Transport=%s WHERE POCode=%s",
                        GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Transport'], 3)), "text"),
 					   GetSQLValueString($_POST['hd_viewinvoicejual_POCode'], "text"));
@@ -170,7 +161,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE invoice SET Discount=%s, Catatan=%s WHERE Invoice=%s",
+  $updateSQL = sprintf("UPDATE invoice SET PPN=%s, Discount=%s, Catatan=%s WHERE Invoice=%s",
+					   GetSQLValueString($_POST['tx_viewinvoicejual_PPN'], "int"),
 					   GetSQLValueString(str_replace(".","",substr($_POST['tx_viewinvoicejual_Discount'], 3)), "float"),
 					   GetSQLValueString($_POST['tx_viewinvoicejual_Catatan'], "text"),
 					   GetSQLValueString($_POST['tx_viewinvoicejual_Invoice'], "text"));
