@@ -108,6 +108,13 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 	//Get pocode
 	$pocode= $_GET['POCode'];
 	
+	//Get Reference for inserting
+	mysql_select_db($database_Connection, $Connection);
+	$query_reference = sprintf("SELECT DISTINCT transaksi.Reference AS reference FROM transaksi WHERE transaksi.POCode='$pocode'");
+	$reference = mysql_query($query_reference, $Connection) or die(mysql_error());
+	$row_reference = mysql_fetch_assoc($reference);
+	$ref = $row_reference['reference'];
+
 	//Get the data for PO Detail Box
 	mysql_select_db($database_Connection, $Connection);
 	$query_po = sprintf("SELECT po.POCode AS pocode, po.Tgl AS tgl, po.Transport AS transport, po.Catatan AS catatan FROM po WHERE po.POCode='$pocode'");
@@ -150,32 +157,30 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 		$query_deletetransaksi = sprintf("DELETE FROM transaksi WHERE POCode='$pocode'");
 		$deletetransaksi = mysql_query($query_deletetransaksi, $Connection) or die(mysql_error());
 		//2-2 Insert again to Transaksi Table
-			
-		//Get Reference for inserting
-		mysql_select_db($database_Connection, $Connection);
-		$query_reference = sprintf("SELECT DISTINCT transaksi.Reference AS reference FROM transaksi WHERE transaksi.POCode='$pocode'");
-		$reference = mysql_query($query_reference, $Connection) or die(mysql_error());
-		$row_reference = mysql_fetch_assoc($reference);
-		$ref = $row_reference['reference'];
+		
 		//Set pocode variable again for inserting
 		$pocode2= $_POST['tx_editpo_POCode'];
+		//Set reference variable again for inserting
+		$ref = $_POST['tx_editpo_reference'];
 		//Inserting
-		for($i=0;$i<10;$i++){
-			mysql_select_db($database_Connection, $Connection);
-			$insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference, POCode) VALUES (%s, %s, %s, %s, %s, %s, %s, '$ref', '$pocode2')",
-						   GetSQLValueString($_POST['tx_editpo_Purchase'][$i], "text"),
-						   GetSQLValueString($_POST['db_editpo_JS'][$i], "text"),
-						   GetSQLValueString($_POST['tx_editpo_Barang'][$i], "text"),
-						   GetSQLValueString($_POST['tx_editpo_Quantity'][$i], "text"),
-						   GetSQLValueString($_POST['tx_editpo_Quantity'][$i], "text"),
-						   GetSQLValueString($_POST['tx_editpo_Quantity'][$i], "text"),
-						   GetSQLValueString($_POST['tx_editpo_Amount'][$i], "text"));
-			$Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+		for($i=0;$i<15;$i++){
+			if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+				mysql_select_db($database_Connection, $Connection);
+				$insertSQL = sprintf("INSERT INTO transaksi (Purchase, JS, Barang, Quantity, QSisaKirInsert, QSisaKir, Amount, Reference, POCode) VALUES (%s, %s, %s, %s, %s, %s, %s, '$ref', '$pocode2')",
+							   GetSQLValueString($_POST['tx_editpo_Purchase'][$i], "text"),
+							   GetSQLValueString($_POST['db_editpo_JS'][$i], "text"),
+							   GetSQLValueString($_POST['tx_editpo_Barang'][$i], "text"),
+							   GetSQLValueString($_POST['tx_editpo_Quantity'][$i], "text"),
+							   GetSQLValueString($_POST['tx_editpo_Quantity'][$i], "text"),
+							   GetSQLValueString($_POST['tx_editpo_Quantity'][$i], "text"),
+							   GetSQLValueString($_POST['tx_editpo_Amount'][$i], "text"));
+				$Result1 = mysql_query($insertSQL, $Connection) or die(mysql_error());
+			}
+			
+			//Redirect
+			$insertGoTo = "ViewPO.php?POCode=$pocode";
+			header(sprintf("Location: %s", $insertGoTo));
 		}
-		
-		//Redirect
-		$insertGoTo = "ViewPO.php?POCode=$pocode";
-		header(sprintf("Location: %s", $insertGoTo));
 	}
 ?>
 
@@ -271,6 +276,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<!-- /.row -->
 			</div>
 			<!-- /.row -->
+		<input type="hidden" name="tx_editpo_reference" value="<?php echo $ref?>">
 		<input type="hidden" name="MM_insert" value="form1">
 		</form>
 	</section>
