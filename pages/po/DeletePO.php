@@ -1,5 +1,10 @@
 <?php
 require_once('../../connections/Connection.php');
+// Declare Root directory
+$ROOT="../../";
+
+include($ROOT . "pages/login/session.php");
+include_once($ROOT . "pages/functionphp.php");
 
 if ((isset($_GET['POCode'])) && ($_GET['POCode'] != "")) {
 	
