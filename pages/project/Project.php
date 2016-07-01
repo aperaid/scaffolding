@@ -14,7 +14,6 @@ $totalRows_Project = mysql_num_rows($Project);
 ?>
 
 <?php
-// Declare Root directory
 $PAGE="Project";
 $top_menu_sel="menu_project";
 include_once($ROOT . 'pages/html_header.php');

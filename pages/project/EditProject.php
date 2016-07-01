@@ -51,7 +51,6 @@ $totalRows_check = mysql_num_rows($check);
 ?>
 
 <?php
-// Declare Root directory
 $PAGE="Edit Project";
 $top_menu_sel="menu_project";
 include_once($ROOT . 'pages/html_header.php');

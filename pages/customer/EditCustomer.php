@@ -58,7 +58,6 @@ $row_check = mysql_fetch_assoc($check);
 ?>
 
 <?php
-	// Declare Root directory
 	$PAGE="Edit Customer";
 	$top_menu_sel="menu_customer";
 	include_once($ROOT . 'pages/html_header.php');

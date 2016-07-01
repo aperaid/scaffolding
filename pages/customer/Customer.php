@@ -99,6 +99,4 @@ include_once($ROOT . 'pages/html_main_header.php');
 
 <?php
   mysql_free_result($Customer);
-  mysql_free_result($User);
-  mysql_free_result($Menu);
 ?>

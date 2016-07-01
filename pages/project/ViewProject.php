@@ -16,13 +16,6 @@ $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
-mysql_select_db($database_Connection, $Connection);
-$query_Menu = "SELECT * FROM menu";
-$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
-$row_Menu = mysql_fetch_assoc($Menu);
-$totalRows_Menu = mysql_num_rows($Menu);
-
-
 //FUNCTION BUTTON DISABLE
 $check_pcode = $row_View['PCode'];
 mysql_select_db($database_Connection, $Connection);
@@ -34,7 +27,6 @@ $totalRows_check = mysql_num_rows($check);
 ?>
 
 <?php
-// Declare Root directory
 $PAGE="Project";
 $top_menu_sel="menu_project";
 include_once($ROOT . 'pages/html_header.php');

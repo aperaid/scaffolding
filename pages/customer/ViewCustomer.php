@@ -34,8 +34,6 @@ $totalRows_check = mysql_num_rows($check);
 ?>
 
 <?php
-	// Declare Root directory
-	$ROOT="../../";
 	$PAGE="View Customer";
 	$top_menu_sel="menu_customer";
 	include_once($ROOT . 'pages/html_header.php');
@@ -235,7 +233,5 @@ function capital() {
 </script>
 
 <?php
-mysql_free_result($Menu);
-mysql_free_result($User);
 mysql_free_result($View);
 ?>

@@ -36,18 +36,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   }
   header(sprintf("Location: %s", $insertGoTo));
 }
-
-mysql_select_db($database_Connection, $Connection);
-$query_Menu = "SELECT * FROM menu";
-$Menu = mysql_query($query_Menu, $Connection) or die(mysql_error());
-$row_Menu = mysql_fetch_assoc($Menu);
-$totalRows_Menu = mysql_num_rows($Menu);
-
-
 ?>
 
 <?php
-	// Declare Root directory
 	$PAGE="Insert Customer";
 	$top_menu_sel="menu_customer";
 	include_once($ROOT . 'pages/html_header.php');
@@ -218,8 +209,3 @@ function capital() {
     x.value = x.value.toUpperCase();
 }
 </script>
-
-<?php
-  mysql_free_result($Menu);
-  mysql_free_result($User);
-?>

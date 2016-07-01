@@ -37,7 +37,6 @@ if (isset($_GET['Id'])) {
 ?>
 
 <?php
-// Declare Root directory
 $PAGE="Insert Project";
 $top_menu_sel="menu_project";
 include_once($ROOT . 'pages/html_header.php');
