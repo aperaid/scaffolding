@@ -158,6 +158,11 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 		$deletetransaksi = mysql_query($query_deletetransaksi, $Connection) or die(mysql_error());
 		//2-2 Insert again to Transaksi Table
 		
+		//2-3 Alter transaksi so it starts again from the latest
+		mysql_select_db($database_Connection, $Connection);
+		$query_altertransaksi = sprintf("ALTER TABLE transaksi AUTO_INCREMENT = 1");
+		$altertransaksi = mysql_query($query_altertransaksi, $Connection) or die(mysql_error());
+		
 		//Set pocode variable again for inserting
 		$pocode2= $_POST['tx_editpo_POCode'];
 		//Set reference variable again for inserting
