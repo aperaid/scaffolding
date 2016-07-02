@@ -108,8 +108,6 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
 </html>
 
 <?php
-  mysql_free_result($InsertTransaksiClaim);
+  mysql_free_result($InsertTransaksiClaim2);
   mysql_free_result($LastClaim);
-  mysql_free_result($Periode);
-  mysql_free_result($LastId);
 ?>

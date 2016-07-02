@@ -176,7 +176,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Discount</label>
 					<div class="col-sm-6">
-						<input id="tx_viewinvoiceclaim_Discount" name="tx_viewinvoiceclaim_Discount" type="text" class="form-control" value="<?php echo 'Rp ', number_format($row_View['Discount'],0,',','.'); ?>" onKeyUp="tot()" >
+						<input id="tx_viewinvoiceclaim_Discount" name="tx_viewinvoiceclaim_Discount" type="text" class="form-control" autocomplete="off" value="<?php echo 'Rp ', number_format($row_View['Discount'],0,',','.'); ?>" onKeyUp="tot()" >
 					</div>
                 </div>
 				<!-- Catatan Input -->
@@ -190,7 +190,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-6">
-                    <input name="tx_viewinvoiceclaim_Totals" type="text" class="form-control" id="tx_viewinvoiceclaim_Totals" value="Rp <?php echo number_format(($total*$PPN*0.1)+$total, 2,',','.'); ?>" readonly>
+                    <input name="tx_viewinvoiceclaim_Totals" type="text" class="form-control" id="tx_viewinvoiceclaim_Totals" value="Rp <?php echo number_format(($total*$PPN*0.1)+$total-$row_View['Discount'], 2,',','.'); ?>" readonly>
                     <input name="hd_viewinvoiceclaim_Totals2" type="hidden" id="hd_viewinvoiceclaim_Totals2" value="<?php echo round($total, 2); ?>" >
                   </div>
                 </div>

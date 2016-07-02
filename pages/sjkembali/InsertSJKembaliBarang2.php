@@ -132,7 +132,6 @@ for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $_SESSION['hd_insertsjkembalibarang2_SJKem'] = sprintf("%s", GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"));
   $_SESSION['tx_insertsjkembalibarang2_Warehouse'][$i] = sprintf("%s", GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"));
-  $_SESSION['hd_insertsjkembalibarang2_Periode'] = sprintf("%s", GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "int"));
 }
 }
 

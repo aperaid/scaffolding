@@ -11,12 +11,9 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-// Ambil Reference & Periode dari URI
-$colname_InsertTransaksiClaim = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_InsertTransaksiClaim = $_GET['Reference'];
-  $colname_Periode = $_GET['Periode'];
-}
+// Ambil Reference & Periode dari URL
+$get_Reference = $_GET['Reference'];
+$get_Periode = $_GET['Periode'];
 
 $checkbox = $_SESSION['cb_inserttransaksiclaimbarang_checkbox'];
 $remove = preg_replace("/[^0-9,.]/", "", $checkbox);
@@ -42,27 +39,15 @@ $LastClaim = mysql_query($query_LastClaim, $Connection) or die(mysql_error());
 $row_LastClaim = mysql_fetch_assoc($LastClaim);
 $totalRows_LastClaim = mysql_num_rows($LastClaim);
 
-mysql_select_db($database_Connection, $Connection);
-$query_GetId = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id DESC", GetSQLValueString($_GET['Reference'], "text"));
-$GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
-$row_GetId = mysql_fetch_assoc($GetId);
-$totalRows_GetId = mysql_num_rows($GetId);
-
-$Id = array();
-do{
-	$Id[] = $row_GetId['Id'];
-} while ($row_GetId = mysql_fetch_assoc($GetId));
-$Id2 = join(',',$Id);
-
 // Ambil ID isisjkirim, purchase, qsisakem, barang, id periode dkk berdasarkan reference, periode, sewa/extend, dan isisjkir
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.Purchase, SUM(isisjkirim.QSisaKem) AS QSisaKem, transaksi.Barang, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir = periode.IsiSJKir LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') AND isisjkirim.Purchase IN ($Purchase) GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"), GetSQLValueString($colname_Periode, "text"));
+$query_InsertTransaksiClaim = sprintf("SELECT isisjkirim.Purchase, SUM(isisjkirim.QSisaKem) AS QSisaKem, transaksi.Barang, periode.Periode, periode.IsiSJKir, periode.S, periode.E FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir = periode.IsiSJKir LEFT JOIN transaksi ON periode.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference WHERE transaksi.Reference = %s AND periode.Periode = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') AND isisjkirim.Purchase IN ($Purchase) GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($get_Reference, "text"), GetSQLValueString($get_Periode, "int"));
 $InsertTransaksiClaim = mysql_query($query_InsertTransaksiClaim, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim = mysql_fetch_assoc($InsertTransaksiClaim);
 $totalRows_InsertTransaksiClaim = mysql_num_rows($InsertTransaksiClaim);
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertTransaksiClaim2 = sprintf("SELECT periode.Quantity, periode.IsiSJKir, periode.Purchase FROM periode WHERE periode.Id IN ($Id2) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_InsertTransaksiClaim, "text"));
+$query_InsertTransaksiClaim2 = sprintf("SELECT periode.Quantity, periode.IsiSJKir, periode.Purchase FROM periode WHERE periode.Id IN (SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($get_Reference, "text"), GetSQLValueString($get_Reference, "text"));
 $InsertTransaksiClaim2 = mysql_query($query_InsertTransaksiClaim2, $Connection) or die(mysql_error());
 $row_InsertTransaksiClaim2 = mysql_fetch_assoc($InsertTransaksiClaim2);
 $totalRows_InsertTransaksiClaim2 = mysql_num_rows($InsertTransaksiClaim2);
@@ -80,25 +65,6 @@ do{
 	$x++;
 } while ($row_InsertTransaksiClaim2 = mysql_fetch_assoc($InsertTransaksiClaim2));
 $Claim2 = join(',',$Claim);
-
-// Ambil reference dari URI masukin ke $colname_Reference
-$colname_Reference = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_Reference = $_GET['Reference'];
-}
-
-// Ambil reference dari URI mauskin ke $colname_Periode
-$colname_Periode = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_Periode = $_GET['Reference'];
-}
-
-// Ambil max periode dari periode parameter: reference, sewa/extend
-mysql_select_db($database_Connection, $Connection);
-$query_Periode = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend')", GetSQLValueString($colname_Periode, "text"));
-$Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
-$row_Periode = mysql_fetch_assoc($Periode);
-$totalRows_Periode = mysql_num_rows($Periode);
 
 // Ambil ID dari invoice
 mysql_select_db($database_Connection, $Connection);
@@ -290,7 +256,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                       </tr>
     				</tbody>
                 </table>
-                <a href="InsertTransaksiClaimBarang.php?Reference=<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>&Periode=<?php echo $row_Periode['Periode']; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
+                <a href="InsertTransaksiClaimBarang.php?Reference=<?php echo $tx_inserttransaksiclaimbarang2_Reference; ?>&Periode=<?php echo $get_Periode; ?>"><button type="button" class="btn btn-default pull-left">Cancel</button></a>
 		   <button type="submit" name="bt_inserttransaksiclaimbarang2_submit" id="bt_inserttransaksiclaimbarang2_submit" class="btn btn-success pull-right">Insert</button>
                 </div>
   <input type="hidden" name="MM_insert" value="form1">
@@ -341,12 +307,9 @@ function minmax(value, min, max)
 }
 </script>
 <?php
-  mysql_free_result($Menu);
   mysql_free_result($InsertTransaksiClaim);
+  mysql_free_result($InsertTransaksiClaim2);
   mysql_free_result($LastClaim);
-  mysql_free_result($Periode);
-  mysql_free_result($LastId);
-  mysql_free_result($User);
 ?>
 
 <?php

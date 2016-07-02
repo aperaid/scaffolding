@@ -11,6 +11,8 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+$get_Reference = $_GET['Reference'];
+
 $checkbox = $_SESSION['cb_insertsjkembalibarang_checkbox'];
 $remove = preg_replace("/[^0-9,.]/", "", $checkbox);
 
@@ -26,69 +28,37 @@ $arrayaftercount = array();
         $arrayaftercount[$i] = $remove[$i];
 }
 	
-$Purchase = join(',',$arrayaftercount); 
+$Purchase = join(',',$arrayaftercount);
+
+$SJKem = substr($_SESSION['hd_insertsjkembalibarang2_SJKem'], 1, -1);
 
 mysql_select_db($database_Connection, $Connection);
-$query_LastIsiSJKembali = "SELECT MAX(Id) AS Id FROM isisjkembali";
-$LastIsiSJKembali = mysql_query($query_LastIsiSJKembali, $Connection) or die(mysql_error());
-$row_LastIsiSJKembali = mysql_fetch_assoc($LastIsiSJKembali);
-$totalRows_LastIsiSJKembali = mysql_num_rows($LastIsiSJKembali);
+$query_IsiSJKem = sprintf("SELECT IsiSJKem FROM isisjkembali WHERE SJKem = %s", GetSQLValueString($SJKem, "text"));
+$IsiSJKem = mysql_query($query_IsiSJKem, $Connection) or die(mysql_error());
+$row_IsiSJKem = mysql_fetch_assoc($IsiSJKem);
+$totalRows_IsiSJKem = mysql_num_rows($IsiSJKem);
 
-$colname_GetId = "-1";
-if (isset($_GET['Reference'])) {
-  $colname_GetId = $_GET['Reference'];
-}
-mysql_select_db($database_Connection, $Connection);
-$query_GetId = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id DESC", GetSQLValueString($colname_GetId, "text"));
-$GetId = mysql_query($query_GetId, $Connection) or die(mysql_error());
-$row_GetId = mysql_fetch_assoc($GetId);
-$totalRows_GetId = mysql_num_rows($GetId);
-
-$Id = array();
+$IsiSJKem2 = array();
 do{
-	$Id[] = $row_GetId['Id'];
-} while ($row_GetId = mysql_fetch_assoc($GetId));
-$Id2 = join(',',$Id);
+	$IsiSJKem2[]=$row_IsiSJKem['IsiSJKem'];
+} while ($row_IsiSJKem = mysql_fetch_assoc($IsiSJKem));
+$IsiSJKem3 = join(',',$IsiSJKem2);
 
 mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali = sprintf("SELECT isisjkirim.*, SUM(isisjkirim.QSisaKemInsert) AS QSisaKemInsert, periode.Periode, periode.S, sjkirim.SJKir, sjkirim.Tgl, transaksi.Barang, transaksi.Purchase, transaksi.Reference FROM isisjkirim LEFT JOIN periode ON isisjkirim.IsiSJKir=periode.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase WHERE isisjkirim.Purchase IN ($Purchase) AND periode.Id IN ($Id2) AND transaksi.Reference=%s GROUP BY isisjkirim.Purchase ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
-$InsertSJKembali = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
-$row_InsertSJKembali = mysql_fetch_assoc($InsertSJKembali);
-$totalRows_InsertSJKembali = mysql_num_rows($InsertSJKembali);
-
-mysql_select_db($database_Connection, $Connection);
-$query_InsertSJKembali2 = sprintf("SELECT periode.Quantity, periode.IsiSJKir, periode.Purchase FROM periode WHERE periode.Id IN ($Id2) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($colname_GetId, "text"));
+$query_InsertSJKembali2 = sprintf("SELECT periode.Quantity, periode.IsiSJKir, periode.Purchase, periode.Periode, isisjkembali.IsiSJKem FROM periode LEFT JOIN isisjkembali ON periode.SJKem=isisjkembali.SJKem WHERE periode.Id IN (SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir) AND periode.Reference=%s ORDER BY periode.Id ASC", GetSQLValueString($get_Reference, "text"), GetSQLValueString($get_Reference, "text"));
 $InsertSJKembali2 = mysql_query($query_InsertSJKembali2, $Connection) or die(mysql_error());
 $row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2);
 $totalRows_InsertSJKembali2 = mysql_num_rows($InsertSJKembali2);
 
-$Quantity = array();
 $IsiSJKir = array();
-$Purchase2 = array();
-$IsiSJKem = array();
+$Purchase = array();
 $x = 1;
 do{
-	$Quantity[]=$row_InsertSJKembali2['Quantity'];
 	$IsiSJKir[]=$row_InsertSJKembali2['IsiSJKir'];
-	$Purchase2[]=$row_InsertSJKembali2['Purchase'];
-	$IsiSJKem[]=$row_LastIsiSJKembali['Id']+$x;
+	$Periode=$row_InsertSJKembali2['Periode'];
+	$Purchase[]=$row_InsertSJKembali2['Purchase'];
 	$x++;
 } while ($row_InsertSJKembali2 = mysql_fetch_assoc($InsertSJKembali2));
-$Quantity2 = join(',',$Quantity);
-$IsiSJKem2 = join(',',$IsiSJKem);
-
-$query = mysql_query($query_InsertSJKembali, $Connection) or die(mysql_error());
-$Periode = array();
-while($row = mysql_fetch_assoc($query)){
-	$Periode[] = $row['Periode'];
-}
-$Periode2 = join(',',$Periode);
-
-mysql_select_db($database_Connection, $Connection);
-$query_Invoice = sprintf("SELECT * FROM invoice WHERE Reference = %s AND Periode IN ($Periode2) GROUP BY Periode ORDER BY Id DESC", GetSQLValueString($colname_GetId, "text"));
-$Invoice = mysql_query($query_Invoice, $Connection) or die(mysql_error());
-$row_Invoice = mysql_fetch_assoc($Invoice);
-$totalRows_Invoice = mysql_num_rows($Invoice);
 
 /*for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
@@ -104,10 +74,10 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
 
 for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
-	$updateSQL = sprintf("UPDATE isisjkembali SET isisjkembali.Warehouse = %s WHERE isisjkembali.periode = %s AND isisjkembali.IsiSJKem = %s AND isisjkembali.Warehouse IS NULL",
+	$updateSQL = sprintf("UPDATE isisjkembali SET isisjkembali.Warehouse = %s WHERE isisjkembali.periode = %s AND isisjkembali.IsiSJKem IN ($IsiSJKem3) AND isisjkembali.Purchase = %s AND isisjkembali.Warehouse IS NULL",
 					   GetSQLValueString(substr($_SESSION['tx_insertsjkembalibarang2_Warehouse'][$i], 1, -1), "text"),
-					   GetSQLValueString($_SESSION['hd_insertsjkembalibarang2_Periode'], "int"),
-					   GetSQLValueString($IsiSJKem[$i], "text"));
+					   GetSQLValueString($Periode, "int"),
+					   GetSQLValueString($Purchase[$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
@@ -128,7 +98,6 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
 	unset($_SESSION['tx_insertsjkembali_Reference']);
 	unset($_SESSION['hd_insertsjkembalibarang2_SJKem']);
 	unset($_SESSION['tx_insertsjkembalibarang2_Warehouse']);
-	unset($_SESSION['hd_insertsjkembalibarang2_Periode']);
 }
 ?>
 
@@ -137,14 +106,11 @@ if ((isset($_GET['Reference'])) && ($_GET['Reference'] != "")) {
 <head>
 </head>
 <body>
-<input value="<?php echo substr($_SESSION['tx_insertsjkembalibarang2_Warehouse'][0], 1, -1) ?>">
+<input value="<?php echo $IsiSJKem3 ?>">
 </body>
 </html>
 
 <?php
-  mysql_free_result($Select);
-  mysql_free_result($LastIsiSJKembali);
-  mysql_free_result($Reference);
-  mysql_free_result($InsertSJKembali);
-  mysql_free_result($LastTglS);
+  mysql_free_result($IsiSJKem);
+  mysql_free_result($InsertSJKembali2);
 ?>
