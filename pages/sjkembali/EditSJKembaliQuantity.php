@@ -120,8 +120,9 @@ for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 
 //update tanggal di periode
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir IN ($IsiSJKir2) AND Deletes='Kembali'",
-                       GetSQLValueString($_POST['tx_editsjkembaliquantity_E'], "text"));
+  $updateSQL = sprintf("UPDATE periode SET E=%s WHERE IsiSJKir IN ($IsiSJKir2) AND Deletes='Kembali' AND SJKem=%s",
+                       GetSQLValueString($_POST['tx_editsjkembaliquantity_E'], "text"),
+					   GetSQLValueString($colname_EditIsiSJKembali, "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
