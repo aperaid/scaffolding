@@ -7,7 +7,9 @@ include($ROOT . "pages/login/session.php");
 include_once($ROOT . "pages/functionphp.php");
 
 if ((isset($_GET['CCode'])) && ($_GET['CCode'] != "")) {
-  $deleteSQL = sprintf("SELECT delete_customer('%s')", GetSQLValueString($_GET['CCode'], "Text"));
+  $deleteSQL = sprintf("DELETE FROM customer WHERE CCode = %s",
+  					   GetSQLValueString($_GET['CCode'], "Text"));
+  
   $alterSQL = sprintf("ALTER TABLE customer AUTO_INCREMENT = 1");
   
   //Check Connection

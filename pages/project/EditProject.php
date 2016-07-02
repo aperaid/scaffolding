@@ -12,7 +12,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "fm_editproject_form1")) {
-  $updateSQL = sprintf("select edit_project(%s, %s, %s, %s, %s)",
+  $updateSQL = sprintf("UPDATE project SET PCode=%s, Project=%s, Alamat=%s, CCode=%s WHERE Id=%s",
                        GetSQLValueString($_POST['tx_editproject_PCode'], "text"),
                        GetSQLValueString($_POST['tx_editproject_Project'], "text"),
                        GetSQLValueString($_POST['tx_editproject_Alamat'], "text"),

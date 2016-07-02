@@ -7,8 +7,8 @@ include($ROOT . "pages/login/session.php");
 include_once($ROOT . "pages/functionphp.php");
 
 if ((isset($_GET['PCode'])) && ($_GET['PCode'] != "")) {
-  $deleteSQL = sprintf("SELECT delete_project('%s')",
-                       GetSQLValueString($_GET['PCode'], "Text"));
+  $deleteSQL = sprintf("DELETE FROM customer WHERE CCode = %s",
+  					   GetSQLValueString($_GET['PCode'], "Text"));
 					   
   $alterSQL = sprintf("ALTER TABLE project AUTO_INCREMENT = 1");
 

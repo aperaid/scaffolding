@@ -34,7 +34,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 
 for($i=0;$i<$totalRows_Purchase;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("SELECT edit_transaksi(%s,%s,%s,%s,%s,%s)",
+  $updateSQL = sprintf("UPDATE transaksi SET Quantity=%s, QSisaKirInsert=%s, QSisaKir=%s, Amount=%s WHERE Id=%s AND Reference=%s",
                        GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
 					   GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
 					   GetSQLValueString($_POST['tx_edittransaksi_Quantity'][$i], "int"),
