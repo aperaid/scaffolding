@@ -129,6 +129,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $_SESSION['hd_insertsjkembalibarang2_SJKem'] = sprintf("%s", GetSQLValueString($_POST['hd_insertsjkembalibarang2_SJKem'], "text"));
+  $_SESSION['tx_insertsjkembalibarang2_Warehouse'][$i] = sprintf("%s", GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"));
+  $_SESSION['hd_insertsjkembalibarang2_Periode'] = sprintf("%s", GetSQLValueString($_POST['hd_insertsjkembalibarang2_Periode'], "int"));
+}
+}
+
+for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 	$updateSQL = sprintf("CALL insert_sjkembali(%s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_insertsjkembalibarang2_QTertanda'][$i], "int"),
@@ -139,7 +147,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
   
-  $insertGoTo = "SJKembali.php";
+  $insertGoTo = "InsertSJKembaliBarang3.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
@@ -149,12 +157,12 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 } 
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+/*if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 	unset($_SESSION['cb_insertsjkembalibarang_checkbox']);
 	unset($_SESSION['tx_insertsjkembali_SJKem']);
 	unset($_SESSION['tx_insertsjkembali_Tgl']);
 	unset($_SESSION['tx_insertsjkembali_Reference']);
-}
+}*/
 ?>
 
 <?php
@@ -294,7 +302,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 ?>
 
 <?php
-for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
+/*for ($i=0;$i<$totalRows_InsertSJKembali2;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 	$updateSQL = sprintf("UPDATE isisjkembali SET isisjkembali.Warehouse = %s WHERE isisjkembali.periode = %s AND isisjkembali.IsiSJKem = %s AND isisjkembali.Warehouse IS NULL",
 					   GetSQLValueString($_POST['tx_insertsjkembalibarang2_Warehouse'][$i], "text"),
@@ -304,5 +312,5 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
-}
+}*/
 ?>

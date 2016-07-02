@@ -27,7 +27,7 @@ if (isset($_GET['SJKem'])) {
 
 //Query buat nunjukin isisjkembali
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, SUM(isisjkembali.QTertanda) AS QTertanda2, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s GROUP BY isisjkembali.Purchase ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, SUM(isisjkembali.QTertanda) AS QTertanda2, SUM(isisjkembali.QTerima) AS QTerima2, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s GROUP BY isisjkembali.Purchase ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
@@ -189,13 +189,13 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<input name="hd_editsjkembaliquantity_QSisaKem2"	id="hd_editsjkembaliquantity_QSisaKem2<?php echo $x; ?>"	type="hidden"	value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>">
 									<input name="hd_editsjkembaliquantity_IsiSJKir[]"	id="hd_editsjkembaliquantity_IsiSJKir"						type="hidden"	class="textview"		value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
 									<input name="hd_editsjkembaliquantity_Purchase[]"	id="hd_editsjkembaliquantity_Purchase"						type="hidden"	class="textview"		value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>">
-									<input name="tx_editsjkembaliquantity_QTerima2[]"	id="tx_editsjkembaliquantity_QTerima2"						type="hidden"	class="form-control"	autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>">
+									<input name="tx_editsjkembaliquantity_QTerima2[]"	id="tx_editsjkembaliquantity_QTerima2"						type="hidden"	class="form-control"	autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima2']; ?>">
 							<td>	<input name="tx_editsjkembaliquantity_Tgl"			id="tx_editsjkembaliquantity_Tgl"							type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
 							<td>	<input name="tx_editsjkembaliquantity_Barang"		id="tx_editsjkembaliquantity_Barang"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td>	<input name="tx_editsjkembaliquantity_Warehouse[]"	id="tx_editsjkembaliquantity_Warehouse"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>" readonly></td>
 							<td>	<input name="tx_editsjkembaliquantity_QTertanda[]"	id="tx_editsjkembaliquantity_QTertanda"						type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTertanda2']; ?>"autocomplete="off"  readonly></td>
 									<input name="tx_editsjkembaliquantity_QSisaKem[]"	id="tx_editsjkembaliquantity_QSisaKem<?php echo $x; ?>"		type="hidden"	class="form-control"	value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly>
-                            <td>	<input name="tx_editsjkembaliquantity_QTerima[]"	id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>"		type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda2']; ?>)" onKeyUp="sisa();"  required></td>
+                            <td>	<input name="tx_editsjkembaliquantity_QTerima[]"	id="tx_editsjkembaliquantity_QTerima<?php echo $x; ?>"		type="text"		class="form-control"	value="<?php echo $row_EditIsiSJKembali['QTerima2']; ?>" autocomplete="off" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QTertanda2']; ?>)" onKeyUp="sisa();"  required></td>
                           </tr>
 						<?php $x++; ?>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>
