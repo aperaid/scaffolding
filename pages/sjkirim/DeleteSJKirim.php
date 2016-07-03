@@ -19,8 +19,35 @@ $row_IsiSJKir = mysql_fetch_assoc($IsiSJKir);
 $totalRows_IsiSJKir = mysql_num_rows($IsiSJKir);  
 
 if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
-  $deleteSQL = sprintf("SELECT delete_sjkir(%s)",
-                       GetSQLValueString($_GET['SJKir'], "text"));
+  $updateSQL = sprintf("UPDATE transaksi JOIN isisjkirim ON isisjkirim.Purchase=transaksi.Purchase SET transaksi.QSisaKirInsert=transaksi.QSisaKirInsert+isisjkirim.QKirim WHERE isisjkirim.SJKir=%s",
+ 					   GetSQLValueString($_GET['SJKir'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
+  $deleteSQL = sprintf("DELETE periode FROM periode JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir WHERE isisjkirim.SJKir=%s",
+  					   GetSQLValueString($_GET['SJKir'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
+  $deleteSQL = sprintf("DELETE FROM isisjkirim WHERE SJKir=%s;",
+  					   GetSQLValueString($_GET['SJKir'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
+  $deleteSQL = sprintf("DELETE FROM sjkirim WHERE SJKir=%s;",
+  					   GetSQLValueString($_GET['SJKir'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($deleteSQL, $Connection) or die(mysql_error());
   
   $alterSQL = sprintf("ALTER TABLE periode AUTO_INCREMENT = 1");
   $alterSQL2 = sprintf("ALTER TABLE sjkirim AUTO_INCREMENT = 1");
