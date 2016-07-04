@@ -25,7 +25,7 @@ if (isset($_GET['Deletes'])) {
   $colname_View4 = $_GET['Deletes'];
 }
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.IsiSJKir, transaksi.Barang, periode.S, periode.E, periode.Deletes, customer.Company, project.Project, SUM(periode.Quantity) AS Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s AND (periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend') GROUP BY periode.Purchase, periode.S ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"),GetSQLValueString($colname_View3, "text"),GetSQLValueString($colname_View4, "text"));
+$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.IsiSJKir, transaksi.Barang, periode.S, periode.E, periode.Deletes, customer.Company, project.Project, SUM(periode.Quantity) AS Quantity, transaksi.Amount FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Reference=%s AND periode.Periode=%s AND (periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' OR periode.Deletes='Kembali') GROUP BY periode.Purchase, periode.S, periode.Deletes ORDER BY periode.Id ASC", GetSQLValueString($colname_View, "text"),GetSQLValueString($colname_View2, "text"),GetSQLValueString($colname_View3, "text"),GetSQLValueString($colname_View4, "text"));
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -82,8 +82,8 @@ include_once($ROOT . 'pages/html_main_header.php');
 						<td><?php echo $row_View['E']; ?></td>
 						<td><?php echo $row_View['Company']; ?></td>
 						<td><?php echo $row_View['Project']; ?></td>
-                        <td><?php echo $row_View['Quantity']; ?></td>
-                        <td>Rp <?php echo number_format($row_View['Amount'], 2,',', '.'); ?></td>
+            <td><?php echo $row_View['Quantity']; ?></td>
+            <td>Rp <?php echo number_format($row_View['Amount'], 2,',', '.'); ?></td>
 					</tr>
 					<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 				</tbody>
