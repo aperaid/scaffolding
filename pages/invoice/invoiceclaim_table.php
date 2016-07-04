@@ -12,13 +12,13 @@
 	/* Array of database columns which should be read and sent back to DataTables. Use a space where
 	 * you want to insert a non-database field (for example a counter or static image)
 	 */
-	$aColumns = array( 'reference', 'invoice', 'project', 'periode', 'company',  'tgl' );
+	$aColumns = array( 'reference', 'invoice', 'project', 'company',  'tgl' );
 	
 	/* Indexed column (used for fast and accurate table cardinality) */
 	$sIndexColumn = "invoice";
 	
 	/* DB table to use */
-	$sTable = "(SELECT invoice.Reference AS reference, invoice.Invoice AS invoice, project.Project AS project, invoice.Periode AS periode, customer.Company AS company, invoice.Tgl AS tgl FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Sewa' AND EXISTS (SELECT periode.Reference FROM periode WHERE invoice.Reference = periode.Reference AND Deletes='Sewa') GROUP BY invoice.Reference, invoice.Periode) as T1";
+	$sTable = "(SELECT invoice.Reference AS reference, invoice.Invoice AS invoice, project.Project AS project, customer.Company AS company, invoice.Tgl AS tgl FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Claim' GROUP BY invoice.Periode) as T1";
 	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

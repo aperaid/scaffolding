@@ -39,7 +39,7 @@ if (isset($_GET['JS'])) {
 mysql_select_db($database_Connection, $Connection);
 $query_View2 = sprintf("SELECT sjkirim.SJKir, transaksi.Purchase, transaksi.Barang, SUM(periode.Quantity) AS Quantity, transaksi.Amount, transaksi.POCode, po.Transport, periode.S, periode.E, periode.SJKem, periode.Deletes, periode.Periode FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
 LEFT JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase LEFT JOIN po ON transaksi.POCode=po.POCode LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
-WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s AND periode.Quantity != 0 GROUP BY periode.Purchase, periode.S ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
+WHERE transaksi.Reference = %s AND transaksi.JS = %s AND periode.Periode = %s AND periode.Quantity != 0 GROUP BY periode.Purchase, periode.S, periode.Deletes ORDER BY periode.Id ASC", GetSQLValueString($colname_View2, "text"),
 GetSQLValueString($colname_ViewJS, "text"),
 GetSQLValueString($colname_ViewPeriode, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
