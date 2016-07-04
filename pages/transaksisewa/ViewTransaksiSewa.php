@@ -108,13 +108,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 <?php include_once($ROOT . 'pages/footer.php'); ?>
 <!-- /.footer-wrapper -->
 
-<!-- page script -->
-<script>
-  $(function () {
-    $("#tb_viewtransaksisewa2_example1").DataTable();
-  });
-</script>
-
 <?php
 mysql_free_result($View);
 	?>
