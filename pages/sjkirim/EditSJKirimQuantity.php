@@ -60,32 +60,11 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 }
 
-
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-//Code Update QTTD
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-	for ($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
-		mysql_select_db($database_Connection, $Connection);
-		$updateSQL = sprintf ("SELECT edit_sjkirimquantity(%s, %s, %s)",
-						GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i]	, "text"), //isisjkirim
-						GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda'][$i]	, "int"), //qttd
-						GetSQLValueString($_POST['tx_editsjkirimquantity_S']				, "text")); //start date
-		$Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-	}
-	$updateGoTo = "ViewSJKirim.php";
-	if (isset($_SERVER['QUERY_STRING'])) {
-		$updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-		$updateGoTo .= $_SERVER['QUERY_STRING'];
-	}
-	header(sprintf("Location: %s", $updateGoTo));
-}
-//Code Update QTTD END
-
-/*
 for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 	$QTertanda = GetSQLValueString($_POST['tx_editsjkirimquantity_QTertanda2'][$i], "int");
@@ -118,9 +97,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET S=%s, E=%s WHERE IsiSJKir=%s AND Deletes='Sewa' OR  Deletes='Jual'",
+  $updateSQL = sprintf("UPDATE periode SET S=%s WHERE IsiSJKir=%s AND (Deletes='Sewa' OR  Deletes='Jual')",
                        GetSQLValueString($_POST['tx_editsjkirimquantity_S'], "text"),
-                       GetSQLValueString($_POST['hd_editsjkirimquantity_E'], "text"),
 					   GetSQLValueString($_POST['hd_editsjkirimquantity_IsiSJKir'][$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
@@ -142,7 +120,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   
   header(sprintf("Location: %s", $updateGoTo));
 }
-*/
+
 ?>
 
 <?php
