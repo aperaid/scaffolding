@@ -18,7 +18,7 @@
 	$sIndexColumn = "invoice";
 	
 	/* DB table to use */
-	$sTable = "(SELECT invoice.Reference AS reference, invoice.Invoice AS invoice, project.Project AS project, customer.Company AS company, invoice.Tgl AS tgl FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Claim' GROUP BY invoice.Periode) as T1";
+	$sTable = "(SELECT invoice.Reference AS reference, invoice.Invoice AS invoice, project.Project AS project, customer.Company AS company, invoice.Tgl AS tgl FROM invoice INNER JOIN pocustomer ON invoice.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE JSC = 'Claim' GROUP BY invoice.Periode) as T3";
 	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

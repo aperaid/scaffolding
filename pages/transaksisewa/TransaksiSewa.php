@@ -7,7 +7,15 @@ include($ROOT . "pages/login/session.php");
 include_once($ROOT . "pages/functionphp.php");
 
 mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT periode.Id, periode.Periode, periode.S, periode.E, periode.IsiSJKir, periode.Reference, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' GROUP BY periode.Reference, periode.Periode");
+$query_View = sprintf("
+  SELECT invoice.Invoice, periode.Id, periode.Periode, periode.S, periode.E, periode.IsiSJKir, periode.Reference, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference 
+  FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
+  LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference 
+  LEFT JOIN project ON pocustomer.PCode=project.PCode 
+  LEFT JOIN customer ON project.CCode=customer.CCode 
+  LEFT JOIN invoice ON invoice.Reference = pocustomer.Reference AND invoice.Periode = periode.Periode
+  WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' 
+  GROUP BY Invoice.Reference, Invoice.Periode");
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
@@ -81,6 +89,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 						<td><?php echo $row_View['E']; ?></td>
 						<td><?php echo $row_View['Customer']; ?></td>
 						<td><?php echo $row_View['Project']; ?></td>
+            <td><a href="../invoice/viewinvoice.php?Reference=<?php echo $row_View['Reference']; ?>&Invoice=<?php echo $row_View['Invoice'] ?>&JS=Sewa&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
 						<td><a href="ViewTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Detail</button></a></td>
 						<td><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" <?php if (($row_Periode['Id'] != $row_View['Id'])){ ?> class="btn btn-block btn-default btn-sm" disabled <?php   } else { ?> class="btn btn-block btn-primary btn-sm" <?php } ?>>Extend</button></a></td>
 					</tr>
