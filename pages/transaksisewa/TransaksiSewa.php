@@ -129,6 +129,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<td><?php echo $row_TransaksiJual['S']; ?></td>
 										<td><?php echo $row_TransaksiJual['Project']; ?></td>
 										<td><?php echo $row_TransaksiJual['Customer']; ?></td>
+										<td><a href="../invoice/ViewInvoiceJual.php?Reference=#"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
 										<td><a href="../transaksijual/ViewTransaksiJual.php?Reference=<?php echo $row_TransaksiJual['Reference'] ?>&SJKir=<?php echo $row_TransaksiJual['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
 									</tr>
 									<?php } while ($row_TransaksiJual = mysql_fetch_assoc($TransaksiJual)); ?>

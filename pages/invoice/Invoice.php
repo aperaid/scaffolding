@@ -144,6 +144,10 @@ $(document).ready(function () {
 			{
 				"targets": [0],
 				"visible": false
+			},
+			{
+				"targets": [5],
+				"visible": false
 			}
 		],
 		"order": [[4, "desc"]]
@@ -151,7 +155,7 @@ $(document).ready(function () {
 		
 	$('#tb_invoiceclaim tbody').on('click', 'tr', function () {
 		var data3 = table3.row( this ).data();
-		window.open("viewinvoiceclaim.php?Reference="+ data3[0] + "&JS=Jual&Invoice=" + data3[1],"_self");
+		window.open("viewinvoiceclaim.php?Reference="+ data3[0] + "&JS=Claim&Invoice=" + data3[1] + "&Periode=" + data3[5],"_self");
 	} );
 });
 </script>
