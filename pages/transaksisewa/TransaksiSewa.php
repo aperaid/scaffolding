@@ -9,21 +9,31 @@ include_once($ROOT . "pages/functionphp.php");
 // Transaksi Sewa
 mysql_select_db($database_Connection, $Connection);
 $query_View = sprintf("
-  SELECT invoice.Invoice, periode.Id, periode.Periode, periode.S, periode.E, periode.IsiSJKir, periode.Reference, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference 
-  FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
-  LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference 
-  LEFT JOIN project ON pocustomer.PCode=project.PCode 
-  LEFT JOIN customer ON project.CCode=customer.CCode 
-  LEFT JOIN invoice ON invoice.Reference = pocustomer.Reference AND invoice.Periode = periode.Periode
-  WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' 
-  GROUP BY Invoice.Reference, Invoice.Periode");
+	SELECT invoice.Invoice, periode.Id, periode.Periode, periode.S, periode.E, periode.IsiSJKir, periode.Reference, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference 
+	FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
+	LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference 
+	LEFT JOIN project ON pocustomer.PCode=project.PCode 
+	LEFT JOIN customer ON project.CCode=customer.CCode 
+	LEFT JOIN invoice ON invoice.Reference = pocustomer.Reference AND invoice.Periode = periode.Periode
+	WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' 
+	GROUP BY Invoice.Reference, Invoice.Periode");
 $View = mysql_query($query_View, $Connection) or die(mysql_error());
 $row_View = mysql_fetch_assoc($View);
 $totalRows_View = mysql_num_rows($View);
 
 // Transaksi Jual
 mysql_select_db($database_Connection, $Connection);
-$query_TransaksiJual = "SELECT periode.S, isisjkirim.SJKir, pocustomer.Reference, project.Project, customer.Company,customer.Customer FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir = isisjkirim.IsiSJKir LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Deletes = 'Jual' GROUP BY periode.Reference, periode.Periode";
+$query_TransaksiJual = "
+	SELECT pocustomer.Reference, invoice.Invoice, project.Project
+	FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir = isisjkirim.IsiSJKir
+	LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
+	LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference
+	LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference
+	LEFT JOIN project ON pocustomer.PCode=project.PCode
+	LEFT JOIN customer ON project.CCode=customer.CCode
+	LEFT JOIN invoice ON transaksi.Reference=invoice.Reference AND periode.Periode=Invoice.Periode
+	WHERE periode.Deletes = 'Jual'
+	GROUP BY periode.Reference, periode.Periode";
 $TransaksiJual = mysql_query($query_TransaksiJual, $Connection) or die(mysql_error());
 $row_TransaksiJual = mysql_fetch_assoc($TransaksiJual);
 $totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
@@ -77,10 +87,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 								<thead>
 									<tr>
 										<th>Reference</th>
+										<th>No. Invoice</th>
 										<th>Periode</th>
 										<th>Start</th>
 										<th>End</th>
-										<th>Customer</th>
 										<th>Project</th>
 										<th>View</th>
 										<th>Extend</th>
@@ -99,13 +109,13 @@ include_once($ROOT . 'pages/html_main_header.php');
 									?>
 									<tr>
 										<td><?php echo $row_View['Reference']; ?></td>
+										<td><?php echo $row_View['Invoice']; ?></td>
 										<td><?php echo $row_View['Periode']; ?></td>
 										<td><?php echo $row_View['S']; ?></td>
 										<td><?php echo $row_View['E']; ?></td>
-										<td><?php echo $row_View['Customer']; ?></td>
 										<td><?php echo $row_View['Project']; ?></td>
 										<td><a href="../invoice/viewinvoice.php?Reference=<?php echo $row_View['Reference']; ?>&Invoice=<?php echo $row_View['Invoice'] ?>&JS=Sewa&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
-										 <td><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>&SJKir=<?php echo $row_View['SJKir']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" <?php if (($row_Periode['Id'] != $row_View['Id'])){ ?> class="btn btn-block btn-default btn-sm" disabled <?php   } else { ?> class="btn btn-block btn-primary btn-sm" <?php } ?>>Extend</button></a></td>
+										 <td><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" <?php if (($row_Periode['Id'] != $row_View['Id'])){ ?> class="btn btn-block btn-default btn-sm" disabled <?php   } else { ?> class="btn btn-block btn-primary btn-sm" <?php } ?>>Extend</button></a></td>
 									</tr>
 									<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
 								</tbody>
@@ -116,8 +126,8 @@ include_once($ROOT . 'pages/html_main_header.php');
 								<thead>
 									<tr>
 										<th>Reference</th>
+										<th>No. Invoice</th>
 										<th>Project</th>
-										<th>Customer</th>
 										<th>View</th>
 									</tr>
 								</thead>
@@ -125,10 +135,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<?php do { ?>
 									<tr>
 										<td><?php echo $row_TransaksiJual['Reference']; ?></td>
+										<td><?php echo $row_TransaksiJual['Invoice']; ?></td>
 										<td><?php echo $row_TransaksiJual['Project']; ?></td>
-										<td><?php echo $row_TransaksiJual['Customer']; ?></td>
-										<td><a href="../invoice/ViewInvoiceJual.php?Reference=#"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
-										<td><a href="../transaksijual/ViewTransaksiJual.php?Reference=<?php echo $row_TransaksiJual['Reference'] ?>&SJKir=<?php echo $row_TransaksiJual['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+										<td>
+										<a href="../invoice/ViewInvoiceJual.php?Reference=<?php echo $row_TransaksiJual['Reference']; ?>&JS=Jual&Invoice=<?php echo $row_TransaksiJual['Invoice']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
 									</tr>
 									<?php } while ($row_TransaksiJual = mysql_fetch_assoc($TransaksiJual)); ?>
 								</tbody>

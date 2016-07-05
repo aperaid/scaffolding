@@ -44,7 +44,7 @@ include_once($ROOT . 'pages/html_main_header.php');
       </h1>
       <ol class="breadcrumb">
         <li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-        <li><a href="TransaksiJual.php">Transaksi Jual</a></li>
+        <li><a href="../transaksisewa/TransaksiSewa.php">Transaksi Jual</a></li>
         <li class="active">View Transaksi Jual</li>
       </ol>
     </section>
@@ -83,7 +83,7 @@ include_once($ROOT . 'pages/html_main_header.php');
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                  <a href="TransaksiJual.php"><button type="button" class="btn btn-default pull-left">Back</button></a>
+                  <a href="../transaksisewa/TransaksiSewa.php"><button type="button" class="btn btn-default pull-left">Back</button></a>
 			</div>
           </div>
           <!-- /.box -->
