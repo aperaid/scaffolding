@@ -79,7 +79,7 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
-  $insertGoTo = "TransaksiClaim.php";
+  $insertGoTo = "../transaksisewa/TransaksiSewa.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];

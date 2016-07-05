@@ -133,7 +133,7 @@ include_once($ROOT . 'pages/html_main_header.php');
               </div>
             <!-- /.box-body -->
             <div class="box-footer">
-				<a href="TransaksiClaim.php"><button type="button" class="btn btn-default">Back</button></a>
+				<a href="../transaksisewa/TransaksiSewa.php"><button type="button" class="btn btn-default">Back</button></a>
 				<a href="#"><button type="button" class="btn btn-default">Print</button></a>
 				
 				<div class="btn-group pull-right">
