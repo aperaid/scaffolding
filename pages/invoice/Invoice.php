@@ -98,7 +98,6 @@ $(document).ready(function () {
 		"paging": false,
 		"processing": true,
 		"serverSide": true,
-		"scrollY": "100%",
 		"sAjaxSource": "invoicesewa_table.php",
 		"columnDefs":[
 			{
@@ -120,7 +119,6 @@ $(document).ready(function () {
 		"paging": false,
 		"processing": true,
 		"serverSide": true,
-		"scrollY": "100%",
 		"sAjaxSource": "invoicejual_table.php",
 		"columnDefs":[
 			{
@@ -141,7 +139,6 @@ $(document).ready(function () {
 		"paging": false,
 		"processing": true,
 		"serverSide": true,
-		"scrollY": "100%",
 		"sAjaxSource": "invoiceclaim_table.php",
 		"columnDefs":[
 			{

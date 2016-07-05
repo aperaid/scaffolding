@@ -57,8 +57,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href="../../index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-			<li><a href="TransaksiSewa.php">Transaksi Sewa</a></li>
-			<li class="active">View Transaksi Sewa</li>
+			<li><a href="TransaksiSewa.php">Transaksi</a></li>
 		</ol>
 	</section>
 
@@ -130,7 +129,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<td><?php echo $row_TransaksiJual['S']; ?></td>
 										<td><?php echo $row_TransaksiJual['Project']; ?></td>
 										<td><?php echo $row_TransaksiJual['Customer']; ?></td>
-										<td><a href="ViewTransaksiJual.php?Reference=<?php echo $row_TransaksiJual['Reference'] ?>&SJKir=<?php echo $row_TransaksiJual['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+										<td><a href="../transaksijual/ViewTransaksiJual.php?Reference=<?php echo $row_TransaksiJual['Reference'] ?>&SJKir=<?php echo $row_TransaksiJual['SJKir']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
 									</tr>
 									<?php } while ($row_TransaksiJual = mysql_fetch_assoc($TransaksiJual)); ?>
 								</tbody>
@@ -173,8 +172,8 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
 										<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 										<td><?php echo $row_TransaksiClaim['Customer']; ?></td>
-										<td><a href="ViewTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
-										<td><a href="DeleteTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim = $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
+										<td><a href="../transaksiclaim/ViewTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
+										<td><a href="../transaksiclaim/DeleteTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim = $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
 									</tr>
 									<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
 								</tbody>
@@ -198,9 +197,11 @@ include_once($ROOT . 'pages/html_main_header.php');
 
 <!-- page script -->
 <script>
-  $(function () {
-    $("#tb_viewtransaksisewa_example1").DataTable();
-  });
+	$(function () {
+	$("#tb_viewtransaksisewa_example1").DataTable({
+		"paging": false
+	});
+});
 </script>
 
 <?php
