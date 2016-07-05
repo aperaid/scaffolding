@@ -1,4 +1,4 @@
-<a href="<?php echo $ROOT ?>pages/index.php" class="logo">
+<a href="<?php echo $ROOT ?>index.php" class="logo">
 	<!-- mini logo for sidebar mini 50x50 pixels -->
 	<span class="logo-mini"><b>Xana</b></span>
 	<!-- logo for regular state and mobile devices -->
