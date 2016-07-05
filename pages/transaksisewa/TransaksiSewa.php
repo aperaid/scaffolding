@@ -23,7 +23,7 @@ $totalRows_View = mysql_num_rows($View);
 
 // Transaksi Jual
 mysql_select_db($database_Connection, $Connection);
-$query_TransaksiJual = "SELECT periode.S, isisjkirim.SJKir, pocustomer.Reference, project.Project, customer.Company, project.Project, customer.Customer FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir = isisjkirim.IsiSJKir LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Deletes = 'Jual' GROUP BY sjkirim.SJKir";
+$query_TransaksiJual = "SELECT periode.S, isisjkirim.SJKir, pocustomer.Reference, project.Project, customer.Company,customer.Customer FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir = isisjkirim.IsiSJKir LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode WHERE periode.Deletes = 'Jual' GROUP BY periode.Reference, periode.Periode";
 $TransaksiJual = mysql_query($query_TransaksiJual, $Connection) or die(mysql_error());
 $row_TransaksiJual = mysql_fetch_assoc($TransaksiJual);
 $totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
@@ -116,7 +116,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 								<thead>
 									<tr>
 										<th>Reference</th>
-										<th>Tgl Kirim</th>
 										<th>Project</th>
 										<th>Customer</th>
 										<th>View</th>
@@ -126,7 +125,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<?php do { ?>
 									<tr>
 										<td><?php echo $row_TransaksiJual['Reference']; ?></td>
-										<td><?php echo $row_TransaksiJual['S']; ?></td>
 										<td><?php echo $row_TransaksiJual['Project']; ?></td>
 										<td><?php echo $row_TransaksiJual['Customer']; ?></td>
 										<td><a href="../invoice/ViewInvoiceJual.php?Reference=#"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
@@ -146,7 +144,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<th>Project</th>
 										<th>Customer</th>
 										<th>View</th>
-										<th>Delete</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -173,6 +170,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
 										<td><?php echo $row_TransaksiClaim['Project']; ?></td>
 										<td><?php echo $row_TransaksiClaim['Customer']; ?></td>
+										<td><a href="#"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
 										<td><a href="../transaksiclaim/ViewTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View</button></a></td>
 										<td><a href="../transaksiclaim/DeleteTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim = $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
 									</tr>
