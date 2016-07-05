@@ -52,7 +52,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE IsiSJKir=%s AND SELECT MIN(Periode) WHERE IsiSJKir=%s AND (Deletes='Sewa' OR  Deletes='Jual')",
+  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE IsiSJKir=%s AND (SELECT MIN(Periode) WHERE IsiSJKir=%s AND (Deletes='Sewa' OR  Deletes='Jual'))",
                        GetSQLValueString($_POST['tx_editsjkirim_QKirim'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkirim_IsiSJKir'][$i], "text"),
 					   GetSQLValueString($_POST['hd_editsjkirim_IsiSJKir'][$i], "text"));
