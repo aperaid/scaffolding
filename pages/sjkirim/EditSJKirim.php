@@ -6,49 +6,67 @@ $ROOT="../../";
 include($ROOT . "pages/login/session.php");
 include_once($ROOT . "pages/functionphp.php");
 
-$colname_View = "-1";
-if (isset($_GET['SJKir'])) {
-  $colname_View = $_GET['SJKir'];
-}
-mysql_select_db($database_Connection, $Connection);
-$query_TanggalMin = sprintf("SELECT pocustomer.Tgl FROM pocustomer LEFT JOIN sjkirim ON pocustomer.Reference=sjkirim.Reference WHERE sjkirim.SJKir = %s", GetSQLValueString($colname_View, "text"));
-$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
-$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
-$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
-
-$colname_EditIsiSJKirim = "-1";
-if (isset($_GET['SJKir'])) {
-  $colname_EditIsiSJKirim = $_GET['SJKir'];
-}
-mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, sjkirim.Tgl, transaksi.Barang, transaksi.JS, transaksi.Quantity, transaksi.QSisaKir, project.Project FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($colname_EditIsiSJKirim, "text"));
-$EditIsiSJKirim = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_error());
-$row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim);
-$totalRows_EditIsiSJKirim = mysql_num_rows($EditIsiSJKirim);
-
-
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-$SJKir = $_GET['SJKir'];
+$get_SJKir = $_GET['SJKir'];
+
+mysql_select_db($database_Connection, $Connection);
+$query_TanggalMin = sprintf("SELECT pocustomer.Tgl FROM pocustomer LEFT JOIN sjkirim ON pocustomer.Reference=sjkirim.Reference WHERE sjkirim.SJKir = %s", GetSQLValueString($get_SJKir, "text"));
+$TanggalMin = mysql_query($query_TanggalMin, $Connection) or die(mysql_error());
+$row_TanggalMin = mysql_fetch_assoc($TanggalMin);
+$totalRows_TanggalMin = mysql_num_rows($TanggalMin);
+
+mysql_select_db($database_Connection, $Connection);
+$query_EditIsiSJKirim = sprintf("SELECT isisjkirim.*, sjkirim.Tgl, transaksi.Barang, transaksi.JS, transaksi.Quantity, transaksi.QSisaKir, project.Project FROM isisjkirim LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkirim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkirim.SJKir = %s ORDER BY isisjkirim.Id ASC", GetSQLValueString($get_SJKir, "text"));
+$EditIsiSJKirim = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_error());
+$row_EditIsiSJKirim = mysql_fetch_assoc($EditIsiSJKirim);
+$totalRows_EditIsiSJKirim = mysql_num_rows($EditIsiSJKirim);
+
+$QKirim = $row_EditIsiSJKirim['QKirim'];
+
+$query = mysql_query($query_EditIsiSJKirim, $Connection) or die(mysql_error());
+$QKirim = array();
+while($row = mysql_fetch_assoc($query)){
+	$QKirim[] = $row['QKirim'];
+}
+
+for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE transaksi SET QSisaKirInsert=QSisaKirInsert+$QKirim[$i]-%s WHERE Purchase=%s",
+ 					   GetSQLValueString($_POST['tx_editsjkirim_QKirim'][$i], "int"),
+					   GetSQLValueString($_POST['hd_editsjkirim_Purchase'][$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE sjkirim SET Tgl=%s WHERE SJKir = '$SJKir'",
+  $updateSQL = sprintf("UPDATE sjkirim SET Tgl=%s WHERE SJKir = '$get_SJKir'",
  					   GetSQLValueString($_POST['tx_editsjkirim_Tgl'], "text"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
 
-for($i=0;$i<$totalRows_EditIsiSJKirim;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("SELECT edit_sjkirim(%s,%s,%s)",
-                       GetSQLValueString($_POST['hd_editsjkirim_IsiSJKir'][$i], "int"),
+  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE IsiSJKir=%s AND SELECT MIN(Periode) WHERE IsiSJKir=%s AND (Deletes='Sewa' OR  Deletes='Jual')",
                        GetSQLValueString($_POST['tx_editsjkirim_QKirim'][$i], "int"),
-                       GetSQLValueString($_POST['tx_editsjkirim_Warehouse'][$i], "text"));
+                       GetSQLValueString($_POST['hd_editsjkirim_IsiSJKir'][$i], "text"),
+					   GetSQLValueString($_POST['hd_editsjkirim_IsiSJKir'][$i], "text"));
 
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE isisjkirim SET Warehouse=%s, QKirim=%s WHERE Id=%s",
+                       GetSQLValueString($_POST['tx_editsjkirim_Warehouse'][$i], "text"),
+                       GetSQLValueString($_POST['tx_editsjkirim_QKirim'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkirim_Id'][$i], "int"));
+					   
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 
@@ -60,7 +78,6 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   
   header(sprintf("Location: %s", $updateGoTo));
 }
-
 }
 
 ?>
