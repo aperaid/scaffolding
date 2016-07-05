@@ -33,7 +33,7 @@ if (isset($_GET['JS'])) {
 
 // Ambil detail transaksi claim berdasarkan reference & periode
 mysql_select_db($database_Connection, $Connection);
-$query_View2 = sprintf("SELECT transaksiclaim.Id, transaksiclaim.Purchase, isisjkirim.SJKir, transaksi.Barang, transaksiclaim.Tgl, transaksiclaim.Periode, transaksiclaim.QClaim, transaksiclaim.Amount, transaksiclaim.PPN, periode.Claim FROM transaksiclaim LEFT JOIN periode ON transaksiclaim.Claim=periode.Claim LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON transaksiclaim.Purchase = transaksi.Purchase WHERE transaksi.Reference = %s AND transaksiclaim.Periode = %s", GetSQLValueString($colname_View2, "text"), GetSQLValueString($colname_ViewPeriode, "text"));
+$query_View2 = sprintf("SELECT isisjkirim.SJKir, transaksiclaim.*, SUM(transaksiclaim.QClaim) QClaim2, transaksi.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project, customer.* FROM transaksiclaim LEFT JOIN isisjkirim ON transaksiclaim.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode INNER JOIN customer ON project.CCode=customer.CCode WHERE transaksi.Reference=%s AND transaksiclaim.Periode=%s GROUP BY transaksiclaim.Claim, transaksiclaim.Tgl, transaksiclaim.Claim ORDER BY transaksiclaim.Id ASC", GetSQLValueString($colname_View2, "text"), GetSQLValueString($colname_ViewPeriode, "text"));
 $View2 = mysql_query($query_View2, $Connection) or die(mysql_error());
 $row_View2 = mysql_fetch_assoc($View2);
 $totalRows_View2 = mysql_num_rows($View2);
