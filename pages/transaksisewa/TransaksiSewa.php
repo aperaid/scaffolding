@@ -9,7 +9,7 @@ include_once($ROOT . "pages/functionphp.php");
 // Transaksi Sewa
 mysql_select_db($database_Connection, $Connection);
 $query_View = sprintf("
-	SELECT invoice.Invoice, periode.Id, periode.Periode, periode.S, periode.E, periode.IsiSJKir, periode.Reference, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference 
+	SELECT invoice.Invoice, periode.Id, periode.Periode, periode.E, periode.IsiSJKir, periode.Reference, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference 
 	FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
 	LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference 
 	LEFT JOIN project ON pocustomer.PCode=project.PCode 
@@ -99,7 +99,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<th>Reference</th>
 										<th>No. Invoice</th>
 										<th>Periode</th>
-										<th>Start</th>
 										<th>End</th>
 										<th>Project</th>
 										<th>View</th>
@@ -121,7 +120,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<td><?php echo $row_View['Reference']; ?></td>
 										<td><?php echo $row_View['Invoice']; ?></td>
 										<td><?php echo $row_View['Periode']; ?></td>
-										<td><?php echo $row_View['S']; ?></td>
 										<td><?php echo $row_View['E']; ?></td>
 										<td><?php echo $row_View['Project']; ?></td>
 										<td><a href="../invoice/viewinvoice.php?Reference=<?php echo $row_View['Reference']; ?>&Invoice=<?php echo $row_View['Invoice'] ?>&JS=Sewa&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
