@@ -197,7 +197,7 @@ include_once($ROOT . 'pages/html_main_header.php');
                 
                 <div class="box-footer">
                 <button type="submit" name="bt_viewinvoiceclaim_submit" id="bt_viewinvoiceclaim_submit" class="btn btn-info pull-right">Update</button>
-                <div class="btn-group"><a href="InvoiceClaim.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
+                <div class="btn-group"><a href="Invoice.php"><button type="button" class="btn btn-default pull-left">Back</button></a></div>
                 <div class="btn-group" ><a href="#" class="btn btn-default"><i class="fa fa-print"></i> Print</a></div>
               </div>
               <input type="hidden" name="MM_update" value="form1">
