@@ -57,7 +57,7 @@ $LastDate2 = date("d/m/Y", $LastDate);
 
 $LastInvoice = str_pad($row_LastInvoiceId['Id'] + 1, 5, "0", STR_PAD_LEFT);
 
-if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
+if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $insertSQL = sprintf("INSERT INTO invoice (Invoice, JSC, Tgl, Reference, Periode) VALUES (%s, 'Sewa', %s, %s, %s)",
                        GetSQLValueString($LastInvoice, "text"),
                        GetSQLValueString($LastDate2, "text"),
@@ -69,7 +69,7 @@ if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
 }
 
 for($i=0;$i<$totalRows_Extend;$i++){
-if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
+if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $insertSQL = sprintf("INSERT INTO periode (Periode, S, E, Quantity, IsiSJKir, Reference, Purchase, Claim, Deletes) VALUES (%s, %s, %s, %s, %s, %s, %s, '', 'Extend')",
                        GetSQLValueString($Periode+1, "int"),
                        GetSQLValueString($FirstDate2, "text"),
@@ -108,6 +108,5 @@ if ((isset($_GET['SJKir'])) && ($_GET['SJKir'] != "")) {
 
 <?php
   mysql_free_result($Extend);
-  mysql_free_result($Invoice);
   mysql_free_result($LastInvoiceId);
 ?>

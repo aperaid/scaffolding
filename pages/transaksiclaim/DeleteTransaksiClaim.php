@@ -133,7 +133,7 @@ if ((isset($_GET['Periode'])) && ($_GET['Periode'] != "")) {
   $Result1 = mysql_query($alterSQL, $Connection) or die(mysql_error());
   
   // Redirect ke transaksi claim abis delete
-  $deleteGoTo = "TransaksiClaim.php";
+  $deleteGoTo = "../transaksisewa/TransaksiSewa.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
     $deleteGoTo .= $_SERVER['QUERY_STRING'];
