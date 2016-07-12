@@ -6,38 +6,6 @@ $ROOT="../../";
 include($ROOT . "pages/login/session.php");
 include_once($ROOT . "pages/functionphp.php");
 
-// Transaksi Sewa
-mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("
-	SELECT invoice.Invoice, periode.Id, periode.Periode, periode.E, periode.IsiSJKir, periode.Reference, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference 
-	FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir 
-	LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference 
-	LEFT JOIN project ON pocustomer.PCode=project.PCode 
-	LEFT JOIN customer ON project.CCode=customer.CCode 
-	LEFT JOIN invoice ON invoice.Reference = pocustomer.Reference AND invoice.Periode = periode.Periode
-	WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' 
-	GROUP BY Invoice.Reference, Invoice.Periode");
-$View = mysql_query($query_View, $Connection) or die(mysql_error());
-$row_View = mysql_fetch_assoc($View);
-$totalRows_View = mysql_num_rows($View);
-
-// Transaksi Jual
-mysql_select_db($database_Connection, $Connection);
-$query_TransaksiJual = "
-	SELECT pocustomer.Reference, invoice.Invoice, project.Project
-	FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir = isisjkirim.IsiSJKir
-	LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
-	LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference
-	LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference
-	LEFT JOIN project ON pocustomer.PCode=project.PCode
-	LEFT JOIN customer ON project.CCode=customer.CCode
-	LEFT JOIN invoice ON transaksi.Reference=invoice.Reference AND periode.Periode=Invoice.Periode
-	WHERE periode.Deletes = 'Jual'
-	GROUP BY periode.Reference, periode.Periode";
-$TransaksiJual = mysql_query($query_TransaksiJual, $Connection) or die(mysql_error());
-$row_TransaksiJual = mysql_fetch_assoc($TransaksiJual);
-$totalRows_TransaksiJual = mysql_num_rows($TransaksiJual);
-
 // Transaksi Claim
 mysql_select_db($database_Connection, $Connection);
 $query_TransaksiClaim = "
@@ -112,69 +80,33 @@ include_once($ROOT . 'pages/html_main_header.php');
 
 						</div>
 						<div class="tab-pane" id="jual_tab">
-							<table id="tb_transaksijual_example1" class="table table-bordered table-striped table-responsive">
+
+							<table id="tb_viewtransaksijual" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th>Reference</th>
-										<th>No. Invoice</th>
+										<th>Invoice</th>
 										<th>Project</th>
-										<th>View</th>
+										<th>Invoice</th>
 									</tr>
 								</thead>
-								<tbody>
-									<?php do { ?>
-									<tr>
-										<td><?php echo $row_TransaksiJual['Reference']; ?></td>
-										<td><?php echo $row_TransaksiJual['Invoice']; ?></td>
-										<td><?php echo $row_TransaksiJual['Project']; ?></td>
-										<td>
-										<a href="../invoice/ViewInvoiceJual.php?Reference=<?php echo $row_TransaksiJual['Reference']; ?>&JS=Jual&Invoice=<?php echo $row_TransaksiJual['Invoice']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
-									</tr>
-									<?php } while ($row_TransaksiJual = mysql_fetch_assoc($TransaksiJual)); ?>
-								</tbody>
 							</table>
+
 						</div>
 						<div class="tab-pane" id="claim_tab">
-							<table id="tb_transaksiclaim_example1" name="tb_transaksiclaim_example1" class="table table-bordered table-striped table-responsive">
+
+							<table id="tb_viewtransaksiclaim" class="table table-bordered table-striped">
 								<thead>
-									<tr>
-										<th>Reference</th>
-										<th>No. Invoice</th>
-										<th>Periode</th>
-										<th>Tanggal Claim</th>
-										<th>Project</th>
-										<th>View</th>
-									</tr>
+									<th>periodeclaim</th>
+									<th>periodeextend</th>
+									<th>Reference</th>
+									<th>No. Invoice</th>
+									<th>Periode</th>
+									<th>Tanggal Claim</th>
+									<th>Project</th>
+									<th>View</th>
+									<th>Batal Claim</th>
 								</thead>
-								<tbody>
-									<?php do { ?>
-									<?php
-										mysql_select_db($database_Connection, $Connection);
-										$query_PerClaim = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE Deletes='Claim' AND Reference=%s AND Claim=%s AND Periode=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"), GetSQLValueString($row_TransaksiClaim['Claim'], "text"), GetSQLValueString($row_TransaksiClaim['Periode'], "text"));
-										$PerClaim = mysql_query($query_PerClaim, $Connection) or die(mysql_error());
-										$row_PerClaim = mysql_fetch_assoc($PerClaim);
-										$totalRows_PerClaim = mysql_num_rows($PerClaim);
-
-										mysql_select_db($database_Connection, $Connection);
-										$query_PerExtend = sprintf("SELECT MAX(periode.Periode) AS Periode FROM periode WHERE (Deletes='Extend' OR Deletes='Sewa') AND Reference=%s", GetSQLValueString($row_TransaksiClaim['Reference'], "text"));
-										$PerExtend = mysql_query($query_PerExtend, $Connection) or die(mysql_error());
-										$row_PerExtend = mysql_fetch_assoc($PerExtend);
-										$totalRows_PerExtend = mysql_num_rows($PerExtend);
-
-										$Claim = $row_PerClaim['Periode'];
-										$Extend = $row_PerExtend['Periode'];
-									?>
-									<tr>
-										<td><?php echo $row_TransaksiClaim['Reference']; ?></td>
-										<td><?php echo $row_TransaksiClaim['Invoice']; ?></td>
-										<td><?php echo $row_TransaksiClaim['Periode']; ?></td>
-										<td><?php echo $row_TransaksiClaim['Tgl']; ?></td>
-										<td><?php echo $row_TransaksiClaim['Project']; ?></td>
-										<td><a href="../invoice/viewinvoiceclaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']?>&JS=Claim&Invoice=<?php echo $row_TransaksiClaim['Invoice'] ?>&Periode=<?php echo $row_TransaksiClaim['Periode'] ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
-										<td><a href="../transaksiclaim/DeleteTransaksiClaim.php?Reference=<?php echo $row_TransaksiClaim['Reference']; ?>&Periode=<?php echo $row_TransaksiClaim['Periode']; ?>" onclick="return confirm('Delete Claim Barang?')"><button type="button" <?php if ($Claim = $Extend) { ?> class="btn btn-block btn-sm btn-danger" <?php } else { ?> class="btn btn-block btn-sm btn-default" disabled <?php } ?>>Batal</button></a></td>
-									</tr>
-									<?php } while ($row_TransaksiClaim = mysql_fetch_assoc($TransaksiClaim)); ?>
-								</tbody>
 							</table>
 						</div>
 					</div>
@@ -211,9 +143,9 @@ $(document).ready(function () {
 				"data": null,
 				"render": function ( data, type, row ) {
 							if (data[0] == data[1]) {
-								return "<button2 class='btn btn-block btn-primary btn-sm'>Extend</button2>";
+								return "<button class='btn btn-block btn-primary btn-sm'>Extend</button>";
 							} else {
-								return "<button2 class='btn btn-block btn-primary btn-sm' disabled>Extend</button2>";
+								return "<button class='btn btn-block btn-primary btn-sm' disabled>Extend</button>";
 							}
 						}
 				},
@@ -237,14 +169,65 @@ $(document).ready(function () {
 		window.open("../invoice/viewinvoice.php?Reference=" + data[2] + "&Invoice=" + data[3] + "&JS=Sewa&Periode=" + data[4], "_self");
 	});
 
-	$('#tb_viewtransaksisewa tbody').on( 'click', 'button2', function () {
+	$('#tb_viewtransaksisewa tbody').on( 'click', 'button', function () {
 		var data = table.row( $(this).parents('tr') ).data();
 		window.open("ExtendTransaksiSewa.php?Reference="+ data[2] +"&Periode=" + data[4] , "_self");
 	});
 
+	var table2 = $("#tb_viewtransaksijual").DataTable({
+		"paging": false,
+		"processing": true,
+		"serverSide": true,
+		"sAjaxSource": "jual_table.php",
+		"columnDefs": [{
+				"targets": 3,
+				"defaultContent": "<button1 class='btn btn-block btn-primary btn-sm'>Invoice</button1>"
+				}]
+	});
+
+	$('#tb_viewtransaksijual tbody').on( 'click', 'button1', function () {
+		var data = table2.row( $(this).parents('tr') ).data();
+		window.open("../invoice/ViewInvoiceJual.php?Reference=" + data[0] + "&JS=Jual&Invoice="+ data[1] , "_self");
+	});
+
+	var table3 = $("#tb_viewtransaksiclaim").DataTable({
+		"paging" : false,
+		"processing" : true,
+		"serverSide" : true,
+		"sAjaxSource" : "claim_table.php",
+		"columnDefs": [{
+			"targets": 0,
+			"visible": false
+		},{
+			"targets": 1,
+			"visible": false
+		},
+		{
+			"targets": 8,
+			"data": null,
+			"render": function ( data, type, row ) {
+							if (data[0] == data[1]) {
+								return "<button class='btn btn-block btn-danger btn-sm'>Batal</button>";
+							} else {
+								return "<button class='btn btn-block btn-danger btn-sm' disabled>Batal</button>";
+							}
+						}
+		},
+		{
+			"targets": 7,
+			"defaultContent": "<button1 class='btn btn-block btn-primary btn-sm'>Invoice</button1>"
+		}]
+	});
+
+	$('#tb_viewtransaksiclaim tbody').on( 'click', 'button1', function () {
+		var data = table3.row( $(this).parents('tr') ).data();
+		window.open("../invoice/viewinvoiceclaim.php?Reference="+data[0]+"&JS=Claim&Invoice=" + data[1] + "&Periode=" + data[2] , "_self");
+	});
+
+	$('#tb_viewtransaksiclaim tbody').on( 'click', 'button2', function () {
+		var data = table3.row( $(this).parents('tr') ).data();
+		window.open("../transaksiclaim/DeleteTransaksiClaim.php?Reference="+data[0]+"&Periode=" + data[2] , "_self");
+	});
+
 });
 </script>
-
-<?php
-mysql_free_result($View);
-?>
