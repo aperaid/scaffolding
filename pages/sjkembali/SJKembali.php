@@ -105,8 +105,3 @@ $(document).ready(function () {
 
 });
 </script>
-
-<?php
-  mysql_free_result($SJKembali);
-  mysql_free_result($check)
-?>
