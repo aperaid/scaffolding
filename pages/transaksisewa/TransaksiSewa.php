@@ -93,41 +93,23 @@ include_once($ROOT . 'pages/html_main_header.php');
 					</ul>
 					<div class="tab-content">
 						<div class="active tab-pane" id="sewa_tab">
-							<table id="tb_viewtransaksisewa_example1" class="table table-bordered table-striped table-responsive">
+
+							<table id="tb_viewtransaksisewa" class="table table-bordered">
 								<thead>
 									<tr>
+										<th>id</th>
+										<th>maxid</th>
 										<th>Reference</th>
-										<th>No. Invoice</th>
+										<th>Invoice</th>
 										<th>Periode</th>
-										<th>End</th>
+										<th>E</th>
 										<th>Project</th>
 										<th>View</th>
 										<th>Extend</th>
 									</tr>
 								</thead>
-								<tbody>
-									<?php do { ?>
-									<?php
-									mysql_select_db($database_Connection, $Connection);
-									$query_Periode = sprintf("SELECT MAX(Id) AS Id FROM periode WHERE Reference = %s AND IsiSJKir = %s AND (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id ASC", GetSQLValueString($row_View['Reference'], "text"), GetSQLValueString($row_View['IsiSJKir'], "text"));
-									$Periode = mysql_query($query_Periode, $Connection) or die(mysql_error());
-									$row_Periode = mysql_fetch_assoc($Periode);
-									$totalRows_Periode = mysql_num_rows($Periode);
-
-									$Id = $row_Periode['Id'];
-									?>
-									<tr>
-										<td><?php echo $row_View['Reference']; ?></td>
-										<td><?php echo $row_View['Invoice']; ?></td>
-										<td><?php echo $row_View['Periode']; ?></td>
-										<td><?php echo $row_View['E']; ?></td>
-										<td><?php echo $row_View['Project']; ?></td>
-										<td><a href="../invoice/viewinvoice.php?Reference=<?php echo $row_View['Reference']; ?>&Invoice=<?php echo $row_View['Invoice'] ?>&JS=Sewa&Periode=<?php echo $row_View['Periode']; ?>"><button type="button" class="btn btn-block btn-primary btn-sm">View Invoice</button></a></td>
-										 <td><a href="ExtendTransaksiSewa.php?Reference=<?php echo $row_View['Reference']; ?>&Periode=<?php echo $row_View['Periode']; ?>" onclick="return confirm('Extend Sewa hanya boleh dilakukan di akhir periode dan sudah ada konfirmasi dari customer. Lanjutkan?')"><button type="button" name="bt_viewtransaksisewa_extend" id="bt_viewtransaksisewa_extend" <?php if (($row_Periode['Id'] != $row_View['Id'])){ ?> class="btn btn-block btn-default btn-sm" disabled <?php   } else { ?> class="btn btn-block btn-primary btn-sm" <?php } ?>>Extend</button></a></td>
-									</tr>
-									<?php } while ($row_View = mysql_fetch_assoc($View)); ?>
-								</tbody>
 							</table>
+
 						</div>
 						<div class="tab-pane" id="jual_tab">
 							<table id="tb_transaksijual_example1" class="table table-bordered table-striped table-responsive">
@@ -213,10 +195,53 @@ include_once($ROOT . 'pages/html_main_header.php');
 
 <!-- page script -->
 <script>
-	$(function () {
+$(document).ready(function () {
 	$("#tb_viewtransaksisewa_example1").DataTable({
 		"paging": false
 	});
+
+	var table = $("#tb_viewtransaksisewa").DataTable({
+	"paging": false,
+	"processing": true,
+	"serverSide": true,
+	"sAjaxSource": "sewa_table.php",
+	"order": [[0, "desc"]],
+	"columnDefs": [{
+				"targets": 8,
+				"data": null,
+				"render": function ( data, type, row ) {
+							if (data[0] == data[1]) {
+								return "<button2 class='btn btn-block btn-primary btn-sm'>Extend</button2>";
+							} else {
+								return "<button2 class='btn btn-block btn-primary btn-sm' disabled>Extend</button2>";
+							}
+						}
+				},
+				{
+					"targets": 7,
+					"data": null,
+					"defaultContent": "<button1 class='btn btn-block btn-primary btn-sm'>Invoice</button1>"
+				},
+				{
+					"targets" : 0,
+					"visible" : false
+				},
+				{
+					"targets" : 1,
+					"visible" : false
+				}]
+	});
+	
+	$('#tb_viewtransaksisewa tbody').on( 'click', 'button1', function () {
+		var data = table.row( $(this).parents('tr') ).data();
+		window.open("../invoice/viewinvoice.php?Reference=" + data[2] + "&Invoice=" + data[3] + "&JS=Sewa&Periode=" + data[4], "_self");
+	});
+
+	$('#tb_viewtransaksisewa tbody').on( 'click', 'button2', function () {
+		var data = table.row( $(this).parents('tr') ).data();
+		window.open("ExtendTransaksiSewa.php?Reference="+ data[2] +"&Periode=" + data[4] , "_self");
+	});
+
 });
 </script>
 
