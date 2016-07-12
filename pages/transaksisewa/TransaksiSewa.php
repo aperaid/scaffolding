@@ -128,16 +128,12 @@ include_once($ROOT . 'pages/html_main_header.php');
 <!-- page script -->
 <script>
 $(document).ready(function () {
-	$("#tb_viewtransaksisewa_example1").DataTable({
-		"paging": false
-	});
-
 	var table = $("#tb_viewtransaksisewa").DataTable({
 	"paging": false,
 	"processing": true,
 	"serverSide": true,
 	"sAjaxSource": "sewa_table.php",
-	"order": [[0, "desc"]],
+	"order": [[2, "desc"]],
 	"columnDefs": [{
 				"targets": 8,
 				"data": null,
