@@ -77,10 +77,10 @@ include_once($ROOT . 'pages/html_main_header.php');
 				"targets": 6,
 				"data": null,
 				"render": function ( data, type, row ) {
-							if (data[0] == 0) {
-								return "<button class='btn btn-block btn-danger btn-sm'>Delete</button>";
-							} else {
+							if (data[0] > 0) {
 								return "<button class='btn btn-block btn-default btn-sm' disabled>Delete</button>";
+							} else {
+								return "<button class='btn btn-block btn-danger btn-sm'>Delete</button>";
 							}
 						}
 				},
