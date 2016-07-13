@@ -18,13 +18,12 @@
 	$sIndexColumn = "SJKem";
 	
 	/* DB table to use */
-	$sTable = "(
-		SELECT qterima, sjkembali.*, project.Project, customer.Customer
+	$sTable = "(SELECT qterima, sjkembali.*, project.Project, customer.Customer
 		FROM sjkembali
 		INNER JOIN pocustomer ON sjkembali.Reference=pocustomer.Reference
 		INNER JOIN project ON pocustomer.PCode=project.PCode
 		INNER JOIN customer ON project.CCode=customer.CCode
-		LEFT JOIN (SELECT sum(QTerima) AS qterima, SJKem FROM isisjkembali) AS t2 ON t2.SJKem=sjkembali.SJKem
+		INNER JOIN (SELECT sum(QTerima) AS qterima, SJKem FROM isisjkembali GROUP BY SJKem) AS t2 ON t2.SJKem=sjkembali.SJKem
 		ORDER BY sjkembali.Id ASC) AS t1";
 	
 	

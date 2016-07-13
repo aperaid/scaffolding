@@ -47,7 +47,6 @@ include_once($ROOT . 'pages/html_main_header.php');
 								</tr>
 							</thead>
 						</table>
-
 					</div>
 					<!-- /.box-body -->
 				</div>
@@ -94,7 +93,7 @@ $(document).ready(function () {
 					"visible": false
 				}]
 	});
-	$('#tb_sjkembali_example1 tbody').on( 'click', 'button1', function () {
+	$('#tb_sjkembali tbody').on( 'click', 'button1', function () {
 		var data = table.row( $(this).parents('tr') ).data();
 		window.open("ViewSJKembali.php?SJKem=" + data[1], "_self");
 	});
