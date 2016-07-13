@@ -335,7 +335,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<tr>
 										<td><?php echo $row_po['pocode']; ?></td>
 										<td><?php echo $row_po['tgl']; ?></td>
-										<td><a href="../po/ViewPO.php?POCode=<?php echo $row_po['pocode']; ?>"><button class="btn btn-primary btn-sm">View</button></a></td>
+										<td><a href="../po/ViewPO.php?POCode=<?php echo $row_po['pocode']; ?>"><button class="btn btn-primary btn-block btn-sm">View</button></a></td>
 									</tr>
 									<?php } while ($row_po = mysql_fetch_assoc($view_po)); ?>
 								</tbody>
@@ -374,7 +374,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 										</td>                    
 										<td><span class="badge bg-yellow">Dalam Pengiriman</span></td>
 									<?php } ?>
-									<td><a href="../sjkirim/ViewSJKirim.php?SJKir=<?php echo $row_sjkirim['sjkirim_id']; ?>"><button class="btn btn-primary">View</button></a></td>
+									<td><a href="../sjkirim/ViewSJKirim.php?SJKir=<?php echo $row_sjkirim['sjkirim_id']; ?>"><button class="btn btn-primary btn-block btn-sm">View</button></a></td>
 								</tr>
 								<?php } while ($row_sjkirim = mysql_fetch_assoc($view_sjkirim)); ?>
 							</table>
@@ -415,7 +415,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 										</td>                    
 										<td><span class="badge bg-yellow">Dalam Pengambilan</span></td>
 									<?php } ?>
-									<td><a href="../sjKembali/ViewSJKembali.php?SJKem=<?php echo $row_sjkembali['sjkembali_id']; ?>"><button class="btn btn-primary">View</button></a></td>
+									<td><a href="../sjKembali/ViewSJKembali.php?SJKem=<?php echo $row_sjkembali['sjkembali_id']; ?>"><button class="btn btn-primary btn-block btn-sm">View</button></a></td>
 								</tr>
 								<?php } while ($row_sjkembali = mysql_fetch_assoc($view_sjkembali)); ?>
 							</table>

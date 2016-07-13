@@ -141,7 +141,7 @@ $(document).ready(function () {
 							if (data[0] == data[1]) {
 								return "<button class='btn btn-block btn-primary btn-sm'>Extend</button>";
 							} else {
-								return "<button class='btn btn-block btn-primary btn-sm' disabled>Extend</button>";
+								return "<button class='btn btn-block btn-default btn-sm' disabled>Extend</button>";
 							}
 						}
 				},
@@ -205,7 +205,7 @@ $(document).ready(function () {
 							if (data[0] == data[1]) {
 								return "<button class='btn btn-block btn-danger btn-sm'>Batal</button>";
 							} else {
-								return "<button class='btn btn-block btn-danger btn-sm' disabled>Batal</button>";
+								return "<button class='btn btn-block btn-default btn-sm' disabled>Batal</button>";
 							}
 						}
 		},
