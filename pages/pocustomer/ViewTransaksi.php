@@ -76,7 +76,16 @@ $row_sewa = mysql_fetch_assoc($view_sewa);
 
 //Jual Tab
 mysql_select_db($database_Connection, $Connection);
-$query_jual = sprintf("SELECT sjkembali.SJKem AS sjkembali_id, sjkembali.Tgl AS tgl, sum(isisjkembali.QTerima) AS qterima FROM isisjkembali LEFT JOIN sjkembali ON isisjkembali.SJKem=sjkembali.SJKem WHERE sjkembali.Reference=%s GROUP BY sjkembali.SJKem", GetSQLValueString($colname_View, "text"));
+$query_jual = sprintf("SELECT pocustomer.Reference, invoice.Invoice, project.Project
+	FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir = isisjkirim.IsiSJKir
+	LEFT JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir
+	LEFT JOIN transaksi ON sjkirim.Reference=transaksi.Reference
+	LEFT JOIN pocustomer ON transaksi.Reference=pocustomer.Reference
+	LEFT JOIN project ON pocustomer.PCode=project.PCode
+	LEFT JOIN customer ON project.CCode=customer.CCode
+	LEFT JOIN invoice ON transaksi.Reference=invoice.Reference AND periode.Periode=Invoice.Periode
+	WHERE periode.Deletes = 'Jual'
+	GROUP BY periode.Reference, periode.Periode");
 $view_jual = mysql_query ($query_jual, $Connection) or die(mysql_error());
 $row_jual = mysql_fetch_assoc($view_jual);
 //Jual Tab
@@ -121,12 +130,6 @@ $query_sjkembalicheck = sprintf("SELECT check_sjkembalibutton('$colname_View') A
 $sjkembalicheck = mysql_query($query_sjkembalicheck, $Connection) or die(mysql_error());
 $row_sjkembalicheck = mysql_fetch_assoc($sjkembalicheck);
 //sjkembali button disabled end
-
-
-
-//Invoice Tab
-
-//INvoice Tab
 
 ?>
 
@@ -453,6 +456,16 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<th>View</th>
 								</tr>
 							</thead>
+							<tbody>
+								<?php do { ?>
+									<tr>
+										<td><?php echo $row_jual['Invoice'] ?></td>
+										<td>
+											<a href="../invoice/viewinvoicejual.php?Reference=<?php echo $row_jual['Reference'] ?>&JS=Jual&Invoice=<?php echo $row_jual['Invoice'] ?>"><button class="btn btn-primary btn-block">Invoice</button></a>
+										</td>
+									</tr>
+								<?php } while ($row_jual = mysql_fetch_assoc($view_jual)) ?>
+							</tbody>
 						</table>
 					</div>
 
