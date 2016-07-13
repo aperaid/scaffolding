@@ -65,7 +65,40 @@ mysql_select_db($database_Connection, $Connection);
 $query_sjkembali = sprintf("SELECT sjkembali.SJKem AS sjkembali_id, sjkembali.Tgl AS tgl, sum(isisjkembali.QTerima) AS qterima FROM isisjkembali LEFT JOIN sjkembali ON isisjkembali.SJKem=sjkembali.SJKem WHERE sjkembali.Reference=%s GROUP BY sjkembali.SJKem", GetSQLValueString($colname_View, "text"));
 $view_sjkembali = mysql_query ($query_sjkembali, $Connection) or die(mysql_error());
 $row_sjkembali = mysql_fetch_assoc($view_sjkembali);
-//SJKirim TAB End
+//SJKembali TAB End
+
+//Sewa Tab
+mysql_select_db($database_Connection, $Connection);
+$query_sewa = sprintf("SELECT invoice.Invoice, periode.Id, periode.Periode, periode.E, periode.IsiSJKir, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference, maxid FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode LEFT JOIN invoice ON invoice.Reference = pocustomer.Reference AND invoice.Periode = periode.Periode LEFT JOIN (SELECT MAX(Id) AS maxid, Reference, IsiSJKir FROM periode WHERE (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id ASC) AS T1 ON periode.Reference= t1.Reference AND periode.IsiSJKir=T1.IsiSJKir WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' AND periode.Reference='$colname_View' GROUP BY Invoice.Reference, Invoice.Periode");
+$view_sewa = mysql_query ($query_sewa, $Connection) or die(mysql_error());
+$row_sewa = mysql_fetch_assoc($view_sewa);
+//Sewa Tab
+
+//Jual Tab
+mysql_select_db($database_Connection, $Connection);
+$query_jual = sprintf("SELECT sjkembali.SJKem AS sjkembali_id, sjkembali.Tgl AS tgl, sum(isisjkembali.QTerima) AS qterima FROM isisjkembali LEFT JOIN sjkembali ON isisjkembali.SJKem=sjkembali.SJKem WHERE sjkembali.Reference=%s GROUP BY sjkembali.SJKem", GetSQLValueString($colname_View, "text"));
+$view_jual = mysql_query ($query_jual, $Connection) or die(mysql_error());
+$row_jual = mysql_fetch_assoc($view_jual);
+//Jual Tab
+
+//Claim Tab
+mysql_select_db($database_Connection, $Connection);
+$query_claim = sprintf("SELECT periodeclaim, periodeextend, transaksiclaim.*, invoice.Invoice, periode.Reference, transaksi.Barang, transaksi.QSisaKem, project.Project, customer.Customer 
+	FROM transaksiclaim 
+	LEFT JOIN periode ON transaksiclaim.Claim=periode.Claim 
+	INNER JOIN transaksi ON transaksiclaim.Purchase=transaksi.Purchase 
+	INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference 
+	INNER JOIN project ON pocustomer.PCode=project.PCode
+	LEFT JOIN customer ON project.CCode=customer.CCode
+	LEFT JOIN invoice ON transaksi.Reference=invoice.Reference AND invoice.Periode=transaksiclaim.Periode AND invoice.JSC='Claim'
+	LEFT JOIN (SELECT MAX(periode.Periode) AS periodeclaim, Reference, Claim, Periode FROM periode WHERE Deletes='Claim') AS t1 ON t1.Reference=periode.Reference AND t1.Claim=transaksiclaim.Claim AND t1.Periode=transaksiclaim.Periode
+	LEFT JOIN (SELECT MAX(periode.Periode) AS periodeextend, Reference FROM periode WHERE (Deletes='Extend' OR Deletes='Sewa')) AS t2 ON t2.Reference=periode.Reference
+	WHERE periode.Reference='$colname_View'
+	GROUP BY transaksiclaim.Periode
+	ORDER BY transaksiclaim.Id ASC");
+$claim = mysql_query($query_claim, $Connection) or die(mysql_error());
+$row_claim = mysql_fetch_assoc($claim);
+//Claim Tab
 
 //FUNCTION BUTTON DISABLE
 mysql_select_db($database_Connection, $Connection);
@@ -88,6 +121,12 @@ $query_sjkembalicheck = sprintf("SELECT check_sjkembalibutton('$colname_View') A
 $sjkembalicheck = mysql_query($query_sjkembalicheck, $Connection) or die(mysql_error());
 $row_sjkembalicheck = mysql_fetch_assoc($sjkembalicheck);
 //sjkembali button disabled end
+
+
+
+//Invoice Tab
+
+//INvoice Tab
 
 ?>
 
@@ -122,8 +161,9 @@ include_once($ROOT . 'pages/html_main_header.php');
 					<li><a href="#po_tab" data-toggle="tab">PO</a></li>
 					<li><a href="#sjkirim_tab" data-toggle="tab">SJKirim</a></li>
 					<li><a href="#sjkembali_tab" data-toggle="tab">SJKembali</a></li>
+					<li><a href="#sewa_tab" data-toggle="tab">Sewa</a></li>
+					<li><a href="#jual_tab" data-toggle="tab">Jual</a></li>
 					<li><a href="#claim_tab" data-toggle="tab">Claim</a></li>
-					<li><a href="#invoice_tab" data-toggle="tab">Invoice</a></li>
 				</ul>
 				<div class="tab-content">
 					<!-- OVERALL TAB -->
@@ -378,14 +418,80 @@ include_once($ROOT . 'pages/html_main_header.php');
 							</table>
 						</div>
 					</div>
-				
+					
+					<!-- Sewa TAB -->
+					<div class="tab-pane" id="sewa_tab">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Invoice</th>
+									<th>Periode</th>
+									<th>End</th>
+									<th>View</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php do { ?>
+									<tr>
+										<td><?php echo $row_sewa['Invoice'] ?></td>
+										<td><?php echo $row_sewa['Periode'] ?></td>
+										<td><?php echo $row_sewa['E'] ?></td>
+										<td>
+											<a href="../invoice/viewinvoice.php?Reference=<?php echo $row_sewa['Reference']?>&Invoice=<?php echo $row_sewa['Invoice']?>&JS=Sewa&Periode=<?php echo $row_sewa['Periode']?>"><button class="btn btn-primary btn-block">Invoice</button></a>
+										</td>
+								<?php } while ($row_sewa = mysql_fetch_assoc($view_sewa)) ?>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Jual TAB -->
+					<div class="tab-pane" id="jual_tab">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Invoice</th>
+									<th>View</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+
 					<!-- Claim TAB -->
 					<div class="tab-pane" id="claim_tab">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>No. Invoice</th>
+									<th>Periode</th>
+									<th>Tanggal Claim</th>
+									<th>Project</th>
+									<th>View</th>
+									<th>Batal Claim</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php do { ?>
+									<tr>
+										<td><?php echo $row_claim['Invoice'] ?></td>
+										<td><?php echo $row_claim['Periode'] ?></td>
+										<td><?php echo $row_claim['Tgl'] ?></td>
+										<td><?php echo $row_claim['Project'] ?></td>
+										<td>
+										<button class="btn btn-primary btn-block">Invoice</button></td>
+										<td>
+											<?php if ($row_claim['periodeclaim'] == $row_claim['periodeextend']) { ?> 
+												<button class="btn btn-danger btn-block">Batal</button>
+											<?php } else { ?>
+												<button class="btn btn-default btn-block" disabled>Batal</button>
+											<?php } ?>
+										</td>
+									</tr>
+								<?php } while ($row_claim = mysql_fetch_assoc($claim));  ?>
+							</tbody>
+						</table>
 					</div>
 					
-					<!-- Invoice TAB -->
-					<div class="tab-pane" id="invoice_tab">
-					</div>
+					
 					
 				</div>
 				<!-- /.tab-content -->
