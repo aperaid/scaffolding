@@ -24,7 +24,7 @@
 		INNER JOIN pocustomer ON sjkirim.Reference=pocustomer.Reference
 		INNER JOIN project ON pocustomer.PCode=project.PCode
 		INNER JOIN customer ON project.CCode=customer.CCode
-		LEFT JOIN (SELECT sum(QTertanda) AS qttd, SJKir FROM isisjkirim) AS t2 ON t2.SJKir=sjkirim.SJKir
+		LEFT JOIN (SELECT sum(QTertanda) AS qttd, SJKir FROM isisjkirim GROUP BY SJKir) AS t2 ON t2.SJKir=sjkirim.SJKir
 		ORDER BY sjkirim.Id ASC) AS t1";
 	
 	
