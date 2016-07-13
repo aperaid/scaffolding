@@ -69,7 +69,7 @@ $row_sjkembali = mysql_fetch_assoc($view_sjkembali);
 
 //Sewa Tab
 mysql_select_db($database_Connection, $Connection);
-$query_sewa = sprintf("SELECT invoice.Invoice, periode.Id, periode.Periode, periode.E, periode.IsiSJKir, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference, maxid FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode LEFT JOIN invoice ON invoice.Reference = pocustomer.Reference AND invoice.Periode = periode.Periode LEFT JOIN (SELECT MAX(Id) AS maxid, Reference, IsiSJKir FROM periode WHERE (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id ASC) AS T1 ON periode.Reference= t1.Reference AND periode.IsiSJKir=T1.IsiSJKir WHERE periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend' AND periode.Reference='$colname_View' GROUP BY Invoice.Reference, Invoice.Periode");
+$query_sewa = sprintf("SELECT invoice.Invoice, periode.Id, periode.Periode, periode.E, periode.IsiSJKir, periode.Deletes, isisjkirim.SJKir, customer.Customer, project.Project, periode.Reference, maxid FROM periode LEFT JOIN isisjkirim ON periode.IsiSJKir=isisjkirim.IsiSJKir LEFT JOIN pocustomer ON periode.Reference=pocustomer.Reference LEFT JOIN project ON pocustomer.PCode=project.PCode LEFT JOIN customer ON project.CCode=customer.CCode LEFT JOIN invoice ON invoice.Reference = pocustomer.Reference AND invoice.Periode = periode.Periode LEFT JOIN (SELECT MAX(Id) AS maxid, Reference, IsiSJKir FROM periode WHERE (Deletes = 'Sewa' OR Deletes = 'Extend') GROUP BY IsiSJKir ORDER BY Id ASC) AS T1 ON periode.Reference= t1.Reference AND periode.IsiSJKir=T1.IsiSJKir WHERE (periode.Deletes = 'Sewa' OR periode.Deletes = 'Extend') AND periode.REference='$colname_View' GROUP BY Invoice.Reference, Invoice.Periode");
 $view_sewa = mysql_query ($query_sewa, $Connection) or die(mysql_error());
 $row_sewa = mysql_fetch_assoc($view_sewa);
 //Sewa Tab
@@ -84,7 +84,7 @@ $query_jual = sprintf("SELECT pocustomer.Reference, invoice.Invoice, project.Pro
 	LEFT JOIN project ON pocustomer.PCode=project.PCode
 	LEFT JOIN customer ON project.CCode=customer.CCode
 	LEFT JOIN invoice ON transaksi.Reference=invoice.Reference AND periode.Periode=Invoice.Periode
-	WHERE periode.Deletes = 'Jual'
+	WHERE periode.Deletes = 'Jual' AND pocustomer.Reference='$colname_View'
 	GROUP BY periode.Reference, periode.Periode");
 $view_jual = mysql_query ($query_jual, $Connection) or die(mysql_error());
 $row_jual = mysql_fetch_assoc($view_jual);
