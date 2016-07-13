@@ -220,7 +220,7 @@ $(document).ready(function () {
 		window.open("../invoice/viewinvoiceclaim.php?Reference="+data[0]+"&JS=Claim&Invoice=" + data[1] + "&Periode=" + data[2] , "_self");
 	});
 
-	$('#tb_viewtransaksiclaim tbody').on( 'click', 'button2', function () {
+	$('#tb_viewtransaksiclaim tbody').on( 'click', 'button', function () {
 		var data = table3.row( $(this).parents('tr') ).data();
 		window.open("../transaksiclaim/DeleteTransaksiClaim.php?Reference="+data[0]+"&Periode=" + data[2] , "_self");
 	});

@@ -430,7 +430,8 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<th>Invoice</th>
 									<th>Periode</th>
 									<th>End</th>
-									<th>View</th>
+									<th width="10%">View</th>
+									<th width="10%">Extend</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -440,7 +441,14 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<td><?php echo $row_sewa['Periode'] ?></td>
 										<td><?php echo $row_sewa['E'] ?></td>
 										<td>
-											<a href="../invoice/viewinvoice.php?Reference=<?php echo $row_sewa['Reference']?>&Invoice=<?php echo $row_sewa['Invoice']?>&JS=Sewa&Periode=<?php echo $row_sewa['Periode']?>"><button class="btn btn-primary btn-block">Invoice</button></a>
+											<a href="../invoice/viewinvoice.php?Reference=<?php echo $row_sewa['Reference']?>&Invoice=<?php echo $row_sewa['Invoice']?>&JS=Sewa&Periode=<?php echo $row_sewa['Periode']?>"><button class="btn btn-primary btn-block btn-sm">Invoice</button></a>
+										</td>
+										<td>
+											<?php if ($row_sewa['Id'] == $row_sewa['maxid']) {?>
+												<a href="../TransaksiSewa/ExtendTransaksiSewa.php?Reference=<?php echo $row_sewa['Reference']?>&Periode=<?php echo $row_sewa['Periode'] ?>"><button class="btn btn-success btn-block btn-sm">Extend</button></a>
+											<?php } else {?>
+												<button class="btn btn-default btn-block btn-sm" disabled>Extend</button>
+											<?php } ?>
 										</td>
 								<?php } while ($row_sewa = mysql_fetch_assoc($view_sewa)) ?>
 							</tbody>
@@ -453,7 +461,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 							<thead>
 								<tr>
 									<th>Invoice</th>
-									<th>View</th>
+									<th width="10%">View</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -461,7 +469,7 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<tr>
 										<td><?php echo $row_jual['Invoice'] ?></td>
 										<td>
-											<a href="../invoice/viewinvoicejual.php?Reference=<?php echo $row_jual['Reference'] ?>&JS=Jual&Invoice=<?php echo $row_jual['Invoice'] ?>"><button class="btn btn-primary btn-block">Invoice</button></a>
+											<a href="../invoice/viewinvoicejual.php?Reference=<?php echo $row_jual['Reference'] ?>&JS=Jual&Invoice=<?php echo $row_jual['Invoice'] ?>"><button class="btn btn-primary btn-block btn-sm">Invoice</button></a>
 										</td>
 									</tr>
 								<?php } while ($row_jual = mysql_fetch_assoc($view_jual)) ?>
@@ -478,8 +486,8 @@ include_once($ROOT . 'pages/html_main_header.php');
 									<th>Periode</th>
 									<th>Tanggal Claim</th>
 									<th>Project</th>
-									<th>View</th>
-									<th>Batal Claim</th>
+									<th width="10%">View</th>
+									<th width="10%">Batal Claim</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -493,9 +501,9 @@ include_once($ROOT . 'pages/html_main_header.php');
 										<button class="btn btn-primary btn-block">Invoice</button></td>
 										<td>
 											<?php if ($row_claim['periodeclaim'] == $row_claim['periodeextend']) { ?> 
-												<button class="btn btn-danger btn-block">Batal</button>
+												<button class="btn btn-danger btn-block btn-sm">Batal</button>
 											<?php } else { ?>
-												<button class="btn btn-default btn-block" disabled>Batal</button>
+												<button class="btn btn-default btn-block btn-sm" disabled>Batal</button>
 											<?php } ?>
 										</td>
 									</tr>
