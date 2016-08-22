@@ -22,34 +22,50 @@ $row_TanggalMax = mysql_fetch_assoc($TanggalMax);
 $totalRows_TanggalMax = mysql_num_rows($TanggalMax);
 // Tanggal Start & End
 
-$colname_View = "-1";
-if (isset($_GET['SJKem'])) {
-  $colname_View = $_GET['SJKem'];
-}
-
-mysql_select_db($database_Connection, $Connection);
-$query_View = sprintf("SELECT SJKem, Tgl FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_View, "text"));
-$View = mysql_query($query_View, $Connection) or die(mysql_error());
-$row_View = mysql_fetch_assoc($View);
-$totalRows_View = mysql_num_rows($View);
-
 $colname_EditIsiSJKembali = "-1";
 if (isset($_GET['SJKem'])) {
   $colname_EditIsiSJKembali = $_GET['SJKem'];
 }
-// Table MYSQL Fetch
+
 mysql_select_db($database_Connection, $Connection);
-$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, isisjkirim.IsiSJKir, isisjkirim.QKirim, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$query_View = sprintf("SELECT SJKem, Tgl FROM sjkembali WHERE SJKem = %s", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$View = mysql_query($query_View, $Connection) or die(mysql_error());
+$row_View = mysql_fetch_assoc($View);
+$totalRows_View = mysql_num_rows($View);
+
+mysql_select_db($database_Connection, $Connection);
+$query_MaxPer = sprintf("SELECT MAX(Periode) AS Periode FROM periode WHERE Reference = %s", GetSQLValueString($_GET['Reference'], "text"));
+$MaxPer = mysql_query($query_MaxPer, $Connection) or die(mysql_error());
+$row_MaxPer = mysql_fetch_assoc($MaxPer);
+$totalRows_MaxPer = mysql_num_rows($MaxPer);
+
+mysql_select_db($database_Connection, $Connection);
+$query_EditIsiSJKembali = sprintf("SELECT isisjkembali.*, SUM(isisjkembali.QTertanda) AS QTertanda2, SUM(isisjkembali.QTerima) AS QTerima2, transaksi.QSisaKem AS QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s GROUP BY isisjkembali.Purchase ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
 $EditIsiSJKembali = mysql_query($query_EditIsiSJKembali, $Connection) or die(mysql_error());
 $row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali);
 $totalRows_EditIsiSJKembali = mysql_num_rows($EditIsiSJKembali);
-// Table MYSQL Fetch
+
+mysql_select_db($database_Connection, $Connection);
+$query_EditIsiSJKembali2 = sprintf("SELECT isisjkembali.*, isisjkirim.QSisaKem, sjkirim.Tgl, transaksi.Barang, project.Project FROM isisjkembali INNER JOIN isisjkirim ON isisjkembali.IsiSJKir=isisjkirim.IsiSJKir INNER JOIN sjkirim ON isisjkirim.SJKir=sjkirim.SJKir INNER JOIN transaksi ON isisjkembali.Purchase=transaksi.Purchase INNER JOIN pocustomer ON transaksi.Reference=pocustomer.Reference INNER JOIN project ON pocustomer.PCode=project.PCode WHERE isisjkembali.SJKem = %s ORDER BY isisjkembali.Id ASC", GetSQLValueString($colname_EditIsiSJKembali, "text"));
+$EditIsiSJKembali2 = mysql_query($query_EditIsiSJKembali2, $Connection) or die(mysql_error());
+$row_EditIsiSJKembali2 = mysql_fetch_assoc($EditIsiSJKembali2);
+$totalRows_EditIsiSJKembali2 = mysql_num_rows($EditIsiSJKembali2);
+
+$QTertanda = array();
+$IsiSJKir = array();
+do{
+	$QTertanda[]=$row_EditIsiSJKembali2['QTertanda'];
+	$IsiSJKir[]=$row_EditIsiSJKembali2['IsiSJKir'];
+	
+} while ($row_EditIsiSJKembali2 = mysql_fetch_assoc($EditIsiSJKembali2));
+$IsiSJKir2 = join(',',$IsiSJKir);
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
+/*
 // Safety Net
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
@@ -71,12 +87,80 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   header(sprintf("Location: %s", $updateGoTo));
 }
 // Safety Net
-
-/* Rumus Awal
-$QTertanda = $row_EditIsiSJKembali['QTertanda'];
+*/
 
 $SJKem = $_GET['SJKem'];
 
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+for($i=0;$i<$totalRows_EditIsiSJKembali2;$i++){
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+%s WHERE IsiSJKir=%s",
+                       GetSQLValueString($QTertanda[$i], "int"),
+                       GetSQLValueString($IsiSJKir[$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+for($i=0;$i<$totalRows_EditIsiSJKembali2;$i++){
+  $updateSQL = sprintf("UPDATE isisjkembali SET QTertanda=0 WHERE IsiSJKir=%s AND SJKem=%s",
+					   GetSQLValueString($IsiSJKir[$i], "text"),
+					   GetSQLValueString($colname_EditIsiSJKembali, "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
+  $updateSQL = sprintf("UPDATE isisjkembali SET Warehouse=%s WHERE IsiSJKir=%s AND SJKem=%s",
+                       GetSQLValueString($_POST['tx_editsjkembali_Warehouse'][$i], "text"),
+					   GetSQLValueString($_POST['hd_editsjkembali_IsiSJKir'][$i], "text"),
+					   GetSQLValueString($colname_EditIsiSJKembali, "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+//  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
+  $updateSQL = sprintf("CALL edit_sjkembali(%s, %s, %s)",
+                       GetSQLValueString($_POST['tx_editsjkembali_QTertanda'][$i], "int"),
+                       GetSQLValueString($_POST['hd_editsjkembali_Purchase'][$i], "text"),
+					   GetSQLValueString($_GET['SJKem'], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+  }
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+for($i=0;$i<$totalRows_EditIsiSJKembali2;$i++){
+  $updateSQL = sprintf("UPDATE periode SET Quantity=Quantity+%s-%s WHERE Periode = %s AND IsiSJKir=%s AND Deletes = 'Extend'",
+                       GetSQLValueString($QTertanda[$i], "int"),
+					   GetSQLValueString($_POST['tx_editsjkembali_QTertanda'][$i], "int"),
+					   GetSQLValueString($row_MaxPer['Periode'], "int"),
+					   GetSQLValueString($IsiSJKir[$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
+  $updateSQL = sprintf("UPDATE periode SET Quantity=%s WHERE IsiSJKir=%s AND SJKem=%s",
+                       GetSQLValueString($_POST['tx_editsjkembali_QTertanda'][$i], "int"),
+					   GetSQLValueString($_POST['hd_editsjkembali_IsiSJKir'][$i], "text"),
+					   GetSQLValueString($colname_EditIsiSJKembali, "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+}
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   $updateSQL = sprintf("UPDATE sjkembali SET Tgl=%s WHERE SJKem = '$SJKem'",
@@ -84,27 +168,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-
-for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKemInsert=QSisaKemInsert+$QTertanda-%s WHERE IsiSJKir=%s",
-                       GetSQLValueString($_POST['tx_editsjkembali_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkembali_IsiSJKir'][$i], "text"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-}
-	
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE isisjkembali SET Warehouse=%s, QTertanda=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['tx_editsjkembali_Warehouse'][$i], "text"),
-					   GetSQLValueString($_POST['tx_editsjkembali_QTertanda'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkembali_Id'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-
+  
   $updateGoTo = "ViewSJKembali.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
@@ -112,9 +176,8 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   }
   
   header(sprintf("Location: %s", $updateGoTo));
-  }
 }
-*/
+
 ?>
 
 <?php
@@ -168,13 +231,14 @@ include_once($ROOT . 'pages/html_main_header.php');
                     
 						<?php do { ?>
                         <tr>
+							<input name="hd_editsjkembali_Purchase[]" type="hidden" id="hd_editsjkembali_Purchase" value="<?php echo $row_EditIsiSJKembali['Purchase']; ?>">
 							<input name="hd_editsjkembali_IsiSJKem[]" type="hidden" id="hd_editsjkembali_IsiSJKem" value="<?php echo $row_EditIsiSJKembali['IsiSJKem']; ?>">
                             <input name="hd_editsjkembali_IsiSJKir[]" type="hidden" id="hd_editsjkembali_IsiSJKir" value="<?php echo $row_EditIsiSJKembali['IsiSJKir']; ?>">
 							<td><input name="tx_editsjkembali_Tgl" type="text" class="form-control" id="tx_editsjkembali_Tgl" value="<?php echo $row_EditIsiSJKembali['Tgl']; ?>" readonly></td>
 							<td><input name="tx_editsjkembali_Barang" type="text" class="form-control" id="tx_editsjkembali_Barang" value="<?php echo $row_EditIsiSJKembali['Barang']; ?>" readonly></td>
 							<td><input name="tx_editsjkembali_Warehouse[]" type="text" class="form-control" id="tx_editsjkembali_Warehouse" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['Warehouse']; ?>"></td>
                             <td><input name="tx_editsjkembali_QSisaKem[]" type="text" class="form-control" id="tx_editsjkembali_QSisaKem" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QSisaKem']; ?>" readonly></td>
-							<td><input name="tx_editsjkembali_QTertanda[]" type="text" class="form-control" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QKirim']; ?>)" required></td>
+							<td><input name="tx_editsjkembali_QTertanda[]" type="text" class="form-control" id="tx_editsjkembali_QTertanda" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTertanda2']; ?>" onkeyup="this.value = minmax(this.value, 0, <?php echo $row_EditIsiSJKembali['QSisaKem']; ?>)" required></td>
 							<input name="tx_editsjkembali_QTerima" type="hidden" class="form-control" id="tx_editsjkembali_QTerima" autocomplete="off" value="<?php echo $row_EditIsiSJKembali['QTerima']; ?>" readonly>
 						</tr>
 						<?php } while ($row_EditIsiSJKembali = mysql_fetch_assoc($EditIsiSJKembali)); ?>

@@ -38,6 +38,12 @@ $EditIsiSJKembali2 = mysql_query($query_EditIsiSJKembali2, $Connection) or die(m
 $row_EditIsiSJKembali2 = mysql_fetch_assoc($EditIsiSJKembali2);
 $totalRows_EditIsiSJKembali2 = mysql_num_rows($EditIsiSJKembali2);
 
+$QTerima2 = array();
+do{
+	$QTerima2[]=$row_EditIsiSJKembali2['QTerima'];
+	
+} while ($row_EditIsiSJKembali2 = mysql_fetch_assoc($EditIsiSJKembali2));
+
 //Query khusus untuk ambil IsiSJKir apa aja yg ada di sjkembali ini 
 $query = mysql_query($query_EditIsiSJKembali2, $Connection) or die(mysql_error());
 $IsiSJKir = array();
@@ -92,31 +98,40 @@ for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 }
 }
 
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+for($i=0;$i<$totalRows_EditIsiSJKembali2;$i++){
+  $updateSQL = sprintf("UPDATE isisjkirim SET QSisaKem=QSisaKem+%s WHERE IsiSJKir=%s",
+                       GetSQLValueString($QTerima2[$i], "int"),
+					   GetSQLValueString($IsiSJKir[$i], "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+}
+
+for($i=0;$i<$totalRows_EditIsiSJKembali2;$i++){
+  $updateSQL = sprintf("UPDATE isisjkembali SET QTerima=0 WHERE IsiSJKir=%s AND SJKem=%s",
+                       GetSQLValueString($IsiSJKir[$i], "text"),
+					   GetSQLValueString($colname_EditIsiSJKembali, "text"));
+
+  mysql_select_db($database_Connection, $Connection);
+  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
+
+}
+}
+
 // jumlah qsisakembaliquantity di isisjkirim diupdate
 for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("CALL edit_sjkembaliquantity(%s, %s, %s)",
+  $updateSQL = sprintf("CALL edit_sjkembaliquantity(%s, %s, %s, %s)",
                        GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
                        GetSQLValueString($_POST['hd_editsjkembaliquantity_Purchase'][$i], "text"),
-					   GetSQLValueString($_GET['SJKem'], "text"));
+					   GetSQLValueString($_GET['SJKem'], "text"),
+					   GetSQLValueString($IsiSJKir[$i], "int"));
 
   mysql_select_db($database_Connection, $Connection);
   $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
 }
 }
-
-//update qterima di sjkembali
-/*if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-for($i=0;$i<$totalRows_EditIsiSJKembali;$i++){
-  $updateSQL = sprintf("UPDATE isisjkembali SET QTerima=%s WHERE Id=%s",
-                       GetSQLValueString($_POST['tx_editsjkembaliquantity_QTerima'][$i], "int"),
-                       GetSQLValueString($_POST['hd_editsjkembaliquantity_Id'][$i], "int"));
-
-  mysql_select_db($database_Connection, $Connection);
-  $Result1 = mysql_query($updateSQL, $Connection) or die(mysql_error());
-
-}
-}*/
 
 //update tanggal di periode
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
